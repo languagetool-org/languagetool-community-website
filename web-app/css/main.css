@@ -268,14 +268,17 @@ th.desc a {
 
 /* Added for ltcomunity */
 
+.logo {
+    margin-left: 15px;
+}
+	
 .login {
-	margin: 5px;
-	text-align: right;
+	margin-left: 15px;
 }
 
 .error {
 	font-weight: bold;
-    background-color: #ff6f6f;
+    background-color: #ff9f9f;
 }
 
 .exampleSentence {
@@ -289,4 +292,14 @@ th.desc a {
 
 .additional {
     color: #bbb; 
+}
+
+.languageButton {
+	padding-left: 5px;
+	margin-right: 5px;
+    background: #ddd;
+}
+
+.errorList {
+    margin-bottom: 5px;
 }

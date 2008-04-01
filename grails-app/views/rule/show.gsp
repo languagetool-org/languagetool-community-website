@@ -9,9 +9,7 @@
         <title>Browse Rules</title>
     </head>
     <body>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-        </div>
+
         <div class="body">
         
             <g:form method="post">

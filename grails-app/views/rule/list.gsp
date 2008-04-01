@@ -8,17 +8,13 @@
         <title>Browse Rules</title>
     </head>
     <body>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-        </div>
+    
         <div class="body">
         
             <h1>Browse Rules: ${ruleCount} matches</h1>
             
             <p>Switch language:
-            <g:each var="lang" in="${languages}">
-                <g:link params="[lang:lang.getShortName()]">${lang.getName()}</g:link>
-            </g:each>
+            <g:render template="/languageSelection"/>
             
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>

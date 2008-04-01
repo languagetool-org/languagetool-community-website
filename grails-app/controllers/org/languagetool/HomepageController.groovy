@@ -11,6 +11,8 @@ class HomepageController extends BaseController {
         String langCode = "en"
         if (params.lang) {
           langCode = params.lang
+        } else {
+          params.lang = "en"
         }
         def hibSession = sessionFactory.getCurrentSession()
         SQLQuery q = hibSession.createSQLQuery("SELECT * FROM CorpusMatch WHERE " +

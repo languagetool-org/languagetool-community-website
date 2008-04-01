@@ -1,10 +1,12 @@
 package org.languagetool;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class CorpusMatch {
@@ -17,6 +19,7 @@ public class CorpusMatch {
   private String errorContext;
   private Date corpusDate;
   private Date checkDate;
+  private Set<UserOpinion> userOpinions;
   
   @Id
   @GeneratedValue
@@ -68,6 +71,13 @@ public class CorpusMatch {
   }
   public void setSourceURI(String sourceURI) {
     this.sourceURI = sourceURI;
+  }
+  @OneToMany
+  public Set<UserOpinion> getUserOpinions() {
+    return userOpinions;
+  }
+  public void setUserOpinions(Set<UserOpinion> userOpinions) {
+    this.userOpinions = userOpinions;
   }
   
 }

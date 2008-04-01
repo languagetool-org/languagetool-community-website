@@ -7,6 +7,7 @@
         <mapping class="org.languagetool.UserConfiguration" />
         <mapping class="org.languagetool.LanguageConfiguration" />
         <mapping class="org.languagetool.CorpusMatch" />
+        <mapping class="org.languagetool.UserOpinion" />
         <mapping class="org.languagetool.RegistrationTicket" />
     </session-factory>
 </hibernate-configuration>
