@@ -24,19 +24,35 @@
             <g:render template="/languageSelection"/>
             
             <ul>
-	            <g:each in="${matches}" var="match">
-	                <li class="errorList">${match.getMessage()}:<br/>
-	                   <span class="exampleSentence">${match.getErrorContext().
+	            <g:each in="${matches}" var="matchInfo" status="i">
+	                <li class="errorList">${matchInfo.match.getMessage()}:<br/>
+	                   <span class="exampleSentence">${matchInfo.match.getErrorContext().
 	                    replaceAll("<err>", "<span class='error'>").replaceAll("</err>", "</span>")}</span>
 	                    <br />
 	                    
-                        <g:remoteLink controller="corpusMatch" action="markUseful"
-                            id="${match.id}">Mark error message as useful</g:remoteLink>
-                        &nbsp;
-                        <g:remoteLink controller="corpusMatch" action="markUseless"
-                            id="${match.id}">Mark error message as useless/incorrect</g:remoteLink>
-	                    <br/>
-	                    <g:link url="${match.sourceURI}">Visit Wikipedia page</g:link>
+	                    <g:if test="${session.user}">
+	                        <g:if test="${matchInfo.opinion == CorpusMatchController.NEGATIVE_OPINION}">
+	                           [voted as useless]
+	                        </g:if>
+	                        <g:elseif test="${matchInfo.opinion == CorpusMatchController.POSITIVE_OPINION}">
+                               [voted as useful]
+	                        </g:elseif>
+	                        <g:else>
+	                            <div id="opinion_${i}">
+	                                <g:remoteLink controller="corpusMatch" action="markUseful" update="opinion_${i}"
+	                                    id="${matchInfo.match.id}">Mark error message as useful</g:remoteLink>
+	                                <br />
+	                                <g:remoteLink controller="corpusMatch" action="markUseless" update="opinion_${i}"
+	                                    id="${matchInfo.match.id}">Mark error message as useless/incorrect</g:remoteLink>
+	                            </div>
+	                        </g:else>
+	                    </g:if>
+                        <g:else>
+	                       <g:link controller="user" action="login">Login to vote on this message</g:link>
+	                    </g:else>
+	                    <p align="right">
+                            <g:link url="${matchInfo.match.sourceURI}">Visit Wikipedia page</g:link>
+	                    </p>
 	                </li>
 	            </g:each>
 	            <g:if test="${matches.size() == 0}">
@@ -44,8 +60,10 @@
 	            </g:if>
             </ul>
             
-            <br/>
-            <g:link controller="homepage" params="[lang:params.lang]">Show other examples</g:link>
+            <g:if test="${matches.size() > 0}">
+	            <br/>
+	            <g:link controller="homepage" params="[lang:params.lang]">Show other examples</g:link>
+            </g:if>
                  
             </div>
                    
