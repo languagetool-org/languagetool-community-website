@@ -9,7 +9,7 @@
     </head>
     <body>
 
-        <div class="dialog" style="margin-left:20px;width:60%;">
+        <div class="dialog">
         
             <br /><br />
             
@@ -18,6 +18,11 @@
             <br /><br />
 
             <p><strong>Check Rules</strong></p>
+            
+            <p>We use LanguageTool on Wikipedia data to test which rules work well and which need
+            more work. Please vote on LanguageTool's results. If there's a real error you're encouraged
+            to fix it in Wikipedia, but note that the check may not be up-to-date and the error may
+            have been fixed already.</p>
             
             <div style="margin-left:15px">
             
