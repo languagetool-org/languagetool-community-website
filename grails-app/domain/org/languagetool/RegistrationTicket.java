@@ -18,9 +18,7 @@ public class RegistrationTicket {
   public RegistrationTicket() {
   }
   
-  public RegistrationTicket(User user) {
-    // FIXME: take from config file:
-    String secret = "hfsjkfdsfewjk23s";
+  public RegistrationTicket(User user, String secret) {
     String key = Math.random() + "/" + secret;
     ticketCode = PasswordTools.hexMD5(key);
     this.generationDate = new Date();

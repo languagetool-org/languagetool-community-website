@@ -40,7 +40,9 @@ class UserController extends BaseController {
         if (!saved) {
           throw new Exception("Could not save user: ${user.errors}")
         }
-        RegistrationTicket ticket = new RegistrationTicket(newUser)
+        String secret = grailsApplication.config.registration.ticket.secret
+        assert(secret && secret != "" && secret != "{}")
+        RegistrationTicket ticket = new RegistrationTicket(newUser, secret)
         saved = ticket.save()
         if (!saved) {
           throw new Exception("Could not generate registration ticket: ${ticker.errors}")

@@ -39,6 +39,7 @@ registration.mail.subject = "LanguageTool Community Registration"
 registration.mail.text =  "Please follow this link to complete your registration at languagetool.org:\n"+
   "http://localhost:8080/ltcommunity/user/completeRegistration?code="+
   "#CODE#&id=#USERID#"
+registration.ticket.secret = "foo"      // change this to a random value
 
 // log4j configuration
 log4j {
