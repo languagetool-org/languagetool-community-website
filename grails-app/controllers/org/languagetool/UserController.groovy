@@ -109,10 +109,14 @@ class UserController extends BaseController {
           if (user) {
             String hashedPassword = user.password
             if (!PasswordTools.checkPassword(params.password, hashedPassword)) {
-              loginFailed()
+              loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): password invalid")
               return
             }
-            log.info("login successful for user ${user}")
+            if (!user.registerDate) {
+              loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): account not activated")
+              return
+            }
+            log.info("login successful for user ${user} (${request.getRemoteAddr()})")
             session.user = user
             user.lastLoginDate = new Date()
             def redirectParams = 
@@ -128,13 +132,13 @@ class UserController extends BaseController {
                 redirect(uri:"")        // got to homepage
             }
           } else {
-            loginFailed()
+            loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): user not found")
           }
         }
     }
     
-    private void loginFailed() {
-      log.warn("login failed for user '${params.email}' (${request.getRemoteAddr()})")
+    private void loginFailed(String internalMsg) {
+      log.warn(internalMsg)
       flash.message = "Invalid email address and/or password. " +
         "Please also make sure cookies are enabled."
     }
