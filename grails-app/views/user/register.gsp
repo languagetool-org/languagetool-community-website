@@ -53,9 +53,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="buttons">
-                    <span class="button"><input class="login" type="submit" value="Register"></input></span>
-                </div>
+                
+                <g:actionSubmit action="login" value="Register"/>
+                
             </g:form>
         </div>
         

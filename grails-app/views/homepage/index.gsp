@@ -9,6 +9,8 @@
     </head>
     <body>
 
+        <div class="body">
+
         <div class="dialog">
         
             <br /><br />
@@ -84,5 +86,8 @@
             </pre>
              -->
         </div>
+        
+        </div>
+        
     </body>
 </html>
