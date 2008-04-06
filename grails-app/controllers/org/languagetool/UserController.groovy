@@ -135,7 +135,7 @@ class UserController extends BaseController {
       log.warn("login failed for user '${params.email}' (${request.getRemoteAddr()})")
       flash.message = "Invalid email address and/or password. " +
         "Please also make sure cookies are enabled."
-    }      
+    }
     
     def logout = {
         log.info("logout of user ${session.user}")
