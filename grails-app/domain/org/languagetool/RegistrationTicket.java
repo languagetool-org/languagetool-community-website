@@ -1,7 +1,5 @@
 package org.languagetool;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -24,22 +22,9 @@ public class RegistrationTicket {
     // FIXME: take from config file:
     String secret = "hfsjkfdsfewjk23s";
     String key = Math.random() + "/" + secret;
-    try {
-      MessageDigest md = MessageDigest.getInstance("MD5");
-      ticketCode = binaryToHex(md.digest(key.getBytes()));
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException(e);
-    }
+    ticketCode = PasswordTools.hexMD5(key);
     this.generationDate = new Date();
     this.user = user;
-  }
-  
-  private String binaryToHex(byte[] array) {
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < array.length; ++i) {
-        sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-    }
-    return sb.toString();
   }
   
   @Id

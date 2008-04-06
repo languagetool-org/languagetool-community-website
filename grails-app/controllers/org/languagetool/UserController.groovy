@@ -34,7 +34,7 @@ class UserController extends BaseController {
         if (params.password1.size() <= 3) {
           throw new Exception("Password is too short")
         }
-        User newUser = new User(toAddress, params.password1)
+        User newUser = new User(toAddress, PasswordTools.hash(params.password1))
         // Note: user is not activated until we set registerDate
         boolean saved = newUser.save()
         if (!saved) {
@@ -103,8 +103,13 @@ class UserController extends BaseController {
           }
           User user = new User()
         } else {
-          User user = User.findByUsernameAndPassword(params.email, params.password)
+          User user = User.findByUsername(params.email)
           if (user) {
+            String hashedPassword = user.password
+            if (!PasswordTools.checkPassword(params.password, hashedPassword)) {
+              loginFailed()
+              return
+            }
             log.info("login successful for user ${user}")
             session.user = user
             user.lastLoginDate = new Date()
@@ -121,12 +126,16 @@ class UserController extends BaseController {
                 redirect(uri:"")        // got to homepage
             }
           } else {
-            log.warn("login failed for user ${params.email} (${request.getRemoteAddr()})")
-            flash.message = "Invalid email address and/or password. " +
-              "Please also make sure cookies are enabled."
+            loginFailed()
           }
         }
     }
+    
+    private void loginFailed() {
+      log.warn("login failed for user '${params.email}' (${request.getRemoteAddr()})")
+      flash.message = "Invalid email address and/or password. " +
+        "Please also make sure cookies are enabled."
+    }      
     
     def logout = {
         log.info("logout of user ${session.user}")
