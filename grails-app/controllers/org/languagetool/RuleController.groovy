@@ -109,7 +109,7 @@ class RuleController extends BaseController {
       List langConfigs = session.user.config?.languagesConfigurations
       if (langConfigs) {
         for (langConfig in langConfigs) {
-          if (langConfig.language?.getShortName() == lang) {
+          if (langConfig.language == lang) {
             return langConfig
           }
         }
