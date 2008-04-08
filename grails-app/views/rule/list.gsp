@@ -23,8 +23,12 @@
             <g:form action="list" method="get">
                 <input type="hidden" name="offset" value="0"/>
                 <input type="hidden" name="max" value="10"/>
+                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
                 <g:textField name="filter" value="${params.filter}"/>
                 <g:actionSubmit value="Filter"/>
+                <g:if test="${params.filter}">
+                    &nbsp;<g:link params="[lang : params.lang]">Clear Filter</g:link>
+                </g:if>
             </g:form>
                 
             <div class="list">
