@@ -23,6 +23,18 @@ a:link, a:visited, a:hover {
     text-decoration: none;
 } 
 
+a:hover {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+} 
+
+a:active {
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+} 
+
 h1 {
     color: #006dba;
     font-weight: normal;
@@ -214,7 +226,6 @@ th.desc a {
 /* DIALOG */
 
 .dialog {
-	width:90%;
 }
 
 .dialog table {
