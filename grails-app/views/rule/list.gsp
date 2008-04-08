@@ -20,7 +20,7 @@
                 <div class="message">${flash.message}</div>
             </g:if>
         
-            <g:form action="list" method="get">
+            <g:form action="list" method="get" name="filterform">
                 <input type="hidden" name="offset" value="0"/>
                 <input type="hidden" name="max" value="10"/>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
@@ -83,5 +83,12 @@
                 <g:paginate total="${ruleCount}" params="[params]"/>
             </div>
         </div>
+        
+		<script type="text/javascript">
+		<!--
+		    document.filterform.filter.focus();
+		// -->
+		</script>
+        
     </body>
 </html>
