@@ -21,7 +21,7 @@
                     <td width="15%">Pattern:</td>
                     <td>
 			            <g:if test="${rule instanceof PatternRule}">
-			                ${rule.toPatternString().encodeAsHTML()}<br />
+			                <span class="pattern">${rule.toPatternString().encodeAsHTML()}</span><br />
 			            </g:if>
 			            <g:else>
 			                <!-- TODO: add link to source code -->
@@ -55,8 +55,10 @@
 			                    replace("&lt;marker&gt;", '<span class="error">').
 			                    replace("&lt;/marker&gt;", '</span>')
 			                    }
-			                    <br />Correction suggestion:
+			                    <g:if test="${example.getCorrections()}">
+    			                    <br />Correction suggestion:
 			                        <span class="correction">${StringTools.listToString(example.getCorrections(), ", ")}</span>
+			                    </g:if>
 			                </li>
 			            </g:each>
 			            </ul>
@@ -68,7 +70,9 @@
                     <td>
 			            <ul>
 			            <g:each var="example" in="${rule.getCorrectExamples()}">
-			                <li>${example.encodeAsHTML()}</li>
+			                <li>${example.encodeAsHTML().
+			                     replace("&lt;marker&gt;", '<b>').
+			                     replace("&lt;/marker&gt;", '</b>')}</li>
 			            </g:each>
 			            </ul>
                     </td>
