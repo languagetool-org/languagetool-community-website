@@ -60,7 +60,7 @@
                             </td>
                         
                             <td><g:link action="show" id="${rule.id}"
-                                params="[lang:params.lang]">${rule.description?.encodeAsHTML()}</g:link></td>
+                                params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link></td>
 
                             <g:if test="${rule instanceof PatternRule}">
                                 <%
