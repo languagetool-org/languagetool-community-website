@@ -51,11 +51,16 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td>
-                                <g:if test="${activeRules.contains(rule)}">
-                                    Y
+                                <g:if test="${session.user}">
+	                                <g:if test="${activeRules == null || activeRules.contains(rule)}">
+	                                    Y
+	                                </g:if>
+	                                <g:else>
+	                                    N
+	                                </g:else>
                                 </g:if>
                                 <g:else>
-                                    N
+                                    n/a
                                 </g:else>
                             </td>
                         
@@ -66,7 +71,7 @@
                                 <%
                                 PatternRule pRule = (PatternRule) rule;
                                 %>
-                                <td>${pRule.toPatternString()}</td>
+                                <td>${pRule.toPatternString().encodeAsHTML()}</td>
                             </g:if>
                             <g:else>
                                 <td>[Java rule]</td>

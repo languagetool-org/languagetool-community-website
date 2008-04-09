@@ -37,9 +37,10 @@ class RuleController extends BaseController {
     } else {
       rules = rules[offset..Math.min(rules.size()-1, offset+max)]
     }
-    List activeRules = []
+    List activeRules = null     // null = all rules activated
     if (session.user) {
       List langConfigs = session.user.config?.languagesConfigurations
+      //TODO...
     }
     [ ruleList: rules, ruleCount: ruleCount, languages: Language.REAL_LANGUAGES,
       activeRules: activeRules ]
