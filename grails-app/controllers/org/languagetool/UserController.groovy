@@ -22,20 +22,31 @@ class UserController extends BaseController {
     def doRegister = {
         String toAddress = params.email
         if (!toAddress) {
-          throw new Exception("No email address set")
+          flash.message = "No email address set"
+          render(view:'register',model:[params:params])
+          return
         }
         if (!params.password1 || !params.password2) {
-          throw new Exception("No password set")
+          flash.message = "No password set"
+          render(view:'register',model:[params:params])
+          return
         }
         if (params.password1 != params.password2) {
-          throw new Exception("Passwords don't match")
+          flash.message = "Passwords don't match"
+          render(view:'register',model:[params:params])
+          return
         }
         if (params.password1.size() < grailsApplication.config.registration.min.password.length) {
-          throw new Exception("Password is too short, minimum length is " +
-              "${grailsApplication.config.registration.min.password.length}")
+          flash.message = "Password is too short, minimum length is " +
+            "${grailsApplication.config.registration.min.password.length}"
+          render(view:'register',model:[params:params])
+          return
         }
         if (User.findByUsername(toAddress)) {
-          throw new Exception("That email address is alread in use")
+          // TODO: show as a real error message
+          flash.message = "That email address is alread in use"
+          render(view:'register',model:[params:params])
+          return
         }
         User newUser = new User(toAddress, PasswordTools.hash(params.password1))
         // Note: user is not activated until we set registerDate
