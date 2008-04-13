@@ -40,7 +40,8 @@ registration.mail.text =  "Please follow this link to complete your registration
   "http://localhost:8080/ltcommunity/user/completeRegistration?code="+
   "#CODE#&id=#USERID#"
 registration.ticket.secret = "foo"      // change this to a random value
-
+registration.min.password.length = 4
+  
 // log4j configuration
 log4j {
     appender.stdout = "org.apache.log4j.ConsoleAppender"

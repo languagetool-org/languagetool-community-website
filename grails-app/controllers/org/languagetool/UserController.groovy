@@ -30,9 +30,12 @@ class UserController extends BaseController {
         if (params.password1 != params.password2) {
           throw new Exception("Passwords don't match")
         }
-        // TODO: config password length
-        if (params.password1.size() <= 3) {
-          throw new Exception("Password is too short")
+        if (params.password1.size() < grailsApplication.config.registration.min.password.length) {
+          throw new Exception("Password is too short, minimum length is " +
+              "${grailsApplication.config.registration.min.password.length}")
+        }
+        if (User.findByUsername(toAddress)) {
+          throw new Exception("That email address is alread in use")
         }
         User newUser = new User(toAddress, PasswordTools.hash(params.password1))
         // Note: user is not activated until we set registerDate
