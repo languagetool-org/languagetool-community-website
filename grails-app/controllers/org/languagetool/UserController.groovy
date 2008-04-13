@@ -63,6 +63,7 @@ class UserController extends BaseController {
         }
         log.info("Created user: ${newUser.username}, id=${newUser.id}")
         sendRegistrationMail(toAddress, ticket)
+        flash.message = ""
     }
     
     private sendRegistrationMail(String toAddress, RegistrationTicket ticket) {
