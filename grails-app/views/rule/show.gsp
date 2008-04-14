@@ -14,6 +14,9 @@
         
             <g:form method="post">
             
+            <input type="hidden" name="id" value="${rule.id.encodeAsHTML()}"/>
+            <input type="hidden" name="enableDisableID" value="${enableDisableID.encodeAsHTML()}"/>
+            
             <h1>Show Rule Details</h1>
             
             <table>
@@ -43,7 +46,7 @@
                 </tr>
                 <tr>
                     <td>Active?</td>
-                    <td><g:checkBox name="active" value="on"/>
+                    <td><g:checkBox name="active" value="${!isDisabled}"/>
                 </tr>
                 
                 <tr>

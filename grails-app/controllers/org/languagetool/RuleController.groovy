@@ -16,7 +16,7 @@ class RuleController extends BaseController {
     if (params.max) max = Integer.parseInt(params.max)
     Language lang = Language.getLanguageForShortName(params.lang)
     if (!lang) {
-      throw new Exception("Unknown language ${params.lang}")
+      throw new Exception("Unknown language ${params.lang.encodeAsHTML()}")
     }
     JLanguageTool lt = new JLanguageTool(lang)
     lt.activateDefaultPatternRules()
@@ -37,13 +37,18 @@ class RuleController extends BaseController {
     } else {
       rules = rules[offset..Math.min(rules.size()-1, offset+max)]
     }
-    List activeRules = null     // null = all rules activated
+    Set disabledRuleIDs = new HashSet()      // empty = all rules activated
     if (session.user) {
-      List langConfigs = session.user.config?.languagesConfigurations
-      //TODO...
+      LanguageConfiguration langConfig = getLangConfigforUser(lang.shortName)
+      if (langConfig) {
+        Set disabledRules = langConfig.getDisabledRules()
+        for (rule in disabledRules) {
+          disabledRuleIDs.add(rule.ruleID)
+        }
+      }
     }
     [ ruleList: rules, ruleCount: ruleCount, languages: Language.REAL_LANGUAGES,
-      activeRules: activeRules ]
+      disabledRuleIDs: disabledRuleIDs ]
   }
   
   private filterRules(List rules, String filter) {
@@ -82,32 +87,67 @@ class RuleController extends BaseController {
       flash.message = "No rule with id ${params.id.encodeAsHTML()}"
       redirect(action:list)
     }
-    LanguageConfiguration langConfig = getLangConfig(lang)
-    // TODO: get list of disabled rules
-    [ rule : selectedRule ]
+    LanguageConfiguration langConfig = getLangConfigforUser(lang)
+    boolean isDisabled = false
+    int enableDisableID = -1
+    if (langConfig) {
+      Set disabledRules = langConfig.getDisabledRules()
+      for (disabledRule in disabledRules) {
+        if (disabledRule.ruleID == params.id) {
+          enableDisableID = disabledRule.id
+          isDisabled = true
+          break
+        }
+      }
+    }
+    [ rule: selectedRule, isDisabled: isDisabled, enableDisableID: enableDisableID ]
   }
   
   def change = {
-    String lang = "en"
-      if (params.lang) lang = params.lang
-    LanguageConfiguration langConfig = getLangConfig(lang)
     if (!session.user) {
       throw new Exception("Not logged in")
     }
+    String lang = "en"
+      if (params.lang) lang = params.lang
+    LanguageConfiguration langConfig = getLangConfigforUser(lang)
     if (!langConfig) {
-      UserConfiguration config = new UserConfiguration()
-      config.addLanguagesConfiguration(new LanguageConfiguration(lang))
-      //FIXME
-      log.info("###params.active = ${params.active}")
-      session.user.setConfig(config)
+      log.info("Creating language configuration for ${session.user}, language $lang")
+      log.info("~~~~~~+ $lang")
+      langConfig = new LanguageConfiguration(language:lang)
+      session.user.addToLanguagesConfigurations(langConfig)
+      def saved = session.user.save()
+      if (!saved) {
+        throw new Exception("Could not save LanguageConfiguration: ${langConfig.errors}")
+      }
+    }
+    Set disabledRules = langConfig.getDisabledRules()
+    Set disabledRuleIDs = []
+    for (disabledRule in disabledRules) {
+      disabledRuleIDs.add(disabledRule.ruleID)
+    }
+    if (!params.active) {
+      // de-activate rule
+      langConfig.addToDisabledRules(new DisabledRule(ruleID:params.id))
+    } else {
+      // activate rule
+      for (disabledRule in disabledRules) {
+        if (disabledRule.id == Integer.parseInt(params.enableDisableID)) {
+          langConfig.removeFromDisabledRules(disabledRule)
+          break
+        }
+      }
+    }
+    def saved = session.user.save()
+    if (!saved) {
+      throw new Exception("Could not save user: ${session.user.errors}")
     }
     flash.message = "Rule has been modified"
     redirect(action:list)
   }
   
-  private LanguageConfiguration getLangConfig(String lang) {
+  private LanguageConfiguration getLangConfigforUser(String lang) {
     if (session.user) {
-      List langConfigs = session.user.config?.languagesConfigurations
+      Set langConfigs = session.user.languagesConfigurations
       if (langConfigs) {
         for (langConfig in langConfigs) {
           if (langConfig.language == lang) {

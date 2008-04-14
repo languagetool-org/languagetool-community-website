@@ -52,11 +52,11 @@
                         
                             <td>
                                 <g:if test="${session.user}">
-	                                <g:if test="${activeRules == null || activeRules.contains(rule)}">
-	                                    Y
+	                                <g:if test="${disabledRuleIDs != null && disabledRuleIDs.contains(rule.id)}">
+	                                    -
 	                                </g:if>
 	                                <g:else>
-	                                    N
+	                                    yes
 	                                </g:else>
                                 </g:if>
                                 <g:else>

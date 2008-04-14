@@ -17,8 +17,8 @@ class HomepageController extends BaseController {
           params.lang = "en"
         }
         def hibSession = sessionFactory.getCurrentSession()
-        SQLQuery q = hibSession.createSQLQuery("SELECT * FROM CorpusMatch WHERE " +
-            "languageCode = ? ORDER BY RAND() LIMIT 3")
+        SQLQuery q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
+            "language_code = ? ORDER BY RAND() LIMIT 3")
         q.setString(0, langCode)
         q.addEntity("match", CorpusMatch.class)
         def matches = []
