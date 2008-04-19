@@ -17,8 +17,9 @@ class HomepageController extends BaseController {
           params.lang = "en"
         }
         def hibSession = sessionFactory.getCurrentSession()
+        final int maxCorpusMatches = 3
         SQLQuery q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
-            "language_code = ? ORDER BY RAND() LIMIT 3")
+            "language_code = ? ORDER BY RAND() LIMIT $maxCorpusMatches")
         q.setString(0, langCode)
         q.addEntity("match", CorpusMatch.class)
         def matches = []
@@ -32,7 +33,7 @@ class HomepageController extends BaseController {
           }
           matches.add(cmi)
         }
-        render(view:'index',model:[matches : matches, langCode:langCode,
+        render(view:'index',model:[matches: matches, langCode: langCode,
                                    languages: Language.REAL_LANGUAGES])
     }
     
