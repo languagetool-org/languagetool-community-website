@@ -50,7 +50,7 @@ class RuleController extends BaseController {
     [ ruleList: rules, ruleCount: ruleCount, languages: Language.REAL_LANGUAGES,
       disabledRuleIDs: disabledRuleIDs ]
   }
-  
+
   private filterRules(List rules, String filter) {
     filter = filter.toLowerCase()
     List filtered = []
@@ -69,50 +69,92 @@ class RuleController extends BaseController {
     return filtered
   }
 
-  def show = {
+  /**
+   * Check a given text with a single rule.
+   */
+  def checkTextWithRule = {
+    // get all information needed to display "show" page:
+    final int maxTextLen = 5000
     String lang = "en"
     if (params.lang) lang = params.lang
-    // TODO: create only once:
     JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
     lt.activateDefaultPatternRules()
-    List rules = lt.getAllRules()
-    Rule selectedRule = null
-    for (Rule rule in rules) {
-      if (rule.id == params.id) {
-        selectedRule = rule
-        break
-      }
-    }
+    Rule selectedRule = getRuleById(params.id, lt)
     if (!selectedRule) {
       flash.message = "No rule with id ${params.id.encodeAsHTML()}"
       redirect(action:list)
     }
-    LanguageConfiguration langConfig = getLangConfigforUser(lang)
-    boolean isDisabled = false
+    int internalId = getInternalRuleId(selectedRule, params.id, lt)
+    // disable all rules except one:
+    List rules = lt.getAllRules()
+    for (Rule rule in rules) {
+      if (rule.id == params.id) {
+        lt.enableRule(rule.id)
+      } else {
+        lt.disableRule(rule.id)
+      }
+    }
+    // now actually check the text:
+    String text = params.text
+    if (text.size() > maxTextLen) {
+      text = text.substring(0, maxTextLen)
+      flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
+    }
+    List ruleMatches = lt.check(text)
+    render(view:'show', model: [ rule: selectedRule, isDisabled: internalId != -1, internalId: internalId,
+                                 textToCheck: params.text, matches: ruleMatches])
+  }
+  
+  def show = {
+    String lang = "en"
+    if (params.lang) lang = params.lang
+    JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+    lt.activateDefaultPatternRules()
+    Rule selectedRule = getRuleById(params.id, lt)
+    if (!selectedRule) {
+      flash.message = "No rule with id ${params.id.encodeAsHTML()}"
+      redirect(action:list)
+    }
+    int internalId = getInternalRuleId(selectedRule, params.id, lt)
+    [ rule: selectedRule, isDisabled: internalId != -1, internalId: internalId ]
+  }
+
+  private int getInternalRuleId(Rule selectedRule, String id, JLanguageTool lt) {
+    LanguageConfiguration langConfig = getLangConfigforUser(lt.getLanguage().getShortName())
     int enableDisableID = -1
     if (langConfig) {
       Set disabledRules = langConfig.getDisabledRules()
       for (disabledRule in disabledRules) {
         if (disabledRule.ruleID == params.id) {
           enableDisableID = disabledRule.id
-          isDisabled = true
           break
         }
       }
     }
-    [ rule: selectedRule, isDisabled: isDisabled, enableDisableID: enableDisableID ]
+    return enableDisableID
   }
   
+  private Rule getRuleById(String id, JLanguageTool lt) {
+    Rule selectedRule = null
+    List rules = lt.getAllRules()
+    for (Rule rule in rules) {
+      if (rule.id == params.id) {
+        selectedRule = rule
+        break
+      }
+    }
+    return selectedRule
+  }
+    
   def change = {
     if (!session.user) {
       throw new Exception("Not logged in")
     }
     String lang = "en"
-      if (params.lang) lang = params.lang
+    if (params.lang) lang = params.lang
     LanguageConfiguration langConfig = getLangConfigforUser(lang)
     if (!langConfig) {
       log.info("Creating language configuration for ${session.user}, language $lang")
-      log.info("~~~~~~+ $lang")
       langConfig = new LanguageConfiguration(language:lang)
       session.user.addToLanguagesConfigurations(langConfig)
       def saved = session.user.save()
@@ -131,7 +173,7 @@ class RuleController extends BaseController {
     } else {
       // activate rule
       for (disabledRule in disabledRules) {
-        if (disabledRule.id == Integer.parseInt(params.enableDisableID)) {
+        if (disabledRule.id == Integer.parseInt(params.internalId)) {
           langConfig.removeFromDisabledRules(disabledRule)
           break
         }
@@ -142,7 +184,7 @@ class RuleController extends BaseController {
       throw new Exception("Could not save user: ${session.user.errors}")
     }
     flash.message = "Rule has been modified"
-    redirect(action:list)
+    redirect(action:list, params: [lang: params.lang])
   }
   
   private LanguageConfiguration getLangConfigforUser(String lang) {

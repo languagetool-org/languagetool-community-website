@@ -15,9 +15,14 @@
             <g:form method="post">
             
             <input type="hidden" name="id" value="${rule.id.encodeAsHTML()}"/>
-            <input type="hidden" name="enableDisableID" value="${enableDisableID.encodeAsHTML()}"/>
+            <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+            <input type="hidden" name="internalId" value="${internalId.encodeAsHTML()}"/>
             
             <h1>Show Rule Details</h1>
+
+            <g:if test="${flash.message}">
+                <div class="message">${flash.message}</div>
+            </g:if>
             
             <table>
                 <tr>
@@ -85,14 +90,30 @@
             <g:actionSubmit action="change" value="Change"/>
 
             </g:form>
+
+            <br />
+            <p>Check the following text only with this rule:</p>
+            
+            <g:form method="post">
+                <input type="hidden" name="id" value="${rule.id.encodeAsHTML()}"/>
+                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+            
+                <g:textArea name="text" value="${textToCheck}" rows="2" cols="80" />
+                <br />
+                <g:actionSubmit action="checkTextWithRule" value="Check"/>
+                
+            </g:form>
+
+            <g:if test="${matches != null}">            
+                <g:render template="/ruleMatches"/>
+            </g:if>
              
             
             <p class="additional">
             <br /><br />
             <br /><br />TODO:<br/>
-            -why no good/bad examples for java rules? 
-            -test only this rule on a sentence / text<br/>
-            -modify and test rule<br />
+            -why no good/bad examples for java rules?<br /> 
+            -modify rule<br />
             -add your own example sentence<br/>
             -export as XML (to be loaded in OOo)<br/>
             </p>
