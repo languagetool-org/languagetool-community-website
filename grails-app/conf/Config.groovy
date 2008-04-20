@@ -41,7 +41,8 @@ registration.mail.text =  "Please follow this link to complete your registration
   "#CODE#&id=#USERID#"
 registration.ticket.secret = "foo"      // change this to a random value
 registration.min.password.length = 4
-  
+max.text.length = 10000     // maximum length of texts to check
+
 // log4j configuration
 log4j {
     appender.stdout = "org.apache.log4j.ConsoleAppender"
