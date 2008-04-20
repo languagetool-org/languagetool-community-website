@@ -1,6 +1,8 @@
 <ul>
     <g:each in="${matches}" var="matchInfo" status="i">
-        <li class="errorList">${matchInfo.getMessage()}:<br/>
+        <li class="errorList">${matchInfo.getMessage().
+            replaceAll("<suggestion>", "<span class='correction'>").
+            replaceAll("</suggestion>", "</span>")}:<br/>
            <span class="exampleSentence">${
            de.danielnaber.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
            matchInfo.getToPos(), textToCheck,

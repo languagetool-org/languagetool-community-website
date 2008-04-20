@@ -46,7 +46,7 @@ ul {
     padding-left: 15px;	
 }
 
-input, select, textarea {
+input, select {
     background-color: #fcfcfc;
     border: 1px solid #ccc;
     font: 12px verdana, arial, helvetica, sans-serif;
@@ -57,8 +57,9 @@ select {
    padding: 2px 2px 2px 0;
 }
 textarea {
-	width: 250px;
-	height: 150px;
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font: 12px verdana, arial, helvetica, sans-serif;
 	vertical-align: top;
 }
 
@@ -294,6 +295,8 @@ th.desc a {
 .error {
 	font-weight: bold;
     background-color: #ff9f9f;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 .exampleSentence {

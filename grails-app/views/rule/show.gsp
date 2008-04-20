@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Browse Rules</title>
+        <title>Show Rule "${rule.description.encodeAsHTML()}"</title>
     </head>
     <body>
 
@@ -18,7 +18,7 @@
             <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
             <input type="hidden" name="internalId" value="${internalId.encodeAsHTML()}"/>
             
-            <h1>Show Rule Details</h1>
+            <h1>Rule Details</h1>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
@@ -51,7 +51,13 @@
                 </tr>
                 <tr>
                     <td>Active?</td>
-                    <td><g:checkBox name="active" value="${!isDisabled}"/>
+                    <td>
+                        <g:if test="${session.user}">
+                            <g:checkBox name="active" value="${!isDisabled}"/>
+                        </g:if>
+                        <g:else>
+                            <input type="checkbox" name="active" value="on" checked="checked" disabled="disabled" />
+                        </g:else>
                 </tr>
                 
                 <tr>
@@ -70,6 +76,9 @@
 			                </li>
 			            </g:each>
 			            </ul>
+                        <g:if test="${rule.getIncorrectExamples() == null}">
+                             <span class="additional">[no examples found]</span>
+                        </g:if>
                     </td>
                 </tr>
                 
@@ -83,11 +92,16 @@
 			                     replace("&lt;/marker&gt;", '</b>')}</li>
 			            </g:each>
 			            </ul>
+                        <g:if test="${rule.getCorrectExamples() == null}">
+                             <span class="additional">[no examples found]</span>
+                        </g:if>
                     </td>
                 </tr>
             </table>
             
-            <g:actionSubmit action="change" value="Change"/>
+            <g:if test="${session.user}">
+                <g:actionSubmit action="change" value="Change"/>
+            </g:if>
 
             </g:form>
 
@@ -108,15 +122,14 @@
                 <g:render template="/ruleMatches"/>
             </g:if>
              
-            
+
+            <%--            
             <p class="additional">
-            <br /><br />
-            <br /><br />TODO:<br/>
-            -why no good/bad examples for java rules?<br /> 
+            <br />TODO:<br/>
             -modify rule<br />
             -add your own example sentence<br/>
             -export as XML (to be loaded in OOo)<br/>
-            </p>
+            </p> --%>
             
         </div>
     </body>
