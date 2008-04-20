@@ -5,6 +5,7 @@
     <head>
         <title>LanguageTool Community</title>
 		<meta name="layout" content="main" />
+		<g:javascript library="prototype" />
     </head>
     <body>
 
