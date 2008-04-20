@@ -1,7 +1,7 @@
 package org.languagetool
 
 import org.hibernate.*
-import de.danielnaber.languagetool.Language
+import de.danielnaber.languagetool.*
 
 class HomepageController extends BaseController {
 
@@ -35,6 +35,22 @@ class HomepageController extends BaseController {
         }
         render(view:'index',model:[matches: matches, langCode: langCode,
                                    languages: Language.REAL_LANGUAGES])
+    }
+
+    def checkText = {
+        String lang = "en"
+        if (params.lang) lang = params.lang
+        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+        lt.activateDefaultPatternRules()
+        // TODO: load user configuration
+        final int maxTextLen = grailsApplication.config.max.text.length
+        final String text = params.text
+        if (text.size() > maxTextLen) {
+          text = text.substring(0, maxTextLen)
+          flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
+        }
+        List ruleMatches = lt.check(text)
+        [matches: ruleMatches, lang: lang, textToCheck: params.text]
     }
     
 }

@@ -1,3 +1,5 @@
+<%@page import="de.danielnaber.languagetool.Language" %>
+
 <ul>
     <g:each in="${matches}" var="matchInfo" status="i">
         <li class="errorList">${matchInfo.getMessage().
@@ -11,6 +13,6 @@
         </li>
     </g:each>
     <g:if test="${matches.size() == 0}">
-       <li>No rule matches found in text</li>
+       <li>No rule matches found in text (language used: ${Language.getLanguageForShortName(params.lang)})</li>
     </g:if>
 </ul>

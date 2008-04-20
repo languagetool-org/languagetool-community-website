@@ -284,6 +284,15 @@ th.desc a {
 
 /* Added for ltcomunity */
 
+/* featurs on the homepage */
+.mainPart {
+    margin-left: 15px;
+}
+	
+.header {
+	background: #eee;
+}
+	
 .logo {
     margin-left: 15px;
 }

@@ -74,7 +74,6 @@ class RuleController extends BaseController {
    */
   def checkTextWithRule = {
     // get all information needed to display "show" page:
-    final int maxTextLen = 5000
     String lang = "en"
     if (params.lang) lang = params.lang
     JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
@@ -96,6 +95,7 @@ class RuleController extends BaseController {
     }
     // now actually check the text:
     String text = params.text
+    final int maxTextLen = grailsApplication.config.max.text.length
     if (text.size() > maxTextLen) {
       text = text.substring(0, maxTextLen)
       flash.message = "The text is too long, only the first $maxTextLen characters have been checked"

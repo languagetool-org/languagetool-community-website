@@ -10,7 +10,13 @@
     </head>
     <body>
 
-        <h1 class="logo"><a href="${createLinkTo(dir:'',file:'')}">LanguageTool Community</a></h1>
+        <div class="header">
+        
+            <h1 class="logo"><a href="${createLinkTo(dir:'',file:'')}">LanguageTool Community</a></h1>
+            
+            <div class="login">&nbsp;</div>
+        
+        </div>
         
         <g:layoutBody />		
     </body>	

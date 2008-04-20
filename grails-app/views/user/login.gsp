@@ -20,11 +20,15 @@
             <g:form action="login" method="post" name="loginform">
                 <div class="dialog">
                 
-                    <p>No Account yet? <g:link action="register">Register here</g:link></p>
-                    
                     <table>
                         <tbody>
-                        
+
+                            <tr class='prop'>
+                                <td valign='top' colspan="1" class='name'>
+                                    <p>No Account yet? <g:link action="register">Register here</g:link></p>
+                                </td>
+                            </tr>
+                                                    
                             <tr class='prop'>
                                 <td valign='top' class='name'>
                                     <label for='email'>Email:</label>

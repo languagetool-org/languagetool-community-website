@@ -26,12 +26,16 @@
             <g:else>
                <g:link controller="user" action="login">Login to vote on this message</g:link>
             </g:else>
-            <p align="right">
+            <p>
                 <g:link url="${matchInfo.match.sourceURI}">Visit Wikipedia page</g:link>
             </p>
         </li>
     </g:each>
     <g:if test="${matches.size() == 0}">
        <li>Sorry, no example error messages found in the database for language '${langCode}'</li>
+    </g:if>
+    <g:if test="${matches.size() > 0}">
+        <li><g:link controller="homepage"
+           params="[lang:params.lang.encodeAsHTML()]">Show other random examples</g:link></li>
     </g:if>
 </ul>
