@@ -15,7 +15,7 @@
         
             <br /><br />
             
-            <g:link controller="rule" action="list">Browse Rules</g:link>
+            <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]">Browse Rules</g:link>
             
             <br /><br />
 
@@ -34,7 +34,7 @@
             
             <g:if test="${matches.size() > 0}">
 	            <br/>
-	            <g:link controller="homepage" params="[lang:params.lang]">Show other examples</g:link>
+	            <g:link controller="homepage" params="[lang:params.lang.encodeAsHTML()]">Show other examples</g:link>
             </g:if>
                  
             </div>
