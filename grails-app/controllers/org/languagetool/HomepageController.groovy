@@ -42,7 +42,16 @@ class HomepageController extends BaseController {
         if (params.lang) lang = params.lang
         JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
         lt.activateDefaultPatternRules()
-        // TODO: load user configuration
+        // load user configuration:
+        LanguageConfiguration langConfig = null
+        if (session.user) {
+          langConfig = RuleController.getLangConfigforUser(lang, session)
+          if (langConfig) {
+            for (disRule in langConfig.disabledRules) {
+              lt.disableRule(disRule.ruleID)
+            }
+          }
+        }
         final int maxTextLen = grailsApplication.config.max.text.length
         final String text = params.text
         if (text.size() > maxTextLen) {
@@ -50,7 +59,9 @@ class HomepageController extends BaseController {
           flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
         List ruleMatches = lt.check(text)
-        [matches: ruleMatches, lang: lang, textToCheck: params.text]
+        // TODO: count only disabledRules for the current language
+        [matches: ruleMatches, lang: lang, textToCheck: params.text,
+           disabledRules: langConfig?.disabledRules]
     }
     
 }

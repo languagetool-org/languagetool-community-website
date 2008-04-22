@@ -39,7 +39,7 @@ class RuleController extends BaseController {
     }
     Set disabledRuleIDs = new HashSet()      // empty = all rules activated
     if (session.user) {
-      LanguageConfiguration langConfig = getLangConfigforUser(lang.shortName)
+      LanguageConfiguration langConfig = getLangConfigforUser(lang.shortName, session)
       if (langConfig) {
         Set disabledRules = langConfig.getDisabledRules()
         for (rule in disabledRules) {
@@ -120,7 +120,7 @@ class RuleController extends BaseController {
   }
 
   private int getInternalRuleId(Rule selectedRule, String id, JLanguageTool lt) {
-    LanguageConfiguration langConfig = getLangConfigforUser(lt.getLanguage().getShortName())
+    LanguageConfiguration langConfig = getLangConfigforUser(lt.getLanguage().getShortName(), session)
     int enableDisableID = -1
     if (langConfig) {
       Set disabledRules = langConfig.getDisabledRules()
@@ -152,7 +152,7 @@ class RuleController extends BaseController {
     }
     String lang = "en"
     if (params.lang) lang = params.lang
-    LanguageConfiguration langConfig = getLangConfigforUser(lang)
+    LanguageConfiguration langConfig = getLangConfigforUser(lang, session)
     if (!langConfig) {
       log.info("Creating language configuration for ${session.user}, language $lang")
       langConfig = new LanguageConfiguration(language:lang)
@@ -187,7 +187,7 @@ class RuleController extends BaseController {
     redirect(action:list, params: [lang: params.lang])
   }
   
-  private LanguageConfiguration getLangConfigforUser(String lang) {
+  private static LanguageConfiguration getLangConfigforUser(String lang, def session) {
     if (session.user) {
       Set langConfigs = session.user.languagesConfigurations
       if (langConfigs) {
