@@ -18,7 +18,7 @@ abstract class BaseController {
          if (!session.user) {
            isAdmin = false
          } else {
-           if (session.user.isAdmin()) {
+           if (session.user.isAdmin) {
              isAdmin = true
            }
          }
