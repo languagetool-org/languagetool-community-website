@@ -144,7 +144,7 @@ class UserController extends BaseController {
                 redirect(controller:session.controllerName,
                         action: session.actionName)
             } else {
-                redirect(uri:"")        // got to homepage
+                redirect(uri:request.getContextPath()+"/")        // got to homepage
             }
           } else {
             loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): user not found")
