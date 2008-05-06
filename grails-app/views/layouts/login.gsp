@@ -12,7 +12,7 @@
 
         <div class="header">
         
-            <h1 class="logo"><a href="${createLinkTo(dir:'',file:'')}">LanguageTool Community</a></h1>
+            <h1 class="logo"><a href="${request.getContextPath()}/">LanguageTool Community</a></h1>
             
             <div class="login">&nbsp;</div>
         

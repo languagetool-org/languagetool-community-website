@@ -12,7 +12,7 @@
 
         <div class="header">
 
-	        <h1 class="logo"><a href="${createLinkTo(dir:'',file:'')}">LanguageTool Community</a></h1>
+	        <h1 class="logo"><a href="${request.getContextPath()}/">LanguageTool Community <sup>beta</sup></a></h1>
 	    
 	        <g:if test="${session.user}">
 	            <div class="login">Logged in as ${session.user.username.encodeAsHTML()} -
