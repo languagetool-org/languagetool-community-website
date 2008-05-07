@@ -8,6 +8,7 @@ abstract class BaseController {
      def auth() {
          if (!session.user) {
            storeParams()
+           log.info("user login required for page ${request.getRequestURI()}")
            redirect(controller:'user', action:'login')
            return false
          }
@@ -24,6 +25,7 @@ abstract class BaseController {
          }
          if (!isAdmin) {
            storeParams()
+           log.info("admin login required for page ${request.getRequestURI()}")
            redirect(controller:'user', action:'login')
            return false
          }
