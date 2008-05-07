@@ -13,6 +13,21 @@
         
             <h1>Test results</h1>
         
+            <g:if test="${session.user}">
+	            <g:if test="${disabledRules.size() > 0}">
+	                <p>Note that you have disabled ${disabledRules.size()} rules
+	                in your configuration.
+	                <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]">Browse
+	                the rules</g:link> to activate/deactivate rules.</p>
+	            </g:if>
+	            <g:else>
+	                <p>All rules are activated.
+	                <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]">Browse
+	                the rules</g:link> to deactivate rules that are not useful for you.</p>
+	            </g:else>
+            </g:if>
+            <br/>
+            
             <g:render template="/ruleMatches"/>
             
             <br />
