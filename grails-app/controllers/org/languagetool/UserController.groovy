@@ -6,7 +6,7 @@ import javax.mail.internet.*
 class UserController extends BaseController {
     
     def beforeInterceptor = [action: this.&adminAuth, except:
-      ['login', 'logout', 'register', 'doRegister', 'completeRegistration']]
+      ['login', 'logout', 'register', 'doRegister', 'completeRegistration', 'settings']]
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST',
@@ -26,20 +26,10 @@ class UserController extends BaseController {
           render(view:'register',model:[params:params])
           return
         }
-        if (!params.password1 || !params.password2) {
-          flash.message = "No password set"
-          render(view:'register',model:[params:params])
-          return
-        }
-        if (params.password1 != params.password2) {
-          flash.message = "Passwords don't match"
-          render(view:'register',model:[params:params])
-          return
-        }
-        if (params.password1.size() < grailsApplication.config.registration.min.password.length) {
-          flash.message = "Password is too short, minimum length is " +
-            "${grailsApplication.config.registration.min.password.length}"
-          render(view:'register',model:[params:params])
+        String passwordErrorMsg = checkNewPassword()
+        if (passwordErrorMsg) {
+          flash.message = passwordErrorMsg
+          render(view:'register', model:[params:params])
           return
         }
         if (User.findByUsername(toAddress)) {
@@ -65,8 +55,22 @@ class UserController extends BaseController {
         sendRegistrationMail(toAddress, ticket)
         flash.message = ""
     }
+
+    private String checkNewPassword() {
+        if (!params.password1 || !params.password2) {
+          return "No password set"
+        }
+        if (params.password1 != params.password2) {
+          return "Passwords don't match"
+        }
+        if (params.password1.size() < grailsApplication.config.registration.min.password.length) {
+          return "Password is too short, minimum length is " +
+            "${grailsApplication.config.registration.min.password.length}"
+        }
+        return null
+    }
     
-    private sendRegistrationMail(String toAddress, RegistrationTicket ticket) {
+    private void sendRegistrationMail(String toAddress, RegistrationTicket ticket) {
         Properties props = new Properties()
         log.info("Preparing registration mail to $toAddress")
         String smtpHost = grailsApplication.config.smtp.host
@@ -108,6 +112,31 @@ class UserController extends BaseController {
           throw new Exception("Your registration ticket for id ${params.id.encodeAsHTML()} is not valid")
         }
         user.setRegisterDate(new Date())
+    }
+    
+    def settings = {
+        if (!session.user) {
+          throw new Exception("You need to be logged in to edit your settings")
+        }
+        if (request.method == 'GET') {
+          [user: session.user]
+        } else if (request.method == 'POST') {
+          log.info("User ${session.user} changing his/her password")
+          String passwordErrorMsg = checkNewPassword()
+          if (passwordErrorMsg) {
+            flash.message = passwordErrorMsg
+            render(view:'settings', model:[params:params])
+            return
+          }
+          def saved = session.user.save()
+          session.user.password = PasswordTools.hash(params.password1)
+          if (!saved) {
+            throw new Exception("Could not save settings: ${session.user.errors}")
+          }
+          flash.message = "Password changed"
+        } else {
+          throw new Exception("unsupported method ${request.method}")
+        }
     }
     
     def login = {

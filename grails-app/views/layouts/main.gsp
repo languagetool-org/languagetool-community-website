@@ -16,7 +16,10 @@
 	    
 	        <g:if test="${session.user}">
 	            <div class="login">Logged in as ${session.user.username.encodeAsHTML()} -
-	            <g:link controller="user" action="logout">Logout</g:link></div>
+	            <g:link controller="user" action="logout">Logout</g:link>
+	            -
+	            <g:link controller="user" action="settings">My Settings</g:link>
+	            </div>
 	        </g:if>
 	        <g:else>
 	            <div class="login"><g:link controller="user" action="login">Login</g:link></div>
