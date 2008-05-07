@@ -14,7 +14,7 @@
             <h1>Test results</h1>
         
             <g:if test="${session.user}">
-	            <g:if test="${disabledRules.size() > 0}">
+	            <g:if test="${disabledRules && disabledRules.size() > 0}">
 	                <p>Note that you have disabled ${disabledRules.size()} rules
 	                in your configuration.
 	                <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]">Browse
