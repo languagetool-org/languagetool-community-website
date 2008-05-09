@@ -102,7 +102,8 @@ class RuleController extends BaseController {
     }
     List ruleMatches = lt.check(text)
     render(view:'show', model: [ rule: selectedRule, isDisabled: internalId != -1, internalId: internalId,
-                                 textToCheck: params.text, matches: ruleMatches])
+                                 textToCheck: params.text, matches: ruleMatches],
+                                 contentType: "text/html", encoding: "utf-8")
   }
   
   def show = {
