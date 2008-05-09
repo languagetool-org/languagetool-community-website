@@ -4,7 +4,6 @@
 <%@ page import="de.danielnaber.languagetool.tools.StringTools" %>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title>Show Rule "${rule.description.encodeAsHTML()}"</title>
     </head>
