@@ -15,6 +15,7 @@
                 </g:elseif>
                 <g:else>
                     <div id="opinion_${i}">
+                        <noscript><b>Please activate Javascript to make this feature work</b><br /></noscript>
                         <g:remoteLink controller="corpusMatch" action="markUseful" update="opinion_${i}"
                             id="${matchInfo.match.id}">Mark error message as useful</g:remoteLink>
                         <br />
