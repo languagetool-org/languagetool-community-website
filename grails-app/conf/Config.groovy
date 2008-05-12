@@ -42,6 +42,9 @@ registration.mail.text =  "Please follow this link to complete your registration
 registration.ticket.secret = "foo"      // change this to a random value
 registration.min.password.length = 4
 max.text.length = 10000     // maximum length of texts to check
+// languages not visible in the user interface (e.g. because they are 
+// not properly supported yet):
+hide.languages = ["cs"]
 
 // log4j configuration
 log4j {
