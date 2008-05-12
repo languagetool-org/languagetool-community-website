@@ -1,4 +1,5 @@
-  
+<%@page import="de.danielnaber.languagetool.tools.StringTools" %>
+
 <html>
     <head>
         <meta name="layout" content="login" />
@@ -17,6 +18,12 @@
             </div>
             </g:hasErrors>
             <g:form action="login" method="post" name="loginform">
+            
+                <g:if test="${params.ids}">
+                    <input type="hidden" name="ids" value="${StringTools.escapeHTML(StringTools.listToString(Arrays.asList(params.ids), ','))}"/>
+                </g:if>
+                <input type="hidden" name="lang" value="${params.lang?.encodeAsHTML()}"/>
+                
                 <div class="dialog">
                 
                     <table>

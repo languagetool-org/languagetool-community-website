@@ -18,9 +18,24 @@ class HomepageController extends BaseController {
         }
         def hibSession = sessionFactory.getCurrentSession()
         final int maxCorpusMatches = 3
-        SQLQuery q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
+        SQLQuery q
+        if (params.ids) {
+          // user logged in specifically to vote, we don't show random
+          // items in this case:
+          q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
+            "language_code = ? AND (id = ? OR id = ? OR id = ?) LIMIT $maxCorpusMatches")
+          q.setString(0, langCode)
+          String[] lastShownIds = params.ids.split(",")
+          int i = 1
+          for (String id in lastShownIds) {
+            q.setString(i, id)
+            i++
+          }
+        } else {
+          q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
             "language_code = ? ORDER BY RAND() LIMIT $maxCorpusMatches")
-        q.setString(0, langCode)
+          q.setString(0, langCode)
+        }
         q.addEntity("match", CorpusMatch.class)
         def matches = []
         for (match in q.list()) {
@@ -33,6 +48,10 @@ class HomepageController extends BaseController {
           }
           matches.add(cmi)
         }
+        // force some order so we show the same order again as before login
+        // (people might log in specifically to vote, we don't show random
+        // items in that case):
+        Collections.sort(matches)
         render(view:'index',model:[matches: matches, langCode: langCode,
                                    languages: Language.REAL_LANGUAGES])
     }

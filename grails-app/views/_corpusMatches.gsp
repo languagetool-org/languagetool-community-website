@@ -24,7 +24,8 @@
                 </g:else>
             </g:if>
             <g:else>
-               <g:link controller="user" action="login">Login to vote on this message</g:link>
+               <g:link controller="user" action="login" 
+                params="[lang: langCode, ids: matches.match.id]">Login to vote on this message</g:link>
             </g:else>
             <p>
                 <g:link url="${matchInfo.match.sourceURI}">Visit Wikipedia page</g:link>
@@ -32,7 +33,7 @@
         </li>
     </g:each>
     <g:if test="${matches.size() == 0}">
-       <li>Sorry, no example error messages found in the database for language '${langCode}'</li>
+       <li>Sorry, no example error messages found in the database for language '${langCode.encodeAsHTML()}'</li>
     </g:if>
     <g:if test="${matches.size() > 0}">
         <li><g:link controller="homepage"

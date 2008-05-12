@@ -35,7 +35,7 @@
 
             <br />
             
-            <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]">Browse Rules</g:link>
+            <g:link controller="rule" action="list" params="[lang: params.lang?.encodeAsHTML()]">Browse Rules</g:link>
             
             <div class="mainPart">
                 LanguageTool uses rules to detect errors. Each rule represents one or more potential
@@ -49,7 +49,7 @@
             <div class="mainPart">
 
             <g:form method="post">
-                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+                <input type="hidden" name="lang" value="${params.lang?.encodeAsHTML()}"/>
             
                 <g:textArea name="text" value="${textToCheck}" rows="5" cols="80" />
                 <br />

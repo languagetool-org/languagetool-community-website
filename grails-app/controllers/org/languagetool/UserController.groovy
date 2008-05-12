@@ -166,7 +166,10 @@ class UserController extends BaseController {
             def redirectParams = 
               session.origParams ? session.origParams : [uri:"/"]
             log.info("session.requestMethod="+redirectParams)
-            if (redirectParams?.controller && redirectParams?.action) {
+            if (params.ids && params.lang) {
+                // user wants to vote on an error found by LanguageTool:
+                redirect(controller:'homepage', params:[ids:params.ids,lang:params.lang])
+            } else if (redirectParams?.controller && redirectParams?.action) {
                 redirect(controller:redirectParams?.controller,
                         action: redirectParams?.action, params:redirectParams)
             } else if (session.controllerName && session.actionName) {
