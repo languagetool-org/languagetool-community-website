@@ -63,20 +63,12 @@
             </g:if>
             
             </div>
+
+            <br />
+            <p><strong><a href="http://www.languagetool.org">Visit the LanguageTool homepage at www.languagetool.org</a></strong></p>
                    
-            <!-- 
-            <pre>
-            TODO:
-            -show POS tags or error sentences
-            -personal settings of existing rules -> export
-            -create your own rules + make them public or not (public by default)
-            -submit incorrect sentences
-            -support false friend rules
-            -support spell checking?!
-            </pre>
-             -->
         </div>
-        
+
         </div>
         
     </body>
