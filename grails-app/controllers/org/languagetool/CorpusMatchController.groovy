@@ -2,15 +2,30 @@ package org.languagetool
 
 import javax.mail.*
 import javax.mail.internet.*
+import de.danielnaber.languagetool.*
 
 class CorpusMatchController extends BaseController {
     
     public final static int NEGATIVE_OPINION = 0
     public final static int POSITIVE_OPINION = 1
     
-    def beforeInterceptor = [action: this.&auth, except: []]
+    def beforeInterceptor = [action: this.&auth, except: ['list', 'index']]
 
     def allowedMethods = [markUseful:'POST', markUseless:'POST']
+
+    def index = {
+      redirect(action:list,params:params)
+    }
+
+    def list = {
+      if(!params.max) params.max = 10
+      String langCode = "en"
+      if (params.lang) {
+          langCode = params.lang
+      }
+      [ corpusMatchList: CorpusMatch.findAllByLanguageCode(langCode, params),
+        languages: Language.REAL_LANGUAGES ]
+    }
 
     def markUseful = {
       saveOpinion(session.user, POSITIVE_OPINION)

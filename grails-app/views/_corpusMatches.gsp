@@ -39,5 +39,6 @@
     <g:if test="${matches.size() > 0}">
         <li><g:link controller="homepage"
            params="[lang:params.lang.encodeAsHTML()]">Show other random examples</g:link></li>
+        <li><g:link controller="corpusMatch" action="list" params="[lang: params.lang]">Show all matches</g:link></li>
     </g:if>
 </ul>
