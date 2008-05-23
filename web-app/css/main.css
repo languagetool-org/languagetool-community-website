@@ -318,7 +318,8 @@ th.desc a {
 }
 
 .additional {
-    color: #bbb; 
+	font-weight: normal !important;
+    color: #bbb !important; 
 }
 
 .languageButton {
