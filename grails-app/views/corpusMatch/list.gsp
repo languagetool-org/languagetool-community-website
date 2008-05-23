@@ -21,8 +21,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Message</th>
-                            <th>Context</th>
+                            <th>ID</th>
+                            <th>Match</th>
                         </tr>
                     </thead>
                     <tbody>
