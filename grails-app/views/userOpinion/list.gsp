@@ -3,12 +3,12 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title>User Opinions on the Corpus Matches</title>
+        <title>Top Corpus Matches voted as 'useless'</title>
     </head>
     <body>
 
         <div class="body">
-            <h1>User Opinions on the Corpus Matches</h1>
+            <h1>Top Corpus Matches voted as 'useless'</h1>
 
             <g:render template="/languageSelection"/>
 
