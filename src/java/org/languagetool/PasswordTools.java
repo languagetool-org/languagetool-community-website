@@ -83,7 +83,7 @@ public class PasswordTools {
   }
   
   /**
-   * Returns a hex-encoded MD5 sum of the givens string.
+   * Returns a hex-encoded MD5 sum of the given string.
    */
   public static String hexMD5(String s) {
     try {
@@ -105,4 +105,16 @@ public class PasswordTools {
     return sb.toString();
   }  
 
+  /**
+   * Command-line too to hash a password.
+   */
+  public static void main(String[] args) {
+    if (args.length != 1) {
+      System.out.println("Usage: PasswordTools <password>");
+      System.exit(1);
+    }
+    String hashedPassword = hash(args[0]);
+    System.out.println("hashed password: " + hashedPassword);
+  }
+  
 }
