@@ -18,6 +18,10 @@
 
             <div class="list">
                 <table>
+                    <thead>
+                        <th>Votes</th>
+                        <th>Match</th>
+                    </thead>
                     <tbody>
                     <g:each in="${results}" status="i" var="opinion">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
