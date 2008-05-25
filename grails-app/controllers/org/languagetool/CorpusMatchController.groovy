@@ -51,7 +51,7 @@ class CorpusMatchController extends BaseController {
       if (params.lang) {
           langCode = params.lang
       }
-      [ corpusMatchList: CorpusMatch.findAllByLanguageCode(langCode, params),
+      [ corpusMatchList: CorpusMatch.findAllByLanguageCodeAndIsVisible(langCode, true, params),
         languages: Language.REAL_LANGUAGES ]
     }
 

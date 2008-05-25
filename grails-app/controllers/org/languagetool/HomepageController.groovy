@@ -58,7 +58,7 @@ class HomepageController extends BaseController {
           }
         } else {
           q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
-            "language_code = ? ORDER BY RAND() LIMIT $maxCorpusMatches")
+            "language_code = ? AND is_visible = 1 ORDER BY RAND() LIMIT $maxCorpusMatches")
           q.setString(0, langCode)
         }
         q.addEntity("match", CorpusMatch.class)
