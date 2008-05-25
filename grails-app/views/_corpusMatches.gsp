@@ -40,5 +40,6 @@
         <li><g:link controller="homepage"
            params="[lang:params.lang.encodeAsHTML()]">Show other random examples</g:link></li>
         <li><g:link controller="corpusMatch" action="list" params="[lang: params.lang]">Show all matches</g:link></li>
+        <li><g:link controller="userOpinion" action="list" params="[lang: params.lang]">Show user votes</g:link></li>
     </g:if>
 </ul>
