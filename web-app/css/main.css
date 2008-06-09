@@ -290,9 +290,14 @@ th.desc a {
 }
 	
 .header {
-	background: #eee;
+	background: #87b220;
+    padding-bottom: 15px;
 }
-	
+
+.header a {
+	color: white;
+}
+
 .logo {
     margin-left: 15px;
 }
@@ -323,9 +328,20 @@ th.desc a {
 }
 
 .languageButton {
-	padding-left: 5px;
-	margin-right: 5px;
-    background: #ddd;
+	padding: 5px;
+	padding-right: 2px;
+	margin-left: 2px;
+	margin-right: 2px;
+	background: #87b220;
+}
+
+.languageButton a {
+	color: black;
+}
+
+.activelang {
+	color: white;
+	font-weight: bold;
 }
 
 .errorList {
@@ -336,4 +352,14 @@ th.desc a {
 .pattern {
 	font-family: monospace;
 	font-size: larger;
+}
+
+/* link to LT homage */
+.lthomepage {
+	margin-top: 15px;
+}
+
+/* link list with all supported languages */
+.langselection {
+	margin-bottom: 15px;
 }

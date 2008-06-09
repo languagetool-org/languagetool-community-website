@@ -13,8 +13,6 @@
 
         <div class="dialog">
         
-            <br />
-
             <g:render template="/languageSelection"/>
 
             <p><strong>Check Rules' Results</strong></p>
@@ -64,8 +62,12 @@
             
             </div>
 
-            <br />
-            <p><strong><a href="http://www.languagetool.org">Visit the LanguageTool homepage at www.languagetool.org</a></strong></p>
+            <div class="lthomepage">
+                <strong>Visit the LanguageTool homepage at
+                <a href="http://www.languagetool.org">www.languagetool.org</a> and
+                download LanguageTool as an extension for
+                <a href="http://www.openoffice.org">OpenOffice.org</a></strong>
+            </div>
                    
         </div>
 
