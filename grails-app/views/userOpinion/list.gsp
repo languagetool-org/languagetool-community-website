@@ -8,9 +8,9 @@
     <body>
 
         <div class="body">
-            <h1>Top Corpus Matches voted as 'useless'</h1>
-
             <g:render template="/languageSelection"/>
+
+            <h1>Top Corpus Matches voted as 'useless'</h1>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>

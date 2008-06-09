@@ -10,10 +10,9 @@
     
         <div class="body">
         
-            <h1>Browse Rules: ${ruleCount} matches</h1>
-            
-            <p>Switch language:
             <g:render template="/languageSelection"/>
+
+            <h1>Browse Rules: ${ruleCount} matches</h1>
             
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>

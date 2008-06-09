@@ -18,7 +18,7 @@ body {
 }
 
 a:link, a:visited, a:hover {
-    color: #666;
+    color: #555;
     font-weight: bold;
     text-decoration: none;
 } 
@@ -198,7 +198,7 @@ th.desc a {
     border-left: 1px solid #ddd;
 }
 .list th:hover, .list tr:hover {
-    background: #b2d1ff;
+    background: #cfda6f;
 }
 
 /* PAGINATION */
