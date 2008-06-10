@@ -308,9 +308,13 @@ th.desc a {
 
 .error {
 	font-weight: bold;
-    background-color: #ff9f9f;
-    padding-left: 3px;
-    padding-right: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-bottom:2px;
+	background-image:url("../images/squiggle.png");
+	background-repeat:repeat-x;
+	background-position:left bottom;        
+	vertical-align:text-top;
 }
 
 .exampleSentence {
