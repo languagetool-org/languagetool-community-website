@@ -49,9 +49,13 @@ class RuleController extends BaseController {
     lt.activateDefaultPatternRules()
     List rules = lt.getAllRules()
     if (session.user) {
+      // find the user's personal rules:
       List userRules = UserRule.findAllByUserAndLang(session.user, lang)
       for (userRule in userRules) {
+        // make temporary pattern rules:
         PatternRule patternRule = userRule.toPatternRule(true)
+        // TODO: ugly hack, find a better solution to transfer the id of the dynamic rule:
+        patternRule.id = patternRule.id + "//" + userRule.id
         rules.add(patternRule)
       }
     }      
