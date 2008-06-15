@@ -41,6 +41,7 @@ class UserRule {
    
    static constraints = {
      originalRuleId(nullable: true)
+     pattern(maxSize:5000)
    }
    
    PatternRule toPatternRule(boolean useInternalId) {
