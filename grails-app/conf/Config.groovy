@@ -45,6 +45,7 @@ max.text.length = 10000     // maximum length of texts to check
 // languages not visible in the user interface (e.g. because they are 
 // not properly supported yet):
 hide.languages = ["cs"]
+maxPatternElements = 5
 
 // log4j configuration
 log4j {
