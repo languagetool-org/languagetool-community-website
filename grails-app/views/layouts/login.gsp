@@ -10,7 +10,7 @@
     </head>
     <body>
 
-        <div class="header">
+        <div class="header">&nbsp;
         
             <h1 class="logo"><a href="${request.getContextPath()}/">LanguageTool Community</a></h1>
             
