@@ -1,5 +1,6 @@
 
 <%@ page import="org.languagetool.User" %>
+<%@ page import="org.languagetool.StringTools" %>
 <%@ page import="de.danielnaber.languagetool.rules.patterns.PatternRule" %>
 <html>
     <head>
@@ -62,14 +63,23 @@
                                 </g:else>
                             </td>
                         
-                            <td><g:link action="show" id="${rule.id}"
-                                params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link></td>
+                            <td>
+                            <g:if test="${rule.id.contains('//')}">
+	                            <g:link action="show" id="${rule.id.split('//')[1]}"
+    	                            params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link></td>
+                            </g:if>
+                            <g:else>
+	                            <g:link action="show" id="${rule.id}"
+    	                            params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link></td>
+                            </g:else>
 
                             <g:if test="${rule instanceof PatternRule}">
                                 <%
                                 PatternRule pRule = (PatternRule) rule;
+                                String patternDisplay = pRule.toPatternString();
+                                patternDisplay = StringTools.shorten(patternDisplay, 80, "...");
                                 %>
-                                <td>${pRule.toPatternString().encodeAsHTML()}</td>
+                                <td>${patternDisplay.encodeAsHTML()}</td>
                             </g:if>
                             <g:else>
                                 <td>[Java rule]</td>
@@ -85,6 +95,10 @@
             <div class="paginateButtons">
                 <g:paginate total="${ruleCount}" params="[params]"/>
             </div>
+            <g:form method="post">
+               <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+ 	           <g:actionSubmit action="createRule" value="Add New Rule"/> &nbsp;
+            </g:form>
         </div>
         
 		<script type="text/javascript">

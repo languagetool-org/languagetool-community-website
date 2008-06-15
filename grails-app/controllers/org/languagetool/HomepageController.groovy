@@ -21,6 +21,7 @@ package org.languagetool
 
 import org.hibernate.*
 import de.danielnaber.languagetool.*
+import de.danielnaber.languagetool.rules.*
 
 /**
  * The main page of the website.
@@ -89,7 +90,11 @@ class HomepageController extends BaseController {
         if (params.lang) lang = params.lang
         JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
         lt.activateDefaultPatternRules()
-        // load user configuration:
+        List userRules = getUserRules()
+        for (rule in userRules) {
+          lt.addRule(rule)
+        }
+        // load user configuration and disable deactivated rules:
         LanguageConfiguration langConfig = null
         if (session.user) {
           langConfig = RuleController.getLangConfigforUser(lang, session)
@@ -109,6 +114,18 @@ class HomepageController extends BaseController {
         // TODO: count only disabledRules for the current language
         [matches: ruleMatches, lang: lang, textToCheck: params.text,
            disabledRules: langConfig?.disabledRules]
+    }
+    
+    private getUserRules() {
+      List rules = []
+      if (session.user) {
+        List userRules = UserRule.findAllByUserAndLang(session.user, params.lang)
+        for (userRule in userRules) {
+          Rule patternRule = userRule.toPatternRule(true)
+          rules.add(patternRule)
+        }
+      }
+      return rules
     }
     
 }

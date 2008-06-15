@@ -28,6 +28,10 @@ import de.danielnaber.languagetool.rules.patterns.*
  */
 class RuleController extends BaseController {
 
+  def beforeInterceptor = [action: this.&auth, 
+                           only: ['copyAndEditRule', 'edit', 'doEdit',
+                                  'createRule', 'change']]
+
   def index = { redirect(action:list,params:params) }
   
   def list = {
@@ -36,13 +40,21 @@ class RuleController extends BaseController {
     if (!params.lang) params.lang = "en"
     if (params.offset) offset = Integer.parseInt(params.offset)
     if (params.max) max = Integer.parseInt(params.max)
-    Language lang = Language.getLanguageForShortName(params.lang)
-    if (!lang) {
-      throw new Exception("Unknown language ${params.lang.encodeAsHTML()}")
+    String lang = getLanguage()
+    Language langObj = Language.getLanguageForShortName(lang)
+    if (!langObj) {
+      throw new Exception("Unknown language ${lang.encodeAsHTML()}")
     }
-    JLanguageTool lt = new JLanguageTool(lang)
+    JLanguageTool lt = new JLanguageTool(langObj)
     lt.activateDefaultPatternRules()
     List rules = lt.getAllRules()
+    if (session.user) {
+      List userRules = UserRule.findAllByUserAndLang(session.user, lang)
+      for (userRule in userRules) {
+        PatternRule patternRule = userRule.toPatternRule(true)
+        rules.add(patternRule)
+      }
+    }      
     if (params.filter) {
       rules = filterRules(rules, params.filter)
     }
@@ -61,7 +73,7 @@ class RuleController extends BaseController {
     }
     Set disabledRuleIDs = new HashSet()      // empty = all rules activated
     if (session.user) {
-      LanguageConfiguration langConfig = getLangConfigforUser(lang.shortName, session)
+      LanguageConfiguration langConfig = getLangConfigforUser(langObj.shortName, session)
       if (langConfig) {
         Set disabledRules = langConfig.getDisabledRules()
         for (rule in disabledRules) {
@@ -77,6 +89,7 @@ class RuleController extends BaseController {
     filter = filter.toLowerCase()
     List filtered = []
     for (rule in rules) {
+      // match pattern:
       if (rule instanceof PatternRule) {
         PatternRule pRule = (PatternRule)rule
         if (pRule.toPatternString().toLowerCase().contains(filter)) {
@@ -84,8 +97,16 @@ class RuleController extends BaseController {
           continue
         }
       }
+      // match description:
       if (rule.description.toLowerCase().contains(filter)) {
         filtered.add(rule)
+        continue
+      }
+      // match category (TODO: doesn't work properly for user rules):
+      String catName = rule.category.name.toLowerCase()
+      if (catName.contains(filter)) {
+        filtered.add(rule)
+        continue
       }
     }
     return filtered
@@ -100,12 +121,22 @@ class RuleController extends BaseController {
     if (params.lang) lang = params.lang
     JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
     lt.activateDefaultPatternRules()
-    Rule selectedRule = getRuleById(params.id, lt)
+    Rule selectedRule
+    boolean isUserRule = false
+    try {
+      // user rules have an internal (integer) id:
+      int ruleId = Integer.parseInt(params.id)
+      UserRule userRule = UserRule.get(ruleId)
+      selectedRule = userRule.toPatternRule(true)
+      isUserRule = true
+    } catch (NumberFormatException e) {
+      selectedRule = getSystemRuleById(params.id, lt)
+    }
     if (!selectedRule) {
       flash.message = "No rule with id ${params.id.encodeAsHTML()}"
       redirect(action:list)
     }
-    int internalId = getInternalRuleId(selectedRule, params.id, lt)
+    int disableId = getEnableDisableId(selectedRule, params.id, lang)
     // disable all rules except one:
     List rules = lt.getAllRules()
     for (Rule rule in rules) {
@@ -115,6 +146,9 @@ class RuleController extends BaseController {
         lt.disableRule(rule.id)
       }
     }
+    if (isUserRule) {
+      lt.addRule(selectedRule)
+    }      
     // now actually check the text:
     String text = params.text
     final int maxTextLen = grailsApplication.config.max.text.length
@@ -123,27 +157,156 @@ class RuleController extends BaseController {
       flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
     }
     List ruleMatches = lt.check(text)
-    render(view:'show', model: [ rule: selectedRule, isDisabled: internalId != -1, internalId: internalId,
+    render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
                                  textToCheck: params.text, matches: ruleMatches],
                                  contentType: "text/html", encoding: "utf-8")
   }
+
+  def createRule = {
+      String lang = getLanguage()
+      //FIXME: generate a better unique ID!
+      Rule newRule = new PatternRule("-1",
+          Language.getLanguageForShortName(lang),
+          [], "", "")
+      render(view:'edit', model:[ rule: newRule, lang: lang, isUserRule: true ])
+  }
   
+  def edit = {
+      String lang = getLanguage()
+      SelectedRule rule = getRuleById(params.id, lang)
+      Rule selectedRule = rule.rule
+      [ rule: selectedRule, lang: lang,
+        isUserRule: rule.isUserRule ]
+  }
+
+  def doEdit = {
+      String lang = getLanguage()
+      UserRule userRule
+      if (params.id == "-1") {
+        userRule = new UserRule()
+      } else {
+        userRule = UserRule.get(params.id)
+      }
+      // get all pattern elements:
+      int i = 0
+      List elements = []
+      while (i < grailsApplication.config.maxPatternElements) {
+        String pattern = params['pattern_'+i]
+        if (pattern.trim() != "") {
+          Element el = new Element(params['pattern_'+i], false, false, false)
+          elements.add(el)
+        }          
+        i++
+      }
+      PatternRule patternRule = new PatternRule(params.id,
+          Language.getLanguageForShortName(lang),
+          elements, params.description, params.message)
+      userRule.pattern = patternRule.toXML()
+      userRule.description = patternRule.description
+      userRule.message = patternRule.message
+      userRule.user = session.user
+      userRule.lang = lang
+      //log.info("#######"+patternRule.toXML()+"'")
+      
+      boolean saved = userRule.save()
+      if (!saved) {
+        throw new Exception("Cannot save rule: ${userRule.errors}")
+      }
+      flash.message = "Changes saved"
+      redirect(action:'show', id:userRule.id, params:[lang:params.lang])
+  }
+  
+  def copyAndEditRule = {
+      String lang = getLanguage()
+      JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+      lt.activateDefaultPatternRules()
+      Rule origRule = getSystemRuleById(params.id, lt)
+      if (!origRule) {
+        throw new Exception("No rule found for id ${params.id}, language $lang")
+      }
+      if (!(origRule instanceof PatternRule)) {
+        throw new Exception("Cannot copy ${params.id}, only PatternRules can be copied")
+      }
+      PatternRule origPatternRule = (PatternRule)origRule
+      String simplePattern = ""
+      for (elem in origPatternRule.patternElements) {
+        simplePattern += elem
+        simplePattern += " "
+      }
+      simplePattern = simplePattern.trim()
+      log.info("###"+simplePattern)
+      UserRule userRule = new UserRule(originalRuleId: params.id, lang:params.lang,
+          description:origPatternRule.getDescription(),
+          message:origPatternRule.getMessage(),
+          pattern:simplePattern,
+          user: session.user)
+      boolean saved = userRule.save()
+      if (!saved) {
+        throw new Exception("Could not save copy of rule ${params.id.encodeAsHTML()}: ${userRule.errors}")
+      }
+      //
+      //
+      log.info("###${params.id}")
+      redirect(action:'show', id:userRule.id, params:[lang:params.lang])
+  }
+
   def show = {
-    String lang = "en"
-    if (params.lang) lang = params.lang
-    JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
-    lt.activateDefaultPatternRules()
-    Rule selectedRule = getRuleById(params.id, lt)
+    String lang = getLanguage()
+    int disableId = 0
+    SelectedRule rule = getRuleById(params.id, lang)
+    Rule selectedRule = rule.rule
+    boolean isUserRule = rule.isUserRule
+    disableId = getEnableDisableId(selectedRule, params.id, lang)
     if (!selectedRule) {
       flash.message = "No rule with id ${params.id.encodeAsHTML()}"
       redirect(action:list)
     }
-    int internalId = getInternalRuleId(selectedRule, params.id, lt)
-    [ rule: selectedRule, isDisabled: internalId != -1, internalId: internalId ]
+    [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
+      isUserRule: isUserRule ]
+  }
+  
+  private String getLanguage() {
+    String lang = "en"
+    if (params.lang) {
+      lang = params.lang
+    }
+    assert(lang)
+    return lang
+  }
+  
+  private SelectedRule getRuleById(String id, String lang) {
+    Rule selectedRule
+    boolean isUserRule
+    try {
+      int userRuleId = Integer.parseInt(id)
+      log.info("getting user rule with id $userRuleId")
+      UserRule selectedUserRule = UserRule.get(userRuleId)
+      // build a temporary rule:
+      selectedRule = selectedUserRule.toPatternRule(true)
+      isUserRule = true
+    } catch (NumberFormatException e) {
+      JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+      lt.activateDefaultPatternRules()
+      selectedRule = getSystemRuleById(params.id, lt)
+      isUserRule = false
+    }
+    return new SelectedRule(isUserRule: isUserRule, rule: selectedRule)
   }
 
-  private int getInternalRuleId(Rule selectedRule, String id, JLanguageTool lt) {
-    LanguageConfiguration langConfig = getLangConfigforUser(lt.getLanguage().getShortName(), session)
+  private Rule getSystemRuleById(String id, JLanguageTool lt) {
+    Rule selectedRule = null
+    List rules = lt.getAllRules()
+    for (Rule rule in rules) {
+      if (rule.id == params.id) {
+        selectedRule = rule
+        break
+      }
+    }
+    return selectedRule
+  }
+    
+  private int getEnableDisableId(Rule selectedRule, String id, String lang) {
+    LanguageConfiguration langConfig = getLangConfigforUser(lang, session)
     int enableDisableID = -1
     if (langConfig) {
       Set disabledRules = langConfig.getDisabledRules()
@@ -157,18 +320,6 @@ class RuleController extends BaseController {
     return enableDisableID
   }
   
-  private Rule getRuleById(String id, JLanguageTool lt) {
-    Rule selectedRule = null
-    List rules = lt.getAllRules()
-    for (Rule rule in rules) {
-      if (rule.id == params.id) {
-        selectedRule = rule
-        break
-      }
-    }
-    return selectedRule
-  }
-    
   def change = {
     if (!session.user) {
       throw new Exception("Not logged in")
@@ -190,14 +341,19 @@ class RuleController extends BaseController {
     for (disabledRule in disabledRules) {
       disabledRuleIDs.add(disabledRule.ruleID)
     }
+    String message
     if (!params.active) {
       // de-activate rule
       langConfig.addToDisabledRules(new DisabledRule(ruleID:params.id))
+      message = "Rule has been deactivated"
+      log.info("Rule ${params.id} has been deactivated by ${session.user.username}")
     } else {
       // activate rule
       for (disabledRule in disabledRules) {
-        if (disabledRule.id == Integer.parseInt(params.internalId)) {
+        if (disabledRule.id == Integer.parseInt(params.disableId)) {
           langConfig.removeFromDisabledRules(disabledRule)
+          message = "Rule has been activated"
+          log.info("Rule ${disabledRule.id} has been activated by ${session.user.username}")
           break
         }
       }
@@ -206,8 +362,8 @@ class RuleController extends BaseController {
     if (!saved) {
       throw new Exception("Could not save user: ${session.user.errors}")
     }
-    flash.message = "Rule has been modified"
-    redirect(action:list, params: [lang: params.lang])
+    flash.message = message
+    redirect(action:show, params: [id: params.id, lang: params.lang])
   }
   
   private static LanguageConfiguration getLangConfigforUser(String lang, def session) {
@@ -225,3 +381,9 @@ class RuleController extends BaseController {
   }
   
 }
+
+class SelectedRule {
+   Rule rule
+   boolean isUserRule
+}
+ 
