@@ -67,6 +67,8 @@
                 <a href="http://www.languagetool.org">www.languagetool.org</a> and
                 download LanguageTool as an extension for
                 <a href="http://www.openoffice.org">OpenOffice.org</a></strong>
+                <a href="http://www.openoffice.org"><img 
+                	border="0" src="images/get_openoffice_80x15.png" alt="OpenOffice.org logo" /></a>
             </div>
                    
         </div>
