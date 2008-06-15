@@ -227,26 +227,18 @@ class RuleController extends BaseController {
       if (!(origRule instanceof PatternRule)) {
         throw new Exception("Cannot copy ${params.id}, only PatternRules can be copied")
       }
+      
       PatternRule origPatternRule = (PatternRule)origRule
-      String simplePattern = ""
-      for (elem in origPatternRule.patternElements) {
-        simplePattern += elem
-        simplePattern += " "
-      }
-      simplePattern = simplePattern.trim()
-      log.info("###"+simplePattern)
       UserRule userRule = new UserRule(originalRuleId: params.id, lang:params.lang,
-          description:origPatternRule.getDescription(),
-          message:origPatternRule.getMessage(),
-          pattern:simplePattern,
+          description: origPatternRule.getDescription(),
+          message: origPatternRule.getMessage(),
+          pattern: "<rules lang=\"$lang\">" + origPatternRule.toXML() + "</rules>",
           user: session.user)
       boolean saved = userRule.save()
       if (!saved) {
         throw new Exception("Could not save copy of rule ${params.id.encodeAsHTML()}: ${userRule.errors}")
       }
-      //
-      //
-      log.info("###${params.id}")
+      //log.info("###${params.id}")
       redirect(action:'show', id:userRule.id, params:[lang:params.lang])
   }
 
