@@ -12,7 +12,13 @@
 
         <div class="header">&nbsp;
 
-	        <h1 class="logo"><a href="${request.getContextPath()}/">LanguageTool Community <sup>beta</sup></a></h1>
+			<%
+			String homeLink = request.getContextPath();
+			if (params.lang) {
+			  homeLink += "?lang=" + params.lang;
+			}
+			%>
+	        <h1 class="logo"><g:link url="${homeLink}">LanguageTool Community <sup>beta</sup></g:link></h1>
 	    
 	        <g:if test="${session.user}">
 	            <div class="login">Logged in as ${session.user.username.encodeAsHTML()} -
