@@ -32,6 +32,21 @@ public class StringTools {
     return sdf.format(date);
   }
   
+  /**
+   * Return a shortened copy of a string.
+   * 
+   * @param s the string to shorten
+   * @param maxLen the maximum length of the new string (without marker)
+   * @param appended to the end of the string if it was shortened
+   * @since 0.9.3
+   */
+  public static String shorten(String s, int maxLen, String marker) {
+    if (s.length() > maxLen) {
+      return s.substring(0, maxLen) + marker;
+    }
+    return s;
+  }
+  
   public static String formatError(String s) {
     return s.replaceAll("&lt;suggestion&gt;", "<span class=\"correction\">").
       replaceAll("&lt;/suggestion&gt;", "</span>").
