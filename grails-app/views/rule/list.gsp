@@ -48,10 +48,16 @@
                     <tbody>
                     <g:each in="${ruleList}" status="i" var="rule">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
+
+                            <!-- TODO: find clean solution: -->
+							<% String userRuleId = null; %>
+                            <g:if test="${rule.id.contains('//')}">
+                            	<% userRuleId = rule.id.split("//")[1]; %>
+							</g:if>
+							                        
                             <td>
                                 <g:if test="${session.user}">
-	                                <g:if test="${disabledRuleIDs != null && disabledRuleIDs.contains(rule.id)}">
+	                                <g:if test="${disabledRuleIDs != null && (disabledRuleIDs.contains(rule.id) || disabledRuleIDs.contains(userRuleId))}">
 	                                    -
 	                                </g:if>
 	                                <g:else>
@@ -64,8 +70,8 @@
                             </td>
                         
                             <td>
-                            <g:if test="${rule.id.contains('//')}">
-	                            <g:link action="show" id="${rule.id.split('//')[1]}"
+                            <g:if test="${userRuleId}">
+	                            <g:link action="show" id="${userRuleId}"
     	                            params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link></td>
                             </g:if>
                             <g:else>

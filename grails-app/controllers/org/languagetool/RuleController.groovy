@@ -180,15 +180,17 @@ class RuleController extends BaseController {
       SelectedRule rule = getRuleById(params.id, lang)
       Rule selectedRule = rule.rule
       [ rule: selectedRule, lang: lang,
-        isUserRule: rule.isUserRule ]
+        isUserRule: rule.isUserRule, ruleId: params.id ]
   }
 
   def doEdit = {
       String lang = getLanguage()
       UserRule userRule
-      if (params.id == "-1") {
+      if (params.id == "null") {
+        // user just wants to create a new rule:
         userRule = new UserRule()
       } else {
+        // user wants to edit existing rule:
         userRule = UserRule.get(params.id)
       }
       // get all pattern elements:
@@ -258,7 +260,7 @@ class RuleController extends BaseController {
       redirect(action:list)
     }
     [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
-      isUserRule: isUserRule ]
+      isUserRule: isUserRule, ruleId: params.id ]
   }
   
   private String getLanguage() {

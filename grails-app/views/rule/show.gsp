@@ -13,7 +13,7 @@
         
             <g:form method="post">
             
-            <input type="hidden" name="id" value="${rule.id.encodeAsHTML()}"/>
+            <input type="hidden" name="id" value="${ruleId.encodeAsHTML()}"/>
             <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
             <input type="hidden" name="disableId" value="${disableId.encodeAsHTML()}"/>
             
@@ -98,20 +98,24 @@
                         </g:if>
                     </td>
                 </tr>
-                <tr class="additional">
-                    <td>ID:</td>
-                    <td>${rule.id.encodeAsHTML()}</td>
-                </tr>
+                <g:if test="${!isUserRule}">
+	                <tr class="additional">
+	                    <td>ID:</td>
+	                    <td>${rule.id.encodeAsHTML()}</td>
+	                </tr>
+                </g:if>
             </table>
             
             <g:if test="${session.user}">
                 <g:actionSubmit action="change" value="Change Active/Inactive"/> &nbsp;
-	            <g:if test="${isUserRule}">
-	            	<g:actionSubmit action="edit" value="Edit Rule"/>
+                <g:if test="${rule instanceof PatternRule}">
+		            <g:if test="${isUserRule}">
+		            	<g:actionSubmit action="edit" value="Edit Rule"/>
+		            </g:if>
+		            <g:else>
+		                <g:actionSubmit action="copyAndEditRule" value="Copy and Edit Rule "/>
+		            </g:else>
 	            </g:if>
-	            <g:else>
-	                <g:actionSubmit action="copyAndEditRule" value="Copy and Edit Rule "/>
-	            </g:else>
             </g:if>
 
             </g:form>

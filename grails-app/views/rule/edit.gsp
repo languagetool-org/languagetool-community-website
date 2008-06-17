@@ -13,7 +13,7 @@
         
             <g:form method="post">
             
-            <input type="hidden" name="id" value="${rule.id.encodeAsHTML()}"/>
+            <input type="hidden" name="id" value="${ruleId.encodeAsHTML()}"/>
             <g:if test="${params.lang}">
 	            <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
             </g:if>
@@ -21,7 +21,12 @@
             	<input type="hidden" name="lang" value="${lang.encodeAsHTML()}"/>
             </g:else>
             
-            <h1>Edit Rule</h1>
+            <g:if test="${ruleId}">
+	            <h1>Edit Rule</h1>
+            </g:if>
+            <g:else>
+	            <h1>Add Rule</h1>
+            </g:else>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
@@ -91,7 +96,12 @@
             </table>
             
             <g:if test="${session.user}">
-                <g:actionSubmit action="doEdit" value="Change"/>
+            	<g:if test="${ruleId}">
+                	<g:actionSubmit action="doEdit" value="Change"/>
+                </g:if>
+                <g:else>
+                	<g:actionSubmit action="doEdit" value="Add Rule"/>
+                </g:else>
             </g:if>
 
             </g:form>
