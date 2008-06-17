@@ -29,8 +29,10 @@
                             <td>${opinion.counter}</td>
                             <td>
                                 <g:if test="${opinion.corpusMatch?.message}">
-                                 ${StringTools.formatError(opinion.corpusMatch?.message.encodeAsHTML())}<br />
-                                 ${StringTools.formatError(opinion.corpusMatch?.errorContext.encodeAsHTML())}
+                                 <g:link controller="rule" action="show"
+                                 	id="${opinion.corpusMatch?.ruleID}"
+                                 	params="[lang: params.lang]">${StringTools.formatError(opinion.corpusMatch?.message.encodeAsHTML())}</g:link><br />
+                                 ${StringTools.formatError(opinion.corpusMatch?.errorContext.encodeAsHTML())}<br />
                                 </g:if>
                             </td>
                         
