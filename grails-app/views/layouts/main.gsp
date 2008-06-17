@@ -14,6 +14,9 @@
 
 			<%
 			String homeLink = request.getContextPath();
+			if (homeLink.equals("")) {
+			  homeLink = "/";
+			}
 			if (params.lang) {
 			  homeLink += "?lang=" + params.lang;
 			}
