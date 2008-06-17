@@ -162,7 +162,8 @@ class RuleController extends BaseController {
     }
     List ruleMatches = lt.check(text)
     render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
-                                 textToCheck: params.text, matches: ruleMatches],
+                                 textToCheck: params.text, matches: ruleMatches, ruleId: params.id,
+                                 isUserRule: isUserRule ],
                                  contentType: "text/html", encoding: "utf-8")
   }
 
@@ -292,6 +293,7 @@ class RuleController extends BaseController {
   }
 
   private Rule getSystemRuleById(String id, JLanguageTool lt) {
+    log.info("Getting system rule with id $id")
     Rule selectedRule = null
     List rules = lt.getAllRules()
     for (Rule rule in rules) {

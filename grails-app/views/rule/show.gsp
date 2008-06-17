@@ -125,7 +125,7 @@
             <p>Check the following text against just this rule:</p>
             
             <g:form method="post">
-                <input type="hidden" name="id" value="${rule.id.encodeAsHTML()}"/>
+                <input type="hidden" name="id" value="${ruleId}"/>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
             
                 <g:textArea name="text" value="${textToCheck}" rows="2" cols="80" />
