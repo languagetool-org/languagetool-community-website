@@ -197,10 +197,15 @@ class RuleController extends BaseController {
       // get all pattern elements:
       int i = 0
       List elements = []
+      // TODO: move case setting to token level??
+      boolean isCaseSensitive = false
+      if (params['case_sensitive']) {
+        isCaseSensitive = true
+      }
       while (i < grailsApplication.config.maxPatternElements) {
         String pattern = params['pattern_'+i]
         if (pattern.trim() != "") {
-          Element el = new Element(params['pattern_'+i], false, false, false)
+          Element el = new Element(params['pattern_'+i], isCaseSensitive, false, false)
           elements.add(el)
         }          
         i++

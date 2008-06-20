@@ -37,11 +37,26 @@
                     <td width="15%">Pattern:</td>
                     <td>
                     	<% int i = 0; %>
+                    	<table border="0">
+                    		<g:checkBox id="case_sensitive" name="case_sensitive"
+   	                			value="${rule.patternElements[i]?.getCaseSensitive()}"/>
+       	            			<label for="case_sensitive">Case sensitive</label>
+                    	
                     	<g:while test="${i < grailsApplication.config.maxPatternElements}">
-	                    	${i+1}. <g:textField class="pattern" size="50" name="pattern_${i}"
-	                    		value="${rule.patternElements[i]}"/><br />
+                    		<tr>
+	                    	<td align="middle">${i+1}.</td>
+	                    	<td>
+	                    		<g:textField class="pattern" size="50" name="pattern_${i}"
+		                    		value="${rule.patternElements[i]}"/><br />
+		                    		<!-- 
+		                    		<g:checkBox id="regexp_${i}" name="regexp_${i}"
+	    	                			value="fixme"/>
+	        	            			<label for="regexp_${i}">Regular expression</label> -->
+	                    	</td>
+	                    	</tr>
 	                    	<% i++ %>
                     	</g:while>
+                    	</table>
                     </td>
                 </tr>
                 <tr>
