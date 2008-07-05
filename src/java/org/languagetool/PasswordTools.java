@@ -65,7 +65,7 @@ public class PasswordTools {
    * Checks of a user-provided password is the same as the stored
    * password (actually checks if the hashes of both are the same).
    * 
-   * @param userPassword the plain test password
+   * @param userPassword the plain text password
    * @param hashPassword the hashed password with a prepended salt
    * @return true if the password matches the hashed password
    */
@@ -106,7 +106,7 @@ public class PasswordTools {
   }  
 
   /**
-   * Command-line too to hash a password.
+   * Command-line tool to hash a password.
    */
   public static void main(String[] args) {
     if (args.length != 1) {
