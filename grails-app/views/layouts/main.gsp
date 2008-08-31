@@ -21,17 +21,17 @@
 			  homeLink += "?lang=" + params.lang;
 			}
 			%>
-	        <h1 class="logo"><g:link url="${homeLink}">LanguageTool Community <sup>beta</sup></g:link></h1>
+	        <h1 class="logo"><g:link url="${homeLink}"><g:message code="ltc.title"/></g:link></h1>
 	    
 	        <g:if test="${session.user}">
-	            <div class="login">Logged in as ${session.user.username.encodeAsHTML()} -
-	            <g:link controller="user" action="logout">Logout</g:link>
+	            <div class="login"><g:message code="ltc.logged.in" args="${[session.user.username.encodeAsHTML()]}"/> -
+	            <g:link controller="user" action="logout"><g:message code="ltc.logout"/></g:link>
 	            -
-	            <g:link controller="user" action="settings">My Settings</g:link>
+	            <g:link controller="user" action="settings"><g:message code="ltc.settings"/></g:link>
 	            </div>
 	        </g:if>
 	        <g:else>
-	            <div class="login"><g:link controller="user" action="login">Login</g:link></div>
+	            <div class="login"><g:link controller="user" action="login"><g:message code="ltc.login"/></g:link></div>
 	        </g:else>
 
         </div>

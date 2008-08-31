@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title>Edit Rule "${rule.description.encodeAsHTML()}"</title>
+        <title><g:message code="ltc.edit.rule.named" args="${[rule.description.encodeAsHTML()]}"/></title>
     </head>
     <body>
 
@@ -22,10 +22,10 @@
             </g:else>
             
             <g:if test="${ruleId}">
-	            <h1>Edit Rule</h1>
+	            <h1><g:message code="ltc.edit.rule" /></h1>
             </g:if>
             <g:else>
-	            <h1>Add Rule</h1>
+	            <h1><g:message code="ltc.edit.add.rule" /></h1>
             </g:else>
 
             <g:if test="${flash.message}">
@@ -34,7 +34,7 @@
             
             <table>
                 <tr>
-                    <td width="15%">Pattern:</td>
+                    <td width="15%"><g:message code="ltc.edit.pattern" /></td>
                     <td>
                     	<% int i = 0; %>
                     	<table border="0">
@@ -60,12 +60,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Description:</td>
+                    <td><g:message code="ltc.edit.description" /></td>
                     <td><g:textField size="60" name="description" value="${rule.description}"/></td>
                 </tr>
                 
                 <tr>
-                    <td>Message:</td>
+                    <td><g:message code="ltc.edit.message" /></td>
                     <td><g:textField size="60" name="message" value="${rule.message}"/></td>
                 </tr>
                 
@@ -112,10 +112,10 @@
             
             <g:if test="${session.user}">
             	<g:if test="${ruleId}">
-                	<g:actionSubmit action="doEdit" value="Change"/>
+                	<g:actionSubmit action="doEdit" value="${message(code:'ltc.edit.rule.change')}"/>
                 </g:if>
                 <g:else>
-                	<g:actionSubmit action="doEdit" value="Add Rule"/>
+                	<g:actionSubmit action="doEdit" value="${message(code:'ltc.edit.rule.add')}"/>
                 </g:else>
             </g:if>
 

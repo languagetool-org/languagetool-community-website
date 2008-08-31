@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title>Browse Rules</title>
+        <title><g:message code="ltc.rule.browse.title" args="${[ruleCount]}" /></title>
     </head>
     <body>
     
@@ -13,7 +13,7 @@
         
             <g:render template="/languageSelection"/>
 
-            <h1>Browse Rules: ${ruleCount} matches</h1>
+            <h1><g:message code="ltc.rule.browse.title" args="${[ruleCount]}" /></h1>
             
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
@@ -35,13 +35,13 @@
                     <thead>
                         <tr>
                         
-                            <td>Active?</td>
+                            <td><g:message code="ltc.rule.browse.active" /></td>
 
-                   	        <g:sortableColumn property="description" title="Description" />
+                   	        <g:sortableColumn property="description" title="${message(code:'ltc.rule.browse.description')}" />
 
-                            <g:sortableColumn property="pattern" title="Pattern" />
+                            <g:sortableColumn property="pattern" title="${message(code:'ltc.rule.browse.pattern')}" />
                             
-                            <g:sortableColumn property="category" title="Category" />
+                            <g:sortableColumn property="category" title="${message(code:'ltc.rule.browse.category')}" />
                             
                         </tr>
                     </thead>
@@ -61,7 +61,7 @@
 	                                    -
 	                                </g:if>
 	                                <g:else>
-	                                    yes
+	                                    <g:message code="ltc.rule.browse.active.yes" />
 	                                </g:else>
                                 </g:if>
                                 <g:else>
@@ -88,7 +88,7 @@
                                 <td>${patternDisplay.encodeAsHTML()}</td>
                             </g:if>
                             <g:else>
-                                <td>[Java rule]</td>
+                                <td><g:message code="ltc.rule.browse.java.rule" /></td>
                             </g:else>
 
                             <td>${rule.category.name}</td>
@@ -103,7 +103,7 @@
             </div>
             <g:form method="post">
                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
- 	           <g:actionSubmit action="createRule" value="Add New Rule"/> &nbsp;
+ 	           <g:actionSubmit action="createRule" value="${message(code:'ltc.rule.browse.add.rule') }"/> &nbsp;
             </g:form>
         </div>
         

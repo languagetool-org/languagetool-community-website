@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title>Corpus Matches</title>
+        <title><g:message code="ltc.corpus.match.title"/></title>
     </head>
     <body>
 
@@ -12,7 +12,7 @@
 
             <g:render template="/languageSelection"/>
 
-            <h1>Corpus Matches</h1>
+            <h1><g:message code="ltc.corpus.match.title"/></h1>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
@@ -22,8 +22,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Match</th>
+                            <th><g:message code="ltc.corpus.match.id"/></th>
+                            <th><g:message code="ltc.corpus.match.match"/></th>
                         </tr>
                     </thead>
                     <tbody>

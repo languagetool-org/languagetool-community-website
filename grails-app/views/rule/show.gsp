@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title>Show Rule "${rule.description.encodeAsHTML()}"</title>
+        <title><g:message code="ltc.rule.show.title" args="${[rule.description.encodeAsHTML()]}"/></title>
     </head>
     <body>
 
@@ -17,7 +17,7 @@
             <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
             <input type="hidden" name="disableId" value="${disableId.encodeAsHTML()}"/>
             
-            <h1>Rule Details</h1>
+            <h1><g:message code="ltc.rule.show.title" args="${[rule.description.encodeAsHTML()]}"/></h1>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
@@ -25,33 +25,33 @@
             
             <table>
                 <tr>
-                    <td width="15%">Pattern:</td>
+                    <td width="15%"><g:message code="ltc.rule.show.pattern" /></td>
                     <td>
 			            <g:if test="${rule instanceof PatternRule}">
 			                <span class="pattern">${rule.toPatternString().encodeAsHTML()}</span><br />
 			            </g:if>
 			            <g:else>
 			                <!-- TODO: add link to source code -->
-			                [Java Rule]<br/>
+			                <g:message code="ltc.rule.show.java.rule" /><br/>
 			            </g:else>
                     </td>
                 </tr>
                 <tr>
-                    <td>Description:</td>
+                    <td><g:message code="ltc.rule.show.description" /></td>
                     <td>${rule.description.encodeAsHTML()}</td>
                 </tr>
                 <g:if test="${rule instanceof PatternRule}">
 	                <tr>
-	                    <td>Message:</td>
+	                    <td><g:message code="ltc.rule.show.message" /></td>
 	                    <td>${org.languagetool.StringTools.formatError(rule.message.encodeAsHTML())}</td>
 	                </tr>
                 </g:if>
                 <tr>
-                    <td>Category:</td>
+                    <td><g:message code="ltc.rule.show.category" /></td>
                     <td>${rule.category.name.encodeAsHTML()}</td>
                 </tr>
                 <tr>
-                    <td>Active?</td>
+                    <td><g:message code="ltc.rule.show.active" /></td>
                     <td>
                         <g:if test="${session.user}">
                             <g:checkBox name="active" value="${!isDisabled}"/>
@@ -62,7 +62,7 @@
                 </tr>
                 
                 <tr>
-                    <td>Incorrect sentences that this rule can detect:</td>
+                    <td><g:message code="ltc.rule.show.incorrect.sentences" /></td>
                     <td>
 			            <ul>
 			            <g:each var="example" in="${rule.getIncorrectExamples()}">
@@ -71,20 +71,20 @@
 			                    replace("&lt;/marker&gt;", '</span>')
 			                    }
 			                    <g:if test="${example.getCorrections()}">
-    			                    <br />Correction suggestion:
+    			                    <br /><g:message code="ltc.rule.show.corrections" />
 			                        <span class="correction">${StringTools.listToString(example.getCorrections(), ", ")}</span>
 			                    </g:if>
 			                </li>
 			            </g:each>
 			            </ul>
                         <g:if test="${rule.getIncorrectExamples() == null}">
-                             <span class="additional">[no examples found]</span>
+                             <span class="additional"><g:message code="ltc.rule.show.no.examples" /></span>
                         </g:if>
                     </td>
                 </tr>
                 
                 <tr>
-                    <td>Correct sentences for comparison:</td>
+                    <td><g:message code="ltc.rule.show.correct.sentences" /></td>
                     <td>
 			            <ul>
 			            <g:each var="example" in="${rule.getCorrectExamples()}">
@@ -94,13 +94,13 @@
 			            </g:each>
 			            </ul>
                         <g:if test="${rule.getCorrectExamples() == null}">
-                             <span class="additional">[no examples found]</span>
+                             <span class="additional"><g:message code="ltc.rule.show.no.examples" /></span>
                         </g:if>
                     </td>
                 </tr>
                 <g:if test="${!isUserRule}">
 	                <tr class="additional">
-	                    <td>ID:</td>
+	                    <td><g:message code="ltc.rule.show.id" /></td>
 	                    <td>${rule.id.encodeAsHTML()}</td>
 	                </tr>
                 </g:if>
@@ -122,7 +122,7 @@
              
 
             <br />
-            <p>Check the following text against just this rule:</p>
+            <p><g:message code="ltc.rule.show.check.text" /></p>
             
             <g:form method="post">
                 <input type="hidden" name="id" value="${ruleId}"/>
@@ -130,7 +130,7 @@
             
                 <g:textArea name="text" value="${textToCheck}" rows="2" cols="80" />
                 <br />
-                <g:actionSubmit action="checkTextWithRule" value="Check"/>
+                <g:actionSubmit action="checkTextWithRule" value="${message(code:'ltc.check.button')}"/>
                 
             </g:form>
 
