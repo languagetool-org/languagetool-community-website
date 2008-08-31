@@ -2,13 +2,13 @@
 <html>
     <head>
         <meta name="layout" content="login" />
-        <title>Registration</title>         
+        <title><g:message code="ltc.user.doregister.title"/></title>         
     </head>
     <body>
 
         <div class="body">
             
-            <h1>Registration</h1>
+            <h1><g:message code="ltc.user.doregister.title"/></h1>
             
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
@@ -16,9 +16,8 @@
 
                 <div class="dialog">
                 
-	                An email has been sent to your email address. Please follow
-	                the link in the email to activate your account.
-                
+                	<g:message code="ltc.user.doregister.text"/>
+                                
                 </div>
         
     </body>

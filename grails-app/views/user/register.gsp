@@ -2,12 +2,14 @@
 <html>
     <head>
         <meta name="layout" content="login" />
-        <title>Register</title>         
+        <title><g:message code="ltc.login.register.title"/></title>         
     </head>
     <body>
 
         <div class="body">
-            <h1>Login</h1>
+            
+            <h1><g:message code="ltc.login.register.title"/></h1>
+            
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
             </g:if>
@@ -24,7 +26,7 @@
                         
                             <tr class='prop'>
                                 <td valign='top' class='name'>
-                                    <label for='email'>Email:</label>
+                                    <label for='email'><g:message code="ltc.login.email"/></label>
                                 </td>
                                 <td valign='top' class='value'>
                                     <input size="40" type="text" id='email' name='email' value="${params.email?.encodeAsHTML()}"/>
@@ -33,7 +35,7 @@
                         
                             <tr class='prop'>
                                 <td valign='top' class='name'>
-                                    <label for='password'>Password:</label>
+                                    <label for='password'><g:message code="ltc.login.password"/></label>
                                 </td>
                                 <td valign='top' class='value'>
                                     <input size="40" type="password" id='password1' name='password1' value=""/>
@@ -42,7 +44,7 @@
 
                             <tr class='prop'>
                                 <td valign='top' class='name'>
-                                    <label for='password'>Password (repeat):</label>
+                                    <label for='password'><g:message code="ltc.login.password.repeat"/></label>
                                 </td>
                                 <td valign='top' class='value'>
                                     <input size="40" type="password" id='password2' name='password2' value=""/>
@@ -53,7 +55,7 @@
                     </table>
                 </div>
                 
-                <g:actionSubmit action="login" value="Register"/>
+                <g:actionSubmit action="login" value="${message(code:'ltc.login.register.button')}"/>
                 
             </g:form>
         </div>
