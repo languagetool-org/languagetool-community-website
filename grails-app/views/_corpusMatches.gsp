@@ -8,38 +8,38 @@
             
             <g:if test="${session.user}">
                 <g:if test="${matchInfo.opinion == CorpusMatchController.NEGATIVE_OPINION}">
-                   [voted as useless]
+                   <g:message code="ltc.voted.useless"/>
                 </g:if>
                 <g:elseif test="${matchInfo.opinion == CorpusMatchController.POSITIVE_OPINION}">
-                   [voted as useful]
+                   <g:message code="ltc.voted.useful"/>
                 </g:elseif>
                 <g:else>
                     <div id="opinion_${i}">
-                        <noscript><b>Please activate Javascript to make this feature work</b><br /></noscript>
+                        <noscript><b><g:message code="ltc.javascript.required"/></b><br /></noscript>
                         <g:remoteLink controller="corpusMatch" action="markUseful" update="opinion_${i}"
-                            id="${matchInfo.match.id}">Mark error message as useful</g:remoteLink>
+                            id="${matchInfo.match.id}"><g:message code="ltc.vote.useful"/></g:remoteLink>
                         <br />
                         <g:remoteLink controller="corpusMatch" action="markUseless" update="opinion_${i}"
-                            id="${matchInfo.match.id}">Mark error message as useless/incorrect</g:remoteLink>
+                            id="${matchInfo.match.id}"><g:message code="ltc.vote.useless"/></g:remoteLink>
                     </div>
                 </g:else>
             </g:if>
             <g:else>
                <g:link controller="user" action="login" 
-                params="[lang: langCode, ids: matches.match.id]">Login to vote on this message</g:link>
+                params="[lang: langCode, ids: matches.match.id]"><g:message code="ltc.login.to.vote"/></g:link>
             </g:else>
             <p>
-                <g:link url="${matchInfo.match.sourceURI}">Visit Wikipedia page</g:link>
+                <g:link url="${matchInfo.match.sourceURI}"><g:message code="ltc.visit.wikipedia.page"/></g:link>
             </p>
         </li>
     </g:each>
     <g:if test="${matches.size() == 0}">
-       <li>Sorry, no example error messages found in the database for language '${langCode.encodeAsHTML()}'</li>
+       <li><g:message code="ltc.no.examples.errors" args="${[langCode.encodeAsHTML()]}"/></li>
     </g:if>
     <g:if test="${matches.size() > 0}">
         <li><g:link controller="homepage"
-           params="[lang:params.lang.encodeAsHTML()]">Show other random examples</g:link></li>
-        <li><g:link controller="corpusMatch" action="list" params="[lang: params.lang]">Show all matches</g:link></li>
-        <li><g:link controller="userOpinion" action="list" params="[lang: params.lang]">Show user votes</g:link></li>
+           params="[lang:params.lang.encodeAsHTML()]"><g:message code="ltc.visit.wikipedia.page"/><g:message code="ltc.show.random.examples"/></g:link></li>
+        <li><g:link controller="corpusMatch" action="list" params="[lang: params.lang]"><g:message code="ltc.show.all.matches"/></g:link></li>
+        <li><g:link controller="userOpinion" action="list" params="[lang: params.lang]"><g:message code="ltc.show.user.votes"/></g:link></li>
     </g:if>
 </ul>

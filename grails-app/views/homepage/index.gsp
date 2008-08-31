@@ -3,7 +3,7 @@
 
 <html>
     <head>
-        <title>LanguageTool Community</title>
+        <title><g:message code="ltc.home.title"/></title>
 		<meta name="layout" content="main" />
 		<g:javascript library="prototype" />
     </head>
@@ -15,16 +15,13 @@
         
             <g:render template="/languageSelection"/>
 
-            <p><strong>Check Rules' Results</strong></p>
+            <p><strong><g:message code="ltc.check.results"/></strong></p>
             
             <div class="mainPart">
             
-            <p>We use LanguageTool on Wikipedia data to test which rules work well and which need
-            more work. Please vote on LanguageTool's results. If there's a real error you're encouraged
-            to fix it in Wikipedia, but note that the check may not be up-to-date and the error may
-            have been fixed already.</p>
+            <p><g:message code="ltc.check.explain"/></p>
             
-            <p>Random selection of LanguageTool results when run on Wikipedia:</p>
+            <p><g:message code="ltc.check.random.selection"/></p>
             
             <br/>
             <g:render template="/corpusMatches"/>
@@ -33,16 +30,15 @@
 
             <br />
             
-            <g:link controller="rule" action="list" params="[lang: params.lang?.encodeAsHTML()]">Browse Rules</g:link>
+            <g:link controller="rule" action="list" params="[lang: params.lang?.encodeAsHTML()]"><g:message code="ltc.browse.rules"/></g:link>
             
             <div class="mainPart">
-                LanguageTool uses rules to detect errors. Each rule represents one or more potential
-                errors in the text to check. Have a look and configure all rules of all languages here.
+            	<g:message code="ltc.browse.explain"/>
             </div>
             
 
             <br />
-            <p><strong>Run LanguageTool</strong></p>
+            <p><strong><g:message code="ltc.run.languagetool"/></strong></p>
 
             <div class="mainPart">
 
@@ -56,19 +52,13 @@
             </g:form>
             
             <g:if test="${!session.user}">
-                Note that you can log in to activate and deactivate only those
-                rules that are important to you.
+            	<g:message code="ltc.login.to.configure"/>
             </g:if>
             
             </div>
 
             <div class="lthomepage">
-                <strong>Visit the LanguageTool homepage at
-                <a href="http://www.languagetool.org">www.languagetool.org</a> and
-                download LanguageTool as an extension for
-                <a href="http://www.openoffice.org">OpenOffice.org</a></strong>
-                <a href="http://www.openoffice.org"><img 
-                	border="0" src="images/get_openoffice_80x15.png" alt="OpenOffice.org logo" /></a>
+            	<g:message code="ltc.home.links"/>
             </div>
                    
         </div>

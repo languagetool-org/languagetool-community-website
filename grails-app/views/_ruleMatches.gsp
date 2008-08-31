@@ -13,6 +13,6 @@
         </li>
     </g:each>
     <g:if test="${matches.size() == 0}">
-       <li>No rule matches found in text (language used: ${Language.getLanguageForShortName(params.lang)})</li>
+       <li><g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.lang)]}"/></li>
     </g:if>
 </ul>

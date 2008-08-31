@@ -3,14 +3,14 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title>Top Corpus Matches voted as 'useless'</title>
+        <title><g:message code="ltc.user.opinion.title"/></title>
     </head>
     <body>
 
         <div class="body">
             <g:render template="/languageSelection"/>
 
-            <h1>Top Corpus Matches voted as 'useless'</h1>
+            <h1><g:message code="ltc.user.opinion.title"/></h1>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
@@ -19,8 +19,8 @@
             <div class="list">
                 <table>
                     <thead>
-                        <th>Votes</th>
-                        <th>Match</th>
+                        <th><g:message code="ltc.user.opinion.votes"/></th>
+                        <th><g:message code="ltc.user.opinion.match"/></th>
                     </thead>
                     <tbody>
                     <g:each in="${results}" status="i" var="opinion">
