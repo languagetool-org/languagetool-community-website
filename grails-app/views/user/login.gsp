@@ -24,7 +24,9 @@
                 <g:if test="${params.ids}">
                     <input type="hidden" name="ids" value="${StringTools.escapeHTML(StringTools.listToString(Arrays.asList(params.ids), ','))}"/>
                 </g:if>
-                <input type="hidden" name="lang" value="${params.lang?.encodeAsHTML()}"/>
+                <g:if test="${params.lang}">
+                	<input type="hidden" name="lang" value="${params.lang?.encodeAsHTML()}"/>
+                </g:if>
                 
                 <div class="dialog">
                 
