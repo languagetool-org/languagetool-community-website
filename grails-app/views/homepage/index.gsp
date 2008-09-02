@@ -47,7 +47,7 @@
             
                 <g:textArea name="text" value="${textToCheck}" rows="5" cols="80" />
                 <br />
-                <g:actionSubmit action="checkText" value="Check Text"/>
+                <g:actionSubmit action="checkText" value="${message(code:'ltc.home.check.text')}"/>
                 
             </g:form>
             
