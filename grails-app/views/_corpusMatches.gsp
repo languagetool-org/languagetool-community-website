@@ -38,7 +38,7 @@
     </g:if>
     <g:if test="${matches.size() > 0}">
         <li><g:link controller="homepage"
-           params="[lang:params.lang.encodeAsHTML()]"><g:message code="ltc.visit.wikipedia.page"/><g:message code="ltc.show.random.examples"/></g:link></li>
+           params="[lang:params.lang.encodeAsHTML()]"><g:message code="ltc.show.random.examples"/></g:link></li>
         <li><g:link controller="corpusMatch" action="list" params="[lang: params.lang]"><g:message code="ltc.show.all.matches"/></g:link></li>
         <li><g:link controller="userOpinion" action="list" params="[lang: params.lang]"><g:message code="ltc.show.user.votes"/></g:link></li>
     </g:if>

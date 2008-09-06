@@ -208,8 +208,7 @@ class UserController extends BaseController {
     
     private void loginFailed(String internalMsg) {
       log.warn(internalMsg)
-      flash.message = "Invalid email address and/or password. " +
-        "Please also make sure cookies are enabled."
+      flash.message = message(code:'ltc.login.invalid')
     }
     
     def logout = {

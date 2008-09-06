@@ -24,7 +24,7 @@
                 <input type="hidden" name="max" value="10"/>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
                 <g:textField name="filter" value="${params.filter}"/>
-                <g:actionSubmit value="Filter"/>
+                <g:actionSubmit value="${message(code:'ltc.filter')}"/>
                 <g:if test="${params.filter}">
                     &nbsp;<g:link params="[lang : params.lang]">Clear Filter</g:link>
                 </g:if>
