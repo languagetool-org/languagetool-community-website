@@ -57,12 +57,12 @@ class CorpusMatchController extends BaseController {
 
     def markUseful = {
       saveOpinion(session.user, POSITIVE_OPINION)
-      render message(code:'ltc.voted.useful')
+      render(text:message(code:'ltc.voted.useful'), encoding:"UTF-8")
     }
 
     def markUseless = {
       saveOpinion(session.user, NEGATIVE_OPINION)
-      render message(code:'ltc.voted.useless')
+      render(text:message(code:'ltc.voted.useless'), encoding:"UTF-8")
     }
 
     private void saveOpinion(User user, int opinionValue) {
