@@ -67,9 +67,7 @@ class CorpusMatchController extends BaseController {
 
     private void saveOpinion(User user, int opinionValue) {
       // TODO: avoid duplicate opinions
-      long t = System.currentTimeMillis()
       CorpusMatch corpusMatch = CorpusMatch.get(params.id)
-      t = System.currentTimeMillis()
       assert(corpusMatch)
       UserOpinion opinion = new UserOpinion(session.user, corpusMatch, opinionValue)
       if (!opinion.save()) {
