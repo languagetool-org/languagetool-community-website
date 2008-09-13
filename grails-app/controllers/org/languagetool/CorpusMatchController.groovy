@@ -57,22 +57,27 @@ class CorpusMatchController extends BaseController {
 
     def markUseful = {
       saveOpinion(session.user, POSITIVE_OPINION)
-      render(text:message(code:'ltc.voted.useful'), encoding:"UTF-8")
+      render(text:message(code:'ltc.voted.useful'), contentType: "text/html", encoding:"UTF-8")
     }
 
     def markUseless = {
       saveOpinion(session.user, NEGATIVE_OPINION)
-      render(text:message(code:'ltc.voted.useless'), encoding:"UTF-8")
+      render(text:message(code:'ltc.voted.useless'), contentType: "text/html", encoding:"UTF-8")
     }
 
     private void saveOpinion(User user, int opinionValue) {
       // TODO: avoid duplicate opinions
+      //TODO: add performance debugging
+      long t = System.currentTimeMillis()
       CorpusMatch corpusMatch = CorpusMatch.get(params.id)
+      log.info("save opinion get: ${System.currentTimeMillis()-t}ms")
+      t = System.currentTimeMillis()
       assert(corpusMatch)
       UserOpinion opinion = new UserOpinion(session.user, corpusMatch, opinionValue)
       if (!opinion.save()) {
         throw new Exception("Could not save user opinion: ${opinion.errors}")
       }
+      log.info("save opinion save: ${System.currentTimeMillis()-t}ms")
     }
 
 }
