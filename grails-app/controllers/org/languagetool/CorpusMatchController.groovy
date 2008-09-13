@@ -67,17 +67,14 @@ class CorpusMatchController extends BaseController {
 
     private void saveOpinion(User user, int opinionValue) {
       // TODO: avoid duplicate opinions
-      //TODO: add performance debugging
       long t = System.currentTimeMillis()
       CorpusMatch corpusMatch = CorpusMatch.get(params.id)
-      log.info("save opinion get: ${System.currentTimeMillis()-t}ms")
       t = System.currentTimeMillis()
       assert(corpusMatch)
       UserOpinion opinion = new UserOpinion(session.user, corpusMatch, opinionValue)
       if (!opinion.save()) {
         throw new Exception("Could not save user opinion: ${opinion.errors}")
       }
-      log.info("save opinion save: ${System.currentTimeMillis()-t}ms")
     }
 
 }
