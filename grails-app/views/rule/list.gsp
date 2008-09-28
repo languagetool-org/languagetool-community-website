@@ -105,6 +105,12 @@
                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
  	           <g:actionSubmit action="createRule" value="${message(code:'ltc.rule.browse.add.rule') }"/> &nbsp;
             </g:form>
+
+	        <g:if test="${session.user}">
+	        	<br />
+	        	<g:link controller="user" action="exportRules">Export the rules you added</g:link>
+	        </g:if>
+
         </div>
         
 		<script type="text/javascript">

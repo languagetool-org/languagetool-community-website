@@ -19,6 +19,7 @@
 
 package org.languagetool
 
+import de.danielnaber.languagetool.Language
 import javax.mail.*
 import javax.mail.internet.*
 
@@ -28,7 +29,8 @@ import javax.mail.internet.*
 class UserController extends BaseController {
     
     def beforeInterceptor = [action: this.&adminAuth, except:
-      ['login', 'logout', 'register', 'doRegister', 'completeRegistration', 'settings']]
+      ['login', 'logout', 'register', 'doRegister', 'completeRegistration', 'settings',
+       'exportRules']]
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST',
@@ -41,6 +43,36 @@ class UserController extends BaseController {
     def register = {
     }
 
+    /**
+     * Export a user's personal rules as XML.
+     */
+    def exportRules = {
+        if (!session.user) {
+          throw new Exception("you need to be logged in")
+        }
+        User user = session.user
+        List userRules = UserRule.findAllByUser(user)
+        if (userRules.size() == 0) {
+          flash.message = "You don't have any personal rules yet"
+          redirect(controller:'rule', action:'list')
+        }
+        StringBuilder sb = new StringBuilder()
+        String langCode = userRules.get(0).lang
+        sb.append('<?xml version="1.0" encoding="UTF-8"?>\n')
+        sb.append("<!-- Personal LanguageTool rules exported " +
+            "from http://community.languagetool.org on ${new Date()} -->\n")
+        sb.append("<rules lang=\"${langCode}\">\n")
+        for (userRule in userRules) {
+          sb.append(userRule.toPatternRule(true).toXML())
+          sb.append("\n")
+        }
+        sb.append("</rules>\n")
+        String langName = Language.getLanguageForShortName(langCode).getName()
+        response.setHeader("Content-Disposition",
+            "attachment; filename=rules-${langCode}-${langName}.xml")
+        render(text:sb.toString(), contentType: "text/xml")
+    }
+    
     def doRegister = {
         String toAddress = params.email
         if (!toAddress) {
