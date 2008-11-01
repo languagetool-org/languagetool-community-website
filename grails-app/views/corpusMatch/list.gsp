@@ -12,7 +12,7 @@
 
             <g:render template="/languageSelection"/>
 
-            <h1><g:message code="ltc.corpus.match.title"/></h1>
+            <h1><g:message code="ltc.corpus.match.title"/> (${CorpusMatch.countByLanguageCode(params.lang)})</h1>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
