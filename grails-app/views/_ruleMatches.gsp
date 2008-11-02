@@ -4,7 +4,10 @@
     <g:each in="${matches}" var="matchInfo" status="i">
         <li class="errorList">${matchInfo.getMessage().
             replaceAll("<suggestion>", "<span class='correction'>").
-            replaceAll("</suggestion>", "</span>")}<br/>
+            replaceAll("</suggestion>", "</span>")}
+           <g:link controller="rule" action="show" id="${matchInfo.getRule().getId()}"
+           	params="${[lang: lang]}"><g:message code="ltc.check.visit.rule"/></g:link>
+           <br/>
            <span class="exampleSentence">${
            de.danielnaber.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
            matchInfo.getToPos(), textToCheck,
