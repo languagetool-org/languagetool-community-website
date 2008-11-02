@@ -62,10 +62,12 @@ class UserController extends BaseController {
         sb.append("<!-- Personal LanguageTool rules exported " +
             "from http://community.languagetool.org on ${new Date()} -->\n")
         sb.append("<rules lang=\"${langCode}\">\n")
+        sb.append("<category name=\"User Rules from community.languagetool.org\">\n")
         for (userRule in userRules) {
           sb.append(userRule.toPatternRule(true).toXML())
           sb.append("\n")
         }
+        sb.append("</category>\n")
         sb.append("</rules>\n")
         String langName = Language.getLanguageForShortName(langCode).getName()
         response.setHeader("Content-Disposition",
