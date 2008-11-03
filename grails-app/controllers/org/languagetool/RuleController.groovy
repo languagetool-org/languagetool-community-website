@@ -265,8 +265,12 @@ class RuleController extends BaseController {
       flash.message = "No rule with id ${params.id.encodeAsHTML()}"
       redirect(action:list)
     }
+    String textToCheck = ""
+    if (params.textToCheck) {
+      textToCheck = params.textToCheck
+    }
     [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
-      isUserRule: isUserRule, ruleId: params.id ]
+      isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck ]
   }
   
   private String getLanguage() {

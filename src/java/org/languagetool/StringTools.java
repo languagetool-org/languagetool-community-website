@@ -54,4 +54,9 @@ public class StringTools {
       replaceAll("&lt;/err&gt;", "</span>");
   }
 
+  /** Remove the "<err>" markup */
+  public static String cleanError(String s) {
+    return s.replaceAll("<err>", "").replaceAll("</err>", "");
+  }
+
 }

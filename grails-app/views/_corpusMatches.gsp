@@ -2,8 +2,10 @@
 <ul>
     <g:each in="${matches}" var="matchInfo" status="i">
         <li class="errorList">${matchInfo.match.getMessage()}:
+        	<g:set var="cleanText" value="${StringTools.cleanError(matchInfo.match.getErrorContext())}"/>
 			<g:link controller="rule" action="show" id="${matchInfo.match.ruleID}"
-           		params="${[lang: lang]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link><br/>
+           		params="${[lang: lang, textToCheck: cleanText]}"><span class="additional"><g:message
+           		code="ltc.check.visit.rule"/></span></g:link><br/>
            <span class="exampleSentence">${matchInfo.match.getErrorContext().
             replaceAll("<err>", "<span class='error'>").replaceAll("</err>", "</span>")}</span>
             <br />
