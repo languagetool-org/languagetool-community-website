@@ -6,7 +6,7 @@
             replaceAll("<suggestion>", "<span class='correction'>").
             replaceAll("</suggestion>", "</span>")}
            <g:link controller="rule" action="show" id="${matchInfo.getRule().getId()}"
-           	params="${[lang: lang]}"><g:message code="ltc.check.visit.rule"/></g:link>
+           	params="${[lang: lang]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link>
            <br/>
            <span class="exampleSentence">${
            de.danielnaber.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
