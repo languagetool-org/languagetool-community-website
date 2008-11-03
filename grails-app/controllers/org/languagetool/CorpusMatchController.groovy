@@ -52,7 +52,7 @@ class CorpusMatchController extends BaseController {
           langCode = params.lang
       }
       [ corpusMatchList: CorpusMatch.findAllByLanguageCodeAndIsVisible(langCode, true, params),
-        languages: Language.REAL_LANGUAGES ]
+        languages: Language.REAL_LANGUAGES, lang: langCode ]
     }
 
     def markUseful = {

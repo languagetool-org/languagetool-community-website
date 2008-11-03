@@ -79,6 +79,7 @@ class HomepageController extends BaseController {
         // items in that case):
         Collections.sort(matches)
         render(view:'index',model:[matches: matches, langCode: langCode,
+                                   lang: langCode,		// used in _corpusMatches.gsp
                                    languages: Language.REAL_LANGUAGES])
     }
 

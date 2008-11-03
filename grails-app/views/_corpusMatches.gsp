@@ -1,7 +1,9 @@
 <%@page import="org.languagetool.*" %>
 <ul>
     <g:each in="${matches}" var="matchInfo" status="i">
-        <li class="errorList">${matchInfo.match.getMessage()}:<br/>
+        <li class="errorList">${matchInfo.match.getMessage()}:
+			<g:link controller="rule" action="show" id="${matchInfo.match.ruleID}"
+           		params="${[lang: lang]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link><br/>
            <span class="exampleSentence">${matchInfo.match.getErrorContext().
             replaceAll("<err>", "<span class='error'>").replaceAll("</err>", "</span>")}</span>
             <br />

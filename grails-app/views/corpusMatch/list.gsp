@@ -36,7 +36,9 @@
                                 ${StringTools.formatError(match.message.encodeAsHTML())}<br />
                                 ${StringTools.formatError(match.errorContext.encodeAsHTML())}<br />
                                 <span class="additional">URI: <g:link class="additional" url="${match.sourceURI}">${match.sourceURI.encodeAsHTML()}</g:link></span>
-                                <span class="additional"> - check date: ${StringTools.formatDate(match.checkDate).encodeAsHTML()}</span>
+                                <span class="additional"> - check date: ${StringTools.formatDate(match.checkDate).encodeAsHTML()}
+                                - <g:link controller="rule" action="show" id="${match.ruleID}"
+           							params="${[lang: lang]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link></span>
                             </td>
                         
                         </tr>
