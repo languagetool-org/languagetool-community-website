@@ -36,7 +36,7 @@
                                 ${StringTools.formatError(match.message.encodeAsHTML())}<br />
                                 ${StringTools.formatError(match.errorContext.encodeAsHTML())}<br />
                                 <span class="additional">URI: <g:link class="additional" url="${match.sourceURI}">${match.sourceURI.encodeAsHTML()}</g:link></span>
-                                <span class="additional">Check date: ${StringTools.formatDate(match.checkDate).encodeAsHTML()}</span>
+                                <span class="additional"> - check date: ${StringTools.formatDate(match.checkDate).encodeAsHTML()}</span>
                             </td>
                         
                         </tr>
