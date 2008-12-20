@@ -51,8 +51,9 @@ class CorpusMatchController extends BaseController {
       if (params.lang) {
           langCode = params.lang
       }
+      int totalMatches = CorpusMatch.countByLanguageCodeAndIsVisible(langCode, true)
       [ corpusMatchList: CorpusMatch.findAllByLanguageCodeAndIsVisible(langCode, true, params),
-        languages: Language.REAL_LANGUAGES, lang: langCode ]
+        languages: Language.REAL_LANGUAGES, lang: langCode, totalMatches: totalMatches ]
     }
 
     def markUseful = {
