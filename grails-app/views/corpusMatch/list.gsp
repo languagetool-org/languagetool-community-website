@@ -48,7 +48,7 @@
                 </table>
             </div>
             <div class="paginateButtons">
-                <g:paginate total="${CorpusMatch.countByLanguageCode(params.lang)}" 
+                <g:paginate total="${totalMatches}" 
                     params="${params}"/>
             </div>
         </div>
