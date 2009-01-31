@@ -172,7 +172,7 @@ class RuleController extends BaseController {
       //FIXME: generate a better unique ID!
       Rule newRule = new PatternRule("-1",
           Language.getLanguageForShortName(lang),
-          [], "", "")
+          [], "", "", "")
       render(view:'edit', model:[ rule: newRule, lang: lang, isUserRule: true ])
   }
   
@@ -212,7 +212,7 @@ class RuleController extends BaseController {
       }
       PatternRule patternRule = new PatternRule(params.id,
           Language.getLanguageForShortName(lang),
-          elements, params.description, params.message)
+          elements, params.description, params.message, "fakeShortMessage")
       userRule.pattern = patternRule.toXML()
       userRule.description = patternRule.description
       userRule.message = patternRule.message
