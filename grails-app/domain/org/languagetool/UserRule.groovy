@@ -46,9 +46,13 @@ class UserRule {
    
    PatternRule toPatternRule(boolean useInternalId) {
      final PatternRuleLoader loader = new PatternRuleLoader()
-     String extPattern = "<rules lang=\"${lang}\">" + pattern + "</rules>"
+     String extPattern = "<rules lang=\"${lang}\">" +
+       "<category name='anyCategory'>" +
+       pattern +
+       "</category>" +
+       "</rules>"
      InputStream xmlStream = new ByteArrayInputStream(extPattern.getBytes());
-     final List<PatternRule> rules = loader.getRules(xmlStream, "[xml stream]");
+     final List<PatternRule> rules = loader.getRules(xmlStream, "[xml stream=" + extPattern + "]");
      if (rules.size() != 1) {
        throw new Exception("Unexpected length of rule list: ${rules.size()}, pattern: $pattern")
      }
