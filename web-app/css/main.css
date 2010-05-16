@@ -343,6 +343,10 @@ th.desc a {
 	color: black;
 }
 
+.languageButton a:hover {
+	background-color: #9ed025;
+}
+
 .activelang {
 	color: white;
 	font-weight: bold;
@@ -365,5 +369,6 @@ th.desc a {
 
 /* link list with all supported languages */
 .langselection {
+	line-height: 30px;
 	margin-bottom: 15px;
 }
