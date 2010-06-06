@@ -48,14 +48,17 @@ class RuleController extends BaseController {
     JLanguageTool lt = new JLanguageTool(langObj)
     lt.activateDefaultPatternRules()
     List rules = lt.getAllRules()
+    Map patternRuleIdToUserRuleId = new HashMap()
     if (session.user) {
       // find the user's personal rules:
       List userRules = UserRule.findAllByUserAndLang(session.user, lang)
       for (userRule in userRules) {
         // make temporary pattern rules:
         PatternRule patternRule = userRule.toPatternRule(true)
+        //patternRule.dynamicId = userRule.id
         // TODO: ugly hack, find a better solution to transfer the id of the dynamic rule:
-        patternRule.id = patternRule.id + "//" + userRule.id
+        //patternRule.patternRule.message = patternRule.message + "__//__" + userRule.id
+        patternRuleIdToUserRuleId.put(patternRule.id, userRule.id)
         rules.add(patternRule)
       }
     }      
@@ -86,7 +89,7 @@ class RuleController extends BaseController {
       }
     }
     [ ruleList: rules, ruleCount: ruleCount, languages: Language.REAL_LANGUAGES,
-      disabledRuleIDs: disabledRuleIDs ]
+      disabledRuleIDs: disabledRuleIDs, patternRuleIdToUserRuleId: patternRuleIdToUserRuleId ]
   }
 
   private filterRules(List rules, String filter) {

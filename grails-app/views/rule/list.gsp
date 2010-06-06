@@ -51,8 +51,8 @@
 
                             <!-- TODO: find clean solution: -->
 							<% String userRuleId = null; %>
-                            <g:if test="${rule.id.contains('//')}">
-                            	<% userRuleId = rule.id.split("//")[1]; %>
+                            <g:if test="${patternRuleIdToUserRuleId.containsKey(rule.id)}">
+                            	<% userRuleId = patternRuleIdToUserRuleId.get(rule.id); %>
 							</g:if>
 							                        
                             <td>
