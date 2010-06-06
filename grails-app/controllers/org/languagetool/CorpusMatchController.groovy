@@ -39,7 +39,7 @@ class CorpusMatchController extends BaseController {
     
     def beforeInterceptor = [action: this.&auth, except: ['list', 'index']]
 
-    def allowedMethods = [markUseful:'POST', markUseless:'POST']
+    def static allowedMethods = [markUseful:'POST', markUseless:'POST']
 
     def index = {
       redirect(action:list,params:params)

@@ -33,8 +33,8 @@ class UserController extends BaseController {
        'exportRules']]
 
     // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST',
-                          doRegister:'POST']
+    def static allowedMethods = [delete:'POST', save:'POST', update:'POST',
+                          doRegister:'POST', settings:['POST', 'GET']]
 
     def index = {
         redirect(action:list,params:params)

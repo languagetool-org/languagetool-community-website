@@ -183,8 +183,9 @@ class RuleController extends BaseController {
       String lang = getLanguage()
       SelectedRule rule = getRuleById(params.id, lang)
       Rule selectedRule = rule.rule
-      [ rule: selectedRule, lang: lang,
-        isUserRule: rule.isUserRule, ruleId: params.id ]
+      render(view:'edit', model: [ rule: selectedRule, lang: lang,
+           isUserRule: rule.isUserRule, ruleId: params.id ],
+           contentType: "text/html", encoding: "utf-8")
   }
 
   def doEdit = {
@@ -244,6 +245,7 @@ class RuleController extends BaseController {
       }
       
       PatternRule origPatternRule = (PatternRule)origRule
+      //log.info("copyAndEditRule msg: ${origPatternRule.getDescription()} (umlaut test: öäüÖÄÜß)")
       UserRule userRule = new UserRule(originalRuleId: params.id, lang:params.lang,
           description: origPatternRule.getDescription(),
           message: origPatternRule.getMessage(),
@@ -272,8 +274,10 @@ class RuleController extends BaseController {
     if (params.textToCheck) {
       textToCheck = params.textToCheck
     }
-    [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
-      isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck ]
+    render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
+      isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck ],
+                                 contentType: "text/html", encoding: "utf-8")
+    
   }
   
   private String getLanguage() {
@@ -380,7 +384,9 @@ class RuleController extends BaseController {
   
   private static LanguageConfiguration getLangConfigforUser(String lang, def session) {
     if (session.user) {
-      Set langConfigs = session.user.languagesConfigurations
+      def user = session.user
+      user.refresh()
+      Set langConfigs = user.languagesConfigurations
       if (langConfigs) {
         for (langConfig in langConfigs) {
           if (langConfig.language == lang) {
