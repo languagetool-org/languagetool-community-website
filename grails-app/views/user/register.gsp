@@ -55,7 +55,7 @@
                     </table>
                 </div>
                 
-                <g:actionSubmit action="login" value="${message(code:'ltc.login.register.button')}"/>
+                <g:actionSubmit action="doRegister" value="${message(code:'ltc.login.register.button')}"/>
                 
             </g:form>
         </div>
