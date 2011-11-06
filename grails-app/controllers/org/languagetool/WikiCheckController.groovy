@@ -26,6 +26,7 @@ class WikiCheckController extends BaseController {
   
   def index = {
     if (params.url) {
+      log.info("WikiCheck: " + params.url)
       WikipediaQuickCheck checker = new WikipediaQuickCheck()
       WikipediaQuickCheckResult result = checker.checkPage(new URL(params.url))
       params.lang = result.getLanguageCode()

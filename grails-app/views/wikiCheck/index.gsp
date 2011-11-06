@@ -4,7 +4,7 @@
 
 <html>
     <head>
-        <title>LanguageTool Wikipedia Check</title>
+        <title>Proofreading Wikipedia Pages - LanguageTool WikiCheck</title>
         <meta name="layout" content="main" />
         <meta name="robots" content="noindex" />
     </head>
@@ -14,18 +14,21 @@
 
         <div class="dialog">
         
-            <h1>LanguageTool WikipediaQuickCheck (Beta-Version)</h1>
+            <h1>LanguageTool WikiCheck (Beta-Version)</h1>
             
             <p>
             Hier können Wikipedia-URLs mit <a href="http://www.languagetool.org">LanguageTool</a> geprüft werden.
             Bisher werden nur URLs der deutschsprachigen Wikipedia akzeptiert.  
             </p>
              
-            <g:form action="index" method="get">
-                Wikipedia URL: <input style="width:350px" name="url" value="${url?.encodeAsHTML()}"/>
-                <input type="submit" value="Run LanguageTool"/>
-            </g:form>
-            <g:link action="index" params="${[url: 'http://de.wikipedia.org/wiki/Benutzer_Diskussion:Dnaber']}">Beispiel</g:link>
+            <div style="margin-top:10px;margin-bottom:10px;">
+                <g:form action="index" method="get">
+                    Wikipedia URL: <input style="width:350px" name="url" value="${url?.encodeAsHTML()}"/>
+                    <input type="submit" value="Run LanguageTool"/>
+                </g:form>
+            </div>
+
+            <g:link action="index" params="${[url: 'http://de.wikipedia.org/wiki/Benutzer_Diskussion:Dnaber']}">Beispiel ansehen</g:link>
                         
             <br /><br />
             
