@@ -1,7 +1,7 @@
 
 <%@ page import="org.languagetool.User" %>
 <%@ page import="org.languagetool.StringTools" %>
-<%@ page import="de.danielnaber.languagetool.rules.patterns.PatternRule" %>
+<%@ page import="org.languagetool.rules.patterns.PatternRule" %>
 <html>
     <head>
         <meta name="layout" content="main" />

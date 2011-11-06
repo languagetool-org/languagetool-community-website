@@ -1,4 +1,4 @@
-<%@page import="de.danielnaber.languagetool.tools.StringTools" %>
+<%@page import="org.languagetool.tools.StringTools" %>
 
 <html>
     <head>

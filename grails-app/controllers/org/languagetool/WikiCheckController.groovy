@@ -19,8 +19,8 @@
 
 package org.languagetool
 
-import de.danielnaber.languagetool.dev.wikipedia.WikipediaQuickCheck
-import de.danielnaber.languagetool.dev.wikipedia.WikipediaQuickCheckResult
+import org.languagetool.dev.wikipedia.WikipediaQuickCheck
+import org.languagetool.dev.wikipedia.WikipediaQuickCheckResult
 
 class WikiCheckController extends BaseController {
   

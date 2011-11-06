@@ -19,10 +19,6 @@
 
 package org.languagetool
 
-import javax.mail.*
-import javax.mail.internet.*
-import de.danielnaber.languagetool.*
-
 /**
  * User voting on errors detected in a text corpus.
  */

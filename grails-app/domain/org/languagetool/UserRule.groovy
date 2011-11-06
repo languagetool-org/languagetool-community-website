@@ -19,10 +19,8 @@
  
 package org.languagetool
 
-import de.danielnaber.languagetool.AnalyzedSentence
-import de.danielnaber.languagetool.rules.*
-import de.danielnaber.languagetool.rules.patterns.*
-import de.danielnaber.languagetool.Language
+import org.languagetool.rules.*
+import org.languagetool.rules.patterns.*
 
 /**
  * An individual user's rule.

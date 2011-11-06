@@ -19,7 +19,7 @@
 
 package org.languagetool
 
-import de.danielnaber.languagetool.Language
+import org.languagetool.Language
 import javax.mail.*
 import javax.mail.internet.*
 

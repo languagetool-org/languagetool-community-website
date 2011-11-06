@@ -1,5 +1,5 @@
 <%@page import="org.languagetool.*" %>
-<%@page import="de.danielnaber.languagetool.tools.StringTools" %>
+<%@page import="org.languagetool.tools.StringTools" %>
 <%@page import="org.hibernate.*" %>
 
 <html>

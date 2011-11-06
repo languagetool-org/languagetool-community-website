@@ -20,8 +20,8 @@
 package org.languagetool
 
 import org.hibernate.*
-import de.danielnaber.languagetool.*
-import de.danielnaber.languagetool.rules.*
+import org.languagetool.*
+import org.languagetool.rules.*
 
 /**
  * The main page of the website.

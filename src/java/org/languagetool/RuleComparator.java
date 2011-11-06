@@ -20,8 +20,8 @@ package org.languagetool;
 
 import java.util.Comparator;
 
-import de.danielnaber.languagetool.rules.Rule;
-import de.danielnaber.languagetool.rules.patterns.PatternRule;
+import org.languagetool.rules.Rule;
+import org.languagetool.rules.patterns.PatternRule;
 
 enum SortDirection { asc, desc }
 enum SortField { description, pattern, category }

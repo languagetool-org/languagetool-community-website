@@ -1,4 +1,4 @@
-<%@page import="de.danielnaber.languagetool.Language" %>
+<%@page import="org.languagetool.Language" %>
 
 <ul>
     <g:each in="${matches}" var="matchInfo" status="i">
@@ -9,7 +9,7 @@
            	params="${[lang: lang]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link>
            <br/>
            <span class="exampleSentence">${
-           de.danielnaber.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
+           org.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
            matchInfo.getToPos(), textToCheck,
            100, "<span class='error'>", "</span>", true)}</span>
             <br />

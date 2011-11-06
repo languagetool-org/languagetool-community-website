@@ -19,9 +19,8 @@
 
 package org.languagetool
 
-import de.danielnaber.languagetool.*
-import de.danielnaber.languagetool.rules.*
-import de.danielnaber.languagetool.rules.patterns.*
+import org.languagetool.rules.*
+import org.languagetool.rules.patterns.*
 
 /**
  * Display and edit error rules.
