@@ -301,6 +301,11 @@ th.desc a {
 .logo {
     margin-left: 15px;
 }
+
+.sublogo {
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
 	
 .login {
 	margin-left: 15px;

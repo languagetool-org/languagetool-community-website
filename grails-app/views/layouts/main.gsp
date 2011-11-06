@@ -22,6 +22,8 @@
 			}
 			%>
 	        <h1 class="logo"><g:link url="${homeLink}"><g:message code="ltc.title"/></g:link></h1>
+	        
+	        <h3 class="sublogo"><g:message code="ltc.subtitle"/></h3>
 	    
 	        <g:if test="${session.user}">
 	            <div class="login"><g:message code="ltc.logged.in" args="${[session.user.username.encodeAsHTML()]}"/> -
