@@ -37,6 +37,12 @@
             </div>
             
 
+            <g:if test="${params.lang == 'de'}">
+                <br />
+                <p><strong><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></strong></p>
+            </g:if>
+
+
             <br />
             <p><strong><g:message code="ltc.run.languagetool"/></strong></p>
 
