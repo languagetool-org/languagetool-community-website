@@ -24,10 +24,12 @@
   </head>
   
   <body>
-    <h1>Grails Runtime Exception</h1>
-    <h2>Error Details</h2>
+    <h1>Error</h1>
+
   	<div class="message">
+
   		<strong>Message:</strong> ${exception.message?.encodeAsHTML()} <br />
+        <!--
   		<strong>Caused by:</strong> ${exception.cause?.message?.encodeAsHTML()} <br />
   		<strong>Class:</strong> ${exception.className} <br />  		  		
   		<strong>At Line:</strong> [${exception.lineNumber}] <br />  		
@@ -37,10 +39,13 @@
   				${cs?.encodeAsHTML()}<br />  			
   			</g:each>  	
   		</div>	  		
+  		-->
   	</div>
+  	<!--
     <h2>Stack Trace</h2>
     <div class="stack">
       <pre><g:each in="${exception.stackTraceLines}">${it.encodeAsHTML()}<br/></g:each></pre>
     </div>
+    -->
   </body>
 </html>
