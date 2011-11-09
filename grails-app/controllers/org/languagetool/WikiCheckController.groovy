@@ -28,7 +28,13 @@ class WikiCheckController extends BaseController {
     if (params.url) {
       log.info("WikiCheck: " + params.url)
       WikipediaQuickCheck checker = new WikipediaQuickCheck()
-      WikipediaQuickCheckResult result = checker.checkPage(new URL(params.url))
+      String langCode = params.url.substring("http://".length(), "http://xx".length())
+      if (langCode != 'de') {
+        throw new Exception("Sorry, only 'de' (German) is supported for now (your language was: '${langCode}')")
+      }
+      String plainText = checker.getMediaWikiContent(new URL(params.url))
+      Language language = Language.GERMAN
+      WikipediaQuickCheckResult result = checker.checkPage(plainText, language)
       params.lang = result.getLanguageCode()
       [result: result, matches: result.getRuleMatches(), textToCheck: result.getText(),
               lang: result.getLanguageCode(),
