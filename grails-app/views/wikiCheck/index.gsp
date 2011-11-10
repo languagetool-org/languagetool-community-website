@@ -48,7 +48,9 @@
                 <g:each in="${disabledRuleIds}" var="ruleId">
                     <a href="http://community.languagetool.org/rule/show/${ruleId}?lang=de">${ruleId}</a>
                 </g:each>
-            </g:if>       
+            </g:if>
+            
+            <div style="margin-top:10px;color:#bbbbbb">Benutzte LanguageTool-Version: ${JLanguageTool.VERSION} vom ${(new JLanguageTool(Language.DEMO)).getBuildDate()}</div>
             
         </div>
         
