@@ -14,7 +14,7 @@
 
         <div class="dialog">
         
-            <h1>LanguageTool WikiCheck (Beta-Version)</h1>
+            <h1>LanguageTool WikiCheck</h1>
             
             <p>
             Hier können Wikipedia-URLs mit <a href="http://www.languagetool.org">LanguageTool</a> geprüft werden.
@@ -23,8 +23,8 @@
              
             <div style="margin-top:10px;margin-bottom:10px;">
                 <g:form action="index" method="get">
-                    Wikipedia URL: <input style="width:350px" name="url" value="${url?.encodeAsHTML()}"/>
-                    <input type="submit" value="Run LanguageTool"/>
+                    Wikipedia-URL: <input style="width:350px" name="url" value="${url?.encodeAsHTML()}"/>
+                    <input type="submit" value="Prüfen"/>
                 </g:form>
             </div>
 
