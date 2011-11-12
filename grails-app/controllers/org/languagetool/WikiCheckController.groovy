@@ -24,26 +24,46 @@ import org.languagetool.dev.wikipedia.WikipediaQuickCheckResult
 import org.apache.commons.io.IOUtils
 
 class WikiCheckController extends BaseController {
+
+  // disable some rules because of too many false alarms:
+  private static final List<String> DEFAULT_DISABLED_RULES = 
+    Arrays.asList("WHITESPACE_RULE", "UNPAIRED_BRACKETS", "UPPERCASE_SENTENCE_START", "COMMA_PARENTHESIS_WHITESPACE")
+  private static final Map<String,List<String>> LANG_TO_DISABLED_RULES = new HashMap<String, List<String>>()
+    
+  static {
+    LANG_TO_DISABLED_RULES.put("en", Arrays.asList("EN_QUOTES"))
+    LANG_TO_DISABLED_RULES.put("de", Arrays.asList("DE_CASE", "DE_AGREEMENT", "PFEILE", "BISSTRICH", "AUSLASSUNGSPUNKTE", "MALZEICHEN"))
+    LANG_TO_DISABLED_RULES.put("fr", Arrays.asList("FRENCH_WHITESPACE"))
+    LANG_TO_DISABLED_RULES.put("pl", Arrays.asList("BRAK_SPACJI"))
+  }
   
-  String CONVERT_URL_PREFIX = "http://community.languagetool.org/wikipediatotext/wikiSyntaxConverter/convert?url="
+  private String CONVERT_URL_PREFIX = "http://community.languagetool.org/wikipediatotext/wikiSyntaxConverter/convert?url="
     
   def index = {
     if (params.url) {
-      log.info("WikiCheck: " + params.url)
-      WikipediaQuickCheck checker = new WikipediaQuickCheck()
-      String langCode = params.url.substring("http://".length(), "http://xx".length())
-      // TODO: remove this restriction
-      if (langCode != 'de') {
-        throw new Exception("Sorry, only 'de' (German) is supported for now (your language was: '${langCode}')")
-      }
+      long startTime = System.currentTimeMillis()
       URL plainTextUrl = new URL(CONVERT_URL_PREFIX + params.url)
       String plainText = download(plainTextUrl)
       if (plainText == '') {
-        throw new Exception("No page content found at the given URL")
+        throw new Exception("No Wikipedia page content found at the given URL")
       }
-      Language language = Language.GERMAN
+      String langCode = params.url.substring("http://".length(), "http://xx".length())
+      WikipediaQuickCheck checker = new WikipediaQuickCheck()
+      if (params.disabled) {
+        checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
+      } else {
+        List<String> allDisabledRules = new ArrayList<String>(DEFAULT_DISABLED_RULES)
+        List<String> langSpecificDisabledRules = LANG_TO_DISABLED_RULES.get(langCode)
+        if (langSpecificDisabledRules) {
+          allDisabledRules.addAll(langSpecificDisabledRules)
+        }
+        checker.setDisabledRuleIds(allDisabledRules)
+      }
+      Language language = Language.getLanguageForShortName(langCode)
       WikipediaQuickCheckResult result = checker.checkPage(plainText, language)
       params.lang = result.getLanguageCode()
+      long runTime = System.currentTimeMillis() - startTime
+      log.info("WikiCheck: ${params.url} (${runTime}ms)")
       [result: result, matches: result.getRuleMatches(), textToCheck: result.getText(),
               lang: result.getLanguageCode(),
               url: params.url, disabledRuleIds: checker.getDisabledRuleIds(),
