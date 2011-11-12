@@ -30,6 +30,10 @@
             View example:
                 <g:link action="index" params="${[url: 'http://en.wikipedia.org/wiki/User_talk:Dnaber']}">English</g:link>,
                 <g:link action="index" params="${[url: 'http://de.wikipedia.org/wiki/Benutzer_Diskussion:Dnaber']}">German</g:link>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:(function(){%20window.open('http://community.languagetool.org/wikiCheck/index?url='+escape(location.href));%20})();">WikiCheck Bookmarklet</a>
+                - bookmark this and call it on any Wikipedia page to check it
                         
             <br /><br />
             
