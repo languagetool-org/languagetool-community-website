@@ -15,36 +15,11 @@
         
             <g:render template="/languageSelection"/>
 
-            <p><strong><g:message code="ltc.check.results"/></strong></p>
-            
-            <div class="mainPart">
-            
-            <p><g:message code="ltc.check.explain"/></p>
-            
-            <p><g:message code="ltc.check.random.selection"/></p>
-            
-            <br/>
-            <g:render template="/corpusMatches"/>
-            
-            </div>
-
-            <br />
-            
-            <g:link controller="rule" action="list" params="[lang: params.lang?.encodeAsHTML()]"><g:message code="ltc.browse.rules"/></g:link>
-            
-            <div class="mainPart">
-            	<g:message code="ltc.browse.explain"/>
-            </div>
-            
-
-            <g:if test="${params.lang == 'de'}">
-                <br />
-                <p><strong><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></strong></p>
-            </g:if>
+            <h2><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></h2>
 
 
             <br />
-            <p><strong><g:message code="ltc.run.languagetool"/></strong></p>
+            <h2><g:message code="ltc.run.languagetool"/></h2>
 
             <div class="mainPart">
 
@@ -62,6 +37,31 @@
             </g:if>
             
             </div>
+
+
+            <br />
+            <h2><g:link controller="rule" action="list" params="[lang: params.lang?.encodeAsHTML()]"><g:message code="ltc.browse.rules"/></g:link></h2>
+            
+            <div class="mainPart">
+            	<g:message code="ltc.browse.explain"/>
+            </div>
+
+
+            <br />
+            <h2><g:message code="ltc.check.results"/></h2>
+            
+            <div class="mainPart">
+            
+            <p><g:message code="ltc.check.explain"/></p>
+            
+            <p><g:message code="ltc.check.random.selection"/></p>
+            
+            <br/>
+            <g:render template="/corpusMatches"/>
+            
+            </div>
+
+            <br />
 
             <div class="lthomepage">
             	<g:message code="ltc.home.links"/>
