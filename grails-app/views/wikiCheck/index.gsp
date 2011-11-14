@@ -23,7 +23,7 @@
             <div style="margin-top:10px;margin-bottom:10px;">
                 <g:form action="index" method="get">
                     Wikipedia URL: <input style="width:350px" name="url" value="${url?.encodeAsHTML()}"/>
-                    <input type="submit" value="Prüfen"/>
+                    <input type="submit" value="Check Page"/>
                 </g:form>
             </div>
 
