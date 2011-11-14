@@ -47,19 +47,18 @@ class WikiCheckController extends BaseController {
       if (plainText == '') {
         throw new Exception("No Wikipedia page content found at the given URL")
       }
-      String langCode = params.url.substring("http://".length(), "http://xx".length())
       WikipediaQuickCheck checker = new WikipediaQuickCheck()
+      Language language = checker.getLanguage(new URL(params.url))
       if (params.disabled) {
         checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
       } else {
         List<String> allDisabledRules = new ArrayList<String>(DEFAULT_DISABLED_RULES)
-        List<String> langSpecificDisabledRules = LANG_TO_DISABLED_RULES.get(langCode)
+        List<String> langSpecificDisabledRules = LANG_TO_DISABLED_RULES.get(language.getShortName())
         if (langSpecificDisabledRules) {
           allDisabledRules.addAll(langSpecificDisabledRules)
         }
         checker.setDisabledRuleIds(allDisabledRules)
       }
-      Language language = Language.getLanguageForShortName(langCode)
       WikipediaQuickCheckResult result = checker.checkPage(plainText, language)
       params.lang = result.getLanguageCode()
       long runTime = System.currentTimeMillis() - startTime
