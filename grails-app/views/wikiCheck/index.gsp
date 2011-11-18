@@ -51,7 +51,7 @@
                 <div style="color:#888888;">
                     Some LanguageTool rules are not activated because they cause too many false alarms:
                     <g:each in="${disabledRuleIds}" var="ruleId">
-                        <a style="color:#888888;font-weight:normal" href="http://community.languagetool.org/rule/show/${ruleId}?lang=${lang.encodeAsHTML()}">${ruleId}</a>
+                        <a style="color:#888888;font-weight:normal" href="http://community.languagetool.org/rule/show/${ruleId.encodeAsURL()}?lang=${lang.encodeAsHTML()}">${ruleId.encodeAsHTML()}</a>
                     </g:each>
                 </div>
             </g:if>
