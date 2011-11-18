@@ -52,6 +52,7 @@ class CorpusMatchController extends BaseController {
       def matchByRuleCriteria = CorpusMatch.createCriteria()
       def matchesByRule = matchByRuleCriteria {
         eq('languageCode', langCode)
+        eq('isVisible', true)
         projections {
           groupProperty("ruleID")
           count("ruleID")
