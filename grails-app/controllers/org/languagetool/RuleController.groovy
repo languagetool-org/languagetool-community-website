@@ -273,8 +273,14 @@ class RuleController extends BaseController {
     if (params.textToCheck) {
       textToCheck = params.textToCheck
     }
+    def matchCriteria = CorpusMatch.createCriteria()
+    def corpusMatchCount = matchCriteria.count {
+      eq('ruleID', selectedRule.id)
+      eq('languageCode', lang)
+      eq('isVisible', true)
+    }
     render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
-      isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck ],
+      isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
                                  contentType: "text/html", encoding: "utf-8")
     
   }
