@@ -17,20 +17,21 @@
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
             </g:if>
+            
+            <p><g:message code="ltc.corpus.match.note"/></p>
+            
+            <br />
 
             <div class="list">
                 <table>
                     <thead>
                         <tr>
-                            <th><g:message code="ltc.corpus.match.id"/></th>
                             <th><g:message code="ltc.corpus.match.match"/></th>
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${corpusMatchList}" status="i" var="match">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
-                            <td>${match.id?.encodeAsHTML()}</td>
                         
                             <td>
                             	<g:set var="cleanText" value="${StringTools.cleanError(match.errorContext)}"/>
