@@ -67,8 +67,8 @@ class CorpusMatchController extends BaseController {
         }
         eq('languageCode', langCode)
         eq('isVisible', true)
-        firstResult(params.offset)
-        maxResults(params.max)
+        firstResult(params.int('offset'))
+        maxResults(params.int('max'))
       }
       int totalMatches = CorpusMatch.countByLanguageCodeAndIsVisible(langCode, true)
       [ corpusMatchList: matches,
