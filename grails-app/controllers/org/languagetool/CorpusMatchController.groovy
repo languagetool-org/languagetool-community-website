@@ -43,13 +43,36 @@ class CorpusMatchController extends BaseController {
 
     def list = {
       if(!params.max) params.max = 10
+      if(!params.offset) params.offset = 0
       String langCode = "en"
       if (params.lang) {
-          langCode = params.lang
+        langCode = params.lang
+      }
+      // Grouped Overview of Rule Matches:
+      def matchByRuleCriteria = CorpusMatch.createCriteria()
+      def matchesByRule = matchByRuleCriteria {
+        eq('languageCode', langCode)
+        projections {
+          groupProperty("ruleID")
+          count("ruleID")
+        }
+        order("ruleID")
+      }
+      // Rule Matches for this language:
+      def matchCriteria = CorpusMatch.createCriteria()
+      def matches = matchCriteria {
+        if (params.filter) {
+          eq('ruleID', params.filter)
+        }
+        eq('languageCode', langCode)
+        eq('isVisible', true)
+        firstResult(params.offset)
+        maxResults(params.max)
       }
       int totalMatches = CorpusMatch.countByLanguageCodeAndIsVisible(langCode, true)
-      [ corpusMatchList: CorpusMatch.findAllByLanguageCodeAndIsVisible(langCode, true, params),
-        languages: Language.REAL_LANGUAGES, lang: langCode, totalMatches: totalMatches ]
+      [ corpusMatchList: matches,
+        languages: Language.REAL_LANGUAGES, lang: langCode, totalMatches: totalMatches,
+        matchesByRule: matchesByRule]
     }
 
     def markUseful = {

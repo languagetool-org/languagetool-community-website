@@ -21,7 +21,23 @@
             <p><g:message code="ltc.corpus.match.note"/></p>
             
             <br />
-
+            
+            <form>
+                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+                <select name="filter">
+                    <option value="">- all rules -</option>
+                    <g:each in="${matchesByRule}" var="rule">
+                        <g:if test="${params.filter == rule[0]}">
+                            <option selected value="${rule[0].encodeAsHTML()}">${rule[0].encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
+                        </g:if>
+                        <g:else>
+                            <option value="${rule[0].encodeAsHTML()}">${rule[0].encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
+                        </g:else>
+                    </g:each>
+                </select>
+                <g:actionSubmit value="${message(code:'ltc.corpus.match.filter.submit')}" action="list"/>
+            </form>
+            
             <div class="list">
                 <table>
                     <thead>
