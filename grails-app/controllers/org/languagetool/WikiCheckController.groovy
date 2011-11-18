@@ -42,12 +42,13 @@ class WikiCheckController extends BaseController {
   def index = {
     if (params.url) {
       long startTime = System.currentTimeMillis()
+      WikipediaQuickCheck checker = new WikipediaQuickCheck()
+      checker.validateWikipediaUrl(new URL(params.url))
       URL plainTextUrl = new URL(CONVERT_URL_PREFIX + params.url)
       String plainText = download(plainTextUrl)
       if (plainText == '') {
         throw new Exception("No Wikipedia page content found at the given URL")
       }
-      WikipediaQuickCheck checker = new WikipediaQuickCheck()
       Language language = checker.getLanguage(new URL(params.url))
       if (params.disabled) {
         checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
