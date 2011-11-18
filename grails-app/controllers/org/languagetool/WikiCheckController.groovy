@@ -42,6 +42,9 @@ class WikiCheckController extends BaseController {
   def index = {
     if (params.url) {
       long startTime = System.currentTimeMillis()
+      if (params.url.contains("languagetool.org/wikiCheck/")) {
+          throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
+      }
       WikipediaQuickCheck checker = new WikipediaQuickCheck()
       checker.validateWikipediaUrl(new URL(params.url))
       URL plainTextUrl = new URL(CONVERT_URL_PREFIX + params.url)
