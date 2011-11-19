@@ -55,9 +55,9 @@ class CorpusMatchController extends BaseController {
         eq('isVisible', true)
         projections {
           groupProperty("ruleID")
-          count("ruleID")
+          count "ruleID", 'mycount'
         }
-        order("ruleID")
+        order 'mycount', 'desc'
       }
       // Rule Matches for this language:
       def matchCriteria = CorpusMatch.createCriteria()
