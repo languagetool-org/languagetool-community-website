@@ -314,7 +314,7 @@ class RuleController extends BaseController {
   }
 
   private Rule getSystemRuleById(String id, JLanguageTool lt) {
-    log.info("Getting system rule with id $id")
+    log.debug("Getting system rule with id $id")
     Rule selectedRule = null
     List rules = lt.getAllRules()
     for (Rule rule in rules) {
