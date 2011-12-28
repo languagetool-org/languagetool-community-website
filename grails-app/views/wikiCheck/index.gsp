@@ -32,8 +32,13 @@
                 <g:link action="index" params="${[url: 'http://de.wikipedia.org/wiki/Benutzer_Diskussion:Dnaber']}">German</g:link>
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="javascript:(function(){%20window.open('http://community.languagetool.org/wikiCheck/index?url='+escape(location.href));%20})();">WikiCheck Bookmarklet</a>
-                - bookmark this and call it on any Wikipedia page to check it
+            Bookmark and call on any Wikipedia page to check it:
+              <a href="javascript:(function(){%20window.open('http://community.languagetool.org/wikiCheck/index?url='+escape(location.href));%20})();">WikiCheck Bookmarklet</a>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Check random page:
+              <g:link action="index" params="${[url: 'random:en']}">English</g:link>,
+              <g:link action="index" params="${[url: 'random:de']}">German</g:link>
                         
             <br /><br />
             
