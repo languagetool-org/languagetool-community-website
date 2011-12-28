@@ -22,6 +22,8 @@ package org.languagetool
 import org.languagetool.dev.wikipedia.WikipediaQuickCheck
 import org.languagetool.dev.wikipedia.WikipediaQuickCheckResult
 import org.apache.commons.io.IOUtils
+import java.util.regex.Pattern
+import java.util.regex.Matcher
 
 class WikiCheckController extends BaseController {
 
@@ -29,6 +31,8 @@ class WikiCheckController extends BaseController {
   private static final List<String> DEFAULT_DISABLED_RULES = 
     Arrays.asList("WHITESPACE_RULE", "UNPAIRED_BRACKETS", "UPPERCASE_SENTENCE_START", "COMMA_PARENTHESIS_WHITESPACE")
   private static final Map<String,List<String>> LANG_TO_DISABLED_RULES = new HashMap<String, List<String>>()
+
+  private static final Pattern XML_TITLE_PATTERN = Pattern.compile("title=\"(.*?)\"")
     
   static {
     LANG_TO_DISABLED_RULES.put("en", Arrays.asList("EN_QUOTES"))
@@ -46,13 +50,13 @@ class WikiCheckController extends BaseController {
           throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
       }
       WikipediaQuickCheck checker = new WikipediaQuickCheck()
-      checker.validateWikipediaUrl(new URL(params.url))
-      URL plainTextUrl = new URL(CONVERT_URL_PREFIX + params.url)
+      String pageUrl = getPageUrl(params, checker)
+      URL plainTextUrl = new URL(CONVERT_URL_PREFIX + pageUrl.replace(' ', '_'))
       String plainText = download(plainTextUrl)
       if (plainText == '') {
-        throw new Exception("No Wikipedia page content found at the given URL")
+        throw new Exception("No Wikipedia page content found at the given URL: " + plainTextUrl + " (page url: " + pageUrl + ")")
       }
-      Language language = checker.getLanguage(new URL(params.url))
+      Language language = checker.getLanguage(new URL(pageUrl))
       if (params.disabled) {
         checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
       } else {
@@ -69,13 +73,31 @@ class WikiCheckController extends BaseController {
       log.info("WikiCheck: ${params.url} (${runTime}ms)")
       [result: result, matches: result.getRuleMatches(), textToCheck: result.getText(),
               lang: result.getLanguageCode(),
-              url: params.url, disabledRuleIds: checker.getDisabledRuleIds(),
+              url: params.url,
+              realUrl: pageUrl,
+              disabledRuleIds: checker.getDisabledRuleIds(),
               plainText: plainText]
     } else {
       []
     }
   }
-    
+
+  private String getPageUrl(params, WikipediaQuickCheck checker) {
+    String pageUrl
+    if (params.url.startsWith("random:")) {
+      String lang = params.url.substring("random:".length())
+      if (lang.length() < 2 || lang.length() > 3) {
+        throw new Exception("Invalid language: " + lang)
+      }
+      URL randomUrl = new URL("http://" + lang + ".wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=xml")
+      pageUrl = "http://" + lang + ".wikipedia.org/wiki/" + getRandomPageTitle(randomUrl)
+    } else {
+      checker.validateWikipediaUrl(new URL(params.url))
+      pageUrl = params.url
+    }
+    return pageUrl
+  }
+
   private String download(final URL url) throws IOException {
     final HttpURLConnection connection = (HttpURLConnection)url.openConnection()
     if (connection.getResponseCode() != 200) {
@@ -89,6 +111,13 @@ class WikiCheckController extends BaseController {
     } finally {
       is.close()
     }
+  }
+
+  private String getRandomPageTitle(final URL randomUrl) throws IOException {
+    final String content = download(randomUrl)
+    final Matcher matcher = XML_TITLE_PATTERN.matcher(content)
+    matcher.find()
+    return matcher.group(1)
   }
 
 }
