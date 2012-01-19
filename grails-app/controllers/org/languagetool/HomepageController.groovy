@@ -22,6 +22,7 @@ package org.languagetool
 import org.hibernate.*
 import org.languagetool.*
 import org.languagetool.rules.*
+import org.apache.tika.language.LanguageIdentifier
 
 /**
  * The main page of the website.
@@ -88,7 +89,23 @@ class HomepageController extends BaseController {
      */
     def checkText = {
         String lang = "en"
-        if (params.lang) lang = params.lang
+        boolean autoLangDetectionWarning = false
+        List languages = Language.REAL_LANGUAGES
+        languages.sort{it.getName()}
+        Language detectedLang
+        if (params.lang == "auto") {
+            LanguageIdentifier identifier = new LanguageIdentifier(params.text)
+            detectedLang = Language.getLanguageForShortName(identifier.getLanguage())
+            if (detectedLang == null) {
+                throw new Exception(message(code:'ltc.home.check.detection.failure', args:[Arrays.asList(languages)]))
+            }
+            lang = detectedLang.getShortName()
+            params.lang = lang
+            // TODO: use identifier.isReasonablyCertain() - but make sure it works!
+            autoLangDetectionWarning = params.text?.length() < 60
+        } else if (params.lang) {
+            lang = params.lang
+        }
         JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
         lt.activateDefaultPatternRules()
         List userRules = getUserRules()
@@ -113,8 +130,9 @@ class HomepageController extends BaseController {
         }
         List ruleMatches = lt.check(text)
         // TODO: count only disabledRules for the current language
-        [matches: ruleMatches, lang: lang, textToCheck: params.text,
-           disabledRules: langConfig?.disabledRules]
+        [matches: ruleMatches, lang: lang, languages: languages, textToCheck: params.text,
+           disabledRules: langConfig?.disabledRules, 
+           autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
     }
     
     private getUserRules() {

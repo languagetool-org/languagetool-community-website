@@ -10,7 +10,7 @@
     <body>
 
         <div class="body">
-        
+          
             <h1><g:message code="ltc.home.check.title"/></h1>
         
             <g:if test="${session.user}">
@@ -25,18 +25,20 @@
             </g:if>
             <br/>
             
+            <g:if test="${autoLangDetectionWarning}">
+              <div class="warn"><g:message code="ltc.home.check.detection.warning" args="${[detectedLang]}"/></div>
+            </g:if>
+
             <g:render template="/ruleMatches"/>
             
             <br />
             <p><g:message code="ltc.home.check.again"/></p>
         
             <g:form method="post">
-                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
-            
                 <g:textArea name="text" value="${textToCheck}" rows="5" cols="80" />
                 <br />
                 <g:actionSubmit action="checkText" value="${message(code:'ltc.home.check.text')}"/>
-                
+                &nbsp;&nbsp;&nbsp;Language: <g:select name="lang" from="${languages}" optionKey="shortName" noSelection="${['auto':'auto-detect']}" value="${params.lang}"></g:select>
             </g:form>
         
         </div>

@@ -116,6 +116,14 @@ input:focus, select:focus, textarea:focus {
     padding: 5px 5px 5px 30px
 }
 
+.warn {
+    border: 1px solid #ae985d;
+    color: #524c2e;
+    background: #ffdf88;
+    margin: 10px 0 5px 0;
+    padding: 5px 5px 5px 30px
+}
+
 div.errors {
     background: #fff3f3;
     border: 1px solid red;
