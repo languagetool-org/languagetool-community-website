@@ -92,12 +92,17 @@ class HomepageController extends BaseController {
         boolean autoLangDetectionWarning = false
         List languages = Language.REAL_LANGUAGES
         languages.sort{it.getName()}
-        Language detectedLang
+        Language detectedLang = null
         if (params.lang == "auto") {
             LanguageIdentifier identifier = new LanguageIdentifier(params.text)
-            detectedLang = Language.getLanguageForShortName(identifier.getLanguage())
-            if (detectedLang == null) {
-                throw new Exception(message(code:'ltc.home.check.detection.failure', args:[Arrays.asList(languages)]))
+            String detectedLangCode = identifier.getLanguage()
+            if (detectedLangCode != 'unknown') {
+                detectedLang = Language.getLanguageForShortName(detectedLangCode)
+            }
+            if (detectedLang == null || params.text.trim().length() == 0) {
+                render(view:"checkText", model:[matches: [], lang: "auto", disabledRules: null, languages: languages,
+                        autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null])
+                return
             }
             lang = detectedLang.getShortName()
             params.lang = lang
@@ -130,7 +135,7 @@ class HomepageController extends BaseController {
         }
         List ruleMatches = lt.check(text)
         // TODO: count only disabledRules for the current language
-        [matches: ruleMatches, lang: lang, languages: languages, textToCheck: params.text,
+        [matches: ruleMatches, lang: lang, languages: languages, 
            disabledRules: langConfig?.disabledRules, 
            autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
     }

@@ -10,12 +10,12 @@
            <br/>
            <span class="exampleSentence">${
            org.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
-           matchInfo.getToPos(), textToCheck,
+           matchInfo.getToPos(), params.text,
            100, "<span class='error'>", "</span>", true)}</span>
             <br />
         </li>
     </g:each>
-    <g:if test="${matches.size() == 0}">
+    <g:if test="${matches != null && matches.size() == 0 && params.lang != 'auto'}">
        <li><g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.lang)]}"/></li>
     </g:if>
 </ul>
