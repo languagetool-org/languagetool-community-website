@@ -101,7 +101,8 @@ class HomepageController extends BaseController {
             }
             if (detectedLang == null || params.text.trim().length() == 0) {
                 render(view:"checkText", model:[matches: [], lang: "auto", disabledRules: null, languages: languages,
-                        autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null])
+                        autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null,
+                        textToCheck: params.text])
                 return
             }
             lang = detectedLang.getShortName()
@@ -136,7 +137,7 @@ class HomepageController extends BaseController {
         List ruleMatches = lt.check(text)
         // TODO: count only disabledRules for the current language
         [matches: ruleMatches, lang: lang, languages: languages, 
-           disabledRules: langConfig?.disabledRules, 
+           disabledRules: langConfig?.disabledRules, textToCheck: params.text,
            autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
     }
     

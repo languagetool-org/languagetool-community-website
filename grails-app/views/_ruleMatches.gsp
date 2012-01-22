@@ -10,7 +10,7 @@
            <br/>
            <span class="exampleSentence">${
            org.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
-           matchInfo.getToPos(), params.text,
+           matchInfo.getToPos(), textToCheck,
            100, "<span class='error'>", "</span>", true)}</span>
             <br />
         </li>
