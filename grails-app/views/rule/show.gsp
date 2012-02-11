@@ -125,6 +125,7 @@
             <p><g:message code="ltc.rule.show.check.text" /></p>
             
             <g:form method="post">
+
                 <input type="hidden" name="id" value="${ruleId}"/>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
             

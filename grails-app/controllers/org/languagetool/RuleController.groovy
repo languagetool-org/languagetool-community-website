@@ -163,10 +163,11 @@ class RuleController extends BaseController {
       text = text.substring(0, maxTextLen)
       flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
     }
+    int corpusMatchCount = countCorpusMatches(lang, selectedRule.id)
     List ruleMatches = lt.check(text)
     render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
                                  textToCheck: params.text, matches: ruleMatches, ruleId: params.id,
-                                 isUserRule: isUserRule ],
+                                 isUserRule: isUserRule, corpusMatchCount: corpusMatchCount],
                                  contentType: "text/html", encoding: "utf-8")
   }
 
@@ -255,7 +256,6 @@ class RuleController extends BaseController {
       if (!saved) {
         throw new Exception("Could not save copy of rule ${params.id.encodeAsHTML()}: ${userRule.errors}")
       }
-      //log.info("###${params.id}")
       redirect(action:'show', id:userRule.id, params:[lang:params.lang])
   }
 
@@ -273,18 +273,23 @@ class RuleController extends BaseController {
     if (params.textToCheck) {
       textToCheck = params.textToCheck
     }
-    def matchCriteria = CorpusMatch.createCriteria()
-    def corpusMatchCount = matchCriteria.count {
-      eq('ruleID', selectedRule.id)
-      eq('languageCode', lang)
-      eq('isVisible', true)
-    }
+    int corpusMatchCount = countCorpusMatches(lang, selectedRule.id)
     render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
       isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
                                  contentType: "text/html", encoding: "utf-8")
     
   }
-  
+
+  private int countCorpusMatches(String langCode, String ruleId) {
+    def matchCriteria = CorpusMatch.createCriteria()
+    def corpusMatchCount = matchCriteria.count {
+      eq('ruleID', ruleId)
+      eq('languageCode', langCode)
+      eq('isVisible', true)
+    }
+    return corpusMatchCount
+  }
+
   private String getLanguage() {
     String lang = "en"
     if (params.lang) {
