@@ -75,13 +75,14 @@ class HomepageController extends BaseController {
           }
           matches.add(cmi)
         }
+        Language langObject = Language.getLanguageForShortName(langCode)
         // force some order so we show the same order again as before login
         // (people might log in specifically to vote, we don't show random
         // items in that case):
         Collections.sort(matches)
         render(view:'index',model:[matches: matches, langCode: langCode,
                                    lang: langCode,		// used in _corpusMatches.gsp
-                                   languages: Language.REAL_LANGUAGES])
+                                   languages: Language.REAL_LANGUAGES, language: langObject])
     }
 
     /**

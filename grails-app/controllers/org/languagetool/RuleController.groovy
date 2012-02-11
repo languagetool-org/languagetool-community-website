@@ -88,7 +88,8 @@ class RuleController extends BaseController {
       }
     }
     [ ruleList: rules, ruleCount: ruleCount, languages: Language.REAL_LANGUAGES,
-      disabledRuleIDs: disabledRuleIDs, patternRuleIdToUserRuleId: patternRuleIdToUserRuleId ]
+      disabledRuleIDs: disabledRuleIDs, patternRuleIdToUserRuleId: patternRuleIdToUserRuleId,
+      language: langObj]
   }
 
   private filterRules(List rules, String filter) {

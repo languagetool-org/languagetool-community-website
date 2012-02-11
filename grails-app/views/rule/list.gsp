@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title><g:message code="ltc.rule.browse.title" args="${[ruleCount]}" /></title>
+        <title><g:message code="ltc.rule.browse.title" args="${[ruleCount, language]}" /></title>
     </head>
     <body>
     
@@ -13,7 +13,7 @@
         
             <g:render template="/languageSelection"/>
 
-            <h1><g:message code="ltc.rule.browse.title" args="${[ruleCount]}" /></h1>
+            <h1><g:message code="ltc.rule.browse.head" args="${[ruleCount]}" /></h1>
             
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>

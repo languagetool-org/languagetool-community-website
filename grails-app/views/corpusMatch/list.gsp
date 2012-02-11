@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title><g:message code="ltc.corpus.match.title"/></title>
+        <title><g:message code="ltc.corpus.match.title"/> - ${language}</title>
     </head>
     <body>
 

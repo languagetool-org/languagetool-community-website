@@ -78,9 +78,10 @@ class CorpusMatchController extends BaseController {
         eq('languageCode', langCode)
         eq('isVisible', true)
       }
+      Language langObj = Language.getLanguageForShortName(langCode)
       [ corpusMatchList: matches,
         languages: Language.REAL_LANGUAGES, lang: langCode, totalMatches: allMatchesCount,
-        matchesByRule: matchesByRule]
+        matchesByRule: matchesByRule, language: langObj]
     }
 
     def markUseful = {
