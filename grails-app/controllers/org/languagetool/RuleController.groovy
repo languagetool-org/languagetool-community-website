@@ -137,7 +137,7 @@ class RuleController extends BaseController {
       selectedRule = userRule.toPatternRule(true)
       isUserRule = true
     } catch (NumberFormatException e) {
-      selectedRule = getSystemRuleById(params.id, lt)
+      selectedRule = getSystemRuleById(params.id, params.subId, lt)
     }
     if (!selectedRule) {
       flash.message = "No rule with id ${params.id.encodeAsHTML()}"
@@ -236,7 +236,7 @@ class RuleController extends BaseController {
       String lang = getLanguage()
       JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
       lt.activateDefaultPatternRules()
-      Rule origRule = getSystemRuleById(params.id, lt)
+      Rule origRule = getSystemRuleById(params.id, params.subId, lt)
       if (!origRule) {
         throw new Exception("No rule found for id ${params.id}, language $lang")
       }
@@ -261,11 +261,10 @@ class RuleController extends BaseController {
 
   def show = {
     String lang = getLanguage()
-    int disableId = 0
     SelectedRule rule = getRuleById(params.id, lang)
     Rule selectedRule = rule.rule
     boolean isUserRule = rule.isUserRule
-    disableId = getEnableDisableId(selectedRule, params.id, lang)
+    int disableId = getEnableDisableId(selectedRule, params.id, lang)
     if (!selectedRule) {
       flash.message = "No rule with id ${params.id.encodeAsHTML()}"
       redirect(action:list)
@@ -308,18 +307,23 @@ class RuleController extends BaseController {
     } catch (NumberFormatException e) {
       JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
       lt.activateDefaultPatternRules()
-      selectedRule = getSystemRuleById(params.id, lt)
+      selectedRule = getSystemRuleById(params.id, params.subId, lt)
       isUserRule = false
     }
     return new SelectedRule(isUserRule: isUserRule, rule: selectedRule)
   }
 
-  private Rule getSystemRuleById(String id, JLanguageTool lt) {
+  private Rule getSystemRuleById(String id, String subId, JLanguageTool lt) {
     log.debug("Getting system rule with id $id")
     Rule selectedRule = null
     List rules = lt.getAllRules()
     for (Rule rule in rules) {
-      if (rule.id == params.id) {
+      boolean subIdMatchIfNeeded = true
+      if (rule instanceof PatternRule && subId != null) {
+        PatternRule pRule = (PatternRule) rule
+        subIdMatchIfNeeded = pRule.subId == subId
+      }
+      if (rule.id == params.id && subIdMatchIfNeeded) {
         selectedRule = rule
         break
       }

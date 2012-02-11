@@ -25,14 +25,14 @@
             
             <table>
                 <tr>
-                    <td width="15%"><g:message code="ltc.rule.show.pattern" /></td>
+                    <td><g:message code="ltc.rule.show.pattern" /></td>
                     <td>
 			            <g:if test="${rule instanceof PatternRule}">
 			                <span class="pattern">${rule.toPatternString().encodeAsHTML()}</span><br />
 			            </g:if>
 			            <g:else>
 			                <!-- TODO: add link to source code -->
-			                <g:message code="ltc.rule.show.java.rule" /><br/>
+			                <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span><br/>
 			            </g:else>
                     </td>
                 </tr>

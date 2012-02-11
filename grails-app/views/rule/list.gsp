@@ -70,14 +70,25 @@
                             </td>
                         
                             <td>
-                            <g:if test="${userRuleId}">
-	                            <g:link action="show" id="${userRuleId}"
-    	                            params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link></td>
-                            </g:if>
-                            <g:else>
-	                            <g:link action="show" id="${rule.id}"
-    	                            params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link></td>
-                            </g:else>
+                                <g:if test="${userRuleId}">
+                                    <g:link action="show" id="${userRuleId}"
+                                        params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link>
+                                </g:if>
+                                <g:else>
+                                    <g:if test="${rule instanceof PatternRule}">
+                                        <%
+                                        PatternRule pRule = (PatternRule) rule;
+                                        %>
+                                        <g:set var="subId" value="${pRule.subId}"/>
+                                        <g:link action="show" id="${rule.id}"
+                                                params="[lang:params.lang, subId: subId]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link>
+                                    </g:if>
+                                    <g:else>
+                                        <g:link action="show" id="${rule.id}"
+                                                params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link>
+                                    </g:else>
+                                </g:else>
+                            </td>
 
                             <g:if test="${rule instanceof PatternRule}">
                                 <%
