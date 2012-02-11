@@ -17,7 +17,7 @@
 			if (homeLink.equals("")) {
 			  homeLink = "/";
 			}
-			if (params.lang) {
+			if (params.lang && params.lang != 'auto') {
 			  homeLink += "?lang=" + params.lang;
 			}
 			%>
