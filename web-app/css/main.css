@@ -17,6 +17,10 @@ body {
     font: 12px verdana, arial, helvetica, sans-serif;
 }
 
+h2 a:link, a:visited, a:hover {
+    color: #67a918;
+}
+
 a:link, a:visited, a:hover {
     color: #678718;
     font-weight: bold;
@@ -235,6 +239,7 @@ th.desc a {
 /* DIALOG */
 
 .dialog {
+    max-width: 800px;
 }
 
 .dialog table {
@@ -307,7 +312,9 @@ th.desc a {
 }
 
 .logo {
+    margin-top: 0px;
     margin-left: 15px;
+    margin-bottom: 8px;
 }
 
 .sublogo {

@@ -21,26 +21,37 @@
 			  homeLink += "?lang=" + params.lang;
 			}
 			%>
-	        <h1 class="logo"><g:link url="${homeLink}"><g:message code="ltc.title"/></g:link></h1>
-	        
-	        <h3 class="sublogo"><g:message code="ltc.subtitle"/></h3>
-	    
-	        <g:if test="${session.user}">
-	            <div class="login"><g:message code="ltc.logged.in" args="${[session.user.username.encodeAsHTML()]}"/> -
-	            <g:link controller="user" action="logout"><g:message code="ltc.logout"/></g:link>
-	            -
-	            <g:link controller="user" action="settings"><g:message code="ltc.settings"/></g:link>
-	            </div>
-	        </g:if>
-	        <g:else>
-	            <div class="login"><g:link controller="user" action="login"><g:message code="ltc.login"/></g:link></div>
-	        </g:else>
+            <table style="border: 0px">
+            <tr>
+                <td valign="top">
+                    <h1 class="logo"><g:link url="${homeLink}"><g:message code="ltc.title"/></g:link></h1>
+
+           	        <h3 class="sublogo"><g:message code="ltc.subtitle"/></h3>
+                </td>
+                <td valign="top">
+                    <g:if test="${session.user}">
+           	            <div class="login"><g:message code="ltc.logged.in" args="${[session.user.username.encodeAsHTML()]}"/> -
+           	            <g:link controller="user" action="logout"><g:message code="ltc.logout"/></g:link>
+           	            -
+           	            <g:link controller="user" action="settings"><g:message code="ltc.settings"/></g:link>
+           	            </div>
+           	        </g:if>
+           	        <g:else>
+           	            <div class="login"><g:link controller="user" action="login"><g:message code="ltc.login"/></g:link></div>
+           	        </g:else>
+                </td>
+            </tr>
+            </table>
 
         </div>
         
         <div id="spinner" class="spinner" style="display:none;">
             <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner" />
-        </div>	
-        <g:layoutBody />		
+        </div>
+
+        <div id="mainContent">
+            <g:layoutBody />
+        </div>
+
     </body>	
 </html>

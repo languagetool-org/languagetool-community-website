@@ -11,9 +11,9 @@
 
         <div class="body">
 
+        <g:render template="/languageSelection"/>
+
         <div class="dialog">
-        
-            <g:render template="/languageSelection"/>
 
             <h2><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></h2>
 
