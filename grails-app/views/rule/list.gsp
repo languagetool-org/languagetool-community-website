@@ -95,6 +95,7 @@
                                 PatternRule pRule = (PatternRule) rule;
                                 String patternDisplay = pRule.toPatternString();
                                 patternDisplay = StringTools.shorten(patternDisplay, 80, "...");
+                                patternDisplay = patternDisplay.replace(", ", " ");  // commas don't help the user to understand the pattern, remove them
                                 %>
                                 <td>${patternDisplay.encodeAsHTML()}</td>
                             </g:if>

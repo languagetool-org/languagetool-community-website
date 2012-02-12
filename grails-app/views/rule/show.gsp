@@ -28,7 +28,7 @@
                     <td><g:message code="ltc.rule.show.pattern" /></td>
                     <td>
 			            <g:if test="${rule instanceof PatternRule}">
-			                <span class="pattern">${rule.toPatternString().encodeAsHTML()}</span><br />
+			                <span class="pattern">${rule.toPatternString().replace(", ", " ").encodeAsHTML()}</span><br />
 			            </g:if>
 			            <g:else>
 			                <!-- TODO: add link to source code -->
