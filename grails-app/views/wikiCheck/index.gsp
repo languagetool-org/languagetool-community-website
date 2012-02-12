@@ -27,20 +27,17 @@
                 </g:form>
             </div>
 
-            View example:
-                <g:link action="index" params="${[url: 'http://en.wikipedia.org/wiki/User_talk:Dnaber']}">English</g:link>,
-                <g:link action="index" params="${[url: 'http://de.wikipedia.org/wiki/Benutzer_Diskussion:Dnaber']}">German</g:link>
+            <g:link action="index" params="${[url: 'http://en.wikipedia.org/wiki/User_talk:Dnaber']}">English example</g:link>
+                &middot; <g:link action="index" params="${[url: 'http://de.wikipedia.org/wiki/Benutzer_Diskussion:Dnaber']}">German example</g:link>
+                &middot; <g:link action="index" params="${[url: 'random:en']}">Random English page</g:link>
+                &middot; <g:link action="index" params="${[url: 'random:de']}">Random German page</g:link>
 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <p style="margin-top: 10px">
             Bookmark and call on any Wikipedia page to check it:
-              <a href="javascript:(function(){%20window.open('http://community.languagetool.org/wikiCheck/index?url='+escape(location.href));%20})();">WikiCheck Bookmarklet</a>
+              <a href="javascript:(function(){%20window.open('http://community.languagetool.org/wikiCheck/index?url='+escape(location.href));%20})();">WikiCheck Bookmarklet</a></p>
 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Check random page:
-              <g:link action="index" params="${[url: 'random:en']}">English</g:link>,
-              <g:link action="index" params="${[url: 'random:de']}">German</g:link>
-                        
-            <br /><br />
+
+            <br />
             
             <g:if test="${result}">
 
