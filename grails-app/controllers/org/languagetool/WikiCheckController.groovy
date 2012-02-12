@@ -51,6 +51,7 @@ class WikiCheckController extends BaseController {
       }
       WikipediaQuickCheck checker = new WikipediaQuickCheck()
       String pageUrl = getPageUrl(params, checker)
+      String pageEditUrl = getPageEditUrl(pageUrl)
       URL plainTextUrl = new URL(CONVERT_URL_PREFIX + pageUrl.replace(' ', '_'))
       String plainText = download(plainTextUrl)
       if (plainText == '') {
@@ -75,11 +76,18 @@ class WikiCheckController extends BaseController {
               lang: result.getLanguageCode(),
               url: params.url,
               realUrl: pageUrl,
+              realEditUrl: pageEditUrl,
               disabledRuleIds: checker.getDisabledRuleIds(),
               plainText: plainText]
     } else {
       []
     }
+  }
+
+  String getPageEditUrl(String url) {
+    // In:  http://de.wikipedia.org/wiki/Berlin
+    // Out: http://de.wikipedia.org/w/index.php?title=Berlin&action=edit
+    return url.replace("/wiki/", "/w/index.php?title=") + "&action=edit"
   }
 
   private String getPageUrl(params, WikipediaQuickCheck checker) {

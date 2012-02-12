@@ -43,7 +43,7 @@
 
                 <h2 style="margin-top:10px;margin-bottom:10px">Result</h2>
                 
-                <p>URL: <a href="${realUrl.encodeAsHTML()}">${realUrl.encodeAsHTML()}</a></p>
+                <p>URL: <a href="${realUrl.encodeAsHTML()}">${realUrl.encodeAsHTML()}</a> (<a href="${realEditUrl}">edit</a>)</p>
                 
                 <br />
                 
