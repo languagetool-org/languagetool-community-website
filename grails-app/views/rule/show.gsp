@@ -31,8 +31,9 @@
 			                <span class="pattern">${rule.toPatternString().replace(", ", " ").encodeAsHTML()}</span><br />
 			            </g:if>
 			            <g:else>
-			                <!-- TODO: add link to source code -->
-			                <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span><br/>
+			                <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span>
+                            <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/JLanguageTool/src/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                            <br/>
 			            </g:else>
                     </td>
                 </tr>
