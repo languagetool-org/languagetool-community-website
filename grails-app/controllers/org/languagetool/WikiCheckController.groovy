@@ -35,7 +35,7 @@ class WikiCheckController extends BaseController {
   private static final Pattern XML_TITLE_PATTERN = Pattern.compile("title=\"(.*?)\"")
     
   static {
-    LANG_TO_DISABLED_RULES.put("en", Arrays.asList("EN_QUOTES"))
+    LANG_TO_DISABLED_RULES.put("en", Arrays.asList("EN_QUOTES", "ENGLISH_WORD_REPEAT_BEGINNING_RULE"))
     LANG_TO_DISABLED_RULES.put("de", Arrays.asList("DE_CASE", "DE_AGREEMENT", "PFEILE", "BISSTRICH", "AUSLASSUNGSPUNKTE", "MALZEICHEN"))
     LANG_TO_DISABLED_RULES.put("fr", Arrays.asList("FRENCH_WHITESPACE"))
     LANG_TO_DISABLED_RULES.put("pl", Arrays.asList("BRAK_SPACJI"))
