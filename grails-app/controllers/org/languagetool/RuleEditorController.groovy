@@ -41,15 +41,20 @@ class RuleEditorController extends BaseController {
         List expectedRuleMatches = langTool.check(params.incorrectExample1)
         List unexpectedRuleMatches = langTool.check(params.correctExample1)
         List problems = []
+        List shortProblems = []
         if (expectedRuleMatches.size() == 0) {
             problems.add("The rule did not find an error in the given example sentence with an error")
+            shortProblems.add("errorNotFound")
         }
         if (unexpectedRuleMatches.size() > 0) {
             problems.add("The rule found an error in the given example sentence that is not supposed to contain an error")
+            shortProblems.add("unexpectedErrorFound")
         }
         if (problems.size() == 0) {
+            log.info("Checked rule: valid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
             [messagePreset: params.messageBackup, namePreset: params.nameBackup]
         } else {
+            log.info("Checked rule: invalid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule)])
         }
     }
@@ -86,8 +91,10 @@ class RuleEditorController extends BaseController {
 
     def createXml = {
         if (!params.message || params.message.trim().isEmpty()) {
+            log.info("Create rule XML: missing message parameter")
             [error: "Please fill out the 'Error Message' field"]
         } else {
+            log.info("Create rule XML: okay")
             String message = getMessage()
             String correctSentence = params.correctExample1.encodeAsHTML()
             Language language = getLanguage()
