@@ -16,16 +16,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
- 
+
 package org.languagetool
 
 /**
  * The ID of a disabled rule.
  */
 class DisabledRule {
-  
-  String ruleID
-  
-  static belongsTo = LanguageConfiguration
-  
+
+    String ruleID
+
+    static belongsTo = LanguageConfiguration
+
 }

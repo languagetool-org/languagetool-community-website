@@ -26,21 +26,21 @@ import java.util.Date
  *  -- whether the error and its message is useful or not.
  */
 class UserOpinion {
-  
-  Long id
-  Date date
-  int opinion
-  User user
-  CorpusMatch corpusMatch
 
-  public UserOpinion() {
-  }
-  
-  public UserOpinion(User user, CorpusMatch corpusMatch, int opinion) {
-    this.user = user
-    this.corpusMatch = corpusMatch
-    this.opinion = opinion
-    date = new Date()
-  }
-  
+    Long id
+    Date date
+    int opinion
+    User user
+    CorpusMatch corpusMatch
+
+    public UserOpinion() {
+    }
+
+    public UserOpinion(User user, CorpusMatch corpusMatch, int opinion) {
+        this.user = user
+        this.corpusMatch = corpusMatch
+        this.opinion = opinion
+        date = new Date()
+    }
+
 }

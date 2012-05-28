@@ -27,11 +27,11 @@ import java.util.Set
  */
 class LanguageConfiguration {
 
-  String language
-  
-  static hasMany = [disabledRules: DisabledRule]
-  
-  static belongsTo = User
-  static fetchMode = [disabledRules:"eager"]    // avoid the "lazy" exception
-  
+    String language
+
+    static hasMany = [disabledRules: DisabledRule]
+
+    static belongsTo = User
+    static fetchMode = [disabledRules:"eager"]    // avoid the "lazy" exception
+
 }

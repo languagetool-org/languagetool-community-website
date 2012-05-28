@@ -27,19 +27,19 @@ import javax.mail.internet.*
  * User login, logout, settings, and registration.
  */
 class UserController extends BaseController {
-    
+
     def beforeInterceptor = [action: this.&adminAuth, except:
-      ['login', 'logout', 'register', 'doRegister', 'completeRegistration', 'settings',
-       'exportRules']]
+            ['login', 'logout', 'register', 'doRegister', 'completeRegistration', 'settings',
+                    'exportRules']]
 
     // the delete, save and update actions only accept POST requests
     def static allowedMethods = [delete:'POST', save:'POST', update:'POST',
-                          doRegister:'POST', settings:['POST', 'GET']]
+            doRegister:'POST', settings:['POST', 'GET']]
 
     def index = {
         redirect(action:list,params:params)
     }
-    
+
     def register = {
     }
 
@@ -48,64 +48,64 @@ class UserController extends BaseController {
      */
     def exportRules = {
         if (!session.user) {
-          throw new Exception("you need to be logged in")
+            throw new Exception("you need to be logged in")
         }
         User user = session.user
         List userRules = UserRule.findAllByUser(user)
         if (userRules.size() == 0) {
-          flash.message = "You don't have any personal rules yet"
-          redirect(controller:'rule', action:'list')
+            flash.message = "You don't have any personal rules yet"
+            redirect(controller:'rule', action:'list')
         }
         StringBuilder sb = new StringBuilder()
         String langCode = userRules.get(0).lang
         sb.append('<?xml version="1.0" encoding="UTF-8"?>\n')
         sb.append("<!-- Personal LanguageTool rules exported " +
-            "from http://community.languagetool.org on ${new Date()} -->\n")
+                "from http://community.languagetool.org on ${new Date()} -->\n")
         sb.append("<rules lang=\"${langCode}\">\n")
         sb.append("<category name=\"User Rules from community.languagetool.org\">\n")
         for (userRule in userRules) {
-          sb.append(userRule.toPatternRule(true).toXML())
-          sb.append("\n")
+            sb.append(userRule.toPatternRule(true).toXML())
+            sb.append("\n")
         }
         sb.append("</category>\n")
         sb.append("</rules>\n")
         String langName = Language.getLanguageForShortName(langCode).getName()
         response.setHeader("Content-Disposition",
-            "attachment; filename=rules-${langCode}-${langName}.xml")
+                "attachment; filename=rules-${langCode}-${langName}.xml")
         render(text:sb.toString(), contentType: "text/xml")
     }
-    
+
     def doRegister = {
         String toAddress = params.email
         if (!toAddress) {
-          flash.message = "No email address set"
-          render(view:'register',model:[params:params])
-          return
+            flash.message = "No email address set"
+            render(view:'register',model:[params:params])
+            return
         }
         String passwordErrorMsg = checkNewPassword()
         if (passwordErrorMsg) {
-          flash.message = passwordErrorMsg
-          render(view:'register', model:[params:params])
-          return
+            flash.message = passwordErrorMsg
+            render(view:'register', model:[params:params])
+            return
         }
         if (User.findByUsername(toAddress)) {
-          // TODO: show as a real error message
-          flash.message = "That email address is alread in use"
-          render(view:'register',model:[params:params])
-          return
+            // TODO: show as a real error message
+            flash.message = "That email address is alread in use"
+            render(view:'register',model:[params:params])
+            return
         }
         User newUser = new User(toAddress, PasswordTools.hash(params.password1))
         // Note: user is not activated until we set registerDate
         boolean saved = newUser.save()
         if (!saved) {
-          throw new Exception("Could not save user: ${user.errors}")
+            throw new Exception("Could not save user: ${user.errors}")
         }
         String secret = grailsApplication.config.registration.ticket.secret
         assert(secret && secret != "" && secret != "{}")
         RegistrationTicket ticket = new RegistrationTicket(newUser, secret)
         saved = ticket.save()
         if (!saved) {
-          throw new Exception("Could not generate registration ticket: ${ticker.errors}")
+            throw new Exception("Could not generate registration ticket: ${ticker.errors}")
         }
         log.info("Created user: ${newUser.username}, id=${newUser.id}")
         sendRegistrationMail(toAddress, ticket)
@@ -114,18 +114,18 @@ class UserController extends BaseController {
 
     private String checkNewPassword() {
         if (!params.password1 || !params.password2) {
-          return "No password set"
+            return "No password set"
         }
         if (params.password1 != params.password2) {
-          return "Passwords don't match"
+            return "Passwords don't match"
         }
         if (params.password1.size() < grailsApplication.config.registration.min.password.length) {
-          return "Password is too short, minimum length is " +
-            "${grailsApplication.config.registration.min.password.length}"
+            return "Password is too short, minimum length is " +
+                    "${grailsApplication.config.registration.min.password.length}"
         }
         return null
     }
-    
+
     private void sendRegistrationMail(String toAddress, RegistrationTicket ticket) {
         Properties props = new Properties()
         log.info("Preparing registration mail to $toAddress")
@@ -141,8 +141,8 @@ class UserController extends BaseController {
         msg.setSubject(grailsApplication.config.registration.mail.subject)
         msg.setSentDate(new Date())
         msg.setText(grailsApplication.config.registration.mail.text.
-            replaceAll("#CODE#", ticket.getTicketCode()).
-            replaceAll("#USERID#", ticket.user.id + ""))
+                replaceAll("#CODE#", ticket.getTicketCode()).
+                replaceAll("#USERID#", ticket.user.id + ""))
         msg.saveChanges()
         Transport tr = session.getTransport("smtp")
         tr.connect(smtpHost, smtpUsername, smtpPassword);
@@ -156,95 +156,95 @@ class UserController extends BaseController {
      */
     def completeRegistration = {
         if (!params.code || !params.id) {
-          throw new Exception("No ticket code and/or ID is specified")
+            throw new Exception("No ticket code and/or ID is specified")
         }
         User user = User.get(params.id)
         if (!user) {
-          throw new Exception("Your user account could not be found: ${params.id.encodeAsHTML()}")
+            throw new Exception("Your user account could not be found: ${params.id.encodeAsHTML()}")
         }
         RegistrationTicket ticket = RegistrationTicket.findByTicketCodeAndUser(params.code, user)
         // TODO: check for age of ticket!
         if (!ticket) {
-          throw new Exception("Your registration ticket for id ${params.id.encodeAsHTML()} is not valid")
+            throw new Exception("Your registration ticket for id ${params.id.encodeAsHTML()} is not valid")
         }
         user.setRegisterDate(new Date())
     }
-    
+
     def settings = {
         if (!session.user) {
-          throw new Exception("You need to be logged in to edit your settings")
+            throw new Exception("You need to be logged in to edit your settings")
         }
         if (request.method == 'GET') {
-          [user: session.user]
+            [user: session.user]
         } else if (request.method == 'POST') {
-          log.info("User ${session.user} changing his/her password")
-          String passwordErrorMsg = checkNewPassword()
-          if (passwordErrorMsg) {
-            flash.message = passwordErrorMsg
-            render(view:'settings', model:[params:params])
-            return
-          }
-          def saved = session.user.save()
-          session.user.password = PasswordTools.hash(params.password1)
-          if (!saved) {
-            throw new Exception("Could not save settings: ${session.user.errors}")
-          }
-          flash.message = "Password changed"
+            log.info("User ${session.user} changing his/her password")
+            String passwordErrorMsg = checkNewPassword()
+            if (passwordErrorMsg) {
+                flash.message = passwordErrorMsg
+                render(view:'settings', model:[params:params])
+                return
+            }
+            def saved = session.user.save()
+            session.user.password = PasswordTools.hash(params.password1)
+            if (!saved) {
+                throw new Exception("Could not save settings: ${session.user.errors}")
+            }
+            flash.message = "Password changed"
         } else {
-          throw new Exception("unsupported method ${request.method}")
+            throw new Exception("unsupported method ${request.method}")
         }
     }
-    
+
     def login = {
         if (request.method == 'GET') {
-          // show login page
-          session.user = null
-          if (params.controllerName && params.actionName) {
-              session.controllerName = params.controllerName
-              session.actionName = params.actionName
-          }
-          User user = new User()
+            // show login page
+            session.user = null
+            if (params.controllerName && params.actionName) {
+                session.controllerName = params.controllerName
+                session.actionName = params.actionName
+            }
+            User user = new User()
         } else {
-          User user = User.findByUsername(params.email)
-          if (user) {
-            String hashedPassword = user.password
-            if (!PasswordTools.checkPassword(params.password, hashedPassword)) {
-              loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): password invalid")
-              return
-            }
-            if (!user.registerDate) {
-              loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): account not activated")
-              return
-            }
-            log.info("login successful for user ${user} (${request.getRemoteAddr()})")
-            session.user = user
-            user.lastLoginDate = new Date()
-            def redirectParams = 
-              session.origParams ? session.origParams : [uri:"/"]
-            log.info("session.requestMethod="+redirectParams)
-            if (params.ids && params.lang) {
-                // user wants to vote on an error found by LanguageTool:
-                redirect(controller:'homepage', params:[ids:params.ids,lang:params.lang])
-            } else if (redirectParams?.controller && redirectParams?.action) {
-                redirect(controller:redirectParams?.controller,
-                        action: redirectParams?.action, params:redirectParams)
-            } else if (session.controllerName && session.actionName) {
-                redirect(controller:session.controllerName,
-                        action: session.actionName)
+            User user = User.findByUsername(params.email)
+            if (user) {
+                String hashedPassword = user.password
+                if (!PasswordTools.checkPassword(params.password, hashedPassword)) {
+                    loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): password invalid")
+                    return
+                }
+                if (!user.registerDate) {
+                    loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): account not activated")
+                    return
+                }
+                log.info("login successful for user ${user} (${request.getRemoteAddr()})")
+                session.user = user
+                user.lastLoginDate = new Date()
+                def redirectParams =
+                    session.origParams ? session.origParams : [uri:"/"]
+                log.info("session.requestMethod="+redirectParams)
+                if (params.ids && params.lang) {
+                    // user wants to vote on an error found by LanguageTool:
+                    redirect(controller:'homepage', params:[ids:params.ids,lang:params.lang])
+                } else if (redirectParams?.controller && redirectParams?.action) {
+                    redirect(controller:redirectParams?.controller,
+                            action: redirectParams?.action, params:redirectParams)
+                } else if (session.controllerName && session.actionName) {
+                    redirect(controller:session.controllerName,
+                            action: session.actionName)
+                } else {
+                    redirect(uri:request.getContextPath()+"/")        // got to homepage
+                }
             } else {
-                redirect(uri:request.getContextPath()+"/")        // got to homepage
+                loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): user not found")
             }
-          } else {
-            loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): user not found")
-          }
         }
     }
-    
+
     private void loginFailed(String internalMsg) {
-      log.warn(internalMsg)
-      flash.message = message(code:'ltc.login.invalid')
+        log.warn(internalMsg)
+        flash.message = message(code:'ltc.login.invalid')
     }
-    
+
     def logout = {
         log.info("logout of user ${session.user}")
         session.user = null
@@ -253,7 +253,7 @@ class UserController extends BaseController {
         flash.message = "Successfully logged out"
         redirect(uri:"")
     }
-    
+
     def list = {
         if(!params.max) params.max = 10
         [ userList: User.list( params ) ]

@@ -25,20 +25,20 @@ import java.util.Date
  * An error detected by the grammar checker in a text corpus.
  */
 class CorpusMatch {
-  
-  String languageCode
-  String ruleID
-  String message
-  String sourceURI
-  String errorContext
-  Date corpusDate
-  Date checkDate
-  /**
-   * Set to 0 if the match if outdated, i.e. when new matches have
-   * been added to the database.
-   */
-  boolean isVisible
-  
-  static hasMany = [userOpinions: UserOpinion]
+
+    String languageCode
+    String ruleID
+    String message
+    String sourceURI
+    String errorContext
+    Date corpusDate
+    Date checkDate
+    /**
+     * Set to 0 if the match if outdated, i.e. when new matches have
+     * been added to the database.
+     */
+    boolean isVisible
+
+    static hasMany = [userOpinions: UserOpinion]
 
 }

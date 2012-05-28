@@ -25,50 +25,50 @@ import org.languagetool.tokenizers.Tokenizer
 
 class PatternStringConverterService {
 
-  static transactional = true
+    static transactional = true
 
-  def convertToPatternRule(String patternString, Language lang) {
-    List patternParts = getPatternParts(lang, patternString)
-    List elements = []
-    for (patternPart in patternParts) {
-      boolean isRegex = isRegex(patternPart)
-      elements.add(new Element(patternPart, false, isRegex, false))
+    def convertToPatternRule(String patternString, Language lang) {
+        List patternParts = getPatternParts(lang, patternString)
+        List elements = []
+        for (patternPart in patternParts) {
+            boolean isRegex = isRegex(patternPart)
+            elements.add(new Element(patternPart, false, isRegex, false))
+        }
+        PatternRule patternRule = new PatternRule("ID1", lang, elements, "empty description", "empty message", "empty short description")
+        patternRule.setCategory(new Category("fake category"))
+        return patternRule
     }
-    PatternRule patternRule = new PatternRule("ID1", lang, elements, "empty description", "empty message", "empty short description")
-    patternRule.setCategory(new Category("fake category"))
-    return patternRule
-  }
 
-  // just a guess
-  private boolean isRegex(patternPart) {
-    return patternPart.find("[.|+*?\\[\\]]") != null
-  }
-
-  private List getPatternParts(Language lang, String patternString) {
-    // First split at whitespace, then properly tokenize unless it's a regex. Only this way we will
-    // properly tokenize "don't" but don't tokenize a regex like "foob.r":
-    List simpleParts = patternString.split("\\s+")
-    def tokenizer = lang.getWordTokenizer()
-    List patternParts = []
-    for (simplePart in simpleParts) {
-      if (isRegex(simplePart)) {
-        patternParts.add(simplePart)
-      } else {
-        patternParts.addAll(getTokens(tokenizer, simplePart))
-      }
+    // just a guess
+    private boolean isRegex(patternPart) {
+        return patternPart.find("[.|+*?\\[\\]]") != null
     }
-    return patternParts
-  }
 
-  private List getTokens(Tokenizer tokenizer, simplePart) {
-    List tokens = []
-    List patternPartsWithWhitespace = tokenizer.tokenize(simplePart)
-    for (patternPart in patternPartsWithWhitespace) {
-      if (!patternPart.trim().isEmpty()) {
-        tokens.add(patternPart)
-      }
+    private List getPatternParts(Language lang, String patternString) {
+        // First split at whitespace, then properly tokenize unless it's a regex. Only this way we will
+        // properly tokenize "don't" but don't tokenize a regex like "foob.r":
+        List simpleParts = patternString.split("\\s+")
+        def tokenizer = lang.getWordTokenizer()
+        List patternParts = []
+        for (simplePart in simpleParts) {
+            if (isRegex(simplePart)) {
+                patternParts.add(simplePart)
+            } else {
+                patternParts.addAll(getTokens(tokenizer, simplePart))
+            }
+        }
+        return patternParts
     }
-    return tokens
-  }
+
+    private List getTokens(Tokenizer tokenizer, simplePart) {
+        List tokens = []
+        List patternPartsWithWhitespace = tokenizer.tokenize(simplePart)
+        for (patternPart in patternPartsWithWhitespace) {
+            if (!patternPart.trim().isEmpty()) {
+                tokens.add(patternPart)
+            }
+        }
+        return tokens
+    }
 
 }

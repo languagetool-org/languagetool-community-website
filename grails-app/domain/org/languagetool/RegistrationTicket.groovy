@@ -26,19 +26,19 @@ import java.util.Date
  * be sent to the user via email to register at the website.
  */
 class RegistrationTicket {
-  
-  String ticketCode
-  Date generationDate
-  User user
-  
-  public RegistrationTicket() {
-  }
-  
-  public RegistrationTicket(User user, String secret) {
-    String key = Math.random() + "/" + secret
-    this.ticketCode = PasswordTools.hexMD5(key)
-    this.generationDate = new Date()
-    this.user = user
-  }
-  
+
+    String ticketCode
+    Date generationDate
+    User user
+
+    public RegistrationTicket() {
+    }
+
+    public RegistrationTicket(User user, String secret) {
+        String key = Math.random() + "/" + secret
+        this.ticketCode = PasswordTools.hexMD5(key)
+        this.generationDate = new Date()
+        this.user = user
+    }
+
 }

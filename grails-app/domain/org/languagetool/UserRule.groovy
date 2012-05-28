@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
- 
+
 package org.languagetool
 
 import org.languagetool.rules.*
@@ -27,36 +27,36 @@ import org.languagetool.rules.patterns.*
  */
 class UserRule {
 
-   boolean isPublic
-   User user
-   String lang
-   String originalRuleId
-   
-   //FIXME: are these needed at all now that we generate PatternRule on-the-fly??
-   String pattern
-   String description
-   String message
-   
-   static constraints = {
-     originalRuleId(nullable: true)
-     pattern(maxSize:5000)
-   }
-   
-   PatternRule toPatternRule(boolean useInternalId) {
-     final PatternRuleLoader loader = new PatternRuleLoader()
-     String extPattern = "<rules lang=\"${lang}\">" +
-       "<category name='anyCategory'>" +
-       pattern +
-       "</category>" +
-       "</rules>"
-     InputStream xmlStream = new ByteArrayInputStream(extPattern.getBytes());
-     final List<PatternRule> rules = loader.getRules(xmlStream, "[xml stream=" + extPattern + "]");
-     if (rules.size() != 1) {
-       throw new Exception("Unexpected length of rule list: ${rules.size()}, pattern: $pattern")
-     }
-     PatternRule rule = rules.get(0)
-     rule.setCategory(new Category("User Rules"))
-     return rule
-   }
-   
+    boolean isPublic
+    User user
+    String lang
+    String originalRuleId
+
+    //FIXME: are these needed at all now that we generate PatternRule on-the-fly??
+    String pattern
+    String description
+    String message
+
+    static constraints = {
+        originalRuleId(nullable: true)
+        pattern(maxSize:5000)
+    }
+
+    PatternRule toPatternRule(boolean useInternalId) {
+        final PatternRuleLoader loader = new PatternRuleLoader()
+        String extPattern = "<rules lang=\"${lang}\">" +
+                "<category name='anyCategory'>" +
+                pattern +
+                "</category>" +
+                "</rules>"
+        InputStream xmlStream = new ByteArrayInputStream(extPattern.getBytes());
+        final List<PatternRule> rules = loader.getRules(xmlStream, "[xml stream=" + extPattern + "]");
+        if (rules.size() != 1) {
+            throw new Exception("Unexpected length of rule list: ${rules.size()}, pattern: $pattern")
+        }
+        PatternRule rule = rules.get(0)
+        rule.setCategory(new Category("User Rules"))
+        return rule
+    }
+
 }

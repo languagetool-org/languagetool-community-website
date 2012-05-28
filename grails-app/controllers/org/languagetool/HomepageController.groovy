@@ -30,7 +30,7 @@ import org.apache.tika.language.LanguageIdentifier
 class HomepageController extends BaseController {
 
     SessionFactory sessionFactory       // will be injected automatically
-  
+
     /**
      * Display the site's main page.
      */
@@ -39,41 +39,41 @@ class HomepageController extends BaseController {
         response.setCharacterEncoding("UTF-8")
         String langCode = "en"
         if (params.lang) {
-          langCode = params.lang
+            langCode = params.lang
         } else {
-          params.lang = "en"
+            params.lang = "en"
         }
         def hibSession = sessionFactory.getCurrentSession()
         final int maxCorpusMatches = 3
         SQLQuery q
         if (params.ids) {
-          // user logged in specifically to vote, we don't show random
-          // items in this case:
-          q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
-            "language_code = ? AND (id = ? OR id = ? OR id = ?) LIMIT $maxCorpusMatches")
-          q.setString(0, langCode)
-          String[] lastShownIds = params.ids.split(",")
-          int i = 1
-          for (String id in lastShownIds) {
-            q.setString(i, id)
-            i++
-          }
+            // user logged in specifically to vote, we don't show random
+            // items in this case:
+            q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
+                    "language_code = ? AND (id = ? OR id = ? OR id = ?) LIMIT $maxCorpusMatches")
+            q.setString(0, langCode)
+            String[] lastShownIds = params.ids.split(",")
+            int i = 1
+            for (String id in lastShownIds) {
+                q.setString(i, id)
+                i++
+            }
         } else {
-          q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
-            "language_code = ? AND is_visible = 1 ORDER BY RAND() LIMIT $maxCorpusMatches")
-          q.setString(0, langCode)
+            q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
+                    "language_code = ? AND is_visible = 1 ORDER BY RAND() LIMIT $maxCorpusMatches")
+            q.setString(0, langCode)
         }
         q.addEntity("match", CorpusMatch.class)
         def matches = []
         for (match in q.list()) {
-          CorpusMatchInfo cmi = new CorpusMatchInfo((CorpusMatch)match)
-          if (session.user) {
-            UserOpinion opinion = UserOpinion.findByUserAndCorpusMatch(session.user, match)
-            if (opinion) {
-              cmi.opinion = opinion.opinion
+            CorpusMatchInfo cmi = new CorpusMatchInfo((CorpusMatch)match)
+            if (session.user) {
+                UserOpinion opinion = UserOpinion.findByUserAndCorpusMatch(session.user, match)
+                if (opinion) {
+                    cmi.opinion = opinion.opinion
+                }
             }
-          }
-          matches.add(cmi)
+            matches.add(cmi)
         }
         Language langObject = Language.getLanguageForShortName(langCode)
         // force some order so we show the same order again as before login
@@ -81,8 +81,8 @@ class HomepageController extends BaseController {
         // items in that case):
         Collections.sort(matches)
         render(view:'index',model:[matches: matches, langCode: langCode,
-                                   lang: langCode,		// used in _corpusMatches.gsp
-                                   languages: Language.REAL_LANGUAGES, language: langObject])
+                lang: langCode,		// used in _corpusMatches.gsp
+                languages: Language.REAL_LANGUAGES, language: langObject])
     }
 
     /**
@@ -117,41 +117,41 @@ class HomepageController extends BaseController {
         lt.activateDefaultPatternRules()
         List userRules = getUserRules()
         for (rule in userRules) {
-          lt.addRule(rule)
+            lt.addRule(rule)
         }
         // load user configuration and disable deactivated rules:
         LanguageConfiguration langConfig = null
         if (session.user) {
-          langConfig = RuleController.getLangConfigforUser(lang, session)
-          if (langConfig) {
-            for (disRule in langConfig.disabledRules) {
-              lt.disableRule(disRule.ruleID)
+            langConfig = RuleController.getLangConfigforUser(lang, session)
+            if (langConfig) {
+                for (disRule in langConfig.disabledRules) {
+                    lt.disableRule(disRule.ruleID)
+                }
             }
-          }
         }
         final int maxTextLen = grailsApplication.config.max.text.length
         final String text = params.text
         if (text.size() > maxTextLen) {
-          text = text.substring(0, maxTextLen)
-          flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
+            text = text.substring(0, maxTextLen)
+            flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
         List ruleMatches = lt.check(text)
         // TODO: count only disabledRules for the current language
-        [matches: ruleMatches, lang: lang, languages: languages, 
-           disabledRules: langConfig?.disabledRules, textToCheck: params.text,
-           autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
+        [matches: ruleMatches, lang: lang, languages: languages,
+                disabledRules: langConfig?.disabledRules, textToCheck: params.text,
+                autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
     }
-    
+
     private getUserRules() {
-      List rules = []
-      if (session.user) {
-        List userRules = UserRule.findAllByUserAndLang(session.user, params.lang)
-        for (userRule in userRules) {
-          Rule patternRule = userRule.toPatternRule(true)
-          rules.add(patternRule)
+        List rules = []
+        if (session.user) {
+            List userRules = UserRule.findAllByUserAndLang(session.user, params.lang)
+            for (userRule in userRules) {
+                Rule patternRule = userRule.toPatternRule(true)
+                rules.add(patternRule)
+            }
         }
-      }
-      return rules
+        return rules
     }
-    
+
 }
