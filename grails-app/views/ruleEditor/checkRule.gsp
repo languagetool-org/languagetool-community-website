@@ -4,7 +4,7 @@
     <td><g:textField id="message"
             onkeypress="return handleReturnForXmlCreation(event);"
             onfocus="\$('message').setStyle({color: 'black'})"
-            onchange="\$('messageBackup').value = \$('message').value"
+            onblur="\$('messageBackup').value = \$('message').value"
             class="preFilledField" type="text" name="message"
             value="${messagePreset ? messagePreset.encodeAsHTML() : 'Did you mean \'bad\'?'}"/>
         <!--<br/>
@@ -18,9 +18,9 @@
     <td><g:textField id="name"
             onkeypress="return handleReturnForXmlCreation(event);"
             onfocus="\$('name').setStyle({color: 'black'})"
-            onchange="\$('nameBackup').value = \$('name').value"
+            onblur="\$('nameBackup').value = \$('name').value"
             class="preFilledField" type="text" name="name"
-            value="${namePreset ? namePreset.encodeAsHTML() : 'confusion of bed/bad'}"/>
+            value="${(namePreset || messagePreset) ? namePreset.encodeAsHTML() : 'confusion of bed/bad'}"/>
         <!--<br/>
         <span class="metaInfo">Example: confusion of bed/bad</span>-->
     </td>
