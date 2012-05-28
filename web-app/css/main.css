@@ -13,7 +13,7 @@ html * {
 
 body {
     background: #fff;
-    color: #333;
+    color: #222222;
     font: 12px verdana, arial, helvetica, sans-serif;
 }
 
@@ -48,6 +48,9 @@ h1 {
 
 ul {
     padding-left: 15px;	
+}
+input[type="button"] {
+    background-color: #eeeeee;
 }
 
 input, select {
@@ -133,7 +136,7 @@ div.errors {
     border: 1px solid red;
     color: #cc0000;
     margin: 10px 0 5px 0;
-    padding: 5px 0 5px 0;
+    padding: 5px;
 }
 div.errors ul {
     list-style: none;
@@ -395,4 +398,13 @@ th.desc a {
 
 .javaRule {
     color: #777777;
+}
+
+.metaInfo {
+    color: #777777;
+}
+
+.preFilledField {
+    width: 400px;
+    color: #999999;
 }
