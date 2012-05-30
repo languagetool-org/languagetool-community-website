@@ -1,14 +1,17 @@
 <table style="border: 0px">
 <tr>
     <td width="150">Error Message</td>
+    <%
+    String preset = "Did you mean \"bad\"?";
+    %>
     <td><g:textField id="message"
             onkeypress="return handleReturnForXmlCreation(event);"
             onfocus="\$('message').setStyle({color: 'black'})"
             onblur="\$('messageBackup').value = \$('message').value"
             class="preFilledField" type="text" name="message"
-            value="${messagePreset ? messagePreset.encodeAsHTML() : 'Did you mean \'bad\'?'}"/>
-        <!--<br/>
-        <span class="metaInfo">Example: Did you mean 'bad'?</span>-->
+            value='${messagePreset ? messagePreset : preset}'/>
+        <br/>
+        <span class="metaInfo">Use double quotes to mark the correction.</span>
     </td>
 </tr>
 <tr>

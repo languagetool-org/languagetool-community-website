@@ -144,7 +144,7 @@ class RuleEditorController extends BaseController {
 
     private String getMessage() {
         String message = params.message.encodeAsHTML()
-        message = message.replaceAll("['\"](.*?)['\"]", "<suggestion>\$1</suggestion>")
+        message = message.replaceAll("\"(.*?)\"", "<suggestion>\$1</suggestion>")
         message = message.replaceAll("&quot;(.*?)&quot;", "<suggestion>\$1</suggestion>")
         return message
     }
