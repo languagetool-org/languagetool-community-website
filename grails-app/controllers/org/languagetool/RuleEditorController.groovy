@@ -125,7 +125,8 @@ class RuleEditorController extends BaseController {
     private String createXml(String name, String message, String incorrectSentence, String correctSentence) {
         Language lang = getLanguage()
         PatternRule patternRule = createPatternRule(lang)
-        String xml = """<rule id="RULE_1" name="${name.encodeAsHTML()}">
+        String ruleId = createRuleIdFromName(name)
+        String xml = """<rule id="${ruleId.encodeAsHTML()}" name="${name.encodeAsHTML()}">
     <pattern>\n"""
         for (element in patternRule.getElements()) {
             if (element.isRegularExpression()) {
@@ -140,6 +141,10 @@ class RuleEditorController extends BaseController {
     <example type="correct">${correctSentence}</example>
 </rule>"""
         xml
+    }
+
+    String createRuleIdFromName(String name) {
+        return name.toUpperCase().replaceAll("[\\s/]+", "_").replaceAll("[^A-Z_]", "")
     }
 
     private String getMessage() {
