@@ -1,0 +1,222 @@
+/*
+
+Copied and cleaned from languagetool.org - to be used for Grails-based content
+that is embedded via iframe on www.languagetool.org.
+
+*/
+body {
+}
+
+a:link {
+	color: #bf6c00;
+	text-decoration: none;
+}
+a:visited {
+	color: #a75e00;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:active {
+	text-decoration: underline;
+}
+
+h1 {
+	margin-top: 5px;
+	text-align: center;
+	font-family: verdana, sans-serif;
+	font-size: 24px;
+	color: #ef8701;
+}
+
+h2 {
+	margin-top: 30px;
+	margin-bottom: 5px;
+}
+
+h3 {
+	margin-bottom: 2px;
+}
+
+code {
+    background-color: #eeeeee;
+}
+tt {
+    background-color: #eeeeee;
+}
+.xmlrule {
+    background-color: #eeeeee;
+    padding-top: 10px;
+    padding-bottom: 10px
+}
+
+.xmlcode {
+	font-family: monospace;
+	margin-left: 15px;
+	font-size: larger;
+}
+
+.xmlcodeNoIndent {
+	font-family: monospace;
+	font-size: larger;
+}
+
+pre {
+	margin-bottom: 0px;
+}
+
+.firstpara {
+	margin-top: 0px;
+}
+
+.content {
+	padding-left: 5px;
+	padding-right: 25px;
+	color: #2c2c2c;
+	font-family: verdana, sans-serif;
+	font-size: 12px;
+}
+
+.footer {
+	padding-top: 20px;
+	text-align: right;
+	color: #bbbbbb;
+	font-family: verdana, sans-serif;
+	font-size: 9px;
+}
+
+.invisible {
+	padding-top: 20px;
+	text-align: right;
+	color: #ffffee;
+	font-family: verdana, sans-serif;
+	font-size: 9px;
+}
+
+.footer a {
+	color: #ffc06f;
+}
+
+.lastmod {
+    margin-top: 40px;
+	font-size: 9px;
+	color: #888888;
+	font-family: verdana, sans-serif;
+}
+
+
+/* ------------------------------------------------- */
+
+#menu {
+    font-weight: bold;
+    text-decoration: none;
+    font-family: verdana, sans-serif;
+    font-size: 16px;
+}
+
+.menuitem {
+    margin-bottom: 10px;
+}
+
+.submenuitem {
+    margin-top: -8px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    font-size: 14px;
+}
+
+.menuitem a {
+    padding-left: 10px;
+   	padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-left: 0px;
+    margin-right: 0px;
+   	margin-bottom: 10px;
+    color: #464646;
+    text-decoration: none;
+}
+
+.menuitem a:hover {
+    color: white;
+    background-color: #ef8701;
+}
+
+.activeMenuitem {
+	color: #ffffff;
+	background: #ef8701;
+    padding-left: 10px;
+   	padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+
+.warning {
+	border-color: #ffb251;
+	border-style: solid;
+	border-width: 2px;
+	background: #fcffd5;
+	padding: 5px;
+}
+
+
+.largelist li {
+    margin-top: 12px;
+}
+
+.largelist li li {
+    margin-top: 5px;
+}
+
+li {
+    margin-top: 5px;
+}
+
+/* check form on the homepage */
+FORM SELECT:HOVER {
+    background-color: #EF8701;
+    color: #FFFFFF;
+    border: 1px solid #464646;
+}
+FORM SELECT {
+    background-color: #F9F5F2;
+    color: #464646;
+    border: 1px solid #464646;
+    font-weight: bold;
+    padding: 4px;
+}
+FORM INPUT:HOVER {
+    background-color: #EF8701;
+    border: 1px solid #464646;
+    color: #FFFFFF;
+}
+FORM INPUT {
+    background-color: #FBF7F4;
+    border: 1px solid #464646;
+    color: #464646;
+    font-weight: bold;
+    padding: 4px;
+}
+FORM TEXTAREA {
+    background-color: #EEEEEE;
+    border: 1px solid #464646;
+}
+/* end: check form on the homepage */
+
+
+
+input[type="button"] {
+    background-color: #eeeeee;
+}
+
+.metaInfo {
+    color: #888888;
+}
+
+.preFilledField {
+    width: 500px;
+}

@@ -1,6 +1,6 @@
 <table style="border: 0px">
 <tr>
-    <td width="150">Error Message</td>
+    <td valign="top" width="150">Error Message</td>
     <%
     String preset = "Did you mean \"bad\"?";
     %>
@@ -41,4 +41,5 @@
     document.ruleForm.message.select();
 </script>
 
+<br/>
 <div id="xml"></div>

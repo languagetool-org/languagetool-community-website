@@ -5,7 +5,7 @@
 <html>
     <head>
         <g:javascript library="prototype" />
-        <meta name="layout" content="main" />
+        <meta name="layout" content="iframemain" />
         <title>Create a new LanguageTool rule</title>
         <script type="text/javascript">
 
@@ -32,9 +32,9 @@
     </head>
     <body>
 
-        <div class="body">
+        <div class="content">
 
-            <h2>Rule Creator</h2>
+            <!--<h2>Rule Creator</h2>-->
 
             <noscript class="warn">This page requires Javascript</noscript>
         
@@ -96,6 +96,7 @@
 
                 </table>
 
+                <br/>
                 <div id="checkResult"></div>
 
             </g:form>
