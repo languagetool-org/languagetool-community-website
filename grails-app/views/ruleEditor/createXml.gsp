@@ -17,7 +17,7 @@
             <pre style="background-color: #eeeeee; padding: 10px">${xml.encodeAsHTML().replaceAll("&gt;(.*?)&lt;", "&gt;<strong>\$1</strong>&lt;")}</pre>
 
             <p style="width:450px;margin-top: 5px">LanguageTool rules can be much more powerful - this page
-            can only create simple rules. See <a target="_parent" href="http://www.languagetool.org/development/">our development documentation</a>
+            can only create simple rules. See <a target="devdocumentation" href="http://www.languagetool.org/development/">our development documentation</a>
             for more features.</p>
 
         </g:else>

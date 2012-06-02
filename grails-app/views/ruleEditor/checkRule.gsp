@@ -14,7 +14,7 @@
         from <a href="http://www.wikipedia.org">Wikipedia</a> and found the following matches.
         Please consider modifying your rule if these matches are false alarms.
         As this page does not support our full rule syntax you might want to learn
-        more in <a target="_parent" href="http://www.languagetool.org/development/">our development
+        more in <a target="devdocumentation" href="http://www.languagetool.org/development/">our development
         documentation</a>.</p>
 
         <ul style="margin-bottom: 30px">
