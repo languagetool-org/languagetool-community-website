@@ -19,6 +19,11 @@
 package org.languagetool
 
 import org.languagetool.rules.patterns.PatternRule
+import org.languagetool.rules.RuleMatch
+import org.languagetool.dev.index.Searcher
+import org.apache.lucene.search.IndexSearcher
+import org.apache.lucene.store.FSDirectory
+import org.languagetool.dev.index.SearcherResult
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -42,6 +47,36 @@ class RuleEditorController extends BaseController {
         List unexpectedRuleMatches = langTool.check(params.correctExample1)
         List problems = []
         List shortProblems = []
+        checkExampleSentences(expectedRuleMatches, unexpectedRuleMatches, problems, shortProblems)
+        if (problems.size() == 0) {
+            SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language)
+            log.info("Checked rule: valid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
+            [messagePreset: params.messageBackup, namePreset: params.nameBackup, searcherResult: searcherResult]
+        } else {
+            log.info("Checked rule: invalid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule)])
+        }
+    }
+
+    SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language) {
+        Searcher searcher = new Searcher()  // TODO: move to service?
+        searcher.setMaxHits(20)
+        String indexDirTemplate = grailsApplication.config.fastSearchIndex
+        File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
+        if (indexDir.isDirectory()) {
+            IndexSearcher indexSearcher = new IndexSearcher(FSDirectory.open(indexDir))
+            SearcherResult searcherResult
+            try {
+              searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language, indexSearcher)
+            } finally {
+              indexSearcher.close()
+            }
+            return searcherResult
+        }
+        return null
+    }
+
+    private void checkExampleSentences(List<RuleMatch> expectedRuleMatches, List<RuleMatch> unexpectedRuleMatches, List problems, List shortProblems) {
         if (expectedRuleMatches.size() == 0) {
             problems.add("The rule did not find an error in the given example sentence with an error")
             shortProblems.add("errorNotFound")
@@ -49,13 +84,6 @@ class RuleEditorController extends BaseController {
         if (unexpectedRuleMatches.size() > 0) {
             problems.add("The rule found an error in the given example sentence that is not supposed to contain an error")
             shortProblems.add("unexpectedErrorFound")
-        }
-        if (problems.size() == 0) {
-            log.info("Checked rule: valid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
-            [messagePreset: params.messageBackup, namePreset: params.nameBackup]
-        } else {
-            log.info("Checked rule: invalid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
-            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule)])
         }
     }
 

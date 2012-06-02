@@ -47,6 +47,9 @@ max.text.length = 10000     // maximum length of texts to check
 hide.languages = ["cs"]
 maxPatternElements = 5
 
+// Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
+fastSearchIndex = "/home/languagetool/corpus/LANG"
+
 // log4j configuration
 log4j = {
     appenders {
