@@ -1,7 +1,8 @@
 
             <div class="langselection">
 	            <g:each var="lang" in="${languages}">
-	                <g:if test="${!grailsApplication.config.hide.languages.contains(lang.shortName)}">
+                    <g:set var="languagesToHide" value="${grailsApplication.config.hide.languages}"/>
+	                <g:if test="${!languagesToHide.contains(lang.shortNameWithVariant) && !languagesToHide.contains(lang.shortName)}">
 		                <span class="languageButton">
 			                <g:if test="${params.lang == lang.shortName}">
 			                    <span class="activelang">${lang.getName()}</span>
