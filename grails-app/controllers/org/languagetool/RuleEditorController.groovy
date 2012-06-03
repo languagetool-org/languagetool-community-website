@@ -19,11 +19,12 @@
 package org.languagetool
 
 import org.languagetool.rules.patterns.PatternRule
-import org.languagetool.rules.RuleMatch
 import org.languagetool.dev.index.Searcher
 import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.store.FSDirectory
 import org.languagetool.dev.index.SearcherResult
+import org.languagetool.rules.patterns.PatternRuleLoader
+import org.languagetool.rules.IncorrectExample
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -32,35 +33,70 @@ class RuleEditorController extends BaseController {
 
     def patternStringConverterService
 
+    int CORPUS_MATCH_LIMIT = 20
+
     def index = {
+        List languageNames = getLanguageNames()
+        [languages: Language.REAL_LANGUAGES, languageNames: languageNames.sort()]
+    }
+
+    def expert = {
+        List languageNames = getLanguageNames()
+        [languages: Language.REAL_LANGUAGES, languageNames: languageNames.sort()]
+    }
+
+    private List getLanguageNames() {
         List languages = Language.REAL_LANGUAGES
         List languageNames = []
         languages.each { languageNames.add(it.getName()) }
-        [languages: Language.REAL_LANGUAGES, languageNames: languageNames.sort()]
+        languageNames
     }
 
     def checkRule = {
         Language language = getLanguage()
         PatternRule patternRule = createPatternRule(language)
-        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        List expectedRuleMatches = langTool.check(params.incorrectExample1)
-        List unexpectedRuleMatches = langTool.check(params.correctExample1)
         List problems = []
         List shortProblems = []
-        checkExampleSentences(expectedRuleMatches, unexpectedRuleMatches, problems, shortProblems)
+        checkExampleSentences(patternRule, language, problems, shortProblems)
         if (problems.size() == 0) {
             SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language)
             log.info("Checked rule: valid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
-            [messagePreset: params.messageBackup, namePreset: params.nameBackup, searcherResult: searcherResult]
+            [messagePreset: params.messageBackup, namePreset: params.nameBackup,
+                    searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT]
         } else {
             log.info("Checked rule: invalid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule)])
         }
     }
 
+    def checkXml = {
+        Language language = getLanguage()
+        PatternRuleLoader loader = new PatternRuleLoader()
+        String xml = "<rules lang=\"" + language.getShortName() + "\"><category name=\"fakeCategory\">" + params.xml + "</category></rules>"
+        if (xml.trim().isEmpty()) {
+            render(template: 'checkXmlProblem', model: [error: "No XML found"])
+            return
+        }
+        final InputStream input = new ByteArrayInputStream(xml.getBytes())
+        def rules = loader.getRules(input, "<form>")
+        if (rules.size() == 0) {
+            render(template: 'checkXmlProblem', model: [error: "No rule found in XML"])
+            return
+        } else if (rules.size() > 1) {
+            render(template: 'checkXmlProblem', model: [error: "Found ${rules.size()} rules in XML - please specify only one rule in your XML"])
+            return
+        }
+        PatternRule patternRule = rules.get(0)
+        List problems = []
+        List shortProblems = []
+        checkExampleSentences(patternRule, language, problems, shortProblems)
+        SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language)
+        render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: CORPUS_MATCH_LIMIT])
+    }
+
     SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language) {
         Searcher searcher = new Searcher()  // TODO: move to service?
-        searcher.setMaxHits(20)
+        searcher.setMaxHits(CORPUS_MATCH_LIMIT)
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {
@@ -76,14 +112,29 @@ class RuleEditorController extends BaseController {
         return null
     }
 
-    private void checkExampleSentences(List<RuleMatch> expectedRuleMatches, List<RuleMatch> unexpectedRuleMatches, List problems, List shortProblems) {
-        if (expectedRuleMatches.size() == 0) {
-            problems.add("The rule did not find an error in the given example sentence with an error")
-            shortProblems.add("errorNotFound")
+    private void checkExampleSentences(PatternRule patternRule, Language language, List problems, List shortProblems) {
+        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
+        List correctExamples = patternRule.getCorrectExamples()
+        if (correctExamples.size() == 0) {
+            throw new Exception("No correct example sentences found")
         }
-        if (unexpectedRuleMatches.size() > 0) {
-            problems.add("The rule found an error in the given example sentence that is not supposed to contain an error")
-            shortProblems.add("unexpectedErrorFound")
+        List incorrectExamples = patternRule.getIncorrectExamples()
+        if (incorrectExamples.size() == 0) {
+            throw new Exception("No incorrect example sentences found")
+        }
+        for (incorrectExample in incorrectExamples) {
+            List expectedRuleMatches = langTool.check(incorrectExample.getExample())
+            if (expectedRuleMatches.size() == 0) {
+                problems.add("The rule did not find the expected error in '${incorrectExample}'")
+                shortProblems.add("errorNotFound")
+            }
+        }
+        for (correctExample in correctExamples) {
+            List unexpectedRuleMatches = langTool.check(correctExample)
+            if (unexpectedRuleMatches.size() > 0) {
+                problems.add("The rule found an unexptected error in '${correctExample}'")
+                shortProblems.add("unexpectedErrorFound")
+            }
         }
     }
 
@@ -114,7 +165,11 @@ class RuleEditorController extends BaseController {
     }
 
     private PatternRule createPatternRule(Language lang) {
-        return patternStringConverterService.convertToPatternRule(params.pattern, lang)
+        PatternRule patternRule = patternStringConverterService.convertToPatternRule(params.pattern, lang)
+        patternRule.setCorrectExamples(Collections.singletonList(params.correctExample1))
+        def incorrectExample = new IncorrectExample(params.incorrectExample1)
+        patternRule.setIncorrectExamples(Collections.singletonList(incorrectExample))
+        return patternRule
     }
 
     def createXml = {
