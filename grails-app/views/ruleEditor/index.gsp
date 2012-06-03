@@ -9,10 +9,11 @@
         <title>Create a new LanguageTool rule</title>
         <script type="text/javascript">
 
-            function startLoad(divName) {
+            function showDiv(divName) {
                 $(divName).show();
             }
-            function stopLoad(divName) {
+
+            function hideDiv(divName) {
                 $(divName).hide();
             }
 
@@ -34,8 +35,6 @@
 
         <div class="content">
 
-            <!--<h2>Rule Creator</h2>-->
-
             <noscript class="warn">This page requires Javascript</noscript>
         
             <g:form name="ruleForm"  method="post" action="checkRule">
@@ -55,13 +54,42 @@
                         <td><g:select name="language" from="${languageNames}" value="English"/></td>
                     </tr>
                     <tr>
-                        <td>Wrong words</td>
+                        <td valign="top">Wrong words</td>
                         <td><g:textField id="pattern"
                                 onkeypress="return handleReturn(event);"
                                 onfocus="\$('pattern').setStyle({color: 'black'})"
                                 class="preFilledField" type="text" name="pattern" value="bed English"/>
-                            <!--<br/>
-                            <span class="metaInfo">Example: bed English</span>-->
+
+                        <br/>
+                        <div id="patternHelpLink">
+                            <a onclick="showDiv('patternHelp');hideDiv('patternHelpLink')" href="#">Show Help</a>
+                        </div>
+                        <div id="patternHelp" style="display: none">
+                            <a onclick="showDiv('patternHelpLink');hideDiv('patternHelp')" href="#">Hide Help</a><br/>
+                            <table>
+                                <tr style="background-color: #eeeeee">
+                                    <td>foo</td>
+                                    <td>matches the word "foo", ignoring case</td>
+                                </tr>
+                                <tr>
+                                    <td>foo bar</td>
+                                    <td>matches the phrase "foo bar"</td>
+                                </tr>
+                                <tr style="background-color: #eeeeee">
+                                    <td>(?-i)foo</td>
+                                    <td>matches the word "foo", but not "FOO" or "Foo"</td>
+                                </tr>
+                                <tr>
+                                    <td>foo|bar|blah</td>
+                                    <td>matches the word "foo", "bar" or "blah"</td>
+                                </tr>
+                                <tr style="background-color: #eeeeee">
+                                    <td>walks?</td>
+                                    <td>matches the word "walk" or "walks", i.e. the "s" is optional</td>
+                                </tr>
+                            </table>
+                        </div>
+
                         </td>
                     </tr>
                     <tr>
@@ -89,7 +117,7 @@
                     <tr>
                         <td></td>
                         <td>
-                            <g:submitToRemote name="checkRuleButton" onLoading="startLoad('checkResultSpinner')" onComplete="stopLoad('checkResultSpinner')" action="checkRule" update="checkResult" value="Continue"/>
+                            <g:submitToRemote name="checkRuleButton" onLoading="showDiv('checkResultSpinner')" onComplete="hideDiv('checkResultSpinner')" action="checkRule" update="checkResult" value="Continue"/>
                             <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                         </td>
                     </tr>
