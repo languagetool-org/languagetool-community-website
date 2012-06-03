@@ -90,6 +90,10 @@ class RuleEditorController extends BaseController {
         List problems = []
         List shortProblems = []
         checkExampleSentences(patternRule, language, problems, shortProblems)
+        if (problems.size() > 0) {
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule)])
+            return
+        }
         SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language)
         render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: CORPUS_MATCH_LIMIT])
     }
@@ -123,16 +127,18 @@ class RuleEditorController extends BaseController {
             throw new Exception("No incorrect example sentences found")
         }
         for (incorrectExample in incorrectExamples) {
-            List expectedRuleMatches = langTool.check(incorrectExample.getExample())
+            String sentence = incorrectExample.getExample().replace("<marker>", "").replace("</marker>", "")
+            List expectedRuleMatches = langTool.check(sentence)
             if (expectedRuleMatches.size() == 0) {
-                problems.add("The rule did not find the expected error in '${incorrectExample}'")
+                problems.add("The rule did not find the expected error in '${sentence}'")
                 shortProblems.add("errorNotFound")
             }
         }
         for (correctExample in correctExamples) {
-            List unexpectedRuleMatches = langTool.check(correctExample)
+            String sentence = correctExample.replace("<marker>", "").replace("</marker>", "")
+            List unexpectedRuleMatches = langTool.check(sentence)
             if (unexpectedRuleMatches.size() > 0) {
-                problems.add("The rule found an unexptected error in '${correctExample}'")
+                problems.add("The rule found an unexpected error in '${sentence}'")
                 shortProblems.add("unexpectedErrorFound")
             }
         }

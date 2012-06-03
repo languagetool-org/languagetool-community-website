@@ -26,7 +26,10 @@
         
             <g:form name="ruleForm"  method="post" action="checkRule">
 
-                <p>Enter a single LanguageTool XML rule here to check it against Wikipedia data:</p>
+                <p style="width:550px;text-align: right"><g:link action="index">Simple Mode</g:link></p>
+
+                <p>Enter a single LanguageTool XML rule (everything and including from <tt>&lt;rule&gt;</tt> to <tt>&lt;/rule&gt;</tt>)
+                here to check it against Wikipedia data:</p>
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
 
