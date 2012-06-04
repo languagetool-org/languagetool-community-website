@@ -10,8 +10,10 @@
     <g:else>
 
         <p style="width:700px;">We've checked your pattern against ${sentencesChecked} sentences
-        from <a href="http://www.wikipedia.org">Wikipedia</a> and found the following matches (showing only the
-        first ${limit} matches).
+        from <a href="http://www.wikipedia.org">Wikipedia</a> and found the following matches
+        <g:if test="${searcherResult.getMatchingSentences().size() == limit}">
+            (showing only the first ${limit} matches).
+        </g:if>
         Please consider modifying your rule if these matches are false alarms.
         <g:if test="${!expertMode}">
             As this page does not support our full rule syntax you might want to learn

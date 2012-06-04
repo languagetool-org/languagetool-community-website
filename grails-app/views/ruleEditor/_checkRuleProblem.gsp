@@ -18,7 +18,7 @@
         The second example sentence should not contain the error.
         If you need help, <a href="http://www.languagetool.org/forum/">please ask in our forum</a>.</p>
 
-        <g:if test="${hasRegex}">
+        <g:if test="${hasRegex && !expertMode}">
             <p style="width:450px;margin-top: 5px">Note that you have used special characters like the dot (<tt>.</tt>),
             a question mark (<tt>?</tt>), or similar. This means that the word with that character is interpreted
             as a <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expression</a>. If you

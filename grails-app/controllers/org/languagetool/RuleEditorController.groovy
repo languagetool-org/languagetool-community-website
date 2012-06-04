@@ -34,6 +34,7 @@ class RuleEditorController extends BaseController {
     def patternStringConverterService
 
     int CORPUS_MATCH_LIMIT = 20
+    int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
 
     def index = {
         List languageNames = getLanguageNames()
@@ -59,13 +60,13 @@ class RuleEditorController extends BaseController {
         List shortProblems = []
         checkExampleSentences(patternRule, language, problems, shortProblems)
         if (problems.size() == 0) {
-            SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language)
+            SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
             log.info("Checked rule: valid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
             [messagePreset: params.messageBackup, namePreset: params.nameBackup,
                     searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT]
         } else {
             log.info("Checked rule: invalid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
-            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule)])
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
         }
     }
 
@@ -91,16 +92,16 @@ class RuleEditorController extends BaseController {
         List shortProblems = []
         checkExampleSentences(patternRule, language, problems, shortProblems)
         if (problems.size() > 0) {
-            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule)])
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: true])
             return
         }
-        SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language)
-        render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: CORPUS_MATCH_LIMIT])
+        SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
+        render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT])
     }
 
-    SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language) {
+    SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
         Searcher searcher = new Searcher()  // TODO: move to service?
-        searcher.setMaxHits(CORPUS_MATCH_LIMIT)
+        searcher.setMaxHits(maxHits)
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {
