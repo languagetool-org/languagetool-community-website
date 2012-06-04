@@ -16,6 +16,12 @@
                 $(divName).hide();
             }
 
+            document.observe('keydown', function(e) {
+                if (e.ctrlKey && e.keyCode == 13) {
+                    document.ruleForm.checkXmlButton.click();
+                }
+            });
+
         </script>
     </head>
     <body>
@@ -33,11 +39,12 @@
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
 
-                <g:textArea name="xml" rows="15" cols="100"></g:textArea>
+                <g:textArea id="xml" name="xml" rows="15" cols="100"></g:textArea>
+                <br/><span class="metaInfo">Hint: you can submit this form with Ctrl+Return</span>
 
                 <br/>
                 <br/>
-                <g:submitToRemote name="checkRuleButton" onLoading="showDiv('checkResultSpinner')" onComplete="hideDiv('checkResultSpinner')" action="checkXml" update="checkResult" value="Check XML"/>
+                <g:submitToRemote name="checkXmlButton" onLoading="showDiv('checkResultSpinner')" onComplete="hideDiv('checkResultSpinner')" action="checkXml" update="checkResult" value="Check XML"/>
                 <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
 
                 <br/>
@@ -46,7 +53,7 @@
             </g:form>
 
             <script type="text/javascript">
-                document.ruleForm.pattern.select();
+                document.ruleForm.xml.select();
             </script>
 
         </div>

@@ -1,1 +1,2 @@
-${error.encodeAsHTML()}
+<br/>
+Error: ${error.encodeAsHTML()}
