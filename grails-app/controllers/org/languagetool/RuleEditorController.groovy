@@ -61,11 +61,11 @@ class RuleEditorController extends BaseController {
         checkExampleSentences(patternRule, language, problems, shortProblems)
         if (problems.size() == 0) {
             SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
-            log.info("Checked rule: valid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
+            log.info("Checked rule: valid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
             [messagePreset: params.messageBackup, namePreset: params.nameBackup,
                     searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT]
         } else {
-            log.info("Checked rule: invalid - LANG: ${language.getShortName()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
+            log.info("Checked rule: invalid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
         }
     }
