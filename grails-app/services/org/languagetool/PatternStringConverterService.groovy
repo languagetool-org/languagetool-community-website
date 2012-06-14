@@ -28,7 +28,7 @@ class PatternStringConverterService {
     static transactional = true
 
     def convertToPatternRule(String patternString, Language lang) {
-        List patternParts = getPatternParts(lang, patternString)
+        List patternParts = getPatternParts(patternString, lang)
         List elements = []
         for (patternPart in patternParts) {
             boolean isRegex = isRegex(patternPart)
@@ -44,27 +44,31 @@ class PatternStringConverterService {
         return patternPart.find("[.|+*?\\[\\]]") != null
     }
 
-    private List getPatternParts(Language lang, String patternString) {
+    private List getPatternParts(String patternString, Language lang) {
         // First split at whitespace, then properly tokenize unless it's a regex. Only this way we will
         // properly tokenize "don't" but don't tokenize a regex like "foob.r":
         List simpleParts = patternString.split("\\s+")
         def tokenizer = lang.getWordTokenizer()
         List patternParts = []
-        for (simplePart in simpleParts) {
+        for (String simplePart in simpleParts) {
             if (isRegex(simplePart)) {
                 patternParts.add(simplePart)
             } else {
-                patternParts.addAll(getTokens(tokenizer, simplePart))
+                patternParts.addAll(getTokens(tokenizer, simplePart, lang))
             }
         }
         return patternParts
     }
 
-    private List getTokens(Tokenizer tokenizer, simplePart) {
+    private List getTokens(Tokenizer tokenizer, String simplePart, Language lang) {
         List tokens = []
         List patternPartsWithWhitespace = tokenizer.tokenize(simplePart)
         for (patternPart in patternPartsWithWhitespace) {
             if (!patternPart.trim().isEmpty()) {
+                if (lang.getShortName().equals(Language.CHINESE.getShortName())) {
+                    // for some reason, tokens end with "/v" etc. in Chinese, cut that off:
+                    patternPart = patternPart.replaceFirst("/.*", "")
+                }
                 tokens.add(patternPart)
             }
         }
