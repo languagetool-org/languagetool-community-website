@@ -212,9 +212,6 @@ th.desc a {
 .list th, .list td {
     border-left: 1px solid #ddd;
 }
-.list th:hover, .list tr:hover {
-    background: #cfda6f;
-}
 
 /* PAGINATION */
 
@@ -331,12 +328,12 @@ th.desc a {
 
 .error {
 	font-weight: bold;
-	padding-left: 3px;
-	padding-right: 3px;
+	padding-left: 2px;
+	padding-right: 2px;
 	padding-bottom:2px;
 	background-image:url("../images/squiggle.png");
 	background-repeat:repeat-x;
-	background-position:left bottom;        
+	background-position:left bottom;
 	vertical-align:text-top;
 }
 

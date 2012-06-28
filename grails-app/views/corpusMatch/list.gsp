@@ -52,12 +52,16 @@
                         
                             <td>
                             	<g:set var="cleanText" value="${StringTools.cleanError(match.errorContext)}"/>
-                                ${StringTools.formatError(match.message.encodeAsHTML())}<br />
-                                ${StringTools.formatError(match.errorContext.encodeAsHTML())}<br />
-                                <span class="additional">URI: <g:link class="additional" url="${match.sourceURI}">${match.sourceURI.encodeAsHTML()}</g:link></span>
-                                <span class="additional"> - check date: ${StringTools.formatDate(match.checkDate).encodeAsHTML()}
-                                - <g:link controller="rule" action="show" id="${match.ruleID}"
-           							params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link></span>
+                                <div style="color: #666666; font-weight: bold; width:60%">
+                                    ${StringTools.formatError(match.message.encodeAsHTML())}
+                                    <g:link controller="rule" action="show" id="${match.ruleID}"
+                          							params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}"><g:message code="ltc.check.visit.rule"/></g:link>
+                                </div>
+                                <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
+                                    ${StringTools.formatError(match.errorContext.encodeAsHTML())}<br />
+                                </div>
+                                <span class="additional">Article: <g:link class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
+                                <span class="additional"> (${StringTools.formatDate(match.checkDate).encodeAsHTML()})</span>
                             </td>
                         
                         </tr>
