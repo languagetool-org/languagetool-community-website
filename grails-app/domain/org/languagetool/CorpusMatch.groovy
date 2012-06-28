@@ -26,8 +26,15 @@ import java.util.Date
  */
 class CorpusMatch {
 
+    static constraints = {
+        ruleDescription(nullable: true) // nullable because it was introduced later
+        ruleSubID(nullable: true) // nullable because it was introduced later
+    }
+
     String languageCode
     String ruleID
+    String ruleSubID
+    String ruleDescription
     String message
     String sourceURI
     String errorContext

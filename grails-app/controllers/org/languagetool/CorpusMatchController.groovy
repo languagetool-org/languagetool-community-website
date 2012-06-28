@@ -56,6 +56,7 @@ class CorpusMatchController extends BaseController {
             projections {
                 groupProperty("ruleID")
                 count "ruleID", 'mycount'
+                property("ruleDescription")
             }
             order 'mycount', 'desc'
         }

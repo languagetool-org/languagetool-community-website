@@ -27,11 +27,12 @@
                 <select name="filter">
                     <option value="">- all rules -</option>
                     <g:each in="${matchesByRule}" var="rule">
+                        <g:set var="ruleDesc" value="${rule[2]}"/>
                         <g:if test="${params.filter == rule[0]}">
-                            <option selected value="${rule[0].encodeAsHTML()}">${rule[0].encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
+                            <option selected value="${rule[0].encodeAsHTML()}">${ruleDesc.encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
                         </g:if>
                         <g:else>
-                            <option value="${rule[0].encodeAsHTML()}">${rule[0].encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
+                            <option value="${rule[0].encodeAsHTML()}">${ruleDesc.encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
                         </g:else>
                     </g:each>
                 </select>
@@ -56,7 +57,7 @@
                                 <span class="additional">URI: <g:link class="additional" url="${match.sourceURI}">${match.sourceURI.encodeAsHTML()}</g:link></span>
                                 <span class="additional"> - check date: ${StringTools.formatDate(match.checkDate).encodeAsHTML()}
                                 - <g:link controller="rule" action="show" id="${match.ruleID}"
-           							params="${[lang: lang, textToCheck: cleanText]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link></span>
+           							params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link></span>
                             </td>
                         
                         </tr>
