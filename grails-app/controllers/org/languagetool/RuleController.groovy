@@ -182,7 +182,7 @@ class RuleController extends BaseController {
 
     def edit = {
         String lang = getLanguage()
-        SelectedRule rule = getRuleById(params.id, lang)
+        SelectedRule rule = getRuleById(params.id, params.subId, lang)
         Rule selectedRule = rule.rule
         render(view:'edit', model: [ rule: selectedRule, lang: lang,
                 isUserRule: rule.isUserRule, ruleId: params.id ],
@@ -261,13 +261,13 @@ class RuleController extends BaseController {
 
     def show = {
         String lang = getLanguage()
-        SelectedRule rule = getRuleById(params.id, lang)
+        SelectedRule rule = getRuleById(params.id, params.subId, lang)
         Rule selectedRule = rule.rule
         boolean isUserRule = rule.isUserRule
         int disableId = getEnableDisableId(selectedRule, params.id, lang)
         if (!selectedRule) {
-            log.warn("No rule with id ${params.id} and language ${lang}")
-            flash.message = "No rule with id ${params.id.encodeAsHTML()}"
+            log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${lang}")
+            flash.message = "No rule with id ${params.id.encodeAsHTML()}, subId ${params.subId.encodeAsHTML()}"
             redirect(action:list)
             return
         }
@@ -275,8 +275,12 @@ class RuleController extends BaseController {
         if (params.textToCheck) {
             textToCheck = params.textToCheck
         }
+        String ruleSubId = null
+        if (selectedRule instanceof PatternRule) {
+            ruleSubId = ((PatternRule)selectedRule).getSubId()
+        }
         int corpusMatchCount = countCorpusMatches(lang, selectedRule.id)
-        render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
+        render(view:'show', model: [ rule: selectedRule, ruleSubId: ruleSubId, isDisabled: disableId != -1, disableId: disableId,
                 isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
                 contentType: "text/html", encoding: "utf-8")
 
@@ -301,7 +305,7 @@ class RuleController extends BaseController {
         return lang
     }
 
-    private SelectedRule getRuleById(String id, String lang) {
+    private SelectedRule getRuleById(String id, String subId, String lang) {
         Rule selectedRule
         boolean isUserRule
         try {
@@ -314,7 +318,7 @@ class RuleController extends BaseController {
         } catch (NumberFormatException e) {
             JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
             lt.activateDefaultPatternRules()
-            selectedRule = getSystemRuleById(params.id, params.subId, lt)
+            selectedRule = getSystemRuleById(id, subId, lt)
             isUserRule = false
         }
         return new SelectedRule(isUserRule: isUserRule, rule: selectedRule)
