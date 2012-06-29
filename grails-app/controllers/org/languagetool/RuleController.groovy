@@ -266,8 +266,10 @@ class RuleController extends BaseController {
         boolean isUserRule = rule.isUserRule
         int disableId = getEnableDisableId(selectedRule, params.id, lang)
         if (!selectedRule) {
+            log.warn("No rule with id ${params.id} and language ${lang}")
             flash.message = "No rule with id ${params.id.encodeAsHTML()}"
             redirect(action:list)
+            return
         }
         String textToCheck = ""
         if (params.textToCheck) {
