@@ -61,7 +61,7 @@
                                     ${StringTools.formatError(match.errorContext.encodeAsHTML())}<br />
                                 </div>
                                 <span class="additional">Article: <g:link class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
-                                <span class="additional"> (${StringTools.formatDate(match.checkDate).encodeAsHTML()})</span>
+                                <span class="additional"> (${StringTools.formatDate(match.corpusDate).encodeAsHTML()})</span>
                             </td>
                         
                         </tr>
