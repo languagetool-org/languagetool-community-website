@@ -51,6 +51,12 @@
                     <td><g:message code="ltc.rule.show.category" /></td>
                     <td>${rule.category.name.encodeAsHTML()}</td>
                 </tr>
+                <g:if test="${rule.url}">
+                    <tr>
+                        <td><g:message code="ltc.rule.show.link" /></td>
+                        <td><a href="${rule.url}">${rule.url.encodeAsHTML()}</a></td>
+                    </tr>
+                </g:if>
                 <tr>
                     <td><g:message code="ltc.rule.show.active" /></td>
                     <td>
