@@ -220,7 +220,7 @@ class RuleEditorController extends BaseController {
     <pattern>\n"""
         for (element in patternRule.getElements()) {
             if (element.isRegularExpression()) {
-                xml += "        <token regexp=\"true\">${element.getString()}</token>\n"
+                xml += "        <token regexp=\"yes\">${element.getString()}</token>\n"
             } else {
                 xml += "        <token>${element.getString()}</token>\n"
             }
