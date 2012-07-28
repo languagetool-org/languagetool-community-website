@@ -135,10 +135,10 @@ class RuleEditorController extends BaseController {
                 problems.add("The rule did not find the expected error in '${sentence}'")
                 shortProblems.add("errorNotFound")
             } else if (expectedRuleMatches.size() == 1) {
+                def expectedReplacements = incorrectExample.corrections.sort()
                 def foundReplacements = expectedRuleMatches.get(0).getSuggestedReplacements().sort()
-                def realReplacements = incorrectExample.corrections.sort()
-                if (incorrectExample.corrections != foundReplacements) {
-                    problems.add("Found wrong correction(s) in '${sentence}: '${foundReplacements}' but expected '${realReplacements}'")
+                if (expectedReplacements.size() > 0 && expectedReplacements != foundReplacements) {
+                    problems.add("Found wrong correction(s) in '${sentence}: '${foundReplacements}' but expected '${expectedReplacements}'")
                     shortProblems.add("wrongCorrection")
                 }
             } else {
