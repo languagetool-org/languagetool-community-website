@@ -196,7 +196,7 @@ class RuleEditorController extends BaseController {
         } else {
             log.info("Create rule XML: okay")
             String message = getMessage()
-            String correctSentence = params.correctExample1.encodeAsHTML()
+            String correctSentence = encodeXml(params.correctExample1)
             Language language = getLanguage()
             String incorrectSentence = getIncorrectSentenceWithMarker(language)
             String name = params.name ? params.name : "Name of rule"
@@ -214,7 +214,7 @@ class RuleEditorController extends BaseController {
             StringBuilder sb = new StringBuilder(incorrectSentence)
             sb.insert(expectedRuleMatches.get(0).toPos, "</marker>")
             sb.insert(expectedRuleMatches.get(0).fromPos, "<marker>")
-            incorrectSentence = sb.toString().encodeAsHTML().replace("&lt;marker&gt;", "<marker>").replace("&lt;/marker&gt;", "</marker>")
+            incorrectSentence = encodeXml(sb.toString()).replace("&lt;marker&gt;", "<marker>").replace("&lt;/marker&gt;", "</marker>")
         } else {
             throw new Exception("Sorry, got ${expectedRuleMatches.size()} rule matches for the example sentence, " +
                     "expected exactly one. Sentence: '${incorrectSentence}', Rule matches: ${expectedRuleMatches}")
@@ -222,11 +222,15 @@ class RuleEditorController extends BaseController {
         return incorrectSentence
     }
 
+    private encodeXml(String s) {
+        return s.replace("<string>", "").replace("</string>", "")
+    }
+
     private String createXml(String name, String message, String incorrectSentence, String correctSentence) {
         Language lang = getLanguage()
         PatternRule patternRule = createPatternRule(lang)
         String ruleId = createRuleIdFromName(name)
-        String xml = """<rule id="${ruleId.encodeAsHTML()}" name="${name.encodeAsHTML()}">
+        String xml = """<rule id="${encodeXml(ruleId)}" name="${encodeXml(name)}">
     <pattern>\n"""
         for (element in patternRule.getElements()) {
             if (element.isRegularExpression()) {
@@ -248,7 +252,7 @@ class RuleEditorController extends BaseController {
     }
 
     private String getMessage() {
-        String message = params.message.encodeAsHTML()
+        String message = encodeXml(params.message)
         message = message.replaceAll("\"(.*?)\"", "<suggestion>\$1</suggestion>")
         message = message.replaceAll("&quot;(.*?)&quot;", "<suggestion>\$1</suggestion>")
         return message
