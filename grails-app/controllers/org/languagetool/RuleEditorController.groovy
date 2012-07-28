@@ -134,6 +134,15 @@ class RuleEditorController extends BaseController {
             if (expectedRuleMatches.size() == 0) {
                 problems.add("The rule did not find the expected error in '${sentence}'")
                 shortProblems.add("errorNotFound")
+            } else if (expectedRuleMatches.size() == 1) {
+                def foundReplacements = expectedRuleMatches.get(0).getSuggestedReplacements().sort()
+                def realReplacements = incorrectExample.corrections.sort()
+                if (incorrectExample.corrections != foundReplacements) {
+                    problems.add("Found wrong correction(s) in '${sentence}: '${foundReplacements}' but expected '${realReplacements}'")
+                    shortProblems.add("wrongCorrection")
+                }
+            } else {
+                log.warn("Got ${expectedRuleMatches.size()} matches, expected zero or one: ${incorrectExample}")
             }
         }
         for (correctExample in correctExamples) {
