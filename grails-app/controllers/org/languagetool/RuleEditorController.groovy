@@ -113,8 +113,9 @@ class RuleEditorController extends BaseController {
               indexSearcher.close()
             }
             return searcherResult
+        } else {
+            throw new NoDataForLanguageException(language, indexDir)
         }
-        return null
     }
 
     private void checkExampleSentences(PatternRule patternRule, Language language, List problems, List shortProblems) {
