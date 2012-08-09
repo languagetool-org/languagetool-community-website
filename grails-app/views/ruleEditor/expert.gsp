@@ -34,6 +34,8 @@
 
                 <p style="width:550px;text-align: right"><g:link action="index">Simple Mode</g:link></p>
 
+                <p class="warn">Warning: This is still experimental</p>
+
                 <p>Enter a single LanguageTool XML rule (everything and including from <tt>&lt;rule&gt;</tt> to <tt>&lt;/rule&gt;</tt>)
                 here to check it against Wikipedia data:</p>
 
