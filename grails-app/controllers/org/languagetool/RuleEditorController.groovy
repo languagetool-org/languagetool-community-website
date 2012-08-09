@@ -35,6 +35,7 @@ class RuleEditorController extends BaseController {
 
     int CORPUS_MATCH_LIMIT = 20
     int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
+    int SEARCH_TIMEOUT_MILLIS = 5000
 
     def index = {
         List languageNames = getLanguageNames()
@@ -95,18 +96,22 @@ class RuleEditorController extends BaseController {
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: true])
             return
         }
+        long startTime = System.currentTimeMillis()
         SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
+        long searchTime = System.currentTimeMillis() - startTime
+        log.info("Checked XML in ${language}, timeout (${SEARCH_TIMEOUT_MILLIS}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
         render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT])
     }
 
     SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
         Searcher searcher = new Searcher()  // TODO: move to service?
         searcher.setMaxHits(maxHits)
+        searcher.setMaxSearchTimeMillis(SEARCH_TIMEOUT_MILLIS)
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {
             IndexSearcher indexSearcher = new IndexSearcher(FSDirectory.open(indexDir))
-            SearcherResult searcherResult
+            SearcherResult searcherResult = null
             try {
               searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language, indexSearcher)
             } finally {
