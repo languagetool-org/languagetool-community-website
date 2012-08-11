@@ -1,10 +1,11 @@
 <g:if test="${searcherResult}">
     <g:set var="sentencesChecked" value="${formatNumber(number:searcherResult.getCheckedSentences(), type: 'number')}"/>
+    <g:set var="docsChecked" value="${formatNumber(number:searcherResult.getDocCount(), type: 'number')}"/>
 
     <g:if test="${searcherResult.getMatchingSentences().size() == 0}">
 
-        <p style="width:700px;">We've checked your pattern against ${sentencesChecked} sentences
-        from <a href="http://www.wikipedia.org">Wikipedia</a> and found no matches.</p>
+        <p style="width:700px;">We've checked your pattern against ${docsChecked} documents
+        from the ${params.language.encodeAsHTML()} <a href="http://www.wikipedia.org">Wikipedia</a> and found no matches.</p>
 
     </g:if>
     <g:else>
