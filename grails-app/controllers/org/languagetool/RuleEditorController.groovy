@@ -25,7 +25,7 @@ import org.apache.lucene.store.FSDirectory
 import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRuleLoader
 import org.languagetool.rules.IncorrectExample
-import org.apache.lucene.index.IndexReader
+import org.apache.lucene.index.DirectoryReader
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -112,7 +112,7 @@ class RuleEditorController extends BaseController {
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {
             def directory = FSDirectory.open(indexDir)
-            IndexReader indexReader = IndexReader.open(directory)
+            DirectoryReader indexReader = DirectoryReader.open(directory)
             SearcherResult searcherResult = null
             try {
               IndexSearcher indexSearcher = new IndexSearcher(indexReader)
