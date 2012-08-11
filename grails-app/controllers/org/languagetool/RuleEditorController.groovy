@@ -25,6 +25,7 @@ import org.apache.lucene.store.FSDirectory
 import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRuleLoader
 import org.languagetool.rules.IncorrectExample
+import org.apache.lucene.index.IndexReader
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -110,12 +111,14 @@ class RuleEditorController extends BaseController {
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {
-            IndexSearcher indexSearcher = new IndexSearcher(FSDirectory.open(indexDir))
+            def directory = FSDirectory.open(indexDir)
+            IndexReader indexReader = IndexReader.open(directory)
             SearcherResult searcherResult = null
             try {
+              IndexSearcher indexSearcher = new IndexSearcher(indexReader)
               searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language, indexSearcher)
             } finally {
-              indexSearcher.close()
+              indexReader.close()
             }
             return searcherResult
         } else {
