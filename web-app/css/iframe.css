@@ -194,6 +194,13 @@ FORM INPUT:HOVER {
     border: 1px solid #464646;
     color: #FFFFFF;
 }
+FORM INPUT:HOVER[disabled] {
+    background-color: #cccccc;
+    border: 1px solid #464646;
+    color: #999999;
+    font-weight: bold;
+    padding: 4px;
+}
 FORM INPUT {
     background-color: #FBF7F4;
     border: 1px solid #464646;
@@ -211,6 +218,14 @@ FORM TEXTAREA {
 
 input[type="button"] {
     background-color: #eeeeee;
+}
+
+input[disabled] {
+    background-color: #cccccc;
+    border: 1px solid #464646;
+    color: #999999;
+    font-weight: bold;
+    padding: 4px;
 }
 
 .metaInfo {

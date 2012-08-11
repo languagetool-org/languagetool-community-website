@@ -9,6 +9,16 @@
         <title>Create a new LanguageTool rule</title>
         <script type="text/javascript">
 
+            function onLoadingResult(divName, buttonName) {
+                showDiv(divName);
+                document.ruleForm[buttonName].disabled = true;
+            }
+
+            function onResultComplete(divName, buttonName) {
+                hideDiv(divName);
+                document.ruleForm[buttonName].disabled = false;
+            }
+
             function showDiv(divName) {
                 $(divName).show();
             }
@@ -121,7 +131,10 @@
                     <tr>
                         <td></td>
                         <td>
-                            <g:submitToRemote name="checkRuleButton" onLoading="showDiv('checkResultSpinner')" onComplete="hideDiv('checkResultSpinner')" action="checkRule" update="checkResult" value="Continue"/>
+                            <g:submitToRemote name="checkRuleButton"
+                                              onLoading="onLoadingResult('checkResultSpinner', 'checkRuleButton')"
+                                              onComplete="onResultComplete('checkResultSpinner', 'checkRuleButton')"
+                                              action="checkRule" update="checkResult" value="Continue"/>
                             <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                         </td>
                     </tr>

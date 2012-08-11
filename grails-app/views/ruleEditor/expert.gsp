@@ -8,6 +8,16 @@
         <title>Check a LanguageTool XML rule</title>
         <script type="text/javascript">
 
+            function onLoadingResult() {
+                showDiv('checkResultSpinner');
+                document.ruleForm.checkXmlButton.disabled = true;
+            }
+
+            function onResultComplete() {
+                hideDiv('checkResultSpinner');
+                document.ruleForm.checkXmlButton.disabled = false;
+            }
+
             function showDiv(divName) {
                 $(divName).show();
             }
@@ -46,7 +56,10 @@
 
                 <br/>
                 <br/>
-                <g:submitToRemote name="checkXmlButton" onLoading="showDiv('checkResultSpinner')" onComplete="hideDiv('checkResultSpinner')" action="checkXml" update="checkResult" value="Check XML"/>
+                <g:submitToRemote name="checkXmlButton"
+                                  onLoading="onLoadingResult()"
+                                  onComplete="onResultComplete()"
+                                  action="checkXml" update="checkResult" value="Check XML"/>
                 <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
 
                 <br/>

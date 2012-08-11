@@ -34,7 +34,10 @@
 <tr>
     <td></td>
     <td>
-        <g:submitToRemote name="createXmlButton" onLoading="showDiv('createXmlSpinner')" onComplete="hideDiv('createXmlSpinner')" action="createXml" update="xml" value="Create XML"/>
+        <g:submitToRemote name="createXmlButton"
+                          onLoading="onLoadingResult('createXmlSpinner', 'createXmlButton')"
+                          onComplete="onResultComplete('createXmlSpinner', 'createXmlButton')"
+                          action="createXml" update="xml" value="Create XML"/>
         <img id="createXmlSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
     </td>
 </tr>
