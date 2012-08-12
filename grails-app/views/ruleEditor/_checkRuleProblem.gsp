@@ -6,10 +6,15 @@
         <div class="errors">There are problems with your rule:
 
             <ul>
-                <g:each in="${problems}" var="problem">
-                    <li>${problem.encodeAsHTML()}</li>
-                </g:each>
-                <li>Please make sure you selected the correct language for your rule - your selection was: <b>${params.language.encodeAsHTML()}</b></li>
+                <g:if test="${isOff}">
+                    <li>Your rule is not enabled - please remove the default="off" from the XML</li>
+                </g:if>
+                <g:else>
+                    <g:each in="${problems}" var="problem">
+                        <li>${problem.encodeAsHTML()}</li>
+                    </g:each>
+                    <li>Please make sure you selected the correct language for your rule - your selection was: <b>${params.language.encodeAsHTML()}</b></li>
+                </g:else>
             </ul>
 
         </div>

@@ -94,7 +94,8 @@ class RuleEditorController extends BaseController {
         List shortProblems = []
         checkExampleSentences(patternRule, language, problems, shortProblems)
         if (problems.size() > 0) {
-            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: true])
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
+                    expertMode: true, isOff: patternRule.isDefaultOff()])
             return
         }
         long startTime = System.currentTimeMillis()
