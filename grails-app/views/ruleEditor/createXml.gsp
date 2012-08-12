@@ -20,6 +20,8 @@
             can only create simple rules. See <a target="devdocumentation" href="http://www.languagetool.org/development/">our development documentation</a>
             for more features.</p>
 
+            <g:render template="submitRule"/>
+
         </g:else>
     </td>
 </tr>

@@ -19,13 +19,10 @@
 package org.languagetool
 
 import org.languagetool.rules.patterns.PatternRule
-import org.languagetool.dev.index.Searcher
-import org.apache.lucene.search.IndexSearcher
-import org.apache.lucene.store.FSDirectory
 import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRuleLoader
 import org.languagetool.rules.IncorrectExample
-import org.apache.lucene.index.DirectoryReader
+import org.languagetool.dev.index.SearchTimeoutException
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -62,10 +59,17 @@ class RuleEditorController extends BaseController {
         List shortProblems = []
         checkExampleSentences(patternRule, language, problems, shortProblems)
         if (problems.size() == 0) {
-            SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
-            log.info("Checked rule: valid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
-            [messagePreset: params.messageBackup, namePreset: params.nameBackup,
-                    searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT]
+          SearcherResult searcherResult = null
+          boolean timeOut = false
+          try {
+              searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
+          } catch (SearchTimeoutException e) {
+              log.info("Timeout exception: " + e + " - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern}")
+              timeOut = true
+          }
+          log.info("Checked rule: valid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
+          [messagePreset: params.messageBackup, namePreset: params.nameBackup,
+                  searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT, timeOut: timeOut]
         } else {
             log.info("Checked rule: invalid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
@@ -99,10 +103,21 @@ class RuleEditorController extends BaseController {
             return
         }
         long startTime = System.currentTimeMillis()
-        SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
-        long searchTime = System.currentTimeMillis() - startTime
-        log.info("Checked XML in ${language}, timeout (${SearchService.SEARCH_TIMEOUT_MILLIS}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
-        render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT])
+        try {
+            SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
+            long searchTime = System.currentTimeMillis() - startTime
+            log.info("Checked XML in ${language}, timeout (${SearchService.SEARCH_TIMEOUT_MILLIS}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
+            render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT])
+        } catch (SearchTimeoutException e) {
+            long searchTime = System.currentTimeMillis() - startTime
+            log.warn("Timeout checking XML in ${language}, timeout (${SearchService.SEARCH_TIMEOUT_MILLIS}ms), time: ${searchTime}ms, pattern: ${patternRule}")
+            problems.add("Sorry, there was a timeout when searching our Wikipedia data for matches. This can happen" +
+                    " for patterns with some regular expressions, for example if the pattern starts with .*." +
+                    " These kinds of patterns are currently not supported by this tool.")
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
+                    expertMode: true, isOff: patternRule.isDefaultOff()])
+            return
+        }
     }
 
     private void checkExampleSentences(PatternRule patternRule, Language language, List problems, List shortProblems) {

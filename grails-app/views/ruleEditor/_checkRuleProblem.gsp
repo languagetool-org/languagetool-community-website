@@ -19,7 +19,7 @@
 
         </div>
 
-        <p style="width:450px;margin-top: 5px">The examples sentences are used to test your rule. Your first
+        <p style="width:450px;margin-top: 5px">The example sentences are used to test your rule. Your first
         example sentence should contain the error so it can be found with the "Wrong words" pattern.
         The second example sentence should not contain the error.
         If you need help, <a target="_blank" href="http://www.languagetool.org/forum/">please ask in our forum</a>.</p>
