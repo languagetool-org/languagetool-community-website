@@ -33,10 +33,10 @@ import org.apache.lucene.index.DirectoryReader
 class RuleEditorController extends BaseController {
 
     def patternStringConverterService
+    def searchService
 
     int CORPUS_MATCH_LIMIT = 20
     int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
-    int SEARCH_TIMEOUT_MILLIS = 5000
 
     def index = {
         List languageNames = getLanguageNames()
@@ -62,7 +62,7 @@ class RuleEditorController extends BaseController {
         List shortProblems = []
         checkExampleSentences(patternRule, language, problems, shortProblems)
         if (problems.size() == 0) {
-            SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
+            SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
             log.info("Checked rule: valid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
             [messagePreset: params.messageBackup, namePreset: params.nameBackup,
                     searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT]
@@ -99,32 +99,10 @@ class RuleEditorController extends BaseController {
             return
         }
         long startTime = System.currentTimeMillis()
-        SearcherResult searcherResult = checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
+        SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
         long searchTime = System.currentTimeMillis() - startTime
-        log.info("Checked XML in ${language}, timeout (${SEARCH_TIMEOUT_MILLIS}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
+        log.info("Checked XML in ${language}, timeout (${SearchService.SEARCH_TIMEOUT_MILLIS}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
         render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT])
-    }
-
-    SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
-        Searcher searcher = new Searcher()  // TODO: move to service?
-        searcher.setMaxHits(maxHits)
-        searcher.setMaxSearchTimeMillis(SEARCH_TIMEOUT_MILLIS)
-        String indexDirTemplate = grailsApplication.config.fastSearchIndex
-        File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
-        if (indexDir.isDirectory()) {
-            def directory = FSDirectory.open(indexDir)
-            DirectoryReader indexReader = DirectoryReader.open(directory)
-            SearcherResult searcherResult = null
-            try {
-              IndexSearcher indexSearcher = new IndexSearcher(indexReader)
-              searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language, indexSearcher)
-            } finally {
-              indexReader.close()
-            }
-            return searcherResult
-        } else {
-            throw new NoDataForLanguageException(language, indexDir)
-        }
     }
 
     private void checkExampleSentences(PatternRule patternRule, Language language, List problems, List shortProblems) {
