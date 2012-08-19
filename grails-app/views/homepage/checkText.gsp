@@ -13,7 +13,7 @@
           
             <h1><g:message code="ltc.home.check.title"/></h1>
 
-            <g:if test="${language.hasVariant()}">
+            <g:if test="${language?.hasVariant()}">
                 <p class="warn"><b>Hint:</b> Note that spell checking will only work when you select a language
                     plus its variant,<br/>e.g. "English (US)" instead of just "English".</p>
             </g:if>
