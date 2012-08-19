@@ -50,7 +50,7 @@
                 <select name="lang">
                     <g:each in="${languages}" var="lang">
                         <g:set var="codeWithCountry" value="${lang.countryVariants?.size() == 1 && lang.countryVariants[0] != 'ANY' ? lang.shortName + '-' +lang.countryVariants[0] : lang.shortName}"/>
-                        <g:set var="selected" value="${language.getShortNameWithVariant() == codeWithCountry ? 'selected' : ''}"/>
+                        <g:set var="selected" value="${language?.getShortNameWithVariant() == codeWithCountry ? 'selected' : ''}"/>
                         <g:if test="${!lang.hasVariant()}">
                             <option ${selected} value="${codeWithCountry}">${lang.name}</option>
                         </g:if>
