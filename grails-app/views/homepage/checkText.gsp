@@ -12,6 +12,11 @@
         <div class="body">
           
             <h1><g:message code="ltc.home.check.title"/></h1>
+
+            <g:if test="${language.hasVariant()}">
+                <p class="warn"><b>Hint:</b> Note that spell checking will only work when you select a language
+                    plus its variant,<br/>e.g. "English (US)" instead of just "English".</p>
+            </g:if>
         
             <g:if test="${session.user}">
 	            <g:if test="${disabledRules && disabledRules.size() > 0}">
@@ -41,7 +46,14 @@
                 <g:textArea name="text" value="${params.text}" rows="5" cols="80" />
                 <br />
                 <g:actionSubmit action="checkText" value="${message(code:'ltc.home.check.text')}"/>
-                &nbsp;&nbsp;&nbsp;Language: <g:select name="lang" from="${languages}" optionKey="shortName" noSelection="${['auto':'auto-detect']}" value="${params.lang}"></g:select>
+                &nbsp;&nbsp;&nbsp;Language:
+                <select name="lang">
+                    <g:each in="${languages}" var="lang">
+                        <g:set var="codeWithCountry" value="${lang.countryVariants?.size() == 1 && lang.countryVariants[0] != 'ANY' ? lang.shortName + '-' +lang.countryVariants[0] : lang.shortName}"/>
+                        <g:set var="selected" value="${params.lang == codeWithCountry ? 'selected' : ''}"/>
+                        <option ${selected} value="${codeWithCountry}">${lang.name}</option>
+                    </g:each>
+                </select>
             </g:form>
         
         </div>

@@ -20,7 +20,6 @@
 package org.languagetool
 
 import org.hibernate.*
-import org.languagetool.*
 import org.languagetool.rules.*
 import org.apache.tika.language.LanguageIdentifier
 
@@ -89,7 +88,7 @@ class HomepageController extends BaseController {
      * Run the grammar checker on the given text.
      */
     def checkText = {
-        String lang = "en"
+        String langStr = "en"
         boolean autoLangDetectionWarning = false
         List languages = Language.REAL_LANGUAGES
         languages.sort{it.getName()}
@@ -106,14 +105,15 @@ class HomepageController extends BaseController {
                         textToCheck: params.text])
                 return
             }
-            lang = detectedLang.getShortName()
-            params.lang = lang
+            langStr = detectedLang.getShortName()
+            params.lang = langStr
             // TODO: use identifier.isReasonablyCertain() - but make sure it works!
             autoLangDetectionWarning = params.text?.length() < 60
         } else if (params.lang) {
-            lang = params.lang
+            langStr = params.lang
         }
-        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+        Language lang = Language.getLanguageForShortName(langStr)
+        JLanguageTool lt = new JLanguageTool(lang)
         lt.activateDefaultPatternRules()
         List userRules = getUserRules()
         for (rule in userRules) {
@@ -122,7 +122,7 @@ class HomepageController extends BaseController {
         // load user configuration and disable deactivated rules:
         LanguageConfiguration langConfig = null
         if (session.user) {
-            langConfig = RuleController.getLangConfigforUser(lang, session)
+            langConfig = RuleController.getLangConfigforUser(langStr, session)
             if (langConfig) {
                 for (disRule in langConfig.disabledRules) {
                     lt.disableRule(disRule.ruleID)
@@ -137,7 +137,7 @@ class HomepageController extends BaseController {
         }
         List ruleMatches = lt.check(text)
         // TODO: count only disabledRules for the current language
-        [matches: ruleMatches, lang: lang, languages: languages,
+        [matches: ruleMatches, lang: langStr, language: lang, languages: languages,
                 disabledRules: langConfig?.disabledRules, textToCheck: params.text,
                 autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
     }
