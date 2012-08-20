@@ -84,6 +84,7 @@ class RuleEditorController extends BaseController {
             render(template: 'checkXmlProblem', model: [error: "No XML found"])
             return
         }
+        xml = xml.replaceAll("&([a-zA-Z]+);", "&amp;\$1;")  // entities otherwise lead to an error
         final InputStream input = new ByteArrayInputStream(xml.getBytes())
         def rules = loader.getRules(input, "<form>")
         if (rules.size() == 0) {
