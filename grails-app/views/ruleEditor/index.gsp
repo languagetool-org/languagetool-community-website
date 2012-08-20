@@ -55,9 +55,7 @@
                 <table style="border: 0px">
                     <tr>
                         <td colspan="2">
-                            <!--
                             <p style="width:550px;text-align: right"><g:link action="expert">Expert Mode</g:link></p>
-                            -->
 
                             <p style="width:550px">LanguageTool finds errors based on rules. Most of these rules are expressed
                             as XML, and this page will help you to create your own simple rules in XML.</p>
