@@ -5,7 +5,8 @@
     <g:if test="${searcherResult.getMatchingSentences().size() == 0}">
 
         <p style="width:700px;">We've checked your pattern against ${docsChecked} documents
-        from the ${params.language.encodeAsHTML()} <a href="http://www.wikipedia.org">Wikipedia</a> and found no matches.
+        from the ${params.language.encodeAsHTML()} <a href="http://www.wikipedia.org">Wikipedia</a>
+        (<g:link action="indexOverview">index size overview</g:link>) and found no matches.
         That's a good sign, it means your rule doesn't trigger any false alarms at least
         in the documents we checked.</p>
 

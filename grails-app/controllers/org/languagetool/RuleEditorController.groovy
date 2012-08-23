@@ -23,6 +23,7 @@ import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRuleLoader
 import org.languagetool.rules.IncorrectExample
 import org.languagetool.dev.index.SearchTimeoutException
+import org.languagetool.dev.index.Searcher
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -74,6 +75,22 @@ class RuleEditorController extends BaseController {
             log.info("Checked rule: invalid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
         }
+    }
+
+    def indexOverview = {
+        for (lang in Language.REAL_LANGUAGES) {
+          if (lang.isVariant()) {
+            continue
+          }
+          String indexDirTemplate = grailsApplication.config.fastSearchIndex
+          File indexDir = new File(indexDirTemplate.replace("LANG", lang.getShortName()))
+          if (indexDir.isDirectory()) {
+            Searcher searcher = new Searcher()
+            render "${lang}: ${formatNumber(number:searcher.getDocCount(indexDir), type: 'number')} docs<br/>"
+          } else {
+            render "No index found: ${lang}<br/>"
+          }
+      }
     }
 
     def checkXml = {
