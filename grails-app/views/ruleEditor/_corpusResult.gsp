@@ -11,8 +11,6 @@
 
         <p>Your example sentences are also correct.</p>
 
-        <g:render template="submitRule"/>
-
     </g:if>
     <g:else>
 
