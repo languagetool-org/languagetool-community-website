@@ -132,7 +132,8 @@ class UserController extends BaseController {
         String smtpHost = grailsApplication.config.smtp.host
         String smtpUsername = grailsApplication.config.smtp.user
         String smtpPassword = grailsApplication.config.smtp.password
-        props.put("mail.from", grailsApplication.config.registration.mail.from)
+        String fromAddress = grailsApplication.config.registration.mail.from
+        props.put("mail.from", fromAddress)
         props.put("mail.smtp.auth", true)
         Session session = Session.getInstance(props, null)
         MimeMessage msg = new MimeMessage(session)
@@ -145,10 +146,13 @@ class UserController extends BaseController {
                 replaceAll("#USERID#", ticket.user.id + ""))
         msg.saveChanges()
         Transport tr = session.getTransport("smtp")
-        tr.connect(smtpHost, smtpUsername, smtpPassword);
-        tr.sendMessage(msg, msg.getAllRecipients())
-        tr.close()
-        log.info("Mail sent to $toAddress")
+        try {
+            tr.connect(smtpHost, smtpUsername, smtpPassword);
+            tr.sendMessage(msg, msg.getAllRecipients())
+            log.info("Mail sent to $toAddress via SMTP host $smtpHost, SMTP user $smtpUsername, From: $fromAddress")
+        } finally {
+            tr.close()
+        }
     }
 
     /**
