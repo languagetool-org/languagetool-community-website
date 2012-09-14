@@ -32,7 +32,7 @@
 			            </g:if>
 			            <g:else>
 			                <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span>
-                            <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/JLanguageTool/src/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                            <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/JLanguageTool/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
                             <br/>
 			            </g:else>
                     </td>
