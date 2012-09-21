@@ -28,7 +28,7 @@ public class StringTools {
   }
   
   public static String formatDate(Date date) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     return sdf.format(date);
   }
   
@@ -37,7 +37,7 @@ public class StringTools {
    * 
    * @param s the string to shorten
    * @param maxLen the maximum length of the new string (without marker)
-   * @param appended to the end of the string if it was shortened
+   * @param marker appended to the end of the string if it was shortened
    * @since 0.9.3
    */
   public static String shorten(String s, int maxLen, String marker) {
