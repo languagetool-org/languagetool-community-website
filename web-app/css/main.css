@@ -148,6 +148,10 @@ div.errors li {
     padding-left: 30px;
 }
 
+li {
+    line-height: 130%;
+}
+
 td.errors select {
     border: 1px solid red;
 }
