@@ -8,13 +8,14 @@
             <li class="errorList">
                 ${matchInfo.getMessage().replaceAll("<suggestion>", "<span class='correction'>").replaceAll("</suggestion>", "</span>")}
 
+                <g:set var="langParam" value="${language?.getShortNameWithVariant() ? language.getShortNameWithVariant() : lang}"/>
                 <g:if test="${matchInfo.getRule() instanceof PatternRule}">
                     <g:link controller="rule" action="show" id="${matchInfo.getRule().getId()}"
-                    params="${[lang: lang, subId: matchInfo.getRule().getSubId()]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link>
+                    params="${[lang: langParam, subId: matchInfo.getRule().getSubId()]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link>
                 </g:if>
                 <g:else>
                     <g:link controller="rule" action="show" id="${matchInfo.getRule().getId()}"
-                    params="${[lang: lang]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link>
+                    params="${[lang: langParam]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link>
                 </g:else>
 
                <br/>
