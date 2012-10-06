@@ -18,10 +18,11 @@
                 </g:else>
 
                <br/>
+               <g:set var="css" value="${matchInfo.getRule().isSpellingRule() ? 'spellingError' : 'error'}"/>
                <span class="exampleSentence">${
                org.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
                matchInfo.getToPos(), textToCheck,
-               100, "<span class='error'>", "</span>", true)}</span>
+               100, "<span class='" + css + "'>", "</span>", true)}</span>
                 <br />
             </li>
 
