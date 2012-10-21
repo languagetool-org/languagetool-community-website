@@ -44,7 +44,7 @@ registration.min.password.length = 4
 max.text.length = 10000     // maximum length of texts to check
 // languages not visible in the user interface (e.g. because they are 
 // not properly supported yet):
-hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "tl", "km", "br", "en-GB", "en-US"]
+hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "km", "br", "en-GB", "en-US"]
 maxPatternElements = 5
 
 // Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
