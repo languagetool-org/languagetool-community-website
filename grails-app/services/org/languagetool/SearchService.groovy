@@ -32,6 +32,7 @@ class SearchService {
     def grailsApplication
 
     SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
+        log.info("Checking rule against ${language} corpus: ${patternRule.getElements()}")
         Searcher searcher = new Searcher()
         searcher.setMaxHits(maxHits)
         searcher.setMaxSearchTimeMillis(SEARCH_TIMEOUT_MILLIS)
@@ -46,6 +47,7 @@ class SearchService {
                 searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language, indexSearcher)
             } finally {
                 indexReader.close()
+                directory.close()
             }
             return searcherResult
         } else {
