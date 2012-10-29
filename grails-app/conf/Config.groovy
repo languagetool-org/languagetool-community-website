@@ -49,6 +49,7 @@ maxPatternElements = 5
 
 // Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
 fastSearchIndex = "/home/languagetool/corpus/LANG"
+fastSearchTimeoutMillis = 15000
 
 // log4j configuration
 log4j = {

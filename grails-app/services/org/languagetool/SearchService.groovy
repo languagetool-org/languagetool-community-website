@@ -27,15 +27,14 @@ import org.apache.lucene.search.IndexSearcher
 
 class SearchService {
 
-    public static final int SEARCH_TIMEOUT_MILLIS = 5000
-
     def grailsApplication
 
     SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
-        log.info("Checking rule against ${language} corpus: ${patternRule.getElements()}")
+        int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
+        log.info("Checking rule against ${language} corpus: ${patternRule.getElements()}, timeout: ${timeoutMillis}ms")
         Searcher searcher = new Searcher()
         searcher.setMaxHits(maxHits)
-        searcher.setMaxSearchTimeMillis(SEARCH_TIMEOUT_MILLIS)
+        searcher.setMaxSearchTimeMillis(timeoutMillis)
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {

@@ -120,15 +120,16 @@ class RuleEditorController extends BaseController {
                     expertMode: true, isOff: patternRule.isDefaultOff()])
             return
         }
+        int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
         long startTime = System.currentTimeMillis()
         try {
             SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
             long searchTime = System.currentTimeMillis() - startTime
-            log.info("Checked XML in ${language}, timeout (${SearchService.SEARCH_TIMEOUT_MILLIS}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
+            log.info("Checked XML in ${language}, timeout (${timeoutMillis}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
             render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT])
         } catch (SearchTimeoutException e) {
             long searchTime = System.currentTimeMillis() - startTime
-            log.warn("Timeout checking XML in ${language}, timeout (${SearchService.SEARCH_TIMEOUT_MILLIS}ms), time: ${searchTime}ms, pattern: ${patternRule}")
+            log.warn("Timeout checking XML in ${language}, timeout (${timeoutMillis}ms), time: ${searchTime}ms, pattern: ${patternRule}")
             problems.add("Sorry, there was a timeout when searching our Wikipedia data for matches. This can happen" +
                     " for patterns with some regular expressions, for example if the pattern starts with .*." +
                     " These kinds of patterns are currently not supported by this tool.")
