@@ -46,6 +46,8 @@ max.text.length = 10000     // maximum length of texts to check
 // not properly supported yet):
 hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "km", "en-GB", "en-US"]
 maxPatternElements = 5
+// disable some rules for WikiCheck to avoid too many false alarms:
+disabledRulesPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules.properties"
 
 // Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
 fastSearchIndex = "/home/languagetool/corpus/LANG"

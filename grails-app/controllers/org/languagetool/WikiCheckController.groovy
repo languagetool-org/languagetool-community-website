@@ -27,24 +27,15 @@ import java.util.regex.Matcher
 
 class WikiCheckController extends BaseController {
 
-    // disable some rules because of too many false alarms:
-    private static final List<String> DEFAULT_DISABLED_RULES =
-        Arrays.asList("WHITESPACE_RULE", "UNPAIRED_BRACKETS", "UPPERCASE_SENTENCE_START", "COMMA_PARENTHESIS_WHITESPACE")
-    private static final Map<String,List<String>> LANG_TO_DISABLED_RULES = new HashMap<String, List<String>>()
-
     private static final Pattern XML_TITLE_PATTERN = Pattern.compile("title=\"(.*?)\"")
-
-    static {
-        LANG_TO_DISABLED_RULES.put("en", Arrays.asList("EN_QUOTES", "ENGLISH_WORD_REPEAT_BEGINNING_RULE"))
-        LANG_TO_DISABLED_RULES.put("de", Arrays.asList("DE_CASE", "DE_AGREEMENT", "PFEILE", "BISSTRICH", "AUSLASSUNGSPUNKTE", "MALZEICHEN"))
-        LANG_TO_DISABLED_RULES.put("fr", Arrays.asList("FRENCH_WHITESPACE"))
-        LANG_TO_DISABLED_RULES.put("pl", Arrays.asList("BRAK_SPACJI"))
-    }
 
     private String CONVERT_URL_PREFIX = "http://community.languagetool.org/wikipediatotext/wikiSyntaxConverter/convert?url="
 
     def index = {
         if (params.url) {
+            final Properties langToDisabledRules = new Properties()
+            langToDisabledRules.load(new FileInputStream(grailsApplication.config.disabledRulesPropFile))
+
             long startTime = System.currentTimeMillis()
             if (params.url.contains("languagetool.org/wikiCheck/")) {
                 throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
@@ -61,8 +52,8 @@ class WikiCheckController extends BaseController {
             if (params.disabled) {
                 checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
             } else {
-                List<String> allDisabledRules = new ArrayList<String>(DEFAULT_DISABLED_RULES)
-                List<String> langSpecificDisabledRules = LANG_TO_DISABLED_RULES.get(language.getShortName())
+                List<String> allDisabledRules = langToDisabledRules.getProperty("all").split(",")
+                List<String> langSpecificDisabledRules = langToDisabledRules.get(language.getShortName()).split(",")
                 if (langSpecificDisabledRules) {
                     allDisabledRules.addAll(langSpecificDisabledRules)
                 }
