@@ -7,6 +7,15 @@
         <title>Proofreading Wikipedia Pages - LanguageTool WikiCheck</title>
         <meta name="layout" content="main" />
         <meta name="robots" content="noindex" />
+        <script type="text/javascript">
+            function toggleId(divId) {
+                if (document.getElementById(divId).style.display == 'block') {
+                    document.getElementById(divId).style.display='none';
+                } else {
+                    document.getElementById(divId).style.display='block';
+                }
+            }
+        </script>
     </head>
     <body>
 
@@ -50,11 +59,21 @@
                 <g:render template="/ruleMatches"/>
                 
                 <br /><br />
-                <div style="color:#888888;">
-                    Some LanguageTool rules are not activated because they cause too many false alarms:
-                    <g:each in="${disabledRuleIds}" var="ruleId">
-                        <a style="color:#888888;font-weight:normal" href="http://community.languagetool.org/rule/show/${ruleId.encodeAsURL()}?lang=${lang.encodeAsHTML()}">${ruleId.encodeAsHTML()}</a>
-                    </g:each>
+                <div style="color:#555555;">
+                    Some LanguageTool rules are not activated.
+                    <a style="color: #555555" href="javascript:toggleId('disabledRuleInfo');">Details</a>.
+                    <div id="disabledRuleInfo" style="margin-top: 5px; display: none;color:#444444;">
+                        The spell checking rule and the following rules have been disabled because they currently
+                        cause many false alarms on Wikipedia text:
+                        <g:each in="${disabledRuleIds}" var="ruleId" status="i">
+                            <g:if test="${i > 0}">
+                                &middot;
+                            </g:if>
+                            <a style="color:#444444;font-weight:normal" href="http://community.languagetool.org/rule/show/${ruleId.encodeAsURL()}?lang=${lang.encodeAsHTML()}">${ruleId.encodeAsHTML()}</a>
+                        </g:each>
+                        <div style="margin-top: 5px">You can add <tt style="background-color: #eeeeee">&amp;disabled=none</tt>
+                            to the URL of this page to activate all rules except spell checking.</div>
+                    </div>
                 </div>
             </g:if>
             
