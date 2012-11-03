@@ -1,4 +1,4 @@
-/* LanguageTool Community 
+/* LanguageTool Community
  * Copyright (C) 2008 Daniel Naber (http://www.danielnaber.de)
  * 
  * This library is free software; you can redistribute it and/or
@@ -97,7 +97,14 @@ class HomepageController extends BaseController {
             LanguageIdentifier identifier = new LanguageIdentifier(params.text)
             String detectedLangCode = identifier.getLanguage()
             if (detectedLangCode != 'unknown') {
-                detectedLang = Language.getLanguageForShortName(detectedLangCode)
+                try {
+                    detectedLang = Language.getLanguageForShortName(detectedLangCode)
+                } catch (IllegalArgumentException e) {
+                    render(view:"checkText", model:[matches: [], lang: "auto", disabledRules: null, languages: languages,
+                            autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null,
+                            textToCheck: params.text])
+                    return
+                }
             }
             if (detectedLang == null || params.text.trim().length() == 0) {
                 render(view:"checkText", model:[matches: [], lang: "auto", disabledRules: null, languages: languages,

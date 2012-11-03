@@ -29,7 +29,7 @@
 
         </g:if>
         <g:elseif test="${i == maxMatches}">
-            <div class="warn">More than ${maxMatches} errors found, stopping</div>
+            <div class="warn">More than ${maxMatches} possible errors found, stopping</div>
         </g:elseif>
         <g:else>
             <%-- nothing --%>

@@ -34,7 +34,7 @@
               <div class="warn"><g:message code="ltc.home.check.detection.warning" args="${[detectedLang]}"/></div>
             </g:if>
             <g:if test="${autoLangDetectionFailure}">
-              <div class="warn"><g:message code="ltc.home.check.detection.failure" args="${[languages]}"/></div>
+              <div class="warn"><g:message code="ltc.home.check.detection.failure" args="${[languages.join(', ')]}"/></div>
             </g:if>
 
             <g:render template="/ruleMatches"/>

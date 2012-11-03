@@ -41,9 +41,6 @@ class RuleController extends BaseController {
         if (params.max) max = Integer.parseInt(params.max)
         String lang = getLanguage()
         Language langObj = Language.getLanguageForShortName(lang)
-        if (!langObj) {
-            throw new Exception("Unknown language ${lang.encodeAsHTML()}")
-        }
         JLanguageTool lt = new JLanguageTool(langObj)
         lt.activateDefaultPatternRules()
         List rules = lt.getAllRules()
