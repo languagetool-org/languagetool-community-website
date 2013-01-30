@@ -32,7 +32,18 @@
 			            </g:if>
 			            <g:else>
 			                <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span>
-                            <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/JLanguageTool/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                            <g:set var="langCode" value="${params.lang}"/>
+                            <g:if test="${params.lang.contains('-')}">
+                                <g:set var="langCode" value="${params.lang.substring(0, params.lang.indexOf('-'))}"/>
+                            </g:if>
+                            <g:if test="${rule.class.getName().contains('.' + langCode  + '.')}">
+                                <%-- language-specific rule --%>
+                                <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/languagetool/languagetool-language-modules/${langCode.encodeAsHTML()}/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                            </g:if>
+                            <g:else>
+                                <%-- generic rule --%>
+                                <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/languagetool/languagetool-core/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                            </g:else>
                             <br/>
 			            </g:else>
                     </td>
