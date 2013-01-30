@@ -153,15 +153,17 @@
                 
             </g:form>
 
-            <g:if test="${matches != null}">            
+            <g:if test="${matches != null}">
                 <g:render template="/ruleMatches"/>
             </g:if>
             
             <p style="margin-top:10px">
-            <g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/>
             <g:if test="${corpusMatchCount > 0}">
-                <g:link controller="corpusMatch" action="list" params="${[lang: params.lang, filter: ruleId]}"><g:message code="ltc.rule.show.corpus.link.show"/></g:link>
+                <g:link controller="corpusMatch" action="list" params="${[lang: params.lang, filter: ruleId]}"><g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/></g:link>
             </g:if>
+            <g:else>
+                <g:link controller="corpusMatch" action="list" params="${[lang: params.lang]}"><g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/></g:link>
+            </g:else>
             </p>
             
         </div>
