@@ -14,6 +14,8 @@
         <g:render template="/languageSelection"/>
 
         <div class="dialog">
+            
+            <p style="margin-bottom: 15px"><g:message code="ltc.home.intro"/></p>
 
             <h2><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></h2>
 
