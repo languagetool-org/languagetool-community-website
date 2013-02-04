@@ -17,9 +17,7 @@
             
             <p style="margin-bottom: 15px"><g:message code="ltc.home.intro"/></p>
 
-            <h2><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></h2>
-
-
+            <!--
             <br />
             <h2><g:message code="ltc.run.languagetool"/></h2>
 
@@ -39,6 +37,7 @@
             </g:if>
             
             </div>
+            -->
 
 
             <br />
@@ -47,6 +46,10 @@
             <div class="mainPart">
             	<g:message code="ltc.browse.explain"/>
             </div>
+
+
+            <br />
+            <h2><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></h2>
 
 
             <br />
