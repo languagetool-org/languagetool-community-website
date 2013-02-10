@@ -27,5 +27,10 @@ cat ../grails-app/i18n/messages_common.properties >>$TARGET
 echo "" >>$TARGET
 cat ../grails-app/i18n/messages_en.properties >>../grails-app/i18n/messages.properties >>$TARGET
 
+# special case: if this is named pt_PT it never becomes active because we use "lang=xx" links
+# in the web app that don't contain the country code:
+echo "Special case: copying 'pt_PT' to 'pt'"
+mv ../grails-app/i18n/messages_pt_PT.properties ../grails-app/i18n/messages_pt.properties
+
 cd ..
 rm -r i18n-temp
