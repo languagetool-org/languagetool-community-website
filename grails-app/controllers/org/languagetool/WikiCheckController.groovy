@@ -32,6 +32,13 @@ class WikiCheckController extends BaseController {
     private String CONVERT_URL_PREFIX = "http://community.languagetool.org/wikipediatotext/wikiSyntaxConverter/convert?url="
 
     def index = {
+        String langCode
+        try {
+            Language langObj = params.lang ? Language.getLanguageForShortName(params.lang) : null
+            langCode = langObj ? langObj.getShortName() : 'en'
+        } catch (IllegalArgumentException e) {
+            langCode = 'en'
+        }
         if (params.url) {
             final Properties langToDisabledRules = new Properties()
             langToDisabledRules.load(new FileInputStream(grailsApplication.config.disabledRulesPropFile))
@@ -69,9 +76,11 @@ class WikiCheckController extends BaseController {
                     realUrl: pageUrl,
                     realEditUrl: pageEditUrl,
                     disabledRuleIds: checker.getDisabledRuleIds(),
-                    plainText: plainText]
+                    plainText: plainText,
+                    languages: Language.REAL_LANGUAGES,
+                    langCode: langCode]
         } else {
-            []
+            [languages: Language.REAL_LANGUAGES, langCode: langCode]
         }
     }
 

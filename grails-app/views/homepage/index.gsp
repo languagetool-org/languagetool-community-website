@@ -49,7 +49,7 @@
 
 
             <br />
-            <h2><g:link controller="wikiCheck"><g:message code="ltc.wiki.check"/></g:link></h2>
+            <h2><g:link controller="wikiCheck" params="${[lang: params.lang ? params.lang : 'en']}"><g:message code="ltc.wiki.check"/></g:link></h2>
 
 
             <br />
