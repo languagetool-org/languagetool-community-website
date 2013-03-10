@@ -58,7 +58,7 @@ class RuleEditorController extends BaseController {
         PatternRule patternRule = createPatternRule(language)
         List problems = []
         List shortProblems = []
-        checkExampleSentences(patternRule, language, problems, shortProblems)
+        checkExampleSentences(patternRule, language, problems, shortProblems, false)
         if (problems.size() == 0) {
           SearcherResult searcherResult = null
           boolean timeOut = false
@@ -114,7 +114,7 @@ class RuleEditorController extends BaseController {
         PatternRule patternRule = rules.get(0)
         List problems = []
         List shortProblems = []
-        checkExampleSentences(patternRule, language, problems, shortProblems)
+        checkExampleSentences(patternRule, language, problems, shortProblems, true)
         if (problems.size() > 0) {
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff()])
@@ -139,7 +139,7 @@ class RuleEditorController extends BaseController {
         }
     }
 
-    private void checkExampleSentences(PatternRule patternRule, Language language, List problems, List shortProblems) {
+    private void checkExampleSentences(PatternRule patternRule, Language language, List problems, List shortProblems, boolean checkMarker) {
         JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
         List correctExamples = patternRule.getCorrectExamples()
         if (correctExamples.size() == 0) {
@@ -158,20 +158,22 @@ class RuleEditorController extends BaseController {
             } else if (ruleMatches.size() == 1) {
                 def ruleMatch = ruleMatches.get(0)
                 def expectedReplacements = incorrectExample.corrections.sort()
-                int expectedMatchStart = incorrectExample.getExample().indexOf("<marker>")
-                int expectedMatchEnd = incorrectExample.getExample().indexOf("</marker>") - "<marker>".length()
-                if (expectedMatchStart == -1 || expectedMatchEnd == -1) {
-                    problems.add("No <marker> found in incorrect example sentence")
-                    break
-                }
-                if (!ruleMatch.getRule().isWithComplexPhrase()) {
-                    if (ruleMatch.getFromPos() != expectedMatchStart) {
-                        problems.add("Unexpected start position of <marker>...</marker> in incorrect example sentence: " + expectedMatchStart +  " but expected " + ruleMatch.getFromPos())
+                if (checkMarker) {
+                    int expectedMatchStart = incorrectExample.getExample().indexOf("<marker>")
+                    int expectedMatchEnd = incorrectExample.getExample().indexOf("</marker>") - "<marker>".length()
+                    if (expectedMatchStart == -1 || expectedMatchEnd == -1) {
+                        problems.add("No <marker> found in incorrect example sentence")
                         break
                     }
-                    if (ruleMatch.getToPos() != expectedMatchEnd) {
-                        problems.add("Unexpected end position of <marker>...</marker> in incorrect example sentence: " + expectedMatchEnd +  " but expected " + ruleMatch.getToPos())
-                        break
+                    if (!ruleMatch.getRule().isWithComplexPhrase()) {
+                        if (ruleMatch.getFromPos() != expectedMatchStart) {
+                            problems.add("Unexpected start position of <marker>...</marker> in incorrect example sentence: " + expectedMatchStart +  " but expected " + ruleMatch.getFromPos())
+                            break
+                        }
+                        if (ruleMatch.getToPos() != expectedMatchEnd) {
+                            problems.add("Unexpected end position of <marker>...</marker> in incorrect example sentence: " + expectedMatchEnd +  " but expected " + ruleMatch.getToPos())
+                            break
+                        }
                     }
                 }
                 def foundReplacements = ruleMatches.get(0).getSuggestedReplacements().sort()
