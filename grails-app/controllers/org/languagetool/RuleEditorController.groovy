@@ -151,19 +151,36 @@ class RuleEditorController extends BaseController {
         }
         for (incorrectExample in incorrectExamples) {
             String sentence = incorrectExample.getExample().replace("<marker>", "").replace("</marker>", "")
-            List expectedRuleMatches = langTool.check(sentence)
-            if (expectedRuleMatches.size() == 0) {
+            List ruleMatches = langTool.check(sentence)
+            if (ruleMatches.size() == 0) {
                 problems.add("The rule did not find the expected error in '${sentence}'")
                 shortProblems.add("errorNotFound")
-            } else if (expectedRuleMatches.size() == 1) {
+            } else if (ruleMatches.size() == 1) {
+                def ruleMatch = ruleMatches.get(0)
                 def expectedReplacements = incorrectExample.corrections.sort()
-                def foundReplacements = expectedRuleMatches.get(0).getSuggestedReplacements().sort()
+                int expectedMatchStart = incorrectExample.getExample().indexOf("<marker>")
+                int expectedMatchEnd = incorrectExample.getExample().indexOf("</marker>") - "<marker>".length()
+                if (expectedMatchStart == -1 || expectedMatchEnd == -1) {
+                    problems.add("No <marker> found in incorrect example sentence")
+                    break
+                }
+                if (!ruleMatch.getRule().isWithComplexPhrase()) {
+                    if (ruleMatch.getFromPos() != expectedMatchStart) {
+                        problems.add("Unexpected start position of <marker>...</marker> in incorrect example sentence: " + expectedMatchStart +  " but expected " + ruleMatch.getFromPos())
+                        break
+                    }
+                    if (ruleMatch.getToPos() != expectedMatchEnd) {
+                        problems.add("Unexpected end position of <marker>...</marker> in incorrect example sentence: " + expectedMatchEnd +  " but expected " + ruleMatch.getToPos())
+                        break
+                    }
+                }
+                def foundReplacements = ruleMatches.get(0).getSuggestedReplacements().sort()
                 if (expectedReplacements.size() > 0 && expectedReplacements != foundReplacements) {
                     problems.add("Found wrong correction(s) in '${sentence}: '${foundReplacements}' but expected '${expectedReplacements}'")
                     shortProblems.add("wrongCorrection")
                 }
             } else {
-                log.warn("Got ${expectedRuleMatches.size()} matches, expected zero or one: ${incorrectExample}")
+                log.warn("Got ${ruleMatches.size()} matches, expected zero or one: ${incorrectExample}")
             }
         }
         for (correctExample in correctExamples) {
