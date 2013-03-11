@@ -8,6 +8,10 @@
         <title>Check a LanguageTool XML rule</title>
         <script type="text/javascript">
 
+            function copyXml() {
+                $('xml').value = editor.getValue();
+            }
+
             function onLoadingResult() {
                 showDiv('checkResultSpinner');
                 document.ruleForm.checkXmlButton.disabled = true;
@@ -33,6 +37,13 @@
             });
 
         </script>
+        <style type="text/css" media="screen">
+            #editor {
+                width: 95%;
+                height: 300px;
+                font-size: 14px;
+            }
+        </style>
     </head>
     <body>
 
@@ -51,12 +62,24 @@
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
 
-                <g:textArea id="xml" name="xml" rows="15" cols="100"></g:textArea>
+                <div id="editor"></div>
+                
+                <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+                <script>
+                    var editor = ace.edit("editor");
+                    editor.setTheme("ace/theme/dawn");
+                    editor.getSession().setMode("ace/mode/xml");
+                    editor.focus();
+                </script>
+                
+                <input id="xml" type="hidden" name="xml" value=""/>
                 <br/><span class="metaInfo">Hint: you can submit this form with Ctrl+Return</span>
 
                 <br/>
                 <br/>
+                <div style="height: 280px"></div>
                 <g:submitToRemote name="checkXmlButton"
+                                  before="copyXml()"
                                   onLoading="onLoadingResult()"
                                   onComplete="onResultComplete()"
                                   action="checkXml" update="checkResult" value="Check XML"/>
@@ -66,10 +89,6 @@
                 <div id="checkResult"></div>
 
             </g:form>
-
-            <script type="text/javascript">
-                document.ruleForm.xml.select();
-            </script>
 
         </div>
     </body>
