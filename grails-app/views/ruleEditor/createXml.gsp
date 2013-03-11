@@ -19,8 +19,15 @@
             <p style="width:450px;margin-top: 5px">LanguageTool rules can be much more powerful - this page
             can only create simple rules. See <a target="devdocumentation" href="http://www.languagetool.org/development/">our development documentation</a>
             for more features.</p>
-
+            
             <g:render template="submitRule"/>
+
+            <p>Once you know the LanguageTool XML syntax, you can continue editing that:</p>
+            
+            <g:form action="expert" method="post" target="ltRuleEditor">
+                <input name="xml" type="hidden" value="${xml.encodeAsHTML()}"/>
+                <g:submitButton name="Edit XML"/>
+            </g:form>
 
         </g:else>
     </td>

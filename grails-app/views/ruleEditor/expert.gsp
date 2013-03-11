@@ -62,7 +62,12 @@
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
 
-                <div id="editor"></div>
+                <g:if test="${params.xml}">
+                    <div id="editor">${params.xml.encodeAsHTML()}</div>
+                </g:if>
+                <g:else>
+                    <div id="editor"></div>
+                </g:else>
                 
                 <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
                 <script>
