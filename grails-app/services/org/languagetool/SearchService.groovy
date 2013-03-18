@@ -18,12 +18,11 @@
  */
 package org.languagetool
 
+import org.apache.lucene.store.SimpleFSDirectory
 import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRule
 import org.languagetool.dev.index.Searcher
-import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.index.DirectoryReader
-import org.apache.lucene.search.IndexSearcher
 
 class SearchService {
 
@@ -32,18 +31,19 @@ class SearchService {
     SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
         int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
         log.info("Checking rule against ${language} corpus: ${patternRule.getElements()}, timeout: ${timeoutMillis}ms")
-        Searcher searcher = new Searcher()
-        searcher.setMaxHits(maxHits)
-        searcher.setMaxSearchTimeMillis(timeoutMillis)
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {
-            def directory = FSDirectory.open(indexDir)
+            // NIOFSDirectory and MMapDirectory (as returned by FSDirectory.open()) don't play together 
+            // with using Thread.interrupt(), so use SimpleFSDirectory:
+            def directory = SimpleFSDirectory.open(indexDir)
+            Searcher searcher = new Searcher(directory)
+            searcher.setMaxHits(maxHits)
+            searcher.setMaxSearchTimeMillis(timeoutMillis)
             DirectoryReader indexReader = DirectoryReader.open(directory)
             SearcherResult searcherResult = null
             try {
-                IndexSearcher indexSearcher = new IndexSearcher(indexReader)
-                searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language, indexSearcher)
+                searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language)
             } finally {
                 indexReader.close()
                 directory.close()

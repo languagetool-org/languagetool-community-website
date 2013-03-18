@@ -18,6 +18,7 @@
  */
 package org.languagetool
 
+import org.apache.lucene.store.SimpleFSDirectory
 import org.languagetool.rules.patterns.PatternRule
 import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRuleLoader
@@ -85,8 +86,13 @@ class RuleEditorController extends BaseController {
           String indexDirTemplate = grailsApplication.config.fastSearchIndex
           File indexDir = new File(indexDirTemplate.replace("LANG", lang.getShortName()))
           if (indexDir.isDirectory()) {
-            Searcher searcher = new Searcher()
-            render "${lang}: ${formatNumber(number:searcher.getDocCount(indexDir), type: 'number')} docs<br/>"
+            def directory = SimpleFSDirectory.open(indexDir)
+            try {
+              Searcher searcher = new Searcher(directory)
+              render "${lang}: ${formatNumber(number:searcher.getDocCount(), type: 'number')} docs<br/>"
+            } finally {
+              directory.close()
+            }
           } else {
             render "No index found: ${lang}<br/>"
           }

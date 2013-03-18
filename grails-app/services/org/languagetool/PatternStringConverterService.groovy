@@ -65,7 +65,7 @@ class PatternStringConverterService {
         List patternPartsWithWhitespace = tokenizer.tokenize(simplePart)
         for (patternPart in patternPartsWithWhitespace) {
             if (!patternPart.trim().isEmpty()) {
-                if (lang.getShortName().equals(Language.CHINESE.getShortName())) {
+                if (lang.getShortName().equals("zh")) {   // Chinese
                     // for some reason, tokens end with "/v" etc. in Chinese, cut that off:
                     patternPart = patternPart.replaceFirst("/.*", "")
                 }
