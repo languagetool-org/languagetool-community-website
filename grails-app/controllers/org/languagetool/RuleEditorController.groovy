@@ -102,6 +102,7 @@ class RuleEditorController extends BaseController {
     def checkXml = {
         Language language = getLanguage()
         PatternRuleLoader loader = new PatternRuleLoader()
+        loader.setRelaxedMode(true)
         String xml = "<rules lang=\"" + language.getShortName() + "\"><category name=\"fakeCategory\">" + params.xml + "</category></rules>"
         if (xml.trim().isEmpty()) {
             render(template: 'checkXmlProblem', model: [error: "No XML found"])
