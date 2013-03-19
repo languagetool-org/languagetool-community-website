@@ -21,7 +21,8 @@
         <g:if test="${searcherResult.getMatchingSentences().size() == limit}">
             (showing only the first ${limit} matches)
         </g:if>
-        Please consider modifying your rule if these matches are false alarms.
+        Please consider modifying your rule if these matches are false alarms. Hover over the
+        words to display their part-of-speech tags: 
         <g:if test="${!expertMode}">
             As this page does not support our full rule syntax you might want to learn
             more in <a target="devdocumentation" href="http://www.languagetool.org/development/">our development
@@ -33,10 +34,22 @@
             <g:each in="${searcherResult.getMatchingSentences()}" var="matchingSentence">
                 <g:each in="${matchingSentence.getRuleMatches()}" var="match">
                     <li>
-                        <span class="exampleSentence">${org.languagetool.gui.Tools.getContext(
-                            match.getFromPos(), match.getToPos(),
-                            matchingSentence.getSentence(),
-                            100, "<span class='errorMarker'>", "</span>", true)}</span>
+                        <g:set var="pos" value="${0}"/>
+                        <g:set var="startMarked" value="${false}"/>
+                        <g:set var="endMarked" value="${false}"/>
+                        <g:each in="${matchingSentence.getAnalyzedSentence().getTokens()}" var="token">
+                            <g:if test="${pos >= match.getFromPos() && !startMarked}">
+                                <span class='errorMarker'>
+                                <g:set var="startMarked" value="${true}"/>
+                            </g:if>
+                            <span title="${token.getReadings().encodeAsHTML()}">${token.getToken().encodeAsHTML()}</span>
+                            <g:if test="${pos >= match.getToPos() && !endMarked}"></span>
+                                <g:set var="endMarked" value="${true}"/>
+                            </g:if>
+                            <%
+                               pos += token.getToken().length();
+                            %>
+                        </g:each>
                     </li>
                 </g:each>
             </g:each>
