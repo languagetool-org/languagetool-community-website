@@ -110,7 +110,6 @@ class RuleController extends BaseController {
             String catName = rule.category.name.toLowerCase()
             if (catName.contains(filter)) {
                 filtered.add(rule)
-                continue
             }
         }
         return filtered
@@ -162,7 +161,7 @@ class RuleController extends BaseController {
         }
         int corpusMatchCount = countCorpusMatches(lang, selectedRule.id)
         List ruleMatches = lt.check(text)
-        render(view:'show', model: [ rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
+        render(view:'show', model: [ hideRuleLink: true, rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
                 textToCheck: params.text, matches: ruleMatches, ruleId: params.id,
                 isUserRule: isUserRule, corpusMatchCount: corpusMatchCount],
                 contentType: "text/html", encoding: "utf-8")
