@@ -57,8 +57,8 @@
 
                 <p class="warn">Warning: This mode is still experimental</p>
                 
-                <p>Enter a single LanguageTool XML rule (everything and including from <tt>&lt;rule&gt;</tt> to <tt>&lt;/rule&gt;</tt>)
-                here to check it. The rule syntax is described in
+                <p>Enter a single LanguageTool XML style/grammar rule (everything and including from <tt>&lt;rule&gt;</tt> to <tt>&lt;/rule&gt;</tt>,
+                as found in <tt>grammar.xml</tt>) here to check it. The rule syntax is described in
                 <a href="http://www.languagetool.org/development/">our documentation</a>.</p>
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
