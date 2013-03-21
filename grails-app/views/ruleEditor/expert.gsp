@@ -56,9 +56,10 @@
                 <p style="width:550px;text-align: right"><g:link action="index">Simple Mode</g:link></p>
 
                 <p class="warn">Warning: This mode is still experimental</p>
-
+                
                 <p>Enter a single LanguageTool XML rule (everything and including from <tt>&lt;rule&gt;</tt> to <tt>&lt;/rule&gt;</tt>)
-                here to check it against Wikipedia data:</p>
+                here to check it. The rule syntax is described in
+                <a href="http://www.languagetool.org/development/">our documentation</a>.</p>
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
 
