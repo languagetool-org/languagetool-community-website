@@ -5,7 +5,7 @@
     <head>
         <g:javascript library="prototype" />
         <meta name="layout" content="iframemain" />
-        <title>Check a LanguageTool XML rule</title>
+        <title><g:message code="ltc.editor.expert.title" /></title>
         <script type="text/javascript">
 
             function copyXml() {
@@ -49,17 +49,15 @@
 
         <div class="content">
 
-            <noscript class="warn">This page requires Javascript</noscript>
+            <noscript class="warn"><g:message code="ltc.editor.nojs"/></noscript>
         
             <g:form name="ruleForm"  method="post" action="checkRule">
 
-                <p style="width:550px;text-align: right"><g:link action="index">Simple Mode</g:link></p>
+                <p style="width:550px;text-align: right"><g:link action="index"><g:message code="ltc.editor.simple.mode"/></g:link></p>
 
-                <p class="warn">Warning: This mode is still experimental</p>
+                <p class="warn"><g:message code="ltc.editor.expert.beta.warning"/></p>
                 
-                <p>Enter a single LanguageTool XML style/grammar rule (everything and including from <tt>&lt;rule&gt;</tt> to <tt>&lt;/rule&gt;</tt>,
-                as found in <tt>grammar.xml</tt>) here to check it. The rule syntax is described in
-                <a href="http://www.languagetool.org/development/">our documentation</a>.</p>
+                <p><g:message code="ltc.editor.expert.intro" args="${['http://www.languagetool.org/development/']}"/></p>
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
 
@@ -88,7 +86,7 @@
                                   before="copyXml()"
                                   onLoading="onLoadingResult()"
                                   onComplete="onResultComplete()"
-                                  action="checkXml" update="checkResult" value="Check XML"/>
+                                  action="checkXml" update="checkResult" value="${message(code:'ltc.editor.expert.check.xml')}"/>
                 <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
 
                 <br/>

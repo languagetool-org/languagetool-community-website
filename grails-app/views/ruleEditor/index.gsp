@@ -6,7 +6,7 @@
     <head>
         <g:javascript library="prototype" />
         <meta name="layout" content="iframemain" />
-        <title>Create a new LanguageTool rule</title>
+        <title><g:message code="ltc.editor.title"/></title>
         <script type="text/javascript">
 
             function onLoadingResult(divName, buttonName) {
@@ -45,7 +45,7 @@
 
         <div class="content">
 
-            <noscript class="warn">This page requires Javascript</noscript>
+            <noscript class="warn"><g:message code="ltc.editor.nojs"/></noscript>
         
             <g:form name="ruleForm"  method="post" action="checkRule">
 
@@ -55,18 +55,17 @@
                 <table style="border: 0px">
                     <tr>
                         <td colspan="2">
-                            <p style="width:550px;text-align: right"><g:link action="expert">Advanced Mode</g:link></p>
+                            <p style="width:550px;text-align: right"><g:link action="expert"><g:message code="ltc.editor.advanced.mode"/></g:link></p>
 
-                            <p style="width:550px">LanguageTool finds errors based on rules. Most of these rules are expressed
-                            as XML, and this page will help you to create your own simple rules in XML.</p>
+                            <p style="width:550px"><g:message code="ltc.editor.intro"/></p>
                         </td>
                     </tr>
                     <tr>
-                        <td width="150">Language</td>
+                        <td width="150"><g:message code="ltc.editor.language"/></td>
                         <td><g:select name="language" from="${languageNames}" value="English"/></td>
                     </tr>
                     <tr>
-                        <td valign="top">Wrong words</td>
+                        <td valign="top"><g:message code="ltc.editor.wrong.words"/></td>
                         <td><g:textField id="pattern"
                                 onkeypress="return handleReturn(event);"
                                 onfocus="\$('pattern').setStyle({color: 'black'})"
@@ -74,30 +73,30 @@
 
                         <br/>
                         <div id="patternHelpLink">
-                            <a onclick="showDiv('patternHelp');hideDiv('patternHelpLink')" href="#">Show Help</a>
+                            <a onclick="showDiv('patternHelp');hideDiv('patternHelpLink')" href="#"><g:message code="ltc.editor.show.help"/></a>
                         </div>
                         <div id="patternHelp" style="display: none">
-                            <a onclick="showDiv('patternHelpLink');hideDiv('patternHelp')" href="#">Hide Help</a><br/>
+                            <a onclick="showDiv('patternHelpLink');hideDiv('patternHelp')" href="#"><g:message code="ltc.editor.hide.help"/></a><br/>
                             <table>
                                 <tr style="background-color: #eeeeee">
                                     <td>foo</td>
-                                    <td>matches the word "foo", ignoring case</td>
+                                    <td><g:message code="ltc.editor.help.word"/></td>
                                 </tr>
                                 <tr>
                                     <td>foo bar</td>
-                                    <td>matches the phrase "foo bar"</td>
+                                    <td><g:message code="ltc.editor.help.phrase"/></td>
                                 </tr>
                                 <tr style="background-color: #eeeeee">
                                     <td>(?-i)foo</td>
-                                    <td>matches the word "foo", but not "FOO" or "Foo"</td>
+                                    <td><g:message code="ltc.editor.help.word.case.sensitive"/></td>
                                 </tr>
                                 <tr>
                                     <td>foo|bar|blah</td>
-                                    <td>matches the word "foo", "bar" or "blah"</td>
+                                    <td><g:message code="ltc.editor.help.regex"/></td>
                                 </tr>
                                 <tr style="background-color: #eeeeee">
                                     <td>walks?</td>
-                                    <td>matches the word "walk" or "walks", i.e. the "s" is optional</td>
+                                    <td><g:message code="ltc.editor.help.question.mark"/></td>
                                 </tr>
                             </table>
                         </div>
@@ -105,8 +104,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sentence<br/>
-                            with error</td>
+                        <td><g:message code="ltc.editor.bad.sentence"/></td>
                         <td><g:textField id="incorrectExample1"
                                 onkeypress="return handleReturn(event);"
                                 onfocus="\$('incorrectExample1').setStyle({color: 'black'})"
@@ -116,8 +114,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sentence<br/>
-                            with the error corrected</td>
+                        <td><g:message code="ltc.editor.good.sentence"/></td>
                         <td><g:textField id="correctExample1"
                                 onkeypress="return handleReturn(event);"
                                 onfocus="\$('correctExample1').setStyle({color: 'black'})"
@@ -132,7 +129,7 @@
                             <g:submitToRemote name="checkRuleButton"
                                               onLoading="onLoadingResult('checkResultSpinner', 'checkRuleButton')"
                                               onComplete="onResultComplete('checkResultSpinner', 'checkRuleButton')"
-                                              action="checkRule" update="checkResult" value="Continue"/>
+                                              action="checkRule" update="checkResult" value="${message(code:'ltc.editor.continue')}"/>
                             <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                         </td>
                     </tr>

@@ -10,23 +10,19 @@
         </g:if>
         <g:else>
 
-            <p style="width:450px;margin-top: 0px; margin-bottom: 5px">This is the XML that you need to add inside a <tt>&lt;category&gt;</tt> in the file<br/>
-                <tt>rules/${language.getShortName()}/grammar.xml</tt>. After re-starting LanguageTool, the rule
-                will work locally for you.</p>
+            <p style="width:450px;margin-top: 0px; margin-bottom: 5px"><g:message code="ltc.editor.xml.intro" args="${[language.getShortName()]}"/></p>
 
             <pre style="background-color: #eeeeee; padding: 10px">${xml.encodeAsHTML().replaceAll("&gt;(.*?)&lt;", "&gt;<strong>\$1</strong>&lt;")}</pre>
 
-            <p style="width:450px;margin-top: 5px">LanguageTool rules can be much more powerful - this page
-            can only create simple rules. See <a target="devdocumentation" href="http://www.languagetool.org/development/">our development documentation</a>
-            for more features.</p>
+            <p style="width:450px;margin-top: 5px"><g:message code="ltc.editor.documentation.link"/></p>
             
             <g:render template="submitRule"/>
 
-            <p>Once you know the LanguageTool XML syntax, you can continue editing that:</p>
+            <p style="width:450px;"><g:message code="ltc.editor.continue.with.xml"/></p>
             
             <g:form action="expert" method="post" target="ltRuleEditor">
                 <input name="xml" type="hidden" value="${xml.encodeAsHTML()}"/>
-                <g:submitButton name="Edit XML"/>
+                <g:submitButton name="${message(code:'ltc.editor.edit.xml')}"/>
             </g:form>
 
         </g:else>

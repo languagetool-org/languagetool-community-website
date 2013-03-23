@@ -3,7 +3,7 @@
 
 <table style="border: 0px">
 <tr>
-    <td valign="top" width="150">Error Message</td>
+    <td valign="top" width="150"><g:message code="ltc.editor.error.message"/></td>
     <%
     String preset = "Did you mean \"bad\"?";
     %>
@@ -14,12 +14,12 @@
             class="preFilledField" type="text" name="message"
             value='${messagePreset ? messagePreset : preset}'/>
         <br/>
-        <span class="metaInfo">Use double quotes to mark the correction.</span>
+        <span class="metaInfo"><g:message code="ltc.editor.error.marker"/></span>
     </td>
 </tr>
 <tr>
-    <td>Rule Name<br/>
-        <span class="metaInfo">optional</span>
+    <td><g:message code="ltc.editor.rule.name"/><br/>
+        <span class="metaInfo"><g:message code="ltc.editor.optional"/></span>
     </td>
     <td><g:textField id="name"
             onkeypress="return handleReturnForXmlCreation(event);"
@@ -37,7 +37,7 @@
         <g:submitToRemote name="createXmlButton"
                           onLoading="onLoadingResult('createXmlSpinner', 'createXmlButton')"
                           onComplete="onResultComplete('createXmlSpinner', 'createXmlButton')"
-                          action="createXml" update="xml" value="Create XML"/>
+                          action="createXml" update="xml" value="${message(code:'ltc.editor.create.xml')}"/>
         <img id="createXmlSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
     </td>
 </tr>
