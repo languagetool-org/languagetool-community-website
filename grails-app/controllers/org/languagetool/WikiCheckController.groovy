@@ -60,9 +60,12 @@ class WikiCheckController extends BaseController {
                 checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
             } else {
                 List<String> allDisabledRules = langToDisabledRules.getProperty("all").split(",")
-                List<String> langSpecificDisabledRules = langToDisabledRules.get(language.getShortName()).split(",")
-                if (langSpecificDisabledRules) {
-                    allDisabledRules.addAll(langSpecificDisabledRules)
+                String langSpecificDisabledRulesStr = langToDisabledRules.get(language.getShortName())
+                if (langSpecificDisabledRulesStr) {
+                    List<String> langSpecificDisabledRules = langSpecificDisabledRulesStr.split(",")
+                    if (langSpecificDisabledRules) {
+                        allDisabledRules.addAll(langSpecificDisabledRules)
+                    }
                 }
                 checker.setDisabledRuleIds(allDisabledRules)
             }
