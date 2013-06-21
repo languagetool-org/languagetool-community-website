@@ -31,20 +31,21 @@ grails.views.gsp.encoding="UTF-8"
 grails.enable.native2ascii = true
 
 // for sending user registration mails:
-smtp.host = ""
-smtp.user = ""
+smtp.host = "smtprelaypool.ispgateway.de"
+smtp.user = "register@languagetool.org"
 smtp.password = ""
-registration.mail.from = "dont-reply@languagetool.org"
+registration.mail.from = "register@languagetool.org"
 registration.mail.subject = "LanguageTool Community Registration"
 registration.mail.text =  "Please follow this link to complete your registration at languagetool.org:\n"+
-  "http://localhost:8080/ltcommunity/user/completeRegistration?code="+
+  "http://community.languagetool.org/user/completeRegistration?code="+
   "#CODE#&id=#USERID#"
 registration.ticket.secret = "foo"      // change this to a random value
 registration.min.password.length = 4
 max.text.length = 10000     // maximum length of texts to check
-// languages not visible in the user interface (e.g. because they are 
+// languages not visible in the user interface (e.g. because they are
 // not properly supported yet):
-hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "km", "en-GB", "en-US"]
+hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "km", "en-GB", "en-US", "en-CA", "en-ZA", "en-NZ", "en-AU",
+        "de-DE", "de-AT", "de-CH", "pt-BR", "pt-PT", "de-DE-x-simple-language"]
 maxPatternElements = 5
 // disable some rules for WikiCheck to avoid too many false alarms:
 disabledRulesPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules.properties"
