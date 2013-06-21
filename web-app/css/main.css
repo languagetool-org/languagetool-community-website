@@ -419,3 +419,8 @@ th.desc a {
     width: 400px;
     color: #999999;
 }
+
+.languageToolVersion {
+    margin-top: 10px;
+    color: #aaaaaa;
+}

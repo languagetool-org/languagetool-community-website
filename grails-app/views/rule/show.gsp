@@ -178,6 +178,8 @@
                 <g:link controller="corpusMatch" action="list" params="${[lang: params.lang]}"><g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/></g:link>
             </g:else>
             </p>
+
+            <g:render template="/languageToolVersion"/>
             
         </div>
     </body>

@@ -125,6 +125,8 @@
 	        	<g:link controller="user" action="exportRules">Export the rules you added</g:link>
 	        </g:if>
 
+            <g:render template="/languageToolVersion"/>
+
         </div>
         
 		<script type="text/javascript">

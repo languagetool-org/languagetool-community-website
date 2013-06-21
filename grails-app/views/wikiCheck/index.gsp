@@ -76,9 +76,9 @@
                     </div>
                 </div>
             </g:if>
-            
-            <div style="margin-top:10px;color:#888888">LanguageTool ${JLanguageTool.VERSION} (${(new JLanguageTool(Language.DEMO)).getBuildDate()})</div>
-            
+
+            <g:render template="/languageToolVersion"/>
+
         </div>
         
         </div>
