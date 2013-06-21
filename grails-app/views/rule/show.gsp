@@ -40,11 +40,11 @@
                             </g:if>
                             <g:if test="${rule.class.getName().contains('.' + langCode  + '.')}">
                                 <%-- language-specific rule --%>
-                                <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/languagetool/languagetool-language-modules/${langCode.encodeAsHTML()}/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                                <a href="http://svn.code.sf.net/p/languagetool/code/trunk/languagetool/languagetool-language-modules/${langCode.encodeAsHTML()}/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
                             </g:if>
                             <g:else>
                                 <%-- generic rule --%>
-                                <a href="http://languagetool.svn.sourceforge.net/viewvc/languagetool/trunk/languagetool/languagetool-core/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                                <a href="http://svn.code.sf.net/p/languagetool/code/trunk/languagetool/languagetool-core/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
                             </g:else>
                             <br/>
 			            </g:else>
