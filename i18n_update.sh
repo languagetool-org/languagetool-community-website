@@ -14,7 +14,7 @@ for lang in en ast be br ca zh da nl eo fr gl de el_GR it pl ru sl es tl uk ro s
 do
   SOURCE=downloaded.tmp
   # download and hackish JSON cleanup:
-  curl --user $USERNAME:$PASSWORD https://www.transifex.net/api/2/project/languagetool/resource/community-website/translation/$lang/?file >$SOURCE
+  curl --user $USERNAME:$PASSWORD http://www.transifex.net/api/2/project/languagetool/resource/community-website/translation/$lang/?file >$SOURCE
   TARGET="../grails-app/i18n/messages_${lang}.properties"
   echo "Moving $SOURCE to $TARGET"
   mv $SOURCE $TARGET
