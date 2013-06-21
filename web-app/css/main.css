@@ -366,10 +366,11 @@ th.desc a {
 
 .languageButton {
 	padding: 5px;
-	padding-right: 2px;
-	margin-left: 2px;
-	margin-right: 2px;
-	background: #7fa71f;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin-left: 0;
+	margin-right: 0;
+	background: #94c324;
 }
 
 .languageButton a {
