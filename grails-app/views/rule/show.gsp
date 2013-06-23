@@ -91,8 +91,10 @@
 			                    replace("&lt;/marker&gt;", '</span>')
 			                    }
 			                    <g:if test="${example.getCorrections()}">
-    			                    <br /><g:message code="ltc.rule.show.corrections" />
-			                        <span class="correction">${StringTools.listToString(example.getCorrections(), ", ")}</span>
+    			                    <div style="margin-top: 2px">
+                                        <g:message code="ltc.rule.show.corrections" />
+			                            <span class="correction">${StringTools.listToString(example.getCorrections(), ", ")}</span>
+                                    </div>
 			                    </g:if>
 			                </li>
 			            </g:each>
