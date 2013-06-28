@@ -1,7 +1,7 @@
-
 <%@ page import="org.languagetool.User" %>
 <%@ page import="org.languagetool.rules.patterns.PatternRule" %>
 <%@ page import="org.languagetool.tools.StringTools" %>
+<%@page import="org.languagetool.*" %>
 <html>
     <head>
         <meta name="layout" content="main" />
@@ -130,6 +130,12 @@
                         </td>
 	                </tr>
                 </g:if>
+                <tr class="additional">
+                    <td><g:message code="ltc.rule.show.languagetool.version" /></td>
+                    <td>
+                        ${JLanguageTool.VERSION} (${(new JLanguageTool(Language.DEMO)).getBuildDate()})
+                    </td>
+                </tr>
             </table>
             
             <g:if test="${session.user}">
@@ -178,8 +184,6 @@
             </g:else>
             </p>
 
-            <g:render template="/languageToolVersion"/>
-            
         </div>
     </body>
 </html>
