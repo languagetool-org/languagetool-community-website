@@ -27,6 +27,33 @@
             
             <table>
                 <tr>
+                    <td><g:message code="ltc.rule.show.description" /></td>
+                    <td>${rule.description.encodeAsHTML()}</td>
+                </tr>
+                <g:if test="${rule instanceof PatternRule}">
+                    <tr>
+                        <td><g:message code="ltc.rule.show.message" /></td>
+                        <td>${org.languagetool.StringTools.formatError(rule.message.encodeAsHTML())}</td>
+                    </tr>
+                </g:if>
+                <tr>
+                    <td><g:message code="ltc.rule.show.category" /></td>
+                    <td>${rule.category.name.encodeAsHTML()}</td>
+                </tr>
+                <g:if test="${rule.url}">
+                    <tr>
+                        <td><g:message code="ltc.rule.show.link" /></td>
+                        <td><a href="${rule.url}">${rule.url.encodeAsHTML()}</a></td>
+                    </tr>
+                </g:if>
+                <g:if test="${session.user}">
+                    <tr>
+                        <td><g:message code="ltc.rule.show.active" /></td>
+                        <td><g:checkBox name="active" value="${!isDisabled}"/></td>
+                    </tr>
+                </g:if>
+
+                <tr>
                     <td><g:message code="ltc.rule.show.pattern" /></td>
                     <td>
 			            <g:if test="${rule instanceof PatternRule}">
@@ -50,37 +77,7 @@
 			            </g:else>
                     </td>
                 </tr>
-                <tr>
-                    <td><g:message code="ltc.rule.show.description" /></td>
-                    <td>${rule.description.encodeAsHTML()}</td>
-                </tr>
-                <g:if test="${rule instanceof PatternRule}">
-	                <tr>
-	                    <td><g:message code="ltc.rule.show.message" /></td>
-	                    <td>${org.languagetool.StringTools.formatError(rule.message.encodeAsHTML())}</td>
-	                </tr>
-                </g:if>
-                <tr>
-                    <td><g:message code="ltc.rule.show.category" /></td>
-                    <td>${rule.category.name.encodeAsHTML()}</td>
-                </tr>
-                <g:if test="${rule.url}">
-                    <tr>
-                        <td><g:message code="ltc.rule.show.link" /></td>
-                        <td><a href="${rule.url}">${rule.url.encodeAsHTML()}</a></td>
-                    </tr>
-                </g:if>
-                <tr>
-                    <td><g:message code="ltc.rule.show.active" /></td>
-                    <td>
-                        <g:if test="${session.user}">
-                            <g:checkBox name="active" value="${!isDisabled}"/>
-                        </g:if>
-                        <g:else>
-                            <input type="checkbox" name="active" value="on" checked="checked" disabled="disabled" />
-                        </g:else>
-                </tr>
-                
+
                 <tr>
                     <td><g:message code="ltc.rule.show.incorrect.sentences" /></td>
                     <td>
