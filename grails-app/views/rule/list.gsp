@@ -34,8 +34,10 @@
                 <table>
                     <thead>
                         <tr>
-                        
-                            <td><g:message code="ltc.rule.browse.active" /></td>
+
+                            <g:if test="${session.user}">
+                                <td><g:message code="ltc.rule.browse.active" /></td>
+                            </g:if>
 
                    	        <g:sortableColumn property="description" title="${message(code:'ltc.rule.browse.description')}" />
 
@@ -54,21 +56,23 @@
                             <g:if test="${patternRuleIdToUserRuleId.containsKey(rule.id)}">
                             	<% userRuleId = patternRuleIdToUserRuleId.get(rule.id); %>
 							</g:if>
-							                        
-                            <td>
-                                <g:if test="${session.user}">
-	                                <g:if test="${disabledRuleIDs != null && (disabledRuleIDs.contains(rule.id) || disabledRuleIDs.contains(userRuleId))}">
-	                                    -
-	                                </g:if>
-	                                <g:else>
-	                                    <g:message code="ltc.rule.browse.active.yes" />
-	                                </g:else>
-                                </g:if>
-                                <g:else>
-                                    n/a
-                                </g:else>
-                            </td>
-                        
+
+                            <g:if test="${session.user}">
+                                <td>
+                                    <g:if test="${session.user}">
+                                        <g:if test="${disabledRuleIDs != null && (disabledRuleIDs.contains(rule.id) || disabledRuleIDs.contains(userRuleId))}">
+                                            -
+                                        </g:if>
+                                        <g:else>
+                                            <g:message code="ltc.rule.browse.active.yes" />
+                                        </g:else>
+                                    </g:if>
+                                    <g:else>
+                                        n/a
+                                    </g:else>
+                                </td>
+                            </g:if>
+
                             <td>
                                 <g:if test="${userRuleId}">
                                     <g:link action="show" id="${userRuleId}"
@@ -97,7 +101,7 @@
                                 patternDisplay = StringTools.shorten(patternDisplay, 80, "...");
                                 patternDisplay = patternDisplay.replace(", ", " ");  // commas don't help the user to understand the pattern, remove them
                                 %>
-                                <td>${patternDisplay.encodeAsHTML()}</td>
+                                <td class="metaInfo">${patternDisplay.encodeAsHTML()}</td>
                             </g:if>
                             <g:else>
                                 <td><g:message code="ltc.rule.browse.java.rule" /></td>
