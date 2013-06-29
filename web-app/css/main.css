@@ -428,3 +428,9 @@ th.desc a {
 .filterMatch {
     background-color: yellow;
 }
+
+.ruleMessage {
+    color: #333333;
+    font-weight: bold;
+    width: 60%
+}

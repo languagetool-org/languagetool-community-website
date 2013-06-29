@@ -22,7 +22,7 @@
             
             <br />
             
-            <form>
+            <form style="margin-bottom: 5px">
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
                 <select name="filter">
                     <option value=""><g:message code="ltc.corpus.match.filter.all"/></option>
@@ -48,21 +48,27 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <g:set var="prevRuleId" value="${null}"/>
                     <g:each in="${corpusMatchList}" status="i" var="match">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
+
                             <td>
                             	<g:set var="cleanText" value="${StringTools.cleanError(match.errorContext)}"/>
-                                <div style="color: #666666; font-weight: bold; width:60%">
-                                    ${StringTools.formatError(match.message.encodeAsHTML())}
-                                    <g:link controller="rule" action="show" id="${match.ruleID}"
-                          							params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}"><g:message code="ltc.check.visit.rule"/></g:link>
-                                </div>
+
+                                <g:if test="${match.ruleID != prevRuleId}">
+                                    <div class="ruleMessage">
+                                        ${StringTools.formatError(match.message.encodeAsHTML())}
+                                        <g:link controller="rule" action="show" id="${match.ruleID}"
+                                                params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}"><g:message code="ltc.check.visit.rule"/></g:link>
+                                    </div>
+                                </g:if>
+                                <g:set var="prevRuleId" value="${match.ruleID}"/>
+
                                 <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
-                                    ${StringTools.formatError(match.errorContext.encodeAsHTML())}<br />
+                                    ${StringTools.formatError(match.errorContext.encodeAsHTML())}
+                                    <span class="additional"><g:link title="${message(code:'ltc.corpus.match.check.date')} ${StringTools.formatDate(match.corpusDate).encodeAsHTML()}" class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
                                 </div>
-                                <span class="additional">Article: <g:link class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
-                                <span class="additional"> (${StringTools.formatDate(match.corpusDate).encodeAsHTML()})</span>
+
                             </td>
                         
                         </tr>
