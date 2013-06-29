@@ -57,9 +57,8 @@
 
                                 <g:if test="${match.ruleID != prevRuleId}">
                                     <div class="ruleMessage">
-                                        ${StringTools.formatError(match.message.encodeAsHTML())}
                                         <g:link controller="rule" action="show" id="${match.ruleID}"
-                                                params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}"><g:message code="ltc.check.visit.rule"/></g:link>
+                                                params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}">${StringTools.formatError(match.message.encodeAsHTML())}</g:link>
                                     </div>
                                 </g:if>
                                 <g:set var="prevRuleId" value="${match.ruleID}"/>
