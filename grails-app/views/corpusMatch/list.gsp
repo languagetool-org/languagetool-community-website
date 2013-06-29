@@ -25,14 +25,15 @@
             <form>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
                 <select name="filter">
-                    <option value="">- all rules -</option>
+                    <option value="">- all non-hidden rules -</option>
                     <g:each in="${matchesByRule}" var="rule">
                         <g:set var="ruleDesc" value="${rule[2]}"/>
+                        <g:set var="hiddenText" value="${hiddenRuleIds.contains(rule[0]) ? ', hidden' : ''}"/>
                         <g:if test="${params.filter == rule[0]}">
-                            <option selected value="${rule[0].encodeAsHTML()}">${ruleDesc.encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
+                            <option selected value="${rule[0].encodeAsHTML()}">${ruleDesc.encodeAsHTML()} (${rule[1].encodeAsHTML()} matches${hiddenText})</option>
                         </g:if>
                         <g:else>
-                            <option value="${rule[0].encodeAsHTML()}">${ruleDesc.encodeAsHTML()} (${rule[1].encodeAsHTML()} matches)</option>
+                            <option value="${rule[0].encodeAsHTML()}">${ruleDesc.encodeAsHTML()} (${rule[1].encodeAsHTML()} matches${hiddenText})</option>
                         </g:else>
                     </g:each>
                 </select>

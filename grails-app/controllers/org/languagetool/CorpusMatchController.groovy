@@ -61,10 +61,15 @@ class CorpusMatchController extends BaseController {
             order 'mycount', 'desc'
         }
         // Rule Matches for this language:
+        List hiddenRuleIds = getHiddenRuleIds(langCode)
         def matchCriteria = CorpusMatch.createCriteria()
         def matches = matchCriteria {
             if (params.filter) {
                 eq('ruleID', params.filter)
+            } else {
+                not {
+                    inList('ruleID', hiddenRuleIds)
+                }
             }
             eq('languageCode', langCode)
             eq('isVisible', true)
@@ -75,6 +80,10 @@ class CorpusMatchController extends BaseController {
         def allMatchesCount = allMatchesCriteria.count {
             if (params.filter) {
                 eq('ruleID', params.filter)
+            } else {
+                not {
+                    inList('ruleID', hiddenRuleIds)
+                }
             }
             eq('languageCode', langCode)
             eq('isVisible', true)
@@ -82,7 +91,21 @@ class CorpusMatchController extends BaseController {
         Language langObj = Language.getLanguageForShortName(langCode)
         [ corpusMatchList: matches,
                 languages: Language.REAL_LANGUAGES, lang: langCode, totalMatches: allMatchesCount,
-                matchesByRule: matchesByRule, language: langObj]
+                matchesByRule: matchesByRule, hiddenRuleIds: hiddenRuleIds, language: langObj]
+    }
+
+    private List getHiddenRuleIds(String langCode) {
+        List hiddenRuleIds = []
+        Properties langToDisabledRules = new Properties()
+        def fis = new FileInputStream(grailsApplication.config.disabledRulesPropFile)
+        try {
+            langToDisabledRules.load(fis)
+            hiddenRuleIds.addAll(langToDisabledRules.getProperty("all").split(",\\s*"))
+            hiddenRuleIds.addAll(langToDisabledRules.getProperty(langCode).split(",\\s*"))
+        } finally {
+            fis.close()
+        }
+        return hiddenRuleIds
     }
 
     def markUseful = {
