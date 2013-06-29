@@ -25,7 +25,7 @@
             <form>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
                 <select name="filter">
-                    <option value="">- all non-hidden rules -</option>
+                    <option value=""><g:message code="ltc.corpus.match.filter.all"/></option>
                     <g:each in="${matchesByRule}" var="rule">
                         <g:set var="ruleDesc" value="${rule[2]}"/>
                         <g:set var="hiddenText" value="${hiddenRuleIds.contains(rule[0]) ? ', hidden' : ''}"/>
