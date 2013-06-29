@@ -424,3 +424,7 @@ th.desc a {
     margin-top: 10px;
     color: #aaaaaa;
 }
+
+.filterMatch {
+    background-color: yellow;
+}

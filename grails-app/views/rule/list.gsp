@@ -76,7 +76,7 @@
                             <td>
                                 <g:if test="${userRuleId}">
                                     <g:link action="show" id="${userRuleId}"
-                                        params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link>
+                                        params="[lang:params.lang]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
                                 </g:if>
                                 <g:else>
                                     <g:if test="${rule instanceof PatternRule}">
@@ -85,11 +85,11 @@
                                         %>
                                         <g:set var="subId" value="${pRule.subId}"/>
                                         <g:link action="show" id="${rule.id}"
-                                                params="[lang:params.lang, subId: subId]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link>
+                                                params="[lang:params.lang, subId: subId]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
                                     </g:if>
                                     <g:else>
                                         <g:link action="show" id="${rule.id}"
-                                                params="[lang:params.lang]">${rule.description ? rule.description.encodeAsHTML() : "[unnamed]"}</g:link>
+                                                params="[lang:params.lang]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
                                     </g:else>
                                 </g:else>
                             </td>
@@ -100,14 +100,20 @@
                                 String patternDisplay = pRule.toPatternString();
                                 patternDisplay = StringTools.shorten(patternDisplay, 80, "...");
                                 patternDisplay = patternDisplay.replace(", ", " ");  // commas don't help the user to understand the pattern, remove them
+                                patternDisplay = StringTools.escapeHtmlAndHighlightMatches(patternDisplay, params.filter);
                                 %>
-                                <td class="metaInfo">${patternDisplay.encodeAsHTML()}</td>
+                                <td class="metaInfo">${patternDisplay}</td>
                             </g:if>
                             <g:else>
                                 <td><g:message code="ltc.rule.browse.java.rule" /></td>
                             </g:else>
 
-                            <td>${rule.category.name}</td>
+                            <td>
+                                <%
+                                String categoryName = categoryName = StringTools.escapeHtmlAndHighlightMatches(rule.category.name, params.filter);
+                                %>
+                                ${categoryName}
+                            </td>
                         
                         </tr>
                     </g:each>

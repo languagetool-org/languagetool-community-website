@@ -18,6 +18,8 @@
  */
 package org.languagetool;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,6 +59,21 @@ public class StringTools {
   /** Remove the "<err>" markup */
   public static String cleanError(String s) {
     return s.replaceAll("<err>", "").replaceAll("</err>", "");
+  }
+
+  /**
+   * @param text the text to be escaped
+   * @param searchString the string to be searched (case-insensitively) and marked with a span in {@code text}
+   */
+  public static String escapeHtmlAndHighlightMatches(String text, String searchString) {
+    if (searchString == null) {
+      return StringEscapeUtils.escapeHtml(text);
+    }
+    text = text.replaceAll("(?i)(" + searchString + ")", "<span class='filterMatch'>$1</span>");
+    text = StringEscapeUtils.escapeHtml(text);
+    text = text.replaceAll("&lt;span class='filterMatch'&gt;", "<span class='filterMatch'>");
+    text = text.replaceAll("&lt;/span&gt;", "</span>");
+    return text;
   }
 
 }
