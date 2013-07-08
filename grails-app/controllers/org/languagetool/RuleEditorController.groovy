@@ -39,20 +39,19 @@ class RuleEditorController extends BaseController {
     int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
 
     def index = {
-        List languageNames = getLanguageNames()
-        [languages: Language.REAL_LANGUAGES, languageNames: languageNames.sort()]
+        [languages: Language.REAL_LANGUAGES, languageNames: getSortedLanguageNames()]
     }
 
     def expert = {
-        List languageNames = getLanguageNames()
-        [languages: Language.REAL_LANGUAGES, languageNames: languageNames.sort()]
+        [languages: Language.REAL_LANGUAGES, languageNames: getSortedLanguageNames()]
     }
 
-    private List getLanguageNames() {
+    private List getSortedLanguageNames() {
         List languages = Language.REAL_LANGUAGES
         List languageNames = []
         languages.each { languageNames.add(it.getName()) }
-        languageNames
+        languageNames.sort()
+        return languageNames
     }
 
     def checkRule = {
