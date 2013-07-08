@@ -37,10 +37,6 @@
 
         <div class="body">
         
-            <input type="hidden" name="id" value="${ruleId.encodeAsHTML()}"/>
-            <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
-            <input type="hidden" name="disableId" value="${disableId.encodeAsHTML()}"/>
-                
             <g:link action="list"  params="${[lang:params.lang.encodeAsHTML()]}"><g:message code="ltc.rule.show.back.to.list" /></g:link>
             
             <h1><g:message code="ltc.rule.show.title" args="${[rule.description.encodeAsHTML()]}"/></h1>
@@ -209,8 +205,12 @@
                 </tr>
 
             </table>
-            
+
+            <%--
             <g:if test="${session.user}">
+                <input type="hidden" name="id" value="${ruleId.encodeAsHTML()}"/>
+                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+                <input type="hidden" name="disableId" value="${disableId.encodeAsHTML()}"/>
                 <g:actionSubmit action="change" value="Change Active/Inactive"/> &nbsp;
                 <g:if test="${rule instanceof PatternRule}">
 		            <g:if test="${isUserRule}">
@@ -221,6 +221,7 @@
 		            </g:else>
 	            </g:if>
             </g:if>
+            --%>
 
         </div>
     </body>
