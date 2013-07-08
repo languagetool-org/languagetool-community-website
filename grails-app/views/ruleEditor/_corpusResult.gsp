@@ -8,6 +8,10 @@
 
         <p><g:message code="ltc.editor.corpus.correct.example.sentence"/></p>
 
+        <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>
+
+        <g:render template="/ruleMatches" model="${[matches: incorrectExamplesMatches, textToCheck: incorrectExamples, hideRuleLink: true]}"/>
+
     </g:if>
     <g:else>
 

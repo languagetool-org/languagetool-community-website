@@ -19,6 +19,7 @@
 package org.languagetool
 
 import org.apache.lucene.store.SimpleFSDirectory
+import org.languagetool.rules.RuleMatch
 import org.languagetool.rules.patterns.PatternRule
 import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRuleLoader
@@ -59,7 +60,8 @@ class RuleEditorController extends BaseController {
         PatternRule patternRule = createPatternRule(language)
         List problems = []
         List shortProblems = []
-        checkExampleSentences(patternRule, language, problems, shortProblems, false)
+        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
+        checkExampleSentences(langTool, patternRule, language, problems, shortProblems, false)
         if (problems.size() == 0) {
           SearcherResult searcherResult = null
           boolean timeOut = false
@@ -121,19 +123,23 @@ class RuleEditorController extends BaseController {
         PatternRule patternRule = rules.get(0)
         List problems = []
         List shortProblems = []
-        checkExampleSentences(patternRule, language, problems, shortProblems, true)
+        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
+        checkExampleSentences(langTool, patternRule, language, problems, shortProblems, true)
         if (problems.size() > 0) {
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff()])
             return
         }
+        String incorrectExamples = getIncorrectExamples(patternRule)
+        List<RuleMatch> incorrectExamplesMatches = langTool.check(incorrectExamples)
         int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
         long startTime = System.currentTimeMillis()
         try {
             SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
             long searchTime = System.currentTimeMillis() - startTime
             log.info("Checked XML in ${language}, timeout (${timeoutMillis}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
-            render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT])
+            render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT,
+                    incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches])
         } catch (SearchTimeoutException e) {
             long searchTime = System.currentTimeMillis() - startTime
             log.warn("Timeout checking XML in ${language}, timeout (${timeoutMillis}ms), time: ${searchTime}ms, pattern: ${patternRule}")
@@ -146,18 +152,17 @@ class RuleEditorController extends BaseController {
         }
     }
 
-    private void checkExampleSentences(PatternRule patternRule, Language language, List problems, List shortProblems, boolean checkMarker) {
-        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        List correctExamples = patternRule.getCorrectExamples()
+    private void checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, Language language, List problems, List shortProblems, boolean checkMarker) {
+        List<String> correctExamples = patternRule.getCorrectExamples()
         if (correctExamples.size() == 0) {
             throw new Exception("No correct example sentences found")
         }
-        List incorrectExamples = patternRule.getIncorrectExamples()
+        List<IncorrectExample> incorrectExamples = patternRule.getIncorrectExamples()
         if (incorrectExamples.size() == 0) {
             throw new Exception("No incorrect example sentences found")
         }
         for (incorrectExample in incorrectExamples) {
-            String sentence = incorrectExample.getExample().replace("<marker>", "").replace("</marker>", "")
+            String sentence = cleanMarkers(incorrectExample.getExample())
             List ruleMatches = langTool.check(sentence)
             if (ruleMatches.size() == 0) {
                 problems.add("The rule did not find the expected error in '${sentence}'")
@@ -193,13 +198,28 @@ class RuleEditorController extends BaseController {
             }
         }
         for (correctExample in correctExamples) {
-            String sentence = correctExample.replace("<marker>", "").replace("</marker>", "")
+            String sentence = cleanMarkers(correctExample)
             List unexpectedRuleMatches = langTool.check(sentence)
             if (unexpectedRuleMatches.size() > 0) {
                 problems.add("The rule found an unexpected error in '${sentence}'")
                 shortProblems.add("unexpectedErrorFound")
             }
         }
+    }
+
+    private String getIncorrectExamples(PatternRule patternRule) {
+        List<IncorrectExample> incorrectExamples = patternRule.getIncorrectExamples()
+        StringBuilder examples = new StringBuilder()
+        for (incorrectExample in incorrectExamples) {
+            String sentence = cleanMarkers(incorrectExample.getExample())
+            examples.append(sentence)
+            examples.append("\n")
+        }
+        return examples
+    }
+
+    private String cleanMarkers(String message) {
+        return message.replace("<marker>", "").replace("</marker>", "")
     }
 
     private JLanguageTool getLanguageToolWithOneRule(Language lang, PatternRule patternRule) {
