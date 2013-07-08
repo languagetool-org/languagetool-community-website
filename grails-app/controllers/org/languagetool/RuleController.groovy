@@ -279,7 +279,15 @@ class RuleController extends BaseController {
         render(view:'show', model: [ rule: selectedRule, ruleSubId: ruleSubId, isDisabled: disableId != -1, disableId: disableId,
                 isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
                 contentType: "text/html", encoding: "utf-8")
+    }
 
+    def showRuleXml = {
+        String langCode = getLanguage()
+        Language language = Language.getLanguageForShortName(langCode)
+        PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
+        PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
+        String ruleAsXml = ruleXmlCreator.toXML(id, language)
+        render "<div class='ruleXml'>" + ruleAsXml.encodeAsHTML() + "</div>"
     }
 
     private int countCorpusMatches(String langCode, String ruleId) {

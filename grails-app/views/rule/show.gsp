@@ -6,6 +6,32 @@
     <head>
         <meta name="layout" content="main" />
         <title><g:message code="ltc.rule.show.title" args="${[rule.description.encodeAsHTML()]}"/></title>
+        <g:javascript library="prototype" />
+        <script language="JavaScript">
+            var ruleVisible = false;
+            function showRuleXml(language, id, subId) {
+                if (ruleVisible) {
+                    $('ruleXml').innerHTML = "";
+                    ruleVisible = false;
+                } else {
+                    new Ajax.Request("${createLink(action: 'showRuleXml')}", {
+                        parameters: {
+                            lang: language,
+                            id: id,
+                            subId: subId
+                        },
+                        onSuccess: function(response) {
+                            $('ruleXml').innerHTML = "<br/>" + response.responseText;
+                            ruleVisible = true;
+                        },
+                        onFailure: function(response) {
+                            $('ruleXml').innerHTML = response.responseText;
+                            ruleVisible = false;
+                        }
+                    });
+                }
+            }
+        </script>
     </head>
     <body>
 
@@ -54,31 +80,6 @@
                 </g:if>
 
                 <tr>
-                    <td><g:message code="ltc.rule.show.pattern" /></td>
-                    <td>
-			            <g:if test="${rule instanceof PatternRule}">
-			                <span class="pattern">${rule.toPatternString().replace(", ", " ").encodeAsHTML()}</span><br />
-			            </g:if>
-			            <g:else>
-			                <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span>
-                            <g:set var="langCode" value="${params.lang}"/>
-                            <g:if test="${params.lang.contains('-')}">
-                                <g:set var="langCode" value="${params.lang.substring(0, params.lang.indexOf('-'))}"/>
-                            </g:if>
-                            <g:if test="${rule.class.getName().contains('.' + langCode  + '.')}">
-                                <%-- language-specific rule --%>
-                                <a href="http://svn.code.sf.net/p/languagetool/code/trunk/languagetool/languagetool-language-modules/${langCode.encodeAsHTML()}/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
-                            </g:if>
-                            <g:else>
-                                <%-- generic rule --%>
-                                <a href="http://svn.code.sf.net/p/languagetool/code/trunk/languagetool/languagetool-core/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
-                            </g:else>
-                            <br/>
-			            </g:else>
-                    </td>
-                </tr>
-
-                <tr>
                     <td><g:message code="ltc.rule.show.incorrect.sentences" /></td>
                     <td>
 			            <ul>
@@ -117,6 +118,33 @@
                         </g:if>
                     </td>
                 </tr>
+
+                <tr>
+                    <td><g:message code="ltc.rule.show.pattern" /></td>
+                    <td>
+                        <g:if test="${rule instanceof PatternRule}">
+                            <a href="#" onclick="showRuleXml('${params.lang}', '${params.id}', '${params.subId}');return false;"><g:message code="ltc.rule.show.as.xml" /></a>
+                            <div id="ruleXml"></div>
+                        </g:if>
+                        <g:else>
+                            <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span>
+                            <g:set var="langCode" value="${params.lang}"/>
+                            <g:if test="${params.lang.contains('-')}">
+                                <g:set var="langCode" value="${params.lang.substring(0, params.lang.indexOf('-'))}"/>
+                            </g:if>
+                            <g:if test="${rule.class.getName().contains('.' + langCode  + '.')}">
+                            <%-- language-specific rule --%>
+                                <a href="http://svn.code.sf.net/p/languagetool/code/trunk/languagetool/languagetool-language-modules/${langCode.encodeAsHTML()}/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                            </g:if>
+                            <g:else>
+                            <%-- generic rule --%>
+                                <a href="http://svn.code.sf.net/p/languagetool/code/trunk/languagetool/languagetool-core/src/main/java/${rule.class.getName().replace(".", "/")}.java?view=markup">Sourcecode</a>
+                            </g:else>
+                            <br/>
+                        </g:else>
+                    </td>
+                </tr>
+
                 <g:if test="${!isUserRule}">
 	                <tr class="additional">
 	                    <td><g:message code="ltc.rule.show.id" /></td>

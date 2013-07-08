@@ -434,3 +434,13 @@ th.desc a {
     font-weight: bold;
     width: 60%
 }
+
+.ruleXml {
+    white-space: pre;
+    font-family: monospace;
+    border-color: #bbbbbb;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px;
+    background-color: #eeeeee;
+}
