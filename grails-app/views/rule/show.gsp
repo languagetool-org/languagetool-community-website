@@ -51,9 +51,9 @@
                 <div class="message">${flash.message}</div>
             </g:if>
             
-            <table>
+            <table style="border-style: none">
                 <tr>
-                    <td><g:message code="ltc.rule.show.description" /></td>
+                    <td style="width:25%"><g:message code="ltc.rule.show.description" /></td>
                     <td>${rule.description.encodeAsHTML()}</td>
                 </tr>
                 <g:if test="${rule instanceof PatternRule}">
