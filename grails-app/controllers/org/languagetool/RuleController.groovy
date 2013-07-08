@@ -287,7 +287,7 @@ class RuleController extends BaseController {
         PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
         PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
         String ruleAsXml = ruleXmlCreator.toXML(id, language)
-        render(template: 'xml', model: [ruleAsXml: ruleAsXml])
+        render(template: 'xml', model: [ruleAsXml: ruleAsXml, language: language])
     }
 
     private int countCorpusMatches(String langCode, String ruleId) {

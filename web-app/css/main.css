@@ -435,11 +435,14 @@ th.desc a {
     width: 60%
 }
 
+.ruleXmlArea {
+    padding: 5px;
+    background-color: #f5f5f5;
+}
+
 .ruleXml {
     white-space: pre;
     font-family: monospace;
-    padding: 5px;
-    background-color: #f5f5f5;
 }
 
 .xmlTag {
