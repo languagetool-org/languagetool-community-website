@@ -37,8 +37,6 @@
 
         <div class="body">
         
-            <g:form method="post">
-            
             <input type="hidden" name="id" value="${ruleId.encodeAsHTML()}"/>
             <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
             <input type="hidden" name="disableId" value="${disableId.encodeAsHTML()}"/>
@@ -145,9 +143,44 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td><g:message code="ltc.rule.show.wikipedia" /></td>
+                    <td>
+                        <g:if test="${corpusMatchCount > 0}">
+                            <g:link controller="corpusMatch" action="list" params="${[lang: params.lang, filter: ruleId]}"><g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/></g:link>
+                        </g:if>
+                        <g:else>
+                            <g:link controller="corpusMatch" action="list" params="${[lang: params.lang]}"><g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/></g:link>
+                        </g:else>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <g:message code="ltc.rule.show.check.text" />
+                    </td>
+
+                    <td>
+                        <g:form method="post">
+
+                            <input type="hidden" name="id" value="${ruleId}"/>
+                            <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+
+                            <g:textArea name="text" value="${textToCheck}" rows="3" cols="50" />
+                            <br />
+                            <g:actionSubmit action="checkTextWithRule" value="${message(code:'ltc.check.button')}"/>
+
+                        </g:form>
+
+                        <g:if test="${matches != null}">
+                            <g:render template="/ruleMatches"/>
+                        </g:if>
+                    </td>
+                </tr>
+
                 <g:if test="${!isUserRule}">
-	                <tr class="additional">
-	                    <td><g:message code="ltc.rule.show.id" /></td>
+                    <tr class="additional">
+                        <td><g:message code="ltc.rule.show.id" /></td>
                         <td>
                             <g:if test="${ruleSubId}">
                                 ${rule.id.encodeAsHTML()} [${ruleSubId.encodeAsHTML()}]
@@ -156,7 +189,7 @@
                                 ${rule.id.encodeAsHTML()}
                             </g:else>
                         </td>
-	                </tr>
+                    </tr>
                 </g:if>
                 <tr class="additional">
                     <td><g:message code="ltc.rule.show.languagetool.version" /></td>
@@ -164,6 +197,17 @@
                         ${JLanguageTool.VERSION} (${(new JLanguageTool(Language.DEMO)).getBuildDate()})
                     </td>
                 </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <p style="margin-top:20px">
+                            <a href="http://www.languagetool.org"><img style="margin-right:7px;" src="${resource(dir:'images',file:'lt-logo.png')}" alt="LanguageTool logo" align="left"/></a>
+                            <g:message code="ltc.languagetool.link" />
+                        </p>
+                    </td>
+                </tr>
+
             </table>
             
             <g:if test="${session.user}">
@@ -177,40 +221,6 @@
 		            </g:else>
 	            </g:if>
             </g:if>
-
-            </g:form>
-            
-            <p style="margin-top:20px">
-                <a href="http://www.languagetool.org"><img style="margin-right:7px;" src="${resource(dir:'images',file:'lt-logo.png')}" alt="LanguageTool logo" align="left"/></a>
-                <g:message code="ltc.languagetool.link" />
-            </p>
-
-            <br />
-            <p><g:message code="ltc.rule.show.check.text" /></p>
-            
-            <g:form method="post">
-
-                <input type="hidden" name="id" value="${ruleId}"/>
-                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
-            
-                <g:textArea name="text" value="${textToCheck}" rows="2" cols="80" />
-                <br />
-                <g:actionSubmit action="checkTextWithRule" value="${message(code:'ltc.check.button')}"/>
-                
-            </g:form>
-
-            <g:if test="${matches != null}">
-                <g:render template="/ruleMatches"/>
-            </g:if>
-            
-            <p style="margin-top:10px">
-            <g:if test="${corpusMatchCount > 0}">
-                <g:link controller="corpusMatch" action="list" params="${[lang: params.lang, filter: ruleId]}"><g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/></g:link>
-            </g:if>
-            <g:else>
-                <g:link controller="corpusMatch" action="list" params="${[lang: params.lang]}"><g:message code="ltc.rule.show.corpus.link" args="${[corpusMatchCount]}"/></g:link>
-            </g:else>
-            </p>
 
         </div>
     </body>

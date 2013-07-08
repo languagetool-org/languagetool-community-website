@@ -256,13 +256,13 @@ class RuleController extends BaseController {
     }
 
     def show = {
-        String lang = getLanguage()
-        SelectedRule rule = getRuleById(params.id, params.subId, lang)
+        String langCode = getLanguage()
+        SelectedRule rule = getRuleById(params.id, params.subId, langCode)
         Rule selectedRule = rule.rule
         boolean isUserRule = rule.isUserRule
-        int disableId = getEnableDisableId(lang)
+        int disableId = getEnableDisableId(langCode)
         if (!selectedRule) {
-            log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${lang}")
+            log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${langCode}")
             flash.message = "No rule with id ${params.id.encodeAsHTML()}, subId ${params.subId.encodeAsHTML()}"
             redirect(action:list)
             return
@@ -275,8 +275,8 @@ class RuleController extends BaseController {
         if (selectedRule instanceof PatternRule) {
             ruleSubId = ((PatternRule)selectedRule).getSubId()
         }
-        int corpusMatchCount = countCorpusMatches(lang, selectedRule.id)
-        render(view:'show', model: [ rule: selectedRule, ruleSubId: ruleSubId, isDisabled: disableId != -1, disableId: disableId,
+        int corpusMatchCount = countCorpusMatches(langCode, selectedRule.id)
+        render(view:'show', model: [rule: selectedRule, ruleSubId: ruleSubId, isDisabled: disableId != -1, disableId: disableId,
                 isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
                 contentType: "text/html", encoding: "utf-8")
     }
