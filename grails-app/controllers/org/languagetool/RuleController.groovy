@@ -39,15 +39,15 @@ class RuleController extends BaseController {
         if (!params.lang) params.lang = "en"
         if (params.offset) offset = Integer.parseInt(params.offset)
         if (params.max) max = Integer.parseInt(params.max)
-        String lang = getLanguage()
-        Language langObj = Language.getLanguageForShortName(lang)
+        String langCode = getLanguage()
+        Language langObj = Language.getLanguageForShortName(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
         lt.activateDefaultPatternRules()
         List rules = lt.getAllRules()
         Map patternRuleIdToUserRuleId = new HashMap()
         if (session.user) {
             // find the user's personal rules:
-            List userRules = UserRule.findAllByUserAndLang(session.user, lang)
+            List userRules = UserRule.findAllByUserAndLang(session.user, langCode)
             for (userRule in userRules) {
                 // make temporary pattern rules:
                 PatternRule patternRule = userRule.toPatternRule(true)
@@ -120,9 +120,9 @@ class RuleController extends BaseController {
      */
     def checkTextWithRule = {
         // get all information needed to display "show" page:
-        String lang = "en"
-        if (params.lang) lang = params.lang
-        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+        String langCode = "en"
+        if (params.lang) langCode = params.lang
+        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(langCode))
         lt.activateDefaultPatternRules()
         Rule selectedRule
         boolean isUserRule = false
@@ -139,7 +139,7 @@ class RuleController extends BaseController {
             flash.message = "No rule with id ${params.id.encodeAsHTML()}"
             redirect(action:list)
         }
-        int disableId = getEnableDisableId(lang)
+        int disableId = getEnableDisableId(langCode)
         // disable all rules except one:
         List rules = lt.getAllRules()
         for (Rule rule in rules) {
@@ -159,7 +159,7 @@ class RuleController extends BaseController {
             text = text.substring(0, maxTextLen)
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
-        int corpusMatchCount = countCorpusMatches(lang, selectedRule.id)
+        int corpusMatchCount = countCorpusMatches(langCode, selectedRule.id)
         List ruleMatches = lt.check(text)
         render(view:'show', model: [ hideRuleLink: true, rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
                 textToCheck: params.text, matches: ruleMatches, ruleId: params.id,
@@ -168,25 +168,25 @@ class RuleController extends BaseController {
     }
 
     def createRule = {
-        String lang = getLanguage()
+        String langCode = getLanguage()
         //FIXME: generate a better unique ID!
         Rule newRule = new PatternRule("-1",
-                Language.getLanguageForShortName(lang),
+                Language.getLanguageForShortName(langCode),
                 [], "", "", "")
-        render(view:'edit', model:[ rule: newRule, lang: lang, isUserRule: true ])
+        render(view:'edit', model:[ rule: newRule, lang: langCode, isUserRule: true ])
     }
 
     def edit = {
-        String lang = getLanguage()
-        SelectedRule rule = getRuleById(params.id, params.subId, lang)
+        String langCode = getLanguage()
+        SelectedRule rule = getRuleById(params.id, params.subId, langCode)
         Rule selectedRule = rule.rule
-        render(view:'edit', model: [ rule: selectedRule, lang: lang,
+        render(view:'edit', model: [ rule: selectedRule, lang: langCode,
                 isUserRule: rule.isUserRule, ruleId: params.id ],
                 contentType: "text/html", encoding: "utf-8")
     }
 
     def doEdit = {
-        String lang = getLanguage()
+        String langCode = getLanguage()
         UserRule userRule
         if (params.id == "null") {
             // user just wants to create a new rule:
@@ -212,13 +212,13 @@ class RuleController extends BaseController {
             i++
         }
         PatternRule patternRule = new PatternRule(params.id,
-                Language.getLanguageForShortName(lang),
+                Language.getLanguageForShortName(langCode),
                 elements, params.description, params.message, "fakeShortMessage")
         userRule.pattern = patternRule.toXML()
         userRule.description = patternRule.description
         userRule.message = patternRule.message
         userRule.user = session.user
-        userRule.lang = lang
+        userRule.lang = langCode
         //log.info("#######"+patternRule.toXML()+"'")
 
         boolean saved = userRule.save()
@@ -230,12 +230,12 @@ class RuleController extends BaseController {
     }
 
     def copyAndEditRule = {
-        String lang = getLanguage()
-        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+        String langCode = getLanguage()
+        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(langCode))
         lt.activateDefaultPatternRules()
         Rule origRule = getSystemRuleById(params.id, params.subId, lt)
         if (!origRule) {
-            throw new Exception("No rule found for id ${params.id}, language $lang")
+            throw new Exception("No rule found for id ${params.id}, language $langCode")
         }
         if (!(origRule instanceof PatternRule)) {
             throw new Exception("Cannot copy ${params.id}, only PatternRules can be copied")
@@ -246,7 +246,7 @@ class RuleController extends BaseController {
         UserRule userRule = new UserRule(originalRuleId: params.id, lang:params.lang,
                 description: origPatternRule.getDescription(),
                 message: origPatternRule.getMessage(),
-                pattern: "<rules lang=\"$lang\">" + origPatternRule.toXML() + "</rules>",
+                pattern: "<rules lang=\"$langCode\">" + origPatternRule.toXML() + "</rules>",
                 user: session.user)
         boolean saved = userRule.save()
         if (!saved) {
