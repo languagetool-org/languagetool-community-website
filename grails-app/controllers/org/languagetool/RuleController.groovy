@@ -287,7 +287,7 @@ class RuleController extends BaseController {
         PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
         PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
         String ruleAsXml = ruleXmlCreator.toXML(id, language)
-        render "<div class='ruleXml'>" + ruleAsXml.encodeAsHTML().replaceAll("&lt;(.*?)&gt;", "<span class='xmlTag'>&lt;\$1&gt;</span>") + "</div>"
+        render(template: 'xml', model: [ruleAsXml: ruleAsXml])
     }
 
     private int countCorpusMatches(String langCode, String ruleId) {
