@@ -75,13 +75,12 @@
                     editor.getSession().setMode("ace/mode/xml");
                     editor.focus();
                 </script>
-                
+
                 <input id="xml" type="hidden" name="xml" value=""/>
-                <br/><span class="metaInfo">Hint: you can submit this form with Ctrl+Return</span>
 
                 <br/>
-                <br/>
-                <div style="height: 280px"></div>
+                <div style="height: 270px"></div>
+                <br/><span class="metaInfo"><g:message code="ltc.editor.expert.submit.hint"/></span><br/><br/>
                 <g:submitToRemote name="checkXmlButton"
                                   before="copyXml()"
                                   onLoading="onLoadingResult()"
