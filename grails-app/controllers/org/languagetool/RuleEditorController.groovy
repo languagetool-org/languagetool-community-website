@@ -61,7 +61,7 @@ class RuleEditorController extends BaseController {
         List problems = []
         List shortProblems = []
         JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        checkExampleSentences(langTool, patternRule, language, problems, shortProblems, false)
+        checkExampleSentences(langTool, patternRule, problems, shortProblems, false)
         if (problems.size() == 0) {
           SearcherResult searcherResult = null
           boolean timeOut = false
@@ -124,7 +124,7 @@ class RuleEditorController extends BaseController {
         List problems = []
         List shortProblems = []
         JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        checkExampleSentences(langTool, patternRule, language, problems, shortProblems, true)
+        checkExampleSentences(langTool, patternRule, problems, shortProblems, true)
         if (problems.size() > 0) {
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff()])
@@ -140,7 +140,7 @@ class RuleEditorController extends BaseController {
             log.info("Checked XML in ${language}, timeout (${timeoutMillis}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
             render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: EXPERT_MODE_CORPUS_MATCH_LIMIT,
                     incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches])
-        } catch (SearchTimeoutException e) {
+        } catch (SearchTimeoutException ignored) {
             long searchTime = System.currentTimeMillis() - startTime
             log.warn("Timeout checking XML in ${language}, timeout (${timeoutMillis}ms), time: ${searchTime}ms, pattern: ${patternRule}")
             problems.add("Sorry, there was a timeout when searching our Wikipedia data for matches. This can happen" +
@@ -152,7 +152,7 @@ class RuleEditorController extends BaseController {
         }
     }
 
-    private void checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, Language language, List problems, List shortProblems, boolean checkMarker) {
+    private void checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, List problems, List shortProblems, boolean checkMarker) {
         List<String> correctExamples = patternRule.getCorrectExamples()
         if (correctExamples.size() == 0) {
             throw new Exception("No correct example sentences found")
@@ -250,7 +250,7 @@ class RuleEditorController extends BaseController {
 
     private PatternRule createPatternRule(Language lang) {
         PatternRule patternRule = patternStringConverterService.convertToPatternRule(params.pattern, lang)
-        patternRule.setCorrectExamples(Collections.singletonList(params.correctExample1))
+        patternRule.setCorrectExamples(Collections.<String>singletonList(params.correctExample1))
         def incorrectExample = new IncorrectExample(params.incorrectExample1)
         patternRule.setIncorrectExamples(Collections.singletonList(incorrectExample))
         return patternRule
