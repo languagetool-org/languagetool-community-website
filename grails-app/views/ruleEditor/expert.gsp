@@ -51,7 +51,7 @@
 
             <noscript class="warn"><g:message code="ltc.editor.nojs"/></noscript>
         
-            <g:form name="ruleForm"  method="post" action="checkRule">
+            <g:form name="ruleForm" method="post" action="checkRule">
 
                 <p style="width:550px;text-align: right"><g:link action="index"><g:message code="ltc.editor.simple.mode"/></g:link></p>
 
@@ -59,7 +59,7 @@
                 
                 <p><g:message code="ltc.editor.expert.intro" args="${['http://www.languagetool.org/development/']}"/></p>
 
-                <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="English"/><br/>
+                <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="${params.language ? params.language : 'English'}"/><br/>
 
                 <g:if test="${params.xml}">
                     <div id="editor">${params.xml.encodeAsHTML()}</div>

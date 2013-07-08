@@ -1,4 +1,4 @@
-<table style="border: 0px" xmlns="http://www.w3.org/1999/html">
+<table style="border: 0">
 <tr>
     <td width="150" valign="top">XML</td>
     <td valign="top">
@@ -10,7 +10,7 @@
         </g:if>
         <g:else>
 
-            <p style="width:450px;margin-top: 0px; margin-bottom: 5px"><g:message code="ltc.editor.xml.intro" args="${[language.getShortName()]}"/></p>
+            <p style="width:450px;margin-top: 0; margin-bottom: 5px"><g:message code="ltc.editor.xml.intro" args="${[language.getShortName()]}"/></p>
 
             <pre style="background-color: #eeeeee; padding: 10px">${xml.encodeAsHTML().replaceAll("&gt;(.*?)&lt;", "&gt;<strong>\$1</strong>&lt;")}</pre>
 
@@ -22,6 +22,7 @@
             
             <g:form action="expert" method="post" target="ltRuleEditor">
                 <input name="xml" type="hidden" value="${xml.encodeAsHTML()}"/>
+                <input name="language" type="hidden" value="${params.language.encodeAsHTML()}"/>
                 <g:submitButton name="${message(code:'ltc.editor.edit.xml')}"/>
             </g:form>
 
