@@ -144,7 +144,11 @@ class RuleController extends BaseController {
         List rules = lt.getAllRules()
         for (Rule rule in rules) {
             if (rule.id == params.id) {
-                lt.enableRule(rule.id)
+                if (rule.isDefaultOff()) {
+                    lt.enableDefaultOffRule(rule.id)
+                } else {
+                    lt.enableRule(rule.id)
+                }
             } else {
                 lt.disableRule(rule.id)
             }
