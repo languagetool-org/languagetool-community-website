@@ -14,6 +14,7 @@
                     $('ruleXml').innerHTML = "";
                     ruleVisible = false;
                 } else {
+                    $('localSpinner').show();
                     new Ajax.Request("${createLink(action: 'showRuleXml')}", {
                         parameters: {
                             lang: language,
@@ -22,10 +23,12 @@
                         },
                         onSuccess: function(response) {
                             $('ruleXml').innerHTML = "<br/>" + response.responseText;
+                            $('localSpinner').hide();
                             ruleVisible = true;
                         },
                         onFailure: function(response) {
                             $('ruleXml').innerHTML = response.responseText;
+                            $('localSpinner').hide();
                             ruleVisible = false;
                         }
                     });
@@ -118,6 +121,9 @@
                     <td>
                         <g:if test="${rule instanceof PatternRule}">
                             <a href="#" onclick="showRuleXml('${params.lang}', '${params.id}', '${params.subId}');return false;"><g:message code="ltc.rule.show.as.xml" /></a>
+                            <div id="localSpinner" style="display:none;">
+                                <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner" />
+                            </div>
                             <div id="ruleXml"></div>
                         </g:if>
                         <g:else>
