@@ -164,7 +164,7 @@ class RuleEditorController extends BaseController {
             String sentence = cleanMarkers(incorrectExample.getExample())
             List ruleMatches = langTool.check(sentence)
             if (ruleMatches.size() == 0) {
-                problems.add("The rule did not find the expected error in '${sentence}'")
+                problems.add(message(code:'ltc.editor.error.not.found', args:[sentence]))
                 shortProblems.add("errorNotFound")
             } else if (ruleMatches.size() == 1) {
                 def ruleMatch = ruleMatches.get(0)
@@ -173,23 +173,23 @@ class RuleEditorController extends BaseController {
                     int expectedMatchStart = incorrectExample.getExample().indexOf("<marker>")
                     int expectedMatchEnd = incorrectExample.getExample().indexOf("</marker>") - "<marker>".length()
                     if (expectedMatchStart == -1 || expectedMatchEnd == -1) {
-                        problems.add("No <marker> found in incorrect example sentence")
+                        problems.add(message(code:'ltc.editor.error.no.marker'))
                         break
                     }
                     if (!ruleMatch.getRule().isWithComplexPhrase()) {
                         if (ruleMatch.getFromPos() != expectedMatchStart) {
-                            problems.add("Unexpected start position of <marker>...</marker> in incorrect example sentence: " + expectedMatchStart +  " but expected " + ruleMatch.getFromPos())
+                            problems.add(message(code:'ltc.editor.error.marker.start', args:[expectedMatchStart, ruleMatch.getFromPos()]))
                             break
                         }
                         if (ruleMatch.getToPos() != expectedMatchEnd) {
-                            problems.add("Unexpected end position of <marker>...</marker> in incorrect example sentence: " + expectedMatchEnd +  " but expected " + ruleMatch.getToPos())
+                            problems.add(message(code:'ltc.editor.error.marker.end', args:[expectedMatchEnd, ruleMatch.getToPos()]))
                             break
                         }
                     }
                 }
                 def foundReplacements = ruleMatches.get(0).getSuggestedReplacements().sort()
                 if (expectedReplacements.size() > 0 && expectedReplacements != foundReplacements) {
-                    problems.add("Found wrong correction(s) in '${sentence}: '${foundReplacements}' but expected '${expectedReplacements}'")
+                    problems.add(message(code:'ltc.editor.error.wrong.correction', args:[sentence, foundReplacements, expectedReplacements]))
                     shortProblems.add("wrongCorrection")
                 }
             } else {
@@ -200,7 +200,7 @@ class RuleEditorController extends BaseController {
             String sentence = cleanMarkers(correctExample)
             List unexpectedRuleMatches = langTool.check(sentence)
             if (unexpectedRuleMatches.size() > 0) {
-                problems.add("The rule found an unexpected error in '${sentence}'")
+                problems.add(message(code:'ltc.editor.error.unexpected', args:[sentence]))
                 shortProblems.add("unexpectedErrorFound")
             }
         }
@@ -261,7 +261,7 @@ class RuleEditorController extends BaseController {
             [error: "Please fill out the 'Error Message' field"]
         } else {
             log.info("Create rule XML: okay")
-            String message = getMessage()
+            String message = getMessageParameter()
             String correctSentence = encodeXml(params.correctExample1)
             Language language = getLanguage()
             String incorrectSentence = getIncorrectSentenceWithMarker(language)
@@ -317,7 +317,7 @@ class RuleEditorController extends BaseController {
         return name.toUpperCase().replaceAll("[\\s/]+", "_").replaceAll("[^A-Z_]", "")
     }
 
-    private String getMessage() {
+    private String getMessageParameter() {
         String message = encodeXml(params.message)
         message = message.replaceAll("\"(.*?)\"", "<suggestion>\$1</suggestion>")
         message = message.replaceAll("&quot;(.*?)&quot;", "<suggestion>\$1</suggestion>")

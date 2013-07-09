@@ -1,6 +1,10 @@
-<table style="border: 0px">
+<br/>
+
+<table style="border: 0">
 <tr>
-    <td width="150"></td>
+    <td valign="top">
+        <img style="margin:5px" src="${resource(dir:'images', file:'exclamation.png')}" />
+    </td>
     <td>
 
         <div class="errors"><g:message code="ltc.editor.rule.problems"/>
@@ -19,9 +23,8 @@
 
         </div>
 
-        <p style="width:450px;margin-top: 5px"><g:message code="ltc.editor.example.intro" args="${['http://www.languagetool.org/forum/']}"/></p>
-
         <g:if test="${hasRegex && !expertMode}">
+            <p style="width:450px;margin-top: 5px"><g:message code="ltc.editor.example.intro" args="${['http://www.languagetool.org/forum/']}"/></p>
             <p style="width:450px;margin-top: 5px"><g:message code="ltc.editor.regex.warning"/></p>
         </g:if>
 
