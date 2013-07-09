@@ -1,7 +1,7 @@
 
 <g:render template="corpusResult" model="${[searcherResult: searcherResult, expertMode: false, limit: limit]}"/>
 
-<table style="border: 0px">
+<table style="border: 0">
 <tr>
     <td valign="top" width="150"><g:message code="ltc.editor.error.message"/></td>
     <%
