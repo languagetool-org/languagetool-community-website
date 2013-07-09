@@ -101,7 +101,13 @@ class CorpusMatchController extends BaseController {
         try {
             langToDisabledRules.load(fis)
             hiddenRuleIds.addAll(langToDisabledRules.getProperty("all").split(",\\s*"))
-            hiddenRuleIds.addAll(langToDisabledRules.getProperty(langCode).split(",\\s*"))
+            String langSpecificDisabledRulesStr = langToDisabledRules.get(langCode)
+            if (langSpecificDisabledRulesStr) {
+                List<String> langSpecificDisabledRules = langSpecificDisabledRulesStr.split(",")
+                if (langSpecificDisabledRules) {
+                    hiddenRuleIds.addAll(langSpecificDisabledRules)
+                }
+            }
         } finally {
             fis.close()
         }
