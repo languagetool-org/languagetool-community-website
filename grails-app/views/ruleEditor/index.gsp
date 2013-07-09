@@ -17,6 +17,11 @@
             function onResultComplete(divName, buttonName) {
                 hideDiv(divName);
                 document.ruleForm[buttonName].disabled = false;
+                if (divName == 'checkResultSpinner') {
+                    // if we (re-)submit the first step we need to clear the
+                    // final result to avoid incoherent data being displayed:
+                    $('xml').innerHTML = "";
+                }
             }
 
             function showDiv(divName) {
