@@ -57,9 +57,8 @@ class RuleEditorController extends BaseController {
     def checkRule = {
         Language language = getLanguage()
         PatternRule patternRule = createPatternRule(language)
-        List problems = []
         JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        checkExampleSentences(langTool, patternRule, problems, false)
+        List problems = checkExampleSentences(langTool, patternRule, false)
         if (problems.size() == 0) {
           SearcherResult searcherResult = null
           boolean timeOut = false
@@ -71,7 +70,7 @@ class RuleEditorController extends BaseController {
           }
           log.info("Checked rule: valid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
           [messagePreset: params.messageBackup, namePreset: params.nameBackup,
-                  searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT, timeOut: timeOut]
+                  searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT, timeOut: timeOut, patternRule: patternRule]
         } else {
             log.info("Checked rule: invalid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${problems.size()} problems")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
@@ -119,9 +118,8 @@ class RuleEditorController extends BaseController {
             return
         }
         PatternRule patternRule = rules.get(0)
-        List problems = []
         JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        checkExampleSentences(langTool, patternRule, problems, true)
+        List problems = checkExampleSentences(langTool, patternRule, true)
         if (problems.size() > 0) {
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff()])
@@ -149,7 +147,8 @@ class RuleEditorController extends BaseController {
         }
     }
 
-    private void checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, List problems, boolean checkMarker) {
+    private List checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, boolean checkMarker) {
+        List problems = []
         List<String> correctExamples = patternRule.getCorrectExamples()
         if (correctExamples.size() == 0) {
             throw new Exception("No correct example sentences found")
@@ -162,7 +161,12 @@ class RuleEditorController extends BaseController {
             String sentence = cleanMarkers(incorrectExample.getExample())
             List ruleMatches = langTool.check(sentence)
             if (ruleMatches.size() == 0) {
-                problems.add(message(code:'ltc.editor.error.not.found', args:[sentence]))
+                if (incorrectExample.getExample().isEmpty()) {
+                    // we accept this (but later display a warning) because it's handy to try some patterns
+                    // without setting a sentence just to see the Wikipedia results
+                } else {
+                    problems.add(message(code:'ltc.editor.error.not.found', args:[sentence]))
+                }
             } else if (ruleMatches.size() == 1) {
                 def ruleMatch = ruleMatches.get(0)
                 def expectedReplacements = incorrectExample.corrections.sort()
@@ -199,6 +203,7 @@ class RuleEditorController extends BaseController {
                 problems.add(message(code:'ltc.editor.error.unexpected', args:[sentence]))
             }
         }
+        return problems
     }
 
     private String getIncorrectExamples(PatternRule patternRule) {

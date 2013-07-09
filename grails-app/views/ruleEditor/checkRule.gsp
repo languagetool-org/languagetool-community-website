@@ -1,6 +1,19 @@
 
 <g:render template="corpusResult" model="${[searcherResult: searcherResult, expertMode: false, limit: limit]}"/>
 
+<g:if test="${patternRule.getIncorrectExamples() && patternRule.getIncorrectExamples().get(0).example == ''}">
+    <table style="border: 0">
+        <tr>
+            <td valign="top">
+                <img style="margin:5px" src="${resource(dir:'images', file:'exclamation.png')}" />
+            </td>
+            <td>
+                <g:message code="ltc.editor.error.incorrect.example.needed"/>
+            </td>
+        </tr>
+    </table>
+</g:if>
+
 <table style="border: 0">
 <tr>
     <td valign="top" width="150"><g:message code="ltc.editor.error.message"/></td>
