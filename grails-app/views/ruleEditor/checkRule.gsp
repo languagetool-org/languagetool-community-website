@@ -46,6 +46,3 @@
 <script type="text/javascript">
     document.ruleForm.message.select();
 </script>
-
-<br/>
-<div id="xml"></div>

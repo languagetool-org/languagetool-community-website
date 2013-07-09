@@ -141,6 +141,9 @@
 
             </g:form>
 
+            <br/>
+            <div id="xml"></div>
+
             <script type="text/javascript">
                 document.ruleForm.pattern.select();
             </script>
