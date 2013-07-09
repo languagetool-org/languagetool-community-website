@@ -58,9 +58,8 @@ class RuleEditorController extends BaseController {
         Language language = getLanguage()
         PatternRule patternRule = createPatternRule(language)
         List problems = []
-        List shortProblems = []
         JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        checkExampleSentences(langTool, patternRule, problems, shortProblems, false)
+        checkExampleSentences(langTool, patternRule, problems, false)
         if (problems.size() == 0) {
           SearcherResult searcherResult = null
           boolean timeOut = false
@@ -74,7 +73,7 @@ class RuleEditorController extends BaseController {
           [messagePreset: params.messageBackup, namePreset: params.nameBackup,
                   searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT, timeOut: timeOut]
         } else {
-            log.info("Checked rule: invalid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${shortProblems}")
+            log.info("Checked rule: invalid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${problems.size()} problems")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
         }
     }
@@ -121,9 +120,8 @@ class RuleEditorController extends BaseController {
         }
         PatternRule patternRule = rules.get(0)
         List problems = []
-        List shortProblems = []
         JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        checkExampleSentences(langTool, patternRule, problems, shortProblems, true)
+        checkExampleSentences(langTool, patternRule, problems, true)
         if (problems.size() > 0) {
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff()])
@@ -151,7 +149,7 @@ class RuleEditorController extends BaseController {
         }
     }
 
-    private void checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, List problems, List shortProblems, boolean checkMarker) {
+    private void checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, List problems, boolean checkMarker) {
         List<String> correctExamples = patternRule.getCorrectExamples()
         if (correctExamples.size() == 0) {
             throw new Exception("No correct example sentences found")
@@ -165,7 +163,6 @@ class RuleEditorController extends BaseController {
             List ruleMatches = langTool.check(sentence)
             if (ruleMatches.size() == 0) {
                 problems.add(message(code:'ltc.editor.error.not.found', args:[sentence]))
-                shortProblems.add("errorNotFound")
             } else if (ruleMatches.size() == 1) {
                 def ruleMatch = ruleMatches.get(0)
                 def expectedReplacements = incorrectExample.corrections.sort()
@@ -190,7 +187,6 @@ class RuleEditorController extends BaseController {
                 def foundReplacements = ruleMatches.get(0).getSuggestedReplacements().sort()
                 if (expectedReplacements.size() > 0 && expectedReplacements != foundReplacements) {
                     problems.add(message(code:'ltc.editor.error.wrong.correction', args:[sentence, foundReplacements, expectedReplacements]))
-                    shortProblems.add("wrongCorrection")
                 }
             } else {
                 log.warn("Got ${ruleMatches.size()} matches, expected zero or one: ${incorrectExample}")
@@ -201,7 +197,6 @@ class RuleEditorController extends BaseController {
             List unexpectedRuleMatches = langTool.check(sentence)
             if (unexpectedRuleMatches.size() > 0) {
                 problems.add(message(code:'ltc.editor.error.unexpected', args:[sentence]))
-                shortProblems.add("unexpectedErrorFound")
             }
         }
     }
