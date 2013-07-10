@@ -103,8 +103,16 @@ class RuleEditorController extends BaseController {
         PatternRuleLoader loader = new PatternRuleLoader()
         loader.setRelaxedMode(true)
         String xml = "<rules lang=\"" + language.getShortName() + "\"><category name=\"fakeCategory\">" + params.xml + "</category></rules>"
-        if (xml.trim().isEmpty()) {
+        if (params.xml.trim().isEmpty()) {
             render(template: 'checkXmlProblem', model: [error: "No XML found"])
+            return
+        }
+        XMLValidator validator = new XMLValidator()
+        String xsd = JLanguageTool.getDataBroker().getRulesDir() + "/rules.xsd"
+        try {
+            validator.validateStringWithXmlSchema(xml, xsd)
+        } catch (Exception e) {
+            render(template: 'checkXmlProblem', model: [error: "XML validation failed: " + e.getMessage()])
             return
         }
         xml = xml.replaceAll("&([a-zA-Z]+);", "&amp;\$1;")  // entities otherwise lead to an error
