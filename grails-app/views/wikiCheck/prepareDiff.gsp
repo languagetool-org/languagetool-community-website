@@ -5,6 +5,7 @@
 <html>
     <head>
         <title><g:message code="ltc.wikicheck.title"/></title>
+        <g:javascript library="prototype" />
         <meta name="layout" content="main" />
         <meta name="robots" content="noindex" />
         <script type="text/javascript">
@@ -14,6 +15,29 @@
                 } else {
                     document.getElementById(divId).style.display='block';
                 }
+            }
+            function applyChangesToHiddenField() {
+                var textBox = $('wpTextbox1');
+                var modifiedText = textBox.value;
+                var i;
+                var prevStartPos = -1;
+                for (i = $('replMaximum').value - 1; i >= 0; i--) {  // backwards, as we modify the text
+                    var startPos = parseInt($('repl' + i + "Start").value);
+                    var endPos = parseInt($('repl' + i + "End").value);
+                    var replacement = $('repl' + i).value;
+                    if (prevStartPos != -1 && endPos >= prevStartPos) {
+                        //console.log("Skipping overlap! (" + replacement + ") for " + startPos + "/" + endPos + ": " + endPos + ">=" +  prevStartPos);
+                        prevStartPos = startPos;
+                        continue;
+                    }
+                    prevStartPos = startPos;
+                    var origText = modifiedText.substring(startPos, endPos);
+                    //console.log(i + ". applying change from " + startPos + " to " + endPos + ": '" + origText + "' => '" + replacement + "'");
+                    //modifiedText = modifiedText.substring(0, startPos) + "##" + replacement + "##" + modifiedText.substring(endPos);
+                    modifiedText = modifiedText.substring(0, startPos) + replacement + modifiedText.substring(endPos);
+                }
+                textBox.value = modifiedText;
+                //console.log(textBox.value);
             }
         </script>
     </head>
@@ -32,7 +56,7 @@
             </p>
              
             <div style="margin-top:10px;margin-bottom:10px;">
-                <g:form action="index" method="get">
+                <g:form action="prepareDiff" method="get">
                     <g:message code="ltc.wikicheck.url"/> <input style="width:350px" name="url" value="${url?.encodeAsHTML()}"/>
                     <input type="submit" value="${message(code:'ltc.wikicheck.check.page')}"/>
                 </g:form>
@@ -55,9 +79,35 @@
                 <p><g:message code="ltc.wikicheck.result.url"/> <a href="${realUrl.encodeAsHTML()}">${realUrl.encodeAsHTML()}</a> (<a href="${realEditUrl.encodeAsHTML()}"><g:message code="ltc.wikicheck.result.edit"/></a>)</p>
                 
                 <br />
-                
-                <g:render template="/ruleMatches"/>
-                
+
+                <g:if test="${ruleApplications.size() > 0}">
+                    <form action="${wikipediaSubmitUrl}" method="POST" onsubmit="applyChangesToHiddenField()">
+                        <g:hiddenField name="Title" value="${wikipediaTitle}"/>
+                        <g:hiddenField name="wpAntiSpam" value=""/>
+                        <!--<g:hiddenField name="baseRevId" value=""/>-->
+                        <g:hiddenField name="altBaseRevId" value="0"/>
+                        <g:hiddenField name="undidRev" value="0"/>
+                        <g:hiddenField name="wpSection" value=""/>
+                        <g:hiddenField name="wpStarttime" value=""/>
+                        <g:hiddenField name="wpEdittime" value=""/>
+                        <g:hiddenField name="wpScrolltop" value="0"/>
+                        <g:hiddenField name="oldId" value="0"/>
+                        <g:hiddenField name="format" value="text/x-wiki"/>
+                        <g:hiddenField name="model" value="wikitext"/>
+                        <g:hiddenField name="wpSummary" value=""/>
+                        <g:hiddenField name="wpDiff" value="yes"/>
+                        <g:hiddenField name="wpTextbox1" value="${result.getOriginalWikiMarkup()}"/>
+                        <g:hiddenField name="wpEditToken" value="+\\"/>
+
+                        <g:render template="/ruleMatchDiffs"/>
+                        <g:submitButton name="Submit changes to Wikipedia"/>
+                        Note: this will display the changes at Wikipedia - please check the changes carefully before you submit!
+                    </form>
+                </g:if>
+                <g:else>
+                    <g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.lang)]}"/>
+                </g:else>
+
                 <br /><br />
                 <div style="color:#555555;">
                     <g:message code="ltc.wikicheck.rules.intro"/>

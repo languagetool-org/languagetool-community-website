@@ -448,3 +448,7 @@ th.desc a {
 .xmlTag {
     color: #555555;
 }
+
+.replacementWarning input {
+    background-color: #ffdb6e;
+}

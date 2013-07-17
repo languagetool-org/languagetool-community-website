@@ -19,6 +19,7 @@
 
 package org.languagetool
 
+import org.languagetool.dev.wikipedia.MarkupAwareWikipediaResult
 import org.languagetool.dev.wikipedia.WikipediaQuickCheck
 import org.languagetool.dev.wikipedia.WikipediaQuickCheckResult
 import org.apache.commons.io.IOUtils
@@ -31,12 +32,68 @@ class WikiCheckController extends BaseController {
 
     private String CONVERT_URL_PREFIX = "http://community.languagetool.org/wikipediatotext/wikiSyntaxConverter/convert?url="
 
+    def prepareDiff = {
+        String langCode
+        try {
+            Language langObj = params.lang ? Language.getLanguageForShortName(params.lang) : null
+            langCode = langObj ? langObj.getShortName() : 'en'
+        } catch (IllegalArgumentException ignore) {
+            langCode = 'en'
+        }
+        if (params.url) {
+            final Properties langToDisabledRules = new Properties()
+            langToDisabledRules.load(new FileInputStream(grailsApplication.config.disabledRulesPropFile))
+
+            long startTime = System.currentTimeMillis()
+            if (params.url.contains("languagetool.org/wikiCheck/")) {
+                throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
+            }
+            WikipediaQuickCheck checker = new WikipediaQuickCheck()
+            String pageUrl = getPageUrl(params, checker)
+            String pageEditUrl = getPageEditUrl(pageUrl)
+            Language language = checker.getLanguage(new URL(pageUrl))
+            if (params.disabled) {
+                checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
+            } else {
+                List<String> allDisabledRules = langToDisabledRules.getProperty("all").split(",")
+                String langSpecificDisabledRulesStr = langToDisabledRules.get(language.getShortName())
+                if (langSpecificDisabledRulesStr) {
+                    List<String> langSpecificDisabledRules = langSpecificDisabledRulesStr.split(",")
+                    if (langSpecificDisabledRules) {
+                        allDisabledRules.addAll(langSpecificDisabledRules)
+                    }
+                }
+                checker.setDisabledRuleIds(allDisabledRules)
+            }
+
+            MarkupAwareWikipediaResult result = checker.checkPage(new URL(params.url))
+            Pattern spanPattern = Pattern.compile('<span class="error">(.*?)</span>')
+            params.lang = language.getShortName()
+            long runTime = System.currentTimeMillis() - startTime
+            log.info("WikiCheck: ${params.url} (${runTime}ms)")
+            [result: result, ruleApplications: result.getRuleApplications(),
+                    wikipediaSubmitUrl: getPageSubmitUrl(pageUrl),
+                    wikipediaTitle: getPageTitle(pageUrl),
+                    lang: language.getShortName(),
+                    url: params.url,
+                    realUrl: pageUrl,
+                    realEditUrl: pageEditUrl,
+                    disabledRuleIds: checker.getDisabledRuleIds(),
+                    languages: Language.REAL_LANGUAGES,
+                    langCode: langCode,
+                    spanPattern: spanPattern]
+        } else {
+            [languages: Language.REAL_LANGUAGES, langCode: langCode]
+        }
+    }
+
+    // TODO: remove once prepareDiff works?
     def index = {
         String langCode
         try {
             Language langObj = params.lang ? Language.getLanguageForShortName(params.lang) : null
             langCode = langObj ? langObj.getShortName() : 'en'
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignore) {
             langCode = 'en'
         }
         if (params.url) {
@@ -79,7 +136,6 @@ class WikiCheckController extends BaseController {
                     realUrl: pageUrl,
                     realEditUrl: pageEditUrl,
                     disabledRuleIds: checker.getDisabledRuleIds(),
-                    plainText: plainText,
                     languages: Language.REAL_LANGUAGES,
                     langCode: langCode]
         } else {
@@ -91,6 +147,18 @@ class WikiCheckController extends BaseController {
         // In:  http://de.wikipedia.org/wiki/Berlin
         // Out: http://de.wikipedia.org/w/index.php?title=Berlin&action=edit
         return url.replace("/wiki/", "/w/index.php?title=") + "&action=edit"
+    }
+
+    String getPageSubmitUrl(String url) {
+        return url.replace("/wiki/", "/w/index.php?title=") + "&action=submit"
+    }
+
+    String getPageTitle(String url) {
+        int idx = url.indexOf("/wiki/")
+        if (idx == -1) {
+            throw new Exception("Could not extract title from '${url}'")
+        }
+        return url.substring(idx + "/wiki/".length())
     }
 
     private String getPageUrl(params, WikipediaQuickCheck checker) {
