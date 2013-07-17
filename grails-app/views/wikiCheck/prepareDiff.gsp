@@ -109,7 +109,7 @@
                         <g:hiddenField name="undidRev" value="0"/>
                         <g:hiddenField name="wpSection" value=""/>
                         <g:hiddenField name="wpStarttime" value="${formatDate(format: 'yyyyMMddHHmmss')}"/>
-                        <g:hiddenField name="wpEdittime" value=""/>
+                        <g:hiddenField name="wpEdittime" value="${result.lastEditTimestamp.replaceAll('[TZ:-]', '')}"/>
                         <g:hiddenField name="wpScrolltop" value="0"/>
                         <g:hiddenField name="oldId" value="0"/>
                         <g:hiddenField name="format" value="text/x-wiki"/>
