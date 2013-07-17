@@ -41,9 +41,6 @@ class WikiCheckController extends BaseController {
             langCode = 'en'
         }
         if (params.url) {
-            final Properties langToDisabledRules = new Properties()
-            langToDisabledRules.load(new FileInputStream(grailsApplication.config.disabledRulesPropFile))
-
             long startTime = System.currentTimeMillis()
             if (params.url.contains("languagetool.org/wikiCheck/")) {
                 throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
@@ -55,6 +52,8 @@ class WikiCheckController extends BaseController {
             if (params.disabled) {
                 checker.setDisabledRuleIds(Arrays.asList(params.disabled.split(",")))
             } else {
+                Properties langToDisabledRules = new Properties()
+                langToDisabledRules.load(new FileInputStream(grailsApplication.config.disabledRulesPropFile))
                 List<String> allDisabledRules = langToDisabledRules.getProperty("all").split(",")
                 String langSpecificDisabledRulesStr = langToDisabledRules.get(language.getShortName())
                 if (langSpecificDisabledRulesStr) {
@@ -62,6 +61,10 @@ class WikiCheckController extends BaseController {
                     if (langSpecificDisabledRules) {
                         allDisabledRules.addAll(langSpecificDisabledRules)
                     }
+                }
+                if (params.enabled) {
+                    List enabled = Arrays.asList(params.enabled.split(","))
+                    allDisabledRules.removeAll(enabled)
                 }
                 checker.setDisabledRuleIds(allDisabledRules)
             }
@@ -85,7 +88,6 @@ class WikiCheckController extends BaseController {
         }
     }
 
-    // TODO: remove once prepareDiff works?
     def index = {
         String langCode
         try {
