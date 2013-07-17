@@ -16,6 +16,16 @@
                     document.getElementById(divId).style.display='block';
                 }
             }
+            function useSuggestion(item, id) {
+                var suggestionField = $(id);
+                suggestionField.value = item.firstChild.data;
+                return false;
+            }
+            function useNoSuggestion(id) {
+                var suggestionField = $(id);
+                suggestionField.value = "";
+                return false;
+            }
             function applyChangesToHiddenField() {
                 var textBox = $('wpTextbox1');
                 var modifiedText = textBox.value;
@@ -25,6 +35,9 @@
                     var startPos = parseInt($('repl' + i + "Start").value);
                     var endPos = parseInt($('repl' + i + "End").value);
                     var replacement = $('repl' + i).value;
+                    if (replacement == "") {
+                        continue;
+                    }
                     if (prevStartPos != -1 && endPos >= prevStartPos) {
                         //console.log("Skipping overlap! (" + replacement + ") for " + startPos + "/" + endPos + ": " + endPos + ">=" +  prevStartPos);
                         prevStartPos = startPos;
@@ -96,6 +109,7 @@
                         <g:hiddenField name="model" value="wikitext"/>
                         <g:hiddenField name="wpSummary" value=""/>
                         <g:hiddenField name="wpDiff" value="yes"/>
+                        <g:hiddenField name="wpMinoredit" value="1"/>
                         <g:hiddenField name="wpTextbox1" value="${result.getOriginalWikiMarkup()}"/>
                         <g:hiddenField name="wpEditToken" value="+\\"/>
 

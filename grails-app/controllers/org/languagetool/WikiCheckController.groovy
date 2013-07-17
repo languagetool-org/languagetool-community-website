@@ -67,7 +67,6 @@ class WikiCheckController extends BaseController {
             }
 
             MarkupAwareWikipediaResult result = checker.checkPage(new URL(params.url))
-            Pattern spanPattern = Pattern.compile('<span class="error">(.*?)</span>')
             params.lang = language.getShortName()
             long runTime = System.currentTimeMillis() - startTime
             log.info("WikiCheck: ${params.url} (${runTime}ms)")
@@ -80,8 +79,7 @@ class WikiCheckController extends BaseController {
                     realEditUrl: pageEditUrl,
                     disabledRuleIds: checker.getDisabledRuleIds(),
                     languages: Language.REAL_LANGUAGES,
-                    langCode: langCode,
-                    spanPattern: spanPattern]
+                    langCode: langCode]
         } else {
             [languages: Language.REAL_LANGUAGES, langCode: langCode]
         }

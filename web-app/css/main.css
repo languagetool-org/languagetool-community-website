@@ -449,6 +449,6 @@ th.desc a {
     color: #555555;
 }
 
-.replacementWarning input {
-    background-color: #ffdb6e;
+.wikiCheckTable td {
+    padding: 2px;
 }

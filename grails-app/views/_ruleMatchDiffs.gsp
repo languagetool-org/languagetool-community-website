@@ -6,40 +6,56 @@
     <g:each in="${ruleApplications}" var="application" status="i">
         <g:if test="${i < maxMatches}">
 
-            <li class="errorList">
-                <g:set var="ruleMatch" value="${application.getRuleMatch()}"/>
-                <g:set var="rule" value="${ruleMatch.getRule()}"/>
-                <g:set var="startMarker" value="${application.getErrorMarkerStart()}"/>
-                <g:set var="startPos" value="${application.getOriginalText().indexOf(startMarker)}"/>
-                <g:set var="endMarker" value="${application.getErrorMarkerEnd()}"/>
-                <g:set var="endPos" value="${application.getOriginalText().indexOf(endMarker) - startMarker.length()}"/>
-                <g:if test="${rule instanceof PatternRule}">
-                    <g:link controller="rule" action="show" id="${rule.getId()}"
-                            params="${[lang: lang, subId: rule.getSubId()]}">${ruleMatch.getMessage().
-                    replace('<suggestion>', '<span class=\'correction\'>').replace('</suggestion>', '</span>')}</g:link>
-                </g:if>
-                <g:else>
-                    <g:link controller="rule" action="show" id="${rule.getId()}"
-                            params="${[lang: lang]}">${rule.getDescription()}</g:link>
-                </g:else>
-                <br/>
+            <g:set var="ruleMatch" value="${application.getRuleMatch()}"/>
+            <g:set var="rule" value="${ruleMatch.getRule()}"/>
+            <g:set var="startMarker" value="${application.getErrorMarkerStart()}"/>
+            <g:set var="startPos" value="${application.getOriginalText().indexOf(startMarker)}"/>
+            <g:set var="endMarker" value="${application.getErrorMarkerEnd()}"/>
+            <g:set var="endPos" value="${application.getOriginalText().indexOf(endMarker) - startMarker.length()}"/>
 
-                ${application.getOriginalErrorContext(40)}<br/>
-                <g:set var="matcher" value="${spanPattern.matcher(application.getCorrectedErrorContext(40))}"/>
-
-                <g:set var="replacement" value="${'<input id=\'repl' + i + '\' type=\'text\' value=\'$1\' />'}"/>
-                <g:hiddenField name="repl${i}Start" value="${startPos}"/>
-                <g:hiddenField name="repl${i}End" value="${endPos}"/>
-                <g:set var="newCorrectionText" value="${matcher.replaceAll(replacement)}"/>
-                <g:if test="${!application.hasRealReplacement()}">
-                    <g:set var="replacementCss" value="replacementWarning"/>
-                </g:if>
-                <g:else>
-                    <g:set var="replacementCss" value=""/>
-                </g:else>
-
-                <span class="${replacementCss}">&hellip;${newCorrectionText}&hellip;</span>
-            </li>
+            <table class="wikiCheckTable" style="width:auto;padding:0;margin-bottom:15px;border-style: none">
+                <tr>
+                    <td colspan="3">
+                        <g:if test="${rule instanceof PatternRule}">
+                            <g:link controller="rule" action="show" id="${rule.getId()}"
+                                    params="${[lang: lang, subId: rule.getSubId()]}">${ruleMatch.getMessage().
+                                    replace('<suggestion>', '<span class=\'correction\'>').replace('</suggestion>', '</span>')}</g:link>
+                        </g:if>
+                        <g:else>
+                            <g:link controller="rule" action="show" id="${rule.getId()}"
+                                    params="${[lang: lang]}">${rule.getDescription()}</g:link>
+                        </g:else>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        &hellip;${application.getOriginalErrorContext(40)
+                                .replace('<span ', '</td><td><span ')
+                                .replace('</span>', '</span></td><td>')}&hellip;
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        <g:set var="newCorrectionText" value="${application.getCorrectedErrorContext(10)}"/>
+                        <g:set var="spanStart" value="${newCorrectionText.indexOf(application.getErrorMarkerStart())}"/>
+                        <g:set var="spanEnd" value="${newCorrectionText.indexOf(application.getErrorMarkerEnd())}"/>
+                        <g:if test="${application.hasRealReplacement()}">
+                            <input id="repl${i}" type="text" value="" placeholder="select correction below"/>
+                            <br/>
+                            <ul>
+                                <li><a href="#" onclick="return useNoSuggestion('repl${i}')">don't apply any suggestion</a><br/></li>
+                                <li><a href="#" onclick="return useSuggestion(this, 'repl${i}')">${newCorrectionText.substring(spanStart, spanEnd).replaceAll('<span.*?>', '')}</a></li>
+                            </ul>
+                        </g:if>
+                        <g:else>
+                            <input id="repl${i}" type="text" value="" placeholder="enter correction here"/>
+                        </g:else>
+                        <g:hiddenField name="repl${i}Start" value="${startPos}"/>
+                        <g:hiddenField name="repl${i}End" value="${endPos}"/>
+                    </td>
+                </tr>
+            </table>
 
         </g:if>
         <g:elseif test="${i == maxMatches}">
