@@ -101,13 +101,14 @@
 
                 <g:if test="${ruleApplications.size() > 0}">
                     <form action="${wikipediaSubmitUrl}" method="POST" onsubmit="applyChangesToHiddenField()">
+                        <!-- see http://www.mediawiki.org/wiki/Manual:Parameters_to_index.php -->
                         <g:hiddenField name="Title" value="${wikipediaTitle}"/>
                         <g:hiddenField name="wpAntiSpam" value=""/>
                         <!--<g:hiddenField name="baseRevId" value=""/>-->
                         <g:hiddenField name="altBaseRevId" value="0"/>
                         <g:hiddenField name="undidRev" value="0"/>
                         <g:hiddenField name="wpSection" value=""/>
-                        <g:hiddenField name="wpStarttime" value=""/>
+                        <g:hiddenField name="wpStarttime" value="${formatDate(format: 'yyyyMMddHHmmss')}"/>
                         <g:hiddenField name="wpEdittime" value=""/>
                         <g:hiddenField name="wpScrolltop" value="0"/>
                         <g:hiddenField name="oldId" value="0"/>
