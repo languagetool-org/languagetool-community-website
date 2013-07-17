@@ -13,9 +13,13 @@
             <g:set var="endMarker" value="${application.getErrorMarkerEnd()}"/>
             <g:set var="endPos" value="${application.getOriginalText().indexOf(endMarker) - startMarker.length()}"/>
 
-            <table class="wikiCheckTable" style="width:auto;padding:0;margin-bottom:15px;border-style: none">
+            <table class="wikiCheckTable" style="width:1000px;padding:0;margin-bottom:15px;border-style:none">
                 <tr>
-                    <td colspan="3">
+                    <td width="40%"></td>
+                    <td width="60%"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <g:if test="${rule instanceof PatternRule}">
                             <g:link controller="rule" action="show" id="${rule.getId()}"
                                     params="${[lang: lang, subId: rule.getSubId()]}">${ruleMatch.getMessage().
@@ -29,14 +33,14 @@
                 </tr>
                 <tr>
                     <td style="text-align: right">
-                        &hellip;${application.getOriginalErrorContext(40)
+                        &hellip;${application.getOriginalErrorContext(50)
                                 .replace('<span ', '</td><td><span ')
-                                .replace('</span>', '</span></td><td>')}&hellip;
+                                .replace('</span>', '</span>')}&hellip;
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td colspan="2">
+                    <td>
                         <g:set var="newCorrectionText" value="${application.getCorrectedErrorContext(10)}"/>
                         <g:set var="spanStart" value="${newCorrectionText.indexOf(application.getErrorMarkerStart())}"/>
                         <g:set var="spanEnd" value="${newCorrectionText.indexOf(application.getErrorMarkerEnd())}"/>

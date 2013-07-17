@@ -27,7 +27,11 @@
                 return false;
             }
             function applyChangesToHiddenField() {
+                var origTextBox = $('origWpTextbox1');
                 var textBox = $('wpTextbox1');
+                // use the original text, otherwise everything will mess up once the user uses the back
+                // button and makes more changes:
+                textBox.value = origTextBox.value;
                 var modifiedText = textBox.value;
                 var i;
                 var prevStartPos = -1;
@@ -110,7 +114,10 @@
                         <g:hiddenField name="wpSummary" value=""/>
                         <g:hiddenField name="wpDiff" value="yes"/>
                         <g:hiddenField name="wpMinoredit" value="1"/>
+                        <!-- this will be modified at submit: -->
                         <g:hiddenField name="wpTextbox1" value="${result.getOriginalWikiMarkup()}"/>
+                        <!-- always keep the original text so the browser's back button doesn't mess it up: -->
+                        <g:hiddenField name="origWpTextbox1" value="${result.getOriginalWikiMarkup()}"/>
                         <g:hiddenField name="wpEditToken" value="+\\"/>
 
                         <g:render template="/ruleMatchDiffs"/>
