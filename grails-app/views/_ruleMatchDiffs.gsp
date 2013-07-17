@@ -48,7 +48,7 @@
                             <input id="repl${i}" type="text" value="" placeholder="select correction below"/>
                             <br/>
                             <ul>
-                                <li><a href="#" onclick="return useNoSuggestion('repl${i}')">don't apply any suggestion</a><br/></li>
+                                <li><a href="#" onclick="return useNoSuggestion('repl${i}')"><g:message code="ltc.wikicheck.do.not.apply.any.suggestion"/></a><br/></li>
                                 <li><a href="#" onclick="return useSuggestion(this, 'repl${i}')">${newCorrectionText.substring(spanStart, spanEnd).replaceAll('<span.*?>', '')}</a></li>
                             </ul>
                         </g:if>

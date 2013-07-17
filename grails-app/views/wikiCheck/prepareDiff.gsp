@@ -94,6 +94,8 @@
                 <h2 style="margin-top:10px;margin-bottom:10px"><g:message code="ltc.wikicheck.result.headline"/></h2>
                 
                 <p><g:message code="ltc.wikicheck.result.url"/> <a href="${realUrl.encodeAsHTML()}">${realUrl.encodeAsHTML()}</a> (<a href="${realEditUrl.encodeAsHTML()}"><g:message code="ltc.wikicheck.result.edit"/></a>)</p>
+
+                <p class="warn"><g:message code="ltc.wikicheck.beta.warning"/></p>
                 
                 <br />
 
@@ -121,13 +123,20 @@
                         <g:hiddenField name="wpEditToken" value="+\\"/>
 
                         <g:render template="/ruleMatchDiffs"/>
-                        <g:submitButton name="Submit changes to Wikipedia"/>
-                        Note: this will display the changes at Wikipedia - please check the changes carefully before you submit!
+                        <g:submitButton name="${message(code:'ltc.wikicheck.submit.button')}"/>
+                        <g:message code="ltc.wikicheck.submit.warning"/>
                     </form>
                 </g:if>
                 <g:else>
                     <g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.lang)]}"/>
                 </g:else>
+
+                <g:if test="${result.internalErrorCount > 0}">
+                    <p class="warn">
+                        <g:message code="ltc.wikicheck.missing.matches" args="${[result.internalErrorCount]}"/>
+                        <g:link action="index" params="${[url:params.url, disabled:params.disabled]}"><g:message code="ltc.wikicheck.missing.matches.link"/></g:link>
+                    </p>
+                </g:if>
 
                 <br /><br />
                 <div style="color:#555555;">
