@@ -45,7 +45,7 @@
                         <g:set var="spanStart" value="${newCorrectionText.indexOf(application.getErrorMarkerStart())}"/>
                         <g:set var="spanEnd" value="${newCorrectionText.indexOf(application.getErrorMarkerEnd())}"/>
                         <g:if test="${application.hasRealReplacement()}">
-                            <input id="repl${i}" type="text" value="" placeholder="select correction below"/>
+                            <input id="repl${i}" type="text" value="" placeholder="${message(code:'ltc.wikicheck.select.correction')}"/>
                             <br/>
                             <ul>
                                 <li><a href="#" onclick="return useNoSuggestion('repl${i}')"><g:message code="ltc.wikicheck.do.not.apply.any.suggestion"/></a><br/></li>
@@ -53,7 +53,7 @@
                             </ul>
                         </g:if>
                         <g:else>
-                            <input id="repl${i}" type="text" value="" placeholder="enter correction here"/>
+                            <input id="repl${i}" type="text" value="" placeholder="${message(code:'ltc.wikicheck.enter.correction')}"/>
                         </g:else>
                         <g:hiddenField name="repl${i}Start" value="${startPos}"/>
                         <g:hiddenField name="repl${i}End" value="${endPos}"/>
@@ -63,7 +63,7 @@
 
         </g:if>
         <g:elseif test="${i == maxMatches}">
-            <div class="warn">More than ${maxMatches} possible errors found, stopping</div>
+            <div class="warn"><g:message code="ltc.wikicheck.max.matches" args="${[maxMatches]}"/></div>
         </g:elseif>
         <g:else>
             <%-- nothing --%>
