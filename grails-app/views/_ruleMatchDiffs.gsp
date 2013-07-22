@@ -31,8 +31,9 @@
                     <td style="text-align: right">
                         <g:set var="firstApp" value="${appliedRuleMatch.getRuleMatchApplications().get(0)}"/>
                         &hellip;${firstApp.getOriginalErrorContext(50)
-                            .replace('<span ', '</td><td><span ')
-                            .replace('</span>', '</span>')}&hellip;
+                            .encodeAsHTML()
+                            .replace('&lt;span class=&quot;error&quot;&gt;', '</td><td><span class="error">')
+                            .replace('&lt;/span&gt;', '</span>')}&hellip;
                     </td>
                 </tr>
 
