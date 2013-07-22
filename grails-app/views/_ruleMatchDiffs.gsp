@@ -2,8 +2,8 @@
 
 <ul>
     <g:set var="maxMatches" value="${100}"/>
-    <g:hiddenField name="replMaximum" value="${ruleApplications.size()}"/>
-    <g:each in="${ruleApplications}" var="application" status="i">
+    <g:hiddenField name="replMaximum" value="${ruleMatchApplications.size()}"/>
+    <g:each in="${ruleMatchApplications}" var="application" status="i">
         <g:if test="${i < maxMatches}">
 
             <g:set var="ruleMatch" value="${application.getRuleMatch()}"/>
