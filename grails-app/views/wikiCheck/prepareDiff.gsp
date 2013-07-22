@@ -150,7 +150,7 @@
                 <g:if test="${result.internalErrorCount > 0}">
                     <p class="warn">
                         <g:message code="ltc.wikicheck.missing.matches" args="${[result.internalErrorCount]}"/>
-                        <g:link action="index" params="${[url:params.url, disabled:params.disabled]}"><g:message code="ltc.wikicheck.missing.matches.link"/></g:link>
+                        <g:link action="index" params="${[url:realUrl, disabled:params.disabled]}"><g:message code="ltc.wikicheck.missing.matches.link"/></g:link>
                     </p>
                 </g:if>
 
@@ -167,7 +167,7 @@
                             <a style="color:#444444;font-weight:normal" href="http://community.languagetool.org/rule/show/${ruleId.encodeAsURL()}?lang=${lang.encodeAsHTML()}">${ruleId.encodeAsHTML()}</a>
                         </g:each>
                         <div style="margin-top: 5px">
-                            <g:message code="ltc.wikicheck.rules.activate.all.link" args="${['?url=' + params.url + '&amp;lang='+ params.lang + '&amp;disabled=none']}"/>
+                            <g:message code="ltc.wikicheck.rules.activate.all.link" args="${['?url=' + realUrl + '&amp;lang='+ params.lang + '&amp;disabled=none']}"/>
                         </div>
                     </div>
                 </div>
