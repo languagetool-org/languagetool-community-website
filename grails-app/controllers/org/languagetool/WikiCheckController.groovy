@@ -69,7 +69,7 @@ class WikiCheckController extends BaseController {
                 checker.setDisabledRuleIds(allDisabledRules)
             }
 
-            MarkupAwareWikipediaResult result = checker.checkPage(new URL(params.url))
+            MarkupAwareWikipediaResult result = checker.checkPage(new URL(pageUrl))
             params.lang = language.getShortName()
             long runTime = System.currentTimeMillis() - startTime
             log.info("WikiCheck: ${params.url} (${runTime}ms)")
@@ -169,7 +169,7 @@ class WikiCheckController extends BaseController {
                 throw new Exception("Invalid language: " + lang)
             }
             URL randomUrl = new URL("http://" + lang + ".wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=xml")
-            pageUrl = "http://" + lang + ".wikipedia.org/wiki/" + getRandomPageTitle(randomUrl)
+            pageUrl = "http://" + lang + ".wikipedia.org/wiki/" + getRandomPageTitle(randomUrl).replace(' ', '_')
         } else {
             checker.validateWikipediaUrl(new URL(params.url))
             pageUrl = params.url

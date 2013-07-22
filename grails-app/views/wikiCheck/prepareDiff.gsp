@@ -79,8 +79,8 @@
                 </g:form>
             </div>
 
-            <g:link action="index" params="${[url: message(code:'ltc.wikicheck.example.page.url'), lang: langCode]}"><g:message code="ltc.wikicheck.example.page"/></g:link>
-                &middot; <g:link action="index" params="${[url: 'random:' + langCode, lang: langCode]}"><g:message code="ltc.wikicheck.random.page"/></g:link>
+            <g:link action="prepareDiff" params="${[url: message(code:'ltc.wikicheck.example.page.url'), lang: langCode]}"><g:message code="ltc.wikicheck.example.page"/></g:link>
+                &middot; <g:link action="prepareDiff" params="${[url: 'random:' + langCode, lang: langCode]}"><g:message code="ltc.wikicheck.random.page"/></g:link>
 
             <p style="margin-top: 10px">
             <g:message code="ltc.wikicheck.bookmarklet"/>
