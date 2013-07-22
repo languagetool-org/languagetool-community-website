@@ -124,8 +124,23 @@
                         <g:hiddenField name="wpEditToken" value="+\\"/>
 
                         <g:render template="/ruleMatchDiffs"/>
-                        <g:submitButton name="${message(code:'ltc.wikicheck.submit.button')}"/>
-                        <g:message code="ltc.wikicheck.submit.warning"/>
+
+                        <table class="wikiCheckTable">
+                            <tr>
+                                <td width="41%"></td>
+                                <td width="57%"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <g:submitButton style="margin-bottom: 10px" name="${message(code:'ltc.wikicheck.submit.button')}"/>
+                                    <br/>
+                                    <g:message code="ltc.wikicheck.submit.warning"/>
+                                    <br/>
+                                    <a href="${realEditUrl.encodeAsHTML()}"><g:message code="ltc.wikicheck.result.edit.manually"/></a>
+                                </td>
+                            </tr>
+                        </table>
                     </form>
                 </g:if>
                 <g:else>

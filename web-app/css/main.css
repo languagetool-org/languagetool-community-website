@@ -449,6 +449,13 @@ th.desc a {
     color: #555555;
 }
 
+.wikiCheckTable {
+    width: 1000px;
+    padding: 0;
+    margin-bottom: 15px;
+    border-style: none;
+}
+
 .wikiCheckTable td {
     padding: 2px;
 }

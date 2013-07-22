@@ -9,7 +9,7 @@
             <g:set var="ruleMatch" value="${appliedRuleMatch.getRuleMatch()}"/>
             <g:set var="rule" value="${ruleMatch.getRule()}"/>
 
-            <table class="wikiCheckTable" style="width:1000px;padding:0;margin-bottom:15px;border-style:none">
+            <table class="wikiCheckTable">
                 <tr>
                     <td width="40%"></td>
                     <td width="60%"></td>
