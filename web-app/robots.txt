@@ -1,0 +1,3 @@
+# requires too much CPU:
+User-agent: *
+Disallow: /wikiCheck/prepareDiff
