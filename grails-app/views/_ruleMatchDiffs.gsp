@@ -2,16 +2,12 @@
 
 <ul>
     <g:set var="maxMatches" value="${100}"/>
-    <g:hiddenField name="replMaximum" value="${ruleMatchApplications.size()}"/>
-    <g:each in="${ruleMatchApplications}" var="application" status="i">
+    <g:hiddenField name="replMaximum" value="${appliedRuleMatches.size()}"/>
+    <g:each in="${appliedRuleMatches}" var="appliedRuleMatch" status="i">
         <g:if test="${i < maxMatches}">
 
-            <g:set var="ruleMatch" value="${application.getRuleMatch()}"/>
+            <g:set var="ruleMatch" value="${appliedRuleMatch.getRuleMatch()}"/>
             <g:set var="rule" value="${ruleMatch.getRule()}"/>
-            <g:set var="startMarker" value="${application.getErrorMarkerStart()}"/>
-            <g:set var="startPos" value="${application.getOriginalText().indexOf(startMarker)}"/>
-            <g:set var="endMarker" value="${application.getErrorMarkerEnd()}"/>
-            <g:set var="endPos" value="${application.getOriginalText().indexOf(endMarker) - startMarker.length()}"/>
 
             <table class="wikiCheckTable" style="width:1000px;padding:0;margin-bottom:15px;border-style:none">
                 <tr>
@@ -33,30 +29,50 @@
                 </tr>
                 <tr>
                     <td style="text-align: right">
-                        &hellip;${application.getOriginalErrorContext(50)
-                                .replace('<span ', '</td><td><span ')
-                                .replace('</span>', '</span>')}&hellip;
+                        <g:set var="firstApp" value="${appliedRuleMatch.getRuleMatchApplications().get(0)}"/>
+                        &hellip;${firstApp.getOriginalErrorContext(50)
+                            .replace('<span ', '</td><td><span ')
+                            .replace('</span>', '</span>')}&hellip;
                     </td>
                 </tr>
+
+
                 <tr>
                     <td></td>
                     <td>
-                        <g:set var="newCorrectionText" value="${application.getCorrectedErrorContext(10)}"/>
-                        <g:set var="spanStart" value="${newCorrectionText.indexOf(application.getErrorMarkerStart())}"/>
-                        <g:set var="spanEnd" value="${newCorrectionText.indexOf(application.getErrorMarkerEnd())}"/>
-                        <g:if test="${application.hasRealReplacement()}">
+
+                        <g:set var="suggestionsExists" value="${false}"/>
+                        <g:each in="${appliedRuleMatch.getRuleMatchApplications()}" var="app">
+                            <g:if test="${app.hasRealReplacement()}">
+                                <g:set var="suggestionsExists" value="${true}"/>
+                            </g:if>
+                        </g:each>
+
+                        <g:if test="${suggestionsExists}">
                             <input id="repl${i}" type="text" value="" placeholder="${message(code:'ltc.wikicheck.select.correction')}"/>
-                            <br/>
-                            <ul>
-                                <li><a href="#" onclick="return useNoSuggestion('repl${i}')"><g:message code="ltc.wikicheck.do.not.apply.any.suggestion"/></a><br/></li>
-                                <li><a href="#" onclick="return useSuggestion(this, 'repl${i}')">${newCorrectionText.substring(spanStart, spanEnd).replaceAll('<span.*?>', '')}</a></li>
-                            </ul>
                         </g:if>
                         <g:else>
                             <input id="repl${i}" type="text" value="" placeholder="${message(code:'ltc.wikicheck.enter.correction')}"/>
                         </g:else>
-                        <g:hiddenField name="repl${i}Start" value="${startPos}"/>
-                        <g:hiddenField name="repl${i}End" value="${endPos}"/>
+                        <ul>
+                            <li><a href="#" onclick="return useNoSuggestion('repl${i}')"><g:message code="ltc.wikicheck.do.not.apply.any.suggestion"/></a><br/></li>
+                            <g:each in="${appliedRuleMatch.getRuleMatchApplications()}" var="app">
+                                <g:if test="${app.hasRealReplacement()}">
+                                    <g:set var="newCorrectionText" value="${app.getCorrectedErrorContext(10)}"/>
+                                    <g:set var="spanStart" value="${newCorrectionText.indexOf(app.getErrorMarkerStart())}"/>
+                                    <g:set var="spanEnd" value="${newCorrectionText.indexOf(app.getErrorMarkerEnd())}"/>
+                                    <li><a href="#" onclick="return useSuggestion(this, 'repl${i}')">${newCorrectionText.substring(spanStart, spanEnd).replaceAll('<span.*?>', '')}</a></li>
+                                </g:if>
+                            </g:each>
+                            <%-- marker should be the same for all corrections, so we use the first one: --%>
+                            <g:set var="startMarker" value="${firstApp.getErrorMarkerStart()}"/>
+                            <g:set var="startPos" value="${firstApp.getOriginalText().indexOf(startMarker)}"/>
+                            <g:set var="endMarker" value="${firstApp.getErrorMarkerEnd()}"/>
+                            <g:set var="endPos" value="${firstApp.getOriginalText().indexOf(endMarker) - startMarker.length()}"/>
+                            <g:hiddenField name="repl${i}Start" value="${startPos}"/>
+                            <g:hiddenField name="repl${i}End" value="${endPos}"/>
+                        </ul>
+
                     </td>
                 </tr>
             </table>

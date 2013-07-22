@@ -99,7 +99,7 @@
                 
                 <br />
 
-                <g:if test="${ruleMatchApplications.size() > 0}">
+                <g:if test="${appliedRuleMatches.size() > 0}">
                     <form action="${wikipediaSubmitUrl}" method="POST" onsubmit="applyChangesToHiddenField()">
                         <!-- see http://www.mediawiki.org/wiki/Manual:Parameters_to_index.php -->
                         <g:hiddenField name="Title" value="${wikipediaTitle}"/>

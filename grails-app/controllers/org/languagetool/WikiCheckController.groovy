@@ -73,7 +73,7 @@ class WikiCheckController extends BaseController {
             params.lang = language.getShortName()
             long runTime = System.currentTimeMillis() - startTime
             log.info("WikiCheck: ${params.url} (${runTime}ms)")
-            [result: result, ruleApplications: result.getRuleApplications(),
+            [result: result, appliedRuleMatches: result.getAppliedRuleMatches(),
                     wikipediaSubmitUrl: getPageSubmitUrl(pageUrl),
                     wikipediaTitle: getPageTitle(pageUrl),
                     lang: language.getShortName(),
