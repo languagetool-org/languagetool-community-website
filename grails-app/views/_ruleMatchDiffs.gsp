@@ -23,7 +23,7 @@
                         </g:if>
                         <g:else>
                             <g:link controller="rule" action="show" id="${rule.getId()}"
-                                    params="${[lang: lang]}">${rule.getDescription()}</g:link>
+                                    params="${[lang: lang]}">${ruleMatch.getMessage().replaceAll("<suggestion>", "<span class='correction'>").replaceAll("</suggestion>", "</span>")}</g:link>
                         </g:else>
                     </td>
                 </tr>
