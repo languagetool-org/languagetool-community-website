@@ -61,7 +61,7 @@
                 <br /><br />
                 <div style="color:#555555;">
                     <g:message code="ltc.wikicheck.rules.intro"/>
-                    <a style="color: #555555" href="javascript:toggleId('disabledRuleInfo');">Details</a>.
+                    <a style="color: #555555" href="javascript:toggleId('disabledRuleInfo');"><g:message code="ltc.wikicheck.rules.details"/></a>
                     <div id="disabledRuleInfo" style="margin-top: 5px; display: none;color:#444444;">
                         <g:message code="ltc.wikicheck.rules.message"/>
                         <g:each in="${disabledRuleIds}" var="ruleId" status="i">
