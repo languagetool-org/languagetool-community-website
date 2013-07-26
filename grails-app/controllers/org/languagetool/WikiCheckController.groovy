@@ -32,7 +32,7 @@ class WikiCheckController extends BaseController {
 
     private String CONVERT_URL_PREFIX = "http://community.languagetool.org/wikipediatotext/wikiSyntaxConverter/convert?url="
 
-    def prepareDiff = {
+    def index = {
         String langCode
         try {
             Language langObj = params.lang ? Language.getLanguageForShortName(params.lang) : null
@@ -88,7 +88,7 @@ class WikiCheckController extends BaseController {
         }
     }
 
-    def index = {
+    def showErrors = {
         String langCode
         try {
             Language langObj = params.lang ? Language.getLanguageForShortName(params.lang) : null
