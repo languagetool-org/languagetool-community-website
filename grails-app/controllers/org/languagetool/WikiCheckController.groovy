@@ -97,7 +97,7 @@ class WikiCheckController extends BaseController {
             langCode = 'en'
         }
         if (params.url) {
-            final Properties langToDisabledRules = new Properties()
+            Properties langToDisabledRules = new Properties()
             langToDisabledRules.load(new FileInputStream(grailsApplication.config.disabledRulesPropFile))
 
             long startTime = System.currentTimeMillis()
@@ -177,12 +177,12 @@ class WikiCheckController extends BaseController {
         return pageUrl
     }
 
-    private String download(final URL url) throws IOException {
-        final HttpURLConnection connection = (HttpURLConnection)url.openConnection()
+    private String download(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection)url.openConnection()
         if (connection.getResponseCode() != 200) {
             throw new IOException("Server error for " +  url + ", code: " + connection.getResponseCode())
         }
-        final InputStream is = connection.getInputStream()
+        InputStream is = connection.getInputStream()
         try {
             StringWriter writer = new StringWriter()
             IOUtils.copy(is, writer, "utf-8")
@@ -192,11 +192,11 @@ class WikiCheckController extends BaseController {
         }
     }
 
-    private String getRandomPageTitle(final URL randomUrl) throws IOException {
-        final String content = download(randomUrl)
-        final Matcher matcher = XML_TITLE_PATTERN.matcher(content)
+    private String getRandomPageTitle(URL randomUrl) throws IOException {
+        String content = download(randomUrl)
+        Matcher matcher = XML_TITLE_PATTERN.matcher(content)
         matcher.find()
-        return matcher.group(1)
+        return matcher.group(1).replace("&amp;" ,"&")
     }
 
 }
