@@ -62,7 +62,7 @@
                                     <g:set var="newCorrectionText" value="${app.getCorrectedErrorContext(10)}"/>
                                     <g:set var="spanStart" value="${newCorrectionText.indexOf(app.getErrorMarkerStart())}"/>
                                     <g:set var="spanEnd" value="${newCorrectionText.indexOf(app.getErrorMarkerEnd())}"/>
-                                    <li><a href="#" onclick="return useSuggestion(this, 'repl${i}')">${newCorrectionText.substring(spanStart, spanEnd).replaceAll('<span.*?>', '')}</a></li>
+                                    <li><a href="#" onclick="return useSuggestion(this, 'repl${i}')">${newCorrectionText.substring(spanStart, spanEnd).replaceAll('<span.*?>', '').encodeAsHTML()}</a></li>
                                 </g:if>
                             </g:each>
                             <%-- marker should be the same for all corrections, so we use the first one: --%>
