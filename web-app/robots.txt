@@ -1,3 +1,3 @@
 # requires too much CPU:
 User-agent: *
-Disallow: /wikiCheck/prepareDiff
+Disallow: /wikiCheck/index?url=

@@ -66,7 +66,7 @@
                                 <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
                                     ${StringTools.formatError(match.errorContext.encodeAsHTML())}
                                     <span class="additional"><g:link title="${message(code:'ltc.corpus.match.check.date')} ${StringTools.formatDate(match.corpusDate).encodeAsHTML()}" class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
-                                    <span class="additional"> - <g:link class="additional" controller="wikiCheck" action="prepareDiff"
+                                    <span class="additional"> - <g:link class="additional" controller="wikiCheck" action="index"
                                                                         params="${[url:match.sourceURI.replace(' ', '_'), enabled:match.ruleID]}"><g:message code="ltc.wikicheck.check.again"/></g:link></span>
                                 </div>
 
