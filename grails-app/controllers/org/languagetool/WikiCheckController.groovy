@@ -150,7 +150,7 @@ class WikiCheckController extends BaseController {
     }
 
     String getPageSubmitUrl(String url) {
-        return url.replace("/wiki/", "/w/index.php?title=") + "&action=submit"
+        return url.replace("http://", "https://").replace("/wiki/", "/w/index.php?title=") + "&action=submit"
     }
 
     String getPageTitle(String url) {
