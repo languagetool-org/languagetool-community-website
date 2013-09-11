@@ -65,7 +65,17 @@
                     <div id="editor">${params.xml.encodeAsHTML()}</div>
                 </g:if>
                 <g:else>
-                    <div id="editor"></div>
+                    <div id="editor">&lt;!-- this is an example rule: --&gt;
+&lt;rule id="CONFUSION_OF_BED_BAD" name="confusion of bed/bad"&gt;
+    &lt;pattern&gt;
+        &lt;token&gt;bed&lt;/token&gt;
+        &lt;token&gt;English&lt;/token&gt;
+    &lt;/pattern&gt;
+    &lt;message&gt;Did you mean &lt;suggestion&gt;bad&lt;/suggestion&gt;?&lt;/message&gt;
+    &lt;example type="incorrect"&gt;Sorry for my &lt;marker&gt;bed English&lt;/marker&gt;.&lt;/example&gt;
+    &lt;example type="correct"&gt;Sorry for my bad English.&lt;/example&gt;
+&lt;/rule&gt;
+</div>
                 </g:else>
                 
                 <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
