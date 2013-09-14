@@ -101,8 +101,8 @@ class RuleController extends BaseController {
                     continue
                 }
             }
-            // match description:
-            if (rule.description.toLowerCase().contains(filter)) {
+            // match description or id:
+            if (rule.description.toLowerCase().contains(filter) || rule.id.toLowerCase() == filter) {
                 filtered.add(rule)
                 continue
             }
