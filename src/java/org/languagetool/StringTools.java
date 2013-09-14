@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class StringTools {
   
@@ -69,7 +70,7 @@ public class StringTools {
     if (searchString == null) {
       return StringEscapeUtils.escapeHtml(text);
     }
-    text = text.replaceAll("(?i)(" + searchString + ")", "<span class='filterMatch'>$1</span>");
+    text = text.replaceAll("(?i)(" + Pattern.quote(searchString) + ")", "<span class='filterMatch'>$1</span>");
     text = StringEscapeUtils.escapeHtml(text);
     text = text.replaceAll("&lt;span class='filterMatch'&gt;", "<span class='filterMatch'>");
     text = text.replaceAll("&lt;/span&gt;", "</span>");
