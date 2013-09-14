@@ -42,11 +42,9 @@ class WikiCheckController extends BaseController {
         }
         if (params.url) {
             long startTime = System.currentTimeMillis()
-            if (params.url.contains("languagetool.org/wikiCheck/")) {
-                throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
-            }
+            bookmarkletSanityCheck()
             WikipediaQuickCheck checker = new WikipediaQuickCheck()
-            String pageUrl = getPageUrl(params, checker)
+            String pageUrl = getPageUrl(params, checker, langCode)
             String pageEditUrl = getPageEditUrl(pageUrl)
             Language language = checker.getLanguage(new URL(pageUrl))
             if (params.disabled) {
@@ -88,6 +86,15 @@ class WikiCheckController extends BaseController {
         }
     }
 
+    private void bookmarkletSanityCheck() {
+        if (params.url.contains("languagetool.org/wikiCheck/")) {
+            throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
+        }
+    }
+
+    /**
+     * The old view that does not offer direct Wikipedia correction.
+     */
     def showErrors = {
         String langCode
         try {
@@ -101,11 +108,9 @@ class WikiCheckController extends BaseController {
             langToDisabledRules.load(new FileInputStream(grailsApplication.config.disabledRulesPropFile))
 
             long startTime = System.currentTimeMillis()
-            if (params.url.contains("languagetool.org/wikiCheck/")) {
-                throw new Exception("You clicked the WikiCheck bookmarklet - this link only works when you put it in your bookmarks and call the bookmark while you're on a Wikipedia page")
-            }
+            bookmarkletSanityCheck()
             WikipediaQuickCheck checker = new WikipediaQuickCheck()
-            String pageUrl = getPageUrl(params, checker)
+            String pageUrl = getPageUrl(params, checker, langCode)
             String pageEditUrl = getPageEditUrl(pageUrl)
             URL plainTextUrl = new URL(CONVERT_URL_PREFIX + pageUrl.replace(' ', '_'))
             String plainText = download(plainTextUrl)
@@ -161,7 +166,7 @@ class WikiCheckController extends BaseController {
         return url.substring(idx + "/wiki/".length())
     }
 
-    private String getPageUrl(params, WikipediaQuickCheck checker) {
+    private String getPageUrl(params, WikipediaQuickCheck checker, String langCode) {
         String pageUrl
         if (params.url.startsWith("random:")) {
             String lang = params.url.substring("random:".length())
@@ -170,9 +175,11 @@ class WikiCheckController extends BaseController {
             }
             URL randomUrl = new URL("http://" + lang + ".wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=xml")
             pageUrl = "http://" + lang + ".wikipedia.org/wiki/" + getRandomPageTitle(randomUrl).replace(' ', '_')
-        } else {
+        } else if (params.url.startsWith("http://") || params.url.startsWith("https://")) {
             checker.validateWikipediaUrl(new URL(params.url))
             pageUrl = params.url
+        } else {
+            pageUrl = "http://" + langCode + ".wikipedia.org/wiki/" + params.url.replace(' ', '_')
         }
         return pageUrl
     }
