@@ -167,13 +167,19 @@ class RuleEditorController extends BaseController {
         }
         for (incorrectExample in incorrectExamples) {
             String sentence = cleanMarkers(incorrectExample.getExample())
-            List ruleMatches = langTool.check(sentence)
+            AnalyzedSentence analyzedSentence = langTool.getAnalyzedSentence(sentence)
+            List ruleMatches = langTool.checkAnalyzedSentence(JLanguageTool.ParagraphHandling.NORMAL, langTool.getAllActiveRules(), 0, 0, 0, sentence, analyzedSentence)
             if (ruleMatches.size() == 0) {
                 if (incorrectExample.getExample().isEmpty()) {
                     // we accept this (but later display a warning) because it's handy to try some patterns
                     // without setting a sentence just to see the Wikipedia results
                 } else {
-                    problems.add(message(code:'ltc.editor.error.not.found', args:[sentence]))
+                    String msg = message(code:'ltc.editor.error.not.found', args:[sentence])
+                    msg += "<br/>"
+                    msg += message(code: 'ltc.editor.error.not.found.analysis')
+                    msg += "<br/>"
+                    msg += analyzedSentence
+                    problems.add(msg)
                 }
             } else if (ruleMatches.size() == 1) {
                 def ruleMatch = ruleMatches.get(0)
