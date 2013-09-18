@@ -72,7 +72,7 @@ class RuleController extends BaseController {
         if (ruleCount == 0) {
             rules = []
         } else {
-            rules = rules[offset..Math.min(rules.size()-1, offset+max)]
+            rules = rules[offset..Math.min(rules.size()-1, offset+max-1)]
         }
         Set disabledRuleIDs = new HashSet()      // empty = all rules activated
         if (session.user) {
