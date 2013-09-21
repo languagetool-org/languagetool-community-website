@@ -3,9 +3,9 @@
 # Requires a local checkout of all LanguageTool sources.
 
 CUR_DIR=$(basename $PWD)
-if [ $CUR_DIR != 'ltcommunity' ]
+if [ $CUR_DIR != 'languagetool-community-website' ]
   then
-    echo "Error: please start this script from the ltcommunity directory"
+    echo "Error: please start this script from the 'languagetool-community-website' directory"
     exit
 fi
 
@@ -32,4 +32,4 @@ cd -
 cp ../languagetool/languagetool-wikipedia/target/LanguageTool-wikipedia*-SNAPSHOT/LanguageTool-wikipedia*-SNAPSHOT/languagetool-wikipedia.jar lib/
 cp ../languagetool/languagetool-wikipedia/target/LanguageTool-wikipedia*-SNAPSHOT/LanguageTool-wikipedia*-SNAPSHOT/libs/* lib/
 
-echo "Done - all JARs etc. have been copied to libs/"
+echo "Done - all JARs etc. have been copied to lib/"
