@@ -81,6 +81,10 @@
                 <g:paginate total="${totalMatches}" 
                     params="${params}"/>
             </div>
+
+            <p style="margin-top: 5px"><a href="http://wiki.languagetool.org/make-languagetool-better"><g:message code="ltc.make.languagetool.better"/></a></p>
+
         </div>
+    
     </body>
 </html>

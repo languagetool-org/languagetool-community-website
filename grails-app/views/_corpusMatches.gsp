@@ -44,4 +44,6 @@
        params="[lang:params.lang.encodeAsHTML()]"><g:message code="ltc.show.random.examples"/></g:link> &middot;
     <g:link controller="corpusMatch" action="list" params="[lang: params.lang]"><g:message code="ltc.show.all.matches"/></g:link> &middot;
     <g:link controller="userOpinion" action="list" params="[lang: params.lang]"><g:message code="ltc.show.user.votes"/></g:link>
+    <br/>
+    <a href="http://wiki.languagetool.org/make-languagetool-better"><g:message code="ltc.make.languagetool.better"/></a>
 </g:if>
