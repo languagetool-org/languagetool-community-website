@@ -46,6 +46,8 @@ max.text.length = 10000     // maximum length of texts to check
 // not properly supported yet):
 hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "km", "en-GB", "en-US", "en-CA", "en-ZA", "en-NZ", "en-AU",
         "de-DE", "de-AT", "de-CH", "pt-BR", "pt-PT", "de-DE-x-simple-language"]
+// show these languages directly in the navigation bar (not in the drop down):
+expose.languages = ["en", "fr", "de", "es", "pl", "ca", "br", "nl", "pt", "es", "eo"]
 maxPatternElements = 5
 // disable some rules for WikiCheck to avoid too many false alarms:
 disabledRulesPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules.properties"
