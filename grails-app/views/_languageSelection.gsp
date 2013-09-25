@@ -17,11 +17,18 @@
                     </g:else>
                 </g:if>
             </g:each>
-            <select name="lang" style="margin-top: 0; background: #94c324;font-weight: bold" onchange="window.location.search='lang='+this.options[this.selectedIndex].value">
-                <option>More...</option>
+            <select name="lang" style="margin-top: 0; background: #94c324;font-weight: bold" onchange="if (selectedIndex > 0) { window.location.search='lang='+this.options[this.selectedIndex].value }">
+                <option><g:message code="ltc.more.languages"/></option>
                 <g:each var="lang" in="${languages}">
                     <g:if test="${!languagesToExpose.contains(lang.shortName) && !languagesToHide.contains(lang.shortNameWithVariant) && !languagesToHide.contains(lang.shortName)}">
-                        <option value="${lang.getShortName()}">${lang.getName()}</option>
+                        <g:set var="selectionSnippet" value="${lang.getShortName() == params.lang ? '' : ''}"/>
+                        <g:if test="${lang.getShortName() == params.lang}">
+                            <g:set var="selectionSnippet" value="selected='selected'"/>
+                        </g:if>
+                        <g:else>
+                            <g:set var="selectionSnippet" value=""/>
+                        </g:else>
+                        <option ${selectionSnippet} value="${lang.getShortName()}">${lang.getName()}</option>
                     </g:if>
                 </g:each>
             </select>
