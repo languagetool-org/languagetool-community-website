@@ -3,7 +3,7 @@
 
 <html>
     <head>
-        <title>${language} <g:message code="ltc.home.title"/></title>
+        <title><g:message code="ltc.home.title"/> (${language})</title>
         <meta name="layout" content="main" />
         <g:javascript library="prototype" />
     </head>
