@@ -65,14 +65,14 @@ class RuleEditorController extends BaseController {
           try {
               searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
           } catch (SearchTimeoutException e) {
-              log.info("Timeout exception: " + e + " - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern}")
+              log.info("Timeout exception: " + e + " - LANG: ${language.getShortNameWithCountryAndVariant()} - PATTERN: ${params.pattern}")
               timeOut = true
           }
-          log.info("Checked rule: valid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
+          log.info("Checked rule: valid - LANG: ${language.getShortNameWithCountryAndVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
           [messagePreset: params.messageBackup, namePreset: params.nameBackup,
                   searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT, timeOut: timeOut, patternRule: patternRule]
         } else {
-            log.info("Checked rule: invalid - LANG: ${language.getShortNameWithVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${problems.size()} problems")
+            log.info("Checked rule: invalid - LANG: ${language.getShortNameWithCountryAndVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${problems.size()} problems")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
         }
     }

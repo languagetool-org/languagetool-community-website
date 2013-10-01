@@ -8,7 +8,7 @@
     <tr>
         <td>
             <g:each var="lang" in="${languages}">
-                <g:if test="${languagesToExpose.contains(lang.shortName) && !languagesToHide.contains(lang.shortNameWithVariant) && !languagesToHide.contains(lang.shortName)}">
+                <g:if test="${languagesToExpose.contains(lang.shortName) && !languagesToHide.contains(lang.getShortNameWithCountryAndVariant()) && !languagesToHide.contains(lang.shortName)}">
                     <g:if test="${params.lang == lang.shortName}">
                         <span class="languageButton"><span class="activelang">${lang.getName()}</span></span>
                     </g:if>
@@ -20,7 +20,7 @@
             <select name="lang" style="margin-top: 0; background: #94c324;font-weight: bold" onchange="if (selectedIndex > 0) { window.location.search='lang='+this.options[this.selectedIndex].value }">
                 <option><g:message code="ltc.more.languages"/></option>
                 <g:each var="lang" in="${languages}">
-                    <g:if test="${!languagesToExpose.contains(lang.shortName) && !languagesToHide.contains(lang.shortNameWithVariant) && !languagesToHide.contains(lang.shortName)}">
+                    <g:if test="${!languagesToExpose.contains(lang.shortName) && !languagesToHide.contains(lang.getShortNameWithCountryAndVariant()) && !languagesToHide.contains(lang.shortName)}">
                         <g:set var="selectionSnippet" value="${lang.getShortName() == params.lang ? '' : ''}"/>
                         <g:if test="${lang.getShortName() == params.lang}">
                             <g:set var="selectionSnippet" value="selected='selected'"/>

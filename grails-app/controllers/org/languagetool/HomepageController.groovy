@@ -121,7 +121,7 @@ class HomepageController extends BaseController {
         }
         Language lang = Language.getLanguageForShortName(langStr)
         if (lang.hasVariant()) {
-            lang = lang.getDefaultVariant()   // we need to select a variant because we want spell checking
+            lang = lang.getDefaultLanguageVariant()   // we need to select a variant because we want spell checking
         }
         JLanguageTool lt = new JLanguageTool(lang)
         lt.activateDefaultPatternRules()

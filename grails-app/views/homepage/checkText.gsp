@@ -49,8 +49,8 @@
                 &nbsp;&nbsp;&nbsp;Language:
                 <select name="lang">
                     <g:each in="${languages}" var="lang">
-                        <g:set var="codeWithCountry" value="${lang.countryVariants?.size() == 1 && lang.countryVariants[0] != 'ANY' ? lang.shortName + '-' +lang.countryVariants[0] : lang.shortName}"/>
-                        <g:set var="iteratedLangName" value="${language?.getShortNameWithVariant()}"/>
+                        <g:set var="codeWithCountry" value="${lang.countries?.size() == 1 && lang.countries[0] != 'ANY' ? lang.shortName + '-' + lang.countries[0] : lang.shortName}"/>
+                        <g:set var="iteratedLangName" value="${language?.getShortNameWithCountryAndVariant()}"/>
                         <g:if test="${iteratedLangName == 'eo-ANY'}">
                             <g:set var="iteratedLangName" value="eo"/>
                         </g:if>
