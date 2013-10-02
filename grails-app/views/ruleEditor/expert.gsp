@@ -3,13 +3,13 @@
 <%@ page import="org.languagetool.tools.StringTools" %>
 <html>
     <head>
-        <script type="text/javascript" src="${resource(dir:'js/prototype',file:'prototype.js')}"></script>
+        <script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.7.1.js')}"></script>
         <meta name="layout" content="iframemain" />
         <title><g:message code="ltc.editor.expert.title" /></title>
         <script type="text/javascript">
 
             function copyXml() {
-                $('xml').value = editor.getValue();
+                $('#xml').val(editor.getValue());
             }
 
             function onLoadingResult() {
@@ -23,14 +23,14 @@
             }
 
             function showDiv(divName) {
-                $(divName).show();
+                $('#'+divName).show();
             }
 
             function hideDiv(divName) {
-                $(divName).hide();
+                $('#'+divName).hide();
             }
 
-            document.observe('keydown', function(e) {
+            $(document).keydown(function(e) {
                 if (e.ctrlKey && e.keyCode == 13) {
                     document.ruleForm.checkXmlButton.click();
                 }
