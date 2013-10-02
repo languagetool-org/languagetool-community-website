@@ -5,9 +5,9 @@
 <html>
 <head>
     <title><g:message code="ltc.wikicheck.title"/></title>
-    <g:javascript library="prototype" />
     <meta name="layout" content="main" />
     <meta name="robots" content="noindex" />
+    <script type="text/javascript" src="${resource(dir:'js/prototype',file:'prototype.js')}"></script>
     <script type="text/javascript">
         function toggleId(divId) {
             if (document.getElementById(divId).style.display == 'block') {

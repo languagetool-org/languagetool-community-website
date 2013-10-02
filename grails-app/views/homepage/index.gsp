@@ -5,7 +5,6 @@
     <head>
         <title><g:message code="ltc.home.title"/> (${language})</title>
         <meta name="layout" content="main" />
-        <g:javascript library="prototype" />
     </head>
     <body>
 

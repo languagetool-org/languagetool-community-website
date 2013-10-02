@@ -3,7 +3,7 @@
 <%@ page import="org.languagetool.tools.StringTools" %>
 <html>
     <head>
-        <g:javascript library="prototype" />
+        <script type="text/javascript" src="${resource(dir:'js/prototype',file:'prototype.js')}"></script>
         <meta name="layout" content="iframemain" />
         <title><g:message code="ltc.editor.expert.title" /></title>
         <script type="text/javascript">

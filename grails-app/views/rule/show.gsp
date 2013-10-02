@@ -6,7 +6,7 @@
     <head>
         <meta name="layout" content="main" />
         <title><g:message code="ltc.rule.show.title" args="${[rule.description.encodeAsHTML()]}"/></title>
-        <g:javascript library="prototype" />
+        <script type="text/javascript" src="${resource(dir:'js/prototype',file:'prototype.js')}"></script>
         <script language="JavaScript">
             var ruleVisible = false;
             function showRuleXml(language, id, subId) {

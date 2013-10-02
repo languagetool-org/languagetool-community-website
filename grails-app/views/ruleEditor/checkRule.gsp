@@ -22,7 +22,7 @@
     %>
     <td><g:textField id="message"
             onkeypress="return handleReturnForXmlCreation(event);"
-            onfocus="\$('message').setStyle({color: 'black'})"
+            onfocus="\$('message').css({color: 'black'})"
             onblur="\$('messageBackup').value = \$('message').value"
             class="preFilledField" type="text" name="message"
             value='${messagePreset ? messagePreset : preset}'/>
@@ -36,7 +36,7 @@
     </td>
     <td><g:textField id="name"
             onkeypress="return handleReturnForXmlCreation(event);"
-            onfocus="\$('name').setStyle({color: 'black'})"
+            onfocus="\$('name').css({color: 'black'})"
             onblur="\$('nameBackup').value = \$('name').value"
             class="preFilledField" type="text" name="name"
             value="${(namePreset || messagePreset) ? namePreset.encodeAsHTML() : 'confusion of bed/bad'}"/>
