@@ -90,7 +90,7 @@ class CorpusMatchController extends BaseController {
         }
         Language langObj = Language.getLanguageForShortName(langCode)
         [ corpusMatchList: matches,
-                languages: Language.REAL_LANGUAGES, lang: langCode, totalMatches: allMatchesCount,
+                languages: SortedLanguages.get(), lang: langCode, totalMatches: allMatchesCount,
                 matchesByRule: matchesByRule, hiddenRuleIds: hiddenRuleIds, language: langObj]
     }
 

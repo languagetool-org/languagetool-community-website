@@ -79,10 +79,10 @@ class WikiCheckController extends BaseController {
                     realUrl: pageUrl,
                     realEditUrl: pageEditUrl,
                     disabledRuleIds: checker.getDisabledRuleIds(),
-                    languages: Language.REAL_LANGUAGES,
+                    languages: SortedLanguages.get(),
                     langCode: langCode]
         } else {
-            [languages: Language.REAL_LANGUAGES, langCode: langCode]
+            [languages: SortedLanguages.get(), langCode: langCode]
         }
     }
 
@@ -141,10 +141,10 @@ class WikiCheckController extends BaseController {
                     realUrl: pageUrl,
                     realEditUrl: pageEditUrl,
                     disabledRuleIds: checker.getDisabledRuleIds(),
-                    languages: Language.REAL_LANGUAGES,
+                    languages: SortedLanguages.get(),
                     langCode: langCode]
         } else {
-            [languages: Language.REAL_LANGUAGES, langCode: langCode]
+            [languages: SortedLanguages.get(), langCode: langCode]
         }
     }
 

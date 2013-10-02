@@ -81,7 +81,7 @@ class HomepageController extends BaseController {
         Collections.sort(matches)
         render(view:'index',model:[matches: matches, langCode: langCode,
                 lang: langCode,		// used in _corpusMatches.gsp
-                languages: Language.REAL_LANGUAGES, language: langObject])
+                languages: SortedLanguages.get(), language: langObject])
     }
 
     /**
@@ -90,8 +90,7 @@ class HomepageController extends BaseController {
     def checkText = {
         String langStr = "en"
         boolean autoLangDetectionWarning = false
-        List languages = Language.REAL_LANGUAGES
-        languages.sort{it.getName()}
+        List languages = SortedLanguages.get()
         Language detectedLang = null
         if (params.lang == "auto") {
             LanguageIdentifier identifier = new LanguageIdentifier(params.text)

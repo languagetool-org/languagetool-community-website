@@ -66,7 +66,7 @@ class UserOpinionController extends BaseController {
                     corpusMatch:CorpusMatch.get(rs.getInt("corpus_match_id")))
             results.add(or)
         }
-        [results: results, languages: Language.REAL_LANGUAGES]
+        [results: results, languages: SortedLanguages.get()]
     }
 
 }

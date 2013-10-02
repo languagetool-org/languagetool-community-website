@@ -84,7 +84,7 @@ class RuleController extends BaseController {
                 }
             }
         }
-        [ ruleList: rules, ruleCount: ruleCount, languages: Language.REAL_LANGUAGES,
+        [ ruleList: rules, ruleCount: ruleCount, languages: SortedLanguages.get(),
                 disabledRuleIDs: disabledRuleIDs, patternRuleIdToUserRuleId: patternRuleIdToUserRuleId,
                 language: langObj]
     }
