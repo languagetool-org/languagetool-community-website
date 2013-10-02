@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <title><g:message code="ltc.rule.show.title" args="${[rule.description.encodeAsHTML()]}"/></title>
+        <title><g:message code="ltc.rule.show.title" args="${[rule.description]}"/></title>
         <script type="text/javascript" src="${resource(dir:'js/prototype',file:'prototype.js')}"></script>
         <script language="JavaScript">
             var ruleVisible = false;
@@ -42,7 +42,7 @@
         
             <g:link action="list"  params="${[lang:params.lang.encodeAsHTML()]}"><g:message code="ltc.rule.show.back.to.list" /></g:link>
             
-            <h1><g:message code="ltc.rule.show.title" args="${[rule.description.encodeAsHTML()]}"/></h1>
+            <h1><g:message code="ltc.rule.show.title" args="${[rule.description]}"/></h1>
 
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>

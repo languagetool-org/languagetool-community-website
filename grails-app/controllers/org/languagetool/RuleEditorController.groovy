@@ -280,7 +280,7 @@ class RuleEditorController extends BaseController {
             Language language = getLanguage()
             String incorrectSentence = getIncorrectSentenceWithMarker(language)
             String name = params.name ? params.name : "Name of rule"
-            String xml = createXml(name, message, incorrectSentence, correctSentence)
+            String xml = createRuleXml(name, message, incorrectSentence, correctSentence)
             [xml: xml, language: language]
         }
     }
@@ -306,7 +306,7 @@ class RuleEditorController extends BaseController {
         return s.replace("<string>", "").replace("</string>", "")
     }
 
-    private String createXml(String name, String message, String incorrectSentence, String correctSentence) {
+    private String createRuleXml(String name, String message, String incorrectSentence, String correctSentence) {
         Language lang = getLanguage()
         PatternRule patternRule = createPatternRule(lang)
         String ruleId = createRuleIdFromName(name)
