@@ -20,16 +20,16 @@
                 if (divName == 'checkResultSpinner') {
                     // if we (re-)submit the first step we need to clear the
                     // final result to avoid incoherent data being displayed:
-                    $('xml').innerHTML = "";
+                    $('#xml').html("");
                 }
             }
 
             function showDiv(divName) {
-                $(divName).show();
+                $('#'+divName).show();
             }
 
             function hideDiv(divName) {
-                $(divName).hide();
+                $('#'+divName).hide();
             }
 
             function handleReturn(event) {
@@ -73,7 +73,7 @@
                         <td valign="top"><g:message code="ltc.editor.wrong.words"/></td>
                         <td><g:textField id="pattern"
                                 onkeypress="return handleReturn(event);"
-                                onfocus="\$('pattern').css({color: 'black'})"
+                                onfocus="\$('#pattern').css({color: 'black'})"
                                 class="preFilledField" type="text" name="pattern" value="bed English"/>
 
                         <br/>
@@ -112,7 +112,7 @@
                         <td><g:message code="ltc.editor.bad.sentence"/></td>
                         <td><g:textField id="incorrectExample1"
                                 onkeypress="return handleReturn(event);"
-                                onfocus="\$('incorrectExample1').css({color: 'black'})"
+                                onfocus="\$('#incorrectExample1').css({color: 'black'})"
                                 class="preFilledField" type="text" name="incorrectExample1" value="Sorry for my bed English."/>
                             <!--<br/>
                             <span class="metaInfo">Example: Sorry for my bed English.</span>-->
@@ -122,7 +122,7 @@
                         <td><g:message code="ltc.editor.good.sentence"/></td>
                         <td><g:textField id="correctExample1"
                                 onkeypress="return handleReturn(event);"
-                                onfocus="\$('correctExample1').css({color: 'black'})"
+                                onfocus="\$('#correctExample1').css({color: 'black'})"
                                 class="preFilledField" type="text" name="correctExample1" value="Sorry for my bad English."/>
                             <!--<br/>
                             <span class="metaInfo">Example: Sorry for my bad English.</span>-->
