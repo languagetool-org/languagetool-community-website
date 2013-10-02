@@ -48,6 +48,8 @@
         <div id="spinner" class="spinner" style="display:none;">
             <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner" />
         </div>
+    
+        <noscript class="warn">Please turn on JavaScript for full use of this site.</noscript>
 
         <div id="mainContent">
             <g:layoutBody />
