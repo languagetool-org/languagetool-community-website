@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title><g:message code="ltc.home.check.title"/></title>
-		<meta name="layout" content="main" />
+        <meta name="layout" content="main" />
     </head>
     <body>
 
@@ -19,14 +19,14 @@
             </g:if>
         
             <g:if test="${session.user}">
-	            <g:if test="${disabledRules && disabledRules.size() > 0}">
-	                <p><g:message code="ltc.home.check.rules.inactive" args="${[disabledRules.size()]}"/>
-	                <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]"><g:message code="ltc.home.check.rules.config.link"/></g:link></p>
-	            </g:if>
-	            <g:else>
-	            	<p><g:message code="ltc.home.check.rules.active"/>
-	                <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]"><g:message code="ltc.home.check.rules.config.link"/></g:link></p>
-	            </g:else>
+                <g:if test="${disabledRules && disabledRules.size() > 0}">
+                    <p><g:message code="ltc.home.check.rules.inactive" args="${[disabledRules.size()]}"/>
+                    <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]"><g:message code="ltc.home.check.rules.config.link"/></g:link></p>
+                </g:if>
+                <g:else>
+                    <p><g:message code="ltc.home.check.rules.active"/>
+                    <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]"><g:message code="ltc.home.check.rules.config.link"/></g:link></p>
+                </g:else>
             </g:if>
             <br/>
             
