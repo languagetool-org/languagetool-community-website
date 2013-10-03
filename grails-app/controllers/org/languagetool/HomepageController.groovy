@@ -92,7 +92,7 @@ class HomepageController extends BaseController {
         boolean autoLangDetectionWarning = false
         List languages = SortedLanguages.get()
         Language detectedLang = null
-        if (params.lang == "auto") {
+        if (params.lang == "auto" || params.language == "auto") {
             LanguageIdentifier identifier = new LanguageIdentifier(params.text)
             String detectedLangCode = identifier.getLanguage()
             if (detectedLangCode != 'unknown') {
@@ -115,6 +115,8 @@ class HomepageController extends BaseController {
             params.lang = langStr
             // TODO: use identifier.isReasonablyCertain() - but make sure it works!
             autoLangDetectionWarning = params.text?.length() < 60
+        } else if (params.language) {
+            langStr = params.language
         } else if (params.lang) {
             langStr = params.lang
         }

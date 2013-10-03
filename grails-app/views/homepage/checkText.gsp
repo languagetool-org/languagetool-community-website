@@ -47,7 +47,7 @@
                 <br />
                 <g:actionSubmit action="checkText" value="${message(code:'ltc.home.check.text')}"/>
                 &nbsp;&nbsp;&nbsp;Language:
-                <select name="lang">
+                <select name="language">
                     <g:each in="${languages}" var="lang">
                         <g:set var="codeWithCountry" value="${lang.countries?.size() == 1 && lang.countries[0] != 'ANY' ? lang.shortName + '-' + lang.countries[0] : lang.shortName}"/>
                         <g:set var="iteratedLangName" value="${language?.getShortNameWithCountryAndVariant()}"/>
