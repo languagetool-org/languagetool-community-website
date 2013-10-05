@@ -80,9 +80,84 @@
                 
                 <script src="${resource(dir:'js/ace/src-min-noconflict',file:'ace.js')}" type="text/javascript" charset="utf-8"></script>
                 <script>
+                    function getCompletions(s) {
+                        var strings = s.split(/ /);
+                        strings.sort();
+                        var result = [];
+                        for (i = 0; i < strings.length; i++) {
+                            result.push({value: strings[i]});
+                        }
+                        return result;
+                    }
+                    
+                    function getLeftElementOfAttribute(line, columnPos) {
+                        var spaceFoundFirst = false;
+                        var quoteCount = 0;
+                        for (i = columnPos - 1; i >= 0; i--) {
+                            var ch = line[i];
+                            if (ch == "\"") {
+                                quoteCount++;
+                            } else if (ch == " ") {
+                                spaceFoundFirst = true;
+                            } else if (ch == "<") {
+                                if (quoteCount % 2 == 1) {
+                                    // it seems we're inside an attribute value, completion is not supported here yet:
+                                    return "";
+                                }
+                                if (spaceFoundFirst) {
+                                    // find the element name:
+                                    var endElementPos = line.indexOf(" ", i);
+                                    return line.substring(i+1, endElementPos);
+                                }
+                            }
+                        }
+                        return "";
+                    }
+                    
+                    ace.require("ace/ext/language_tools");
                     var editor = ace.edit("editor");
                     editor.setTheme("ace/theme/dawn");
                     editor.getSession().setMode("ace/mode/xml");
+                    var codeCompleter = {
+                        getCompletions: function (editor, session, pos, prefix, callback) {
+                            var text = editor.getValue();
+                            var line = editor.getSession().getDocument().getLine(pos.row);
+                            var leftElement = getLeftElementOfAttribute(line, pos.column);
+                            var completionList = [];
+                            // The following values are copied manually from the rules.xsd and pattern.xsd:
+                            if (leftElement == 'rulegroup') {
+                                completionList = getCompletions("id name default type");
+                            } else if (leftElement == 'rule') {
+                                completionList = getCompletions("id name default type");
+                            } else if (leftElement == 'pattern') {
+                                completionList = getCompletions("case_sensitive");
+                            } else if (leftElement == 'unify') {
+                                completionList = getCompletions("negate");
+                            } else if (leftElement == 'feature') {
+                                completionList = getCompletions("id");
+                            } else if (leftElement == 'type') {
+                                completionList = getCompletions("id");
+                            } else if (leftElement == 'exception') {
+                                completionList = getCompletions("postag_regexp negate_pos postag spacebefore inflected scope regexp negate");
+                            } else if (leftElement == 'token') {
+                                completionList = getCompletions("postag postag_regexp negate min max negate_pos regexp chunk inflected spacebefore skip");
+                            } else if (leftElement == 'match') {
+                                completionList = getCompletions("regexp_match postag_regexp setpos suppress_misspelled regexp_replace postag_replace postag no include_skipped");
+                            } else if (leftElement == 'suggestion') {
+                                completionList = getCompletions("suppress_misspelled");
+                            } else if (leftElement == 'phraseref') {
+                                completionList = getCompletions("idref");
+                            } else if (leftElement == 'example') {
+                                completionList = getCompletions("type correction");
+                            }
+                            callback(null, completionList);
+                        }
+                    };
+                    editor.setOptions({
+                        enableBasicAutocompletion: true,
+                        enableSnippets: false
+                    });
+                    editor.completers = [codeCompleter];
                     editor.focus();
                 </script>
 
