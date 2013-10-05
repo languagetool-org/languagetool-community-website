@@ -86,3 +86,12 @@ log4j = {
     info 'grails.app'
 
 }
+
+// needed so we don't get Grails complaints about ""We can't create resources on the fly unless ...":
+grails.resources.modules = {
+    core {
+        resource url:'/js/ace/src-min-noconflict/ace.js'
+        resource url:'/js/ace/src-min-noconflict/mode-xml.js'
+        resource url:'/js/ace/src-min-noconflict/theme-dawn.js'
+    }
+}
