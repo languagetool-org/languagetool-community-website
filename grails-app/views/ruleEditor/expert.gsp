@@ -95,7 +95,7 @@
                         var quoteCount = 0;
                         for (i = columnPos - 1; i >= 0; i--) {
                             var ch = line[i];
-                            if (ch == "\"") {
+                            if (ch == "\"" || ch == "'") {
                                 quoteCount++;
                             } else if (ch == " ") {
                                 spaceFoundFirst = true;
