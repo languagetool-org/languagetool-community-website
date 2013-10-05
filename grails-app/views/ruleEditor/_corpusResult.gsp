@@ -1,3 +1,4 @@
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <g:if test="${searcherResult}">
     <g:set var="sentencesChecked" value="${formatNumber(number:searcherResult.getCheckedSentences(), type: 'number')}"/>
     <g:set var="docsChecked" value="${formatNumber(number:searcherResult.getDocCount(), type: 'number')}"/>
@@ -27,7 +28,7 @@
                                             <span class='errorMarker'>
                                             <g:set var="startMarked" value="${true}"/>
                                         </g:if>
-                                        <span title="${token.getReadings().encodeAsHTML()}">${token.getToken().encodeAsHTML()}</span>
+                                        <span title="${StringUtils.join(token.getReadings(), ", ").encodeAsHTML()}">${token.getToken().encodeAsHTML()}</span>
                                         <g:if test="${pos >= match.getToPos() && !endMarked}"></span>
                                             <g:set var="endMarked" value="${true}"/>
                                         </g:if>
