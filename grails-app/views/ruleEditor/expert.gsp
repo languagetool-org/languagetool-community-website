@@ -85,7 +85,7 @@
                         strings.sort();
                         var result = [];
                         for (i = 0; i < strings.length; i++) {
-                            result.push({value: strings[i]});
+                            result.push({snippet: strings[i] + "=\"\"", caption: strings[i]});
                         }
                         return result;
                     }
@@ -155,7 +155,7 @@
                     };
                     editor.setOptions({
                         enableBasicAutocompletion: true,
-                        enableSnippets: false
+                        enableSnippets: true
                     });
                     editor.completers = [codeCompleter];
                     editor.focus();

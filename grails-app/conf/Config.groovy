@@ -94,5 +94,6 @@ grails.resources.modules = {
         resource url:'/js/ace/src-min-noconflict/mode-xml.js'
         resource url:'/js/ace/src-min-noconflict/theme-dawn.js'
         resource url:'/js/ace/src-min-noconflict/ext-language_tools.js'
+        resource url:'/js/ace/src-min-noconflict/xml.js'
     }
 }
