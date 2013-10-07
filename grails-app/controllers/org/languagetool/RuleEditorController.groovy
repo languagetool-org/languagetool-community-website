@@ -198,11 +198,11 @@ class RuleEditorController extends BaseController {
                     }
                     if (!ruleMatch.getRule().isWithComplexPhrase()) {
                         if (ruleMatch.getFromPos() != expectedMatchStart) {
-                            problems.add(message(code:'ltc.editor.error.marker.start', args:[expectedMatchStart, ruleMatch.getFromPos()]))
+                            problems.add(message(code:'ltc.editor.error.marker.start', args:[ruleMatch.getFromPos(), expectedMatchStart]))
                             break
                         }
                         if (ruleMatch.getToPos() != expectedMatchEnd) {
-                            problems.add(message(code:'ltc.editor.error.marker.end', args:[expectedMatchEnd, ruleMatch.getToPos()]))
+                            problems.add(message(code:'ltc.editor.error.marker.end', args:[ruleMatch.getToPos(), expectedMatchEnd]))
                             break
                         }
                     }
