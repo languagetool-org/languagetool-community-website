@@ -126,18 +126,19 @@ class RuleEditorController extends BaseController {
             return
         }
         PatternRule patternRule = rules.get(0)
-        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        List problems = checkExampleSentences(langTool, patternRule, true)
-        if (problems.size() > 0) {
-            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                    expertMode: true, isOff: patternRule.isDefaultOff()])
-            return
-        }
-        String incorrectExamples = getIncorrectExamples(patternRule)
-        List<RuleMatch> incorrectExamplesMatches = langTool.check(incorrectExamples)
-        int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
-        long startTime = System.currentTimeMillis()
+        List problems = []
         try {
+            JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
+            problems.addAll(checkExampleSentences(langTool, patternRule, true))
+            if (problems.size() > 0) {
+                render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
+                        expertMode: true, isOff: patternRule.isDefaultOff()])
+                return
+            }
+            String incorrectExamples = getIncorrectExamples(patternRule)
+            List<RuleMatch> incorrectExamplesMatches = langTool.check(incorrectExamples)
+            int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
+            long startTime = System.currentTimeMillis()
             SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
             long searchTime = System.currentTimeMillis() - startTime
             log.info("Checked XML in ${language}, timeout (${timeoutMillis}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
@@ -151,7 +152,11 @@ class RuleEditorController extends BaseController {
                     " These kinds of patterns are currently not supported by this tool.")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff()])
-            return
+        } catch (Exception e) {
+            log.error("Error checking XML in ${language}, pattern: ${patternRule}", e)
+            problems.add("Sorry, an internal error occurred tryin to check your rule: ${e.getCause()}")
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
+                    expertMode: true, isOff: patternRule.isDefaultOff()])
         }
     }
 
