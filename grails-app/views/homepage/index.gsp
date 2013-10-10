@@ -25,11 +25,11 @@
 
 
             <br />
-            <h2><g:link controller="wikiCheck" params="${[lang: params.lang ? params.lang : 'en']}"><g:message code="ltc.wiki.check"/></g:link></h2>
+            <h2><g:link controller="wikiCheck" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.wiki.check"/></g:link></h2>
 
 
             <br />
-            <h2><g:message code="ltc.check.results"/></h2>
+            <h2><g:link controller="corpusMatch" action="list" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.check.results"/></g:link></h2>
             
             <div class="mainPart">
             
