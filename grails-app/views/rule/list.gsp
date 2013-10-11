@@ -23,7 +23,7 @@
                 <input type="hidden" name="offset" value="0"/>
                 <input type="hidden" name="max" value="10"/>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
-                <g:textField name="filter" value="${params.filter}"/>
+                <g:textField name="filter" value="${params.filter}" placeholder="${message(code:'ltc.rule.browse.filter.placeholder')}"/>
                 <g:actionSubmit action="list" value="${message(code:'ltc.filter')}"/>
                 <g:if test="${params.filter}">
                     &nbsp;<g:link params="[lang : params.lang]">Clear Filter</g:link>
@@ -39,7 +39,7 @@
                                 <td><g:message code="ltc.rule.browse.active" /></td>
                             </g:if>
 
-                   	        <g:sortableColumn property="description" title="${message(code:'ltc.rule.browse.description')}" />
+                            <g:sortableColumn property="description" title="${message(code:'ltc.rule.browse.description')}" />
 
                             <g:sortableColumn property="pattern" title="${message(code:'ltc.rule.browse.pattern')}" />
                             
