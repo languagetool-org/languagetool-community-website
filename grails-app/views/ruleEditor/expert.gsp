@@ -114,6 +114,21 @@
                         return "";
                     }
                     
+                    var attrCompletions = {};
+                    // The following values are copied manually from the rules.xsd and pattern.xsd:
+                    attrCompletions['rulegroup'] = getCompletions("id name default type");
+                    attrCompletions['rule'] = getCompletions("id name default type");
+                    attrCompletions['pattern'] = getCompletions("case_sensitive");
+                    attrCompletions['unify'] = getCompletions("negate");
+                    attrCompletions['feature'] = getCompletions("id");
+                    attrCompletions['type'] = getCompletions("id");
+                    attrCompletions['exception'] = getCompletions("postag_regexp negate_pos postag spacebefore inflected scope regexp negate");
+                    attrCompletions['token'] = getCompletions("postag postag_regexp negate min max negate_pos regexp chunk inflected spacebefore skip");
+                    attrCompletions['match'] = getCompletions("regexp_match postag_regexp setpos suppress_misspelled regexp_replace postag_replace postag no include_skipped");
+                    attrCompletions['suggestion'] = getCompletions("suppress_misspelled");
+                    attrCompletions['phraseref'] = getCompletions("idref");
+                    attrCompletions['example'] = getCompletions("type correction");
+                    
                     ace.require("ace/ext/language_tools");
                     var editor = ace.edit("editor");
                     editor.setTheme("ace/theme/dawn");
@@ -123,34 +138,12 @@
                             var text = editor.getValue();
                             var line = editor.getSession().getDocument().getLine(pos.row);
                             var leftElement = getLeftElementOfAttribute(line, pos.column);
-                            var completionList = [];
-                            // The following values are copied manually from the rules.xsd and pattern.xsd:
-                            if (leftElement == 'rulegroup') {
-                                completionList = getCompletions("id name default type");
-                            } else if (leftElement == 'rule') {
-                                completionList = getCompletions("id name default type");
-                            } else if (leftElement == 'pattern') {
-                                completionList = getCompletions("case_sensitive");
-                            } else if (leftElement == 'unify') {
-                                completionList = getCompletions("negate");
-                            } else if (leftElement == 'feature') {
-                                completionList = getCompletions("id");
-                            } else if (leftElement == 'type') {
-                                completionList = getCompletions("id");
-                            } else if (leftElement == 'exception') {
-                                completionList = getCompletions("postag_regexp negate_pos postag spacebefore inflected scope regexp negate");
-                            } else if (leftElement == 'token') {
-                                completionList = getCompletions("postag postag_regexp negate min max negate_pos regexp chunk inflected spacebefore skip");
-                            } else if (leftElement == 'match') {
-                                completionList = getCompletions("regexp_match postag_regexp setpos suppress_misspelled regexp_replace postag_replace postag no include_skipped");
-                            } else if (leftElement == 'suggestion') {
-                                completionList = getCompletions("suppress_misspelled");
-                            } else if (leftElement == 'phraseref') {
-                                completionList = getCompletions("idref");
-                            } else if (leftElement == 'example') {
-                                completionList = getCompletions("type correction");
+                            if (leftElement) {
+                                var completionList = attrCompletions[leftElement];
+                                if (completionList) {
+                                    callback(null, completionList);
+                                }
                             }
-                            callback(null, completionList);
                         }
                     };
                     editor.setOptions({
