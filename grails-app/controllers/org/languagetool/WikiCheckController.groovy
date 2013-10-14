@@ -20,6 +20,7 @@
 package org.languagetool
 
 import org.languagetool.dev.wikipedia.MarkupAwareWikipediaResult
+import org.languagetool.dev.wikipedia.PageNotFoundException
 import org.languagetool.dev.wikipedia.WikipediaQuickCheck
 import org.languagetool.dev.wikipedia.WikipediaQuickCheckResult
 import org.apache.commons.io.IOUtils
@@ -67,7 +68,12 @@ class WikiCheckController extends BaseController {
                 checker.setDisabledRuleIds(allDisabledRules)
             }
 
-            MarkupAwareWikipediaResult result = checker.checkPage(new URL(pageUrl))
+            MarkupAwareWikipediaResult result
+            try {
+                result = checker.checkPage(new URL(pageUrl))
+            } catch (PageNotFoundException e) {
+                throw new Exception(message(code:'ltc.wikicheck.page.not.found', args: [pageUrl]))
+            }
             params.lang = language.getShortName()
             long runTime = System.currentTimeMillis() - startTime
             log.info("WikiCheck: ${params.url} (${runTime}ms)")
