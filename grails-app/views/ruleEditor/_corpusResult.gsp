@@ -62,18 +62,20 @@
 
     </g:else>
 
-    <table>
-        <tr>
-            <td valign="top"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
-            <td>
-                <g:message code="ltc.editor.corpus.correct.example.sentence"/>
-                <g:if test="${incorrectExamplesMatches}">
-                    <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>
-                    <g:render template="/ruleMatches" model="${[matches: incorrectExamplesMatches, textToCheck: incorrectExamples, hideRuleLink: true]}"/>
-                </g:if>
-            </td>
-        </tr>
-    </table>
+    <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
+        <table>
+            <tr>
+                <td valign="top"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                <td>
+                    <g:message code="ltc.editor.corpus.correct.example.sentence"/>
+                    <g:if test="${incorrectExamplesMatches}">
+                        <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>
+                        <g:render template="/ruleMatches" model="${[matches: incorrectExamplesMatches, textToCheck: incorrectExamples, hideRuleLink: true]}"/>
+                    </g:if>
+                </td>
+            </tr>
+        </table>
+    </g:if>
 
 </g:if>
 <g:else>
