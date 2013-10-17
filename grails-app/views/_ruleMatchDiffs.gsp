@@ -2,7 +2,7 @@
 
 <ul>
     <g:set var="maxMatches" value="${100}"/>
-    <g:hiddenField name="replMaximum" value="${appliedRuleMatches.size()}"/>
+    <g:hiddenField name="replMaximum" value="${Math.min(appliedRuleMatches.size(), maxMatches)}"/>
     <g:each in="${appliedRuleMatches}" var="appliedRuleMatch" status="i">
         <g:if test="${i < maxMatches}">
 
