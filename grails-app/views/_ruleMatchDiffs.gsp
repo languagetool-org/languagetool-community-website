@@ -3,6 +3,11 @@
 <ul>
     <g:set var="maxMatches" value="${100}"/>
     <g:hiddenField name="replMaximum" value="${Math.min(appliedRuleMatches.size(), maxMatches)}"/>
+
+    <g:if test="${appliedRuleMatches.size() > maxMatches}">
+        <div class="warn"><g:message code="ltc.wikicheck.max.matches" args="${[maxMatches]}"/></div>
+    </g:if>
+
     <g:each in="${appliedRuleMatches}" var="appliedRuleMatch" status="i">
         <g:if test="${i < maxMatches}">
 
