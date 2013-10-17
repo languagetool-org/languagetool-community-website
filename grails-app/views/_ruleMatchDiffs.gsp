@@ -32,7 +32,7 @@
                         <g:set var="firstApp" value="${appliedRuleMatch.getRuleMatchApplications().get(0)}"/>
                         &hellip;${firstApp.getOriginalErrorContext(50)
                             .encodeAsHTML()
-                            .replace('&lt;span class=&quot;error&quot;&gt;', '</td><td><span class="error">')
+                            .replace('&lt;span class=&quot;error&quot;&gt;', '</td><td><span id="error' + i + '" class="error">')
                             .replace('&lt;/span&gt;', '</span>')}&hellip;
                     </td>
                 </tr>
@@ -55,8 +55,9 @@
                         <g:else>
                             <input id="repl${i}" type="text" value="" placeholder="${message(code:'ltc.wikicheck.enter.correction')}"/>
                         </g:else>
+                        <a href="#" onclick="return useNoSuggestion('repl${i}')"><g:message code="ltc.wikicheck.reset.correction"/></a> &nbsp;
+                        <a href="#" onclick="return copyText('error${i}', 'repl${i}')"><g:message code="ltc.wikicheck.copy.text"/></a>
                         <ul>
-                            <li><a href="#" onclick="return useNoSuggestion('repl${i}')"><g:message code="ltc.wikicheck.do.not.apply.any.suggestion"/></a><br/></li>
                             <g:each in="${appliedRuleMatch.getRuleMatchApplications()}" var="app">
                                 <g:if test="${app.hasRealReplacement()}">
                                     <g:set var="newCorrectionText" value="${app.getCorrectedErrorContext(10)}"/>

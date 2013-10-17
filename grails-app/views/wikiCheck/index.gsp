@@ -26,6 +26,11 @@
             suggestionField.value = "";
             return false;
         }
+        function copyText(errorId, targetId) {
+            var errorDiv = $(errorId);
+            $(targetId).value = errorDiv.innerHTML;
+            return false;
+        }
         function applyChangesToHiddenField() {
             var origTextBox = $('origWpTextbox1');
             var textBox = $('wpTextbox1');
