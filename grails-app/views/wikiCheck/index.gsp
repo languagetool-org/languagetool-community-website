@@ -138,7 +138,7 @@
             <g:if test="${result.internalErrorCount > 0}">
                 <p class="warn">
                     <g:message code="ltc.wikicheck.missing.matches" args="${[result.internalErrorCount]}"/>
-                    <g:link action="showErrors" params="${[url:realUrl, disabled:params.disabled]}"><g:message code="ltc.wikicheck.missing.matches.link"/></g:link>
+                    <g:link action="showErrors" params="${[url:realUrl, disabled:params.disabled, lang:params.lang]}"><g:message code="ltc.wikicheck.missing.matches.link"/></g:link>
                 </p>
             </g:if>
 
