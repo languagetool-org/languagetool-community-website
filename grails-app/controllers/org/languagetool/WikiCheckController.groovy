@@ -31,8 +31,6 @@ class WikiCheckController extends BaseController {
 
     private static final Pattern XML_TITLE_PATTERN = Pattern.compile("title=\"(.*?)\"")
 
-    private String CONVERT_URL_PREFIX = "http://community.languagetool.org/wikipediatotext/wikiSyntaxConverter/convert?url="
-
     def index = {
         String langCode
         try {
@@ -118,10 +116,11 @@ class WikiCheckController extends BaseController {
             WikipediaQuickCheck checker = new WikipediaQuickCheck()
             String pageUrl = getPageUrl(params, checker, langCode)
             String pageEditUrl = getPageEditUrl(pageUrl)
-            URL plainTextUrl = new URL(CONVERT_URL_PREFIX + pageUrl.replace(' ', '_'))
-            String plainText = download(plainTextUrl)
+            checker.validateWikipediaUrl(new URL(pageUrl))
+            final String mediaWikiContent = checker.getMediaWikiContent(new URL(pageUrl))
+            final String plainText = checker.getPlainText(mediaWikiContent)
             if (plainText == '') {
-                throw new Exception("No Wikipedia page content found at the given URL: " + plainTextUrl + " (page url: " + pageUrl + ")")
+                throw new Exception("No Wikipedia page content found at the given URL: " + pageUrl + " (page url: " + pageUrl + ")")
             }
             Language language = checker.getLanguage(new URL(pageUrl))
             if (params.disabled) {
