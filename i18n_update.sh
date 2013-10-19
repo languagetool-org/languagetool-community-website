@@ -16,8 +16,15 @@ do
   # download and hackish JSON cleanup:
   curl --user $USERNAME:$PASSWORD http://www.transifex.net/api/2/project/languagetool/resource/community-website/translation/$lang/?file >$SOURCE
   TARGET="../grails-app/i18n/messages_${lang}.properties"
-  echo "Moving $SOURCE to $TARGET"
-  mv $SOURCE $TARGET
+  # ignore new strings not translated yet (Transifex adds them, but commented out):
+  modified_lines=`diff $TARGET $SOURCE | grep "^[<>]" | grep "^[<>] [a-zA-Z]"|wc -l`
+  if [ $modified_lines -ne "0" ]; then
+    echo "Moving $SOURCE to $TARGET ($modified_lines lines modified)"
+    mv $SOURCE $TARGET
+  else
+    echo "No real modification in $lang"
+    rm $SOURCE
+  fi
 done
 
 # messages.properties is used as the fallback, so automatically build it from English to avoid redundancy: 
