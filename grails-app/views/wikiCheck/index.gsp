@@ -88,7 +88,7 @@
             <br />
 
             <g:if test="${appliedRuleMatches.size() > 0}">
-                <form action="${wikipediaSubmitUrl}" method="POST" onsubmit="applyChangesToHiddenField()">
+                <form action="${wikipediaSubmitUrl}" method="POST" onsubmit="applyChangesToHiddenField()" target="_blank">
                     <!-- see http://www.mediawiki.org/wiki/Manual:Parameters_to_index.php -->
                     <g:hiddenField name="Title" value="${wikipediaTitle}"/>
                     <g:hiddenField name="wpAntiSpam" value=""/>
