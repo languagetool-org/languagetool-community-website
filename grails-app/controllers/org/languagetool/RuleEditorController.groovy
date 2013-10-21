@@ -160,8 +160,7 @@ class RuleEditorController extends BaseController {
         }
     }
 
-    private List checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, boolean checkMarker) {
-        List problems = []
+    private List<String> checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, boolean checkMarker) {
         List<String> correctExamples = patternRule.getCorrectExamples()
         if (correctExamples.size() == 0) {
             throw new Exception("No correct example sentences found")
@@ -170,6 +169,14 @@ class RuleEditorController extends BaseController {
         if (incorrectExamples.size() == 0) {
             throw new Exception("No incorrect example sentences found")
         }
+        List problems = []
+        problems.addAll(checkIncorrectExamples(incorrectExamples, langTool, checkMarker))
+        problems.addAll(checkCorrectExamples(correctExamples, langTool))
+        return problems
+    }
+
+    private List<String> checkIncorrectExamples(List<IncorrectExample> incorrectExamples, JLanguageTool langTool, boolean checkMarker) {
+        List problems = []
         for (incorrectExample in incorrectExamples) {
             String sentence = cleanMarkers(incorrectExample.getExample())
             AnalyzedSentence analyzedSentence = langTool.getAnalyzedSentence(sentence)
@@ -179,7 +186,7 @@ class RuleEditorController extends BaseController {
                     // we accept this (but later display a warning) because it's handy to try some patterns
                     // without setting a sentence just to see the Wikipedia results
                 } else {
-                    String msg = message(code:'ltc.editor.error.not.found', args:[sentence])
+                    String msg = message(code: 'ltc.editor.error.not.found', args: [sentence])
                     msg += "<br/>"
                     msg += message(code: 'ltc.editor.error.not.found.analysis')
                     msg += "<br/>"
@@ -193,33 +200,38 @@ class RuleEditorController extends BaseController {
                     int expectedMatchStart = incorrectExample.getExample().indexOf("<marker>")
                     int expectedMatchEnd = incorrectExample.getExample().indexOf("</marker>") - "<marker>".length()
                     if (expectedMatchStart == -1 || expectedMatchEnd == -1) {
-                        problems.add(message(code:'ltc.editor.error.no.marker'))
+                        problems.add(message(code: 'ltc.editor.error.no.marker'))
                         break
                     }
                     if (!ruleMatch.getRule().isWithComplexPhrase()) {
                         if (ruleMatch.getFromPos() != expectedMatchStart) {
-                            problems.add(message(code:'ltc.editor.error.marker.start', args:[ruleMatch.getFromPos(), expectedMatchStart]))
+                            problems.add(message(code: 'ltc.editor.error.marker.start', args: [ruleMatch.getFromPos(), expectedMatchStart]))
                             break
                         }
                         if (ruleMatch.getToPos() != expectedMatchEnd) {
-                            problems.add(message(code:'ltc.editor.error.marker.end', args:[ruleMatch.getToPos(), expectedMatchEnd]))
+                            problems.add(message(code: 'ltc.editor.error.marker.end', args: [ruleMatch.getToPos(), expectedMatchEnd]))
                             break
                         }
                     }
                 }
                 def foundReplacements = ruleMatches.get(0).getSuggestedReplacements().sort()
                 if (expectedReplacements.size() > 0 && expectedReplacements != foundReplacements) {
-                    problems.add(message(code:'ltc.editor.error.wrong.correction', args:[sentence, foundReplacements, expectedReplacements]))
+                    problems.add(message(code: 'ltc.editor.error.wrong.correction', args: [sentence, foundReplacements, expectedReplacements]))
                 }
             } else {
                 log.warn("Got ${ruleMatches.size()} matches, expected zero or one: ${incorrectExample}")
             }
         }
+        return problems
+    }
+
+    private List<String> checkCorrectExamples(List<String> correctExamples, JLanguageTool langTool) {
+        List problems = []
         for (correctExample in correctExamples) {
             String sentence = cleanMarkers(correctExample)
             List unexpectedRuleMatches = langTool.check(sentence)
             if (unexpectedRuleMatches.size() > 0) {
-                problems.add(message(code:'ltc.editor.error.unexpected', args:[sentence]))
+                problems.add(message(code: 'ltc.editor.error.unexpected', args: [sentence]))
             }
         }
         return problems
