@@ -1,4 +1,4 @@
-<%@page import="org.languagetool.rules.patterns.PatternRule; org.languagetool.Language" %>
+<%@page import="org.languagetool.tools.ContextTools; org.languagetool.rules.patterns.PatternRule; org.languagetool.Language" %>
 
 <ul>
     <g:set var="maxMatches" value="${100}"/>
@@ -22,10 +22,14 @@
 
                <br/>
                <g:set var="css" value="${matchInfo.getRule().isSpellingRule() ? 'spellingError' : 'error'}"/>
-               <span class="exampleSentence">${
-               org.languagetool.gui.Tools.getContext(matchInfo.getFromPos(),
-               matchInfo.getToPos(), textToCheck,
-               100, "<span class='" + css + "'>", "</span>", true)}</span>
+                <%
+                  ContextTools contextTools =  new ContextTools();
+                  contextTools.setContextSize(100);
+                  contextTools.setErrorMarkerStart("<span class='" + css + "'>");
+                  contextTools.setErrorMarkerEnd("</span>");
+                  contextTools.setEscapeHtml(true);
+                %>
+                <span class="exampleSentence">${contextTools.getContext(matchInfo.getFromPos(), matchInfo.getToPos(), textToCheck)}</span>
                 <br />
             </li>
 
