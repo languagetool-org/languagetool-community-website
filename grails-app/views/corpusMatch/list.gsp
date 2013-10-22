@@ -53,7 +53,7 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 
                             <td>
-                            	<g:set var="cleanText" value="${StringTools.cleanError(match.errorContext)}"/>
+                                <g:set var="cleanText" value="${StringTools.cleanError(match.errorContext)}"/>
 
                                 <g:if test="${match.ruleID != prevRuleId}">
                                     <div class="ruleMessage">
@@ -65,9 +65,11 @@
 
                                 <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
                                     ${StringTools.formatError(match.errorContext.encodeAsHTML())}
-                                    <span class="additional"><g:link title="${message(code:'ltc.corpus.match.check.date')} ${StringTools.formatDate(match.corpusDate).encodeAsHTML()}" class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
-                                    <span class="additional"> - <g:link class="additional" controller="wikiCheck" action="index"
-                                                                        params="${[url:match.sourceURI.replace(' ', '_'), enabled:match.ruleID]}"><g:message code="ltc.wikicheck.check.again"/></g:link></span>
+                                    <span class="additional"><g:link title="${message(code:'ltc.corpus.match.check.date')} ${StringTools.formatDate(match.checkDate).encodeAsHTML()}" class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
+                                    <g:if test="${!match.sourceURI.startsWith('http://tatoeba.org')}">
+                                        <span class="additional"> - <g:link class="additional" controller="wikiCheck" action="index"
+                                                                            params="${[url:match.sourceURI.replace(' ', '_'), enabled:match.ruleID]}"><g:message code="ltc.wikicheck.check.again"/></g:link></span>
+                                    </g:if>
                                 </div>
 
                             </td>
