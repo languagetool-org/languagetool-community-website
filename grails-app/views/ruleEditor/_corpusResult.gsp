@@ -12,7 +12,7 @@
                     <p style="width:700px;">
                         <g:message code="ltc.editor.corpus.intro.problem" args="${[docsChecked, params.language.encodeAsHTML()]}"/>
                         <g:if test="${searcherResult.getMatchingSentences().size() == limit}">
-                            <g:message code="ltc.editor.corpus.limit"/>
+                            <g:message code="ltc.editor.corpus.limit" args="${[limit]}"/>
                         </g:if>
                     </p>
 
@@ -40,7 +40,9 @@
                             </g:each>
                         </g:each>
                         <li style="list-style-type: none;" class="metaInfo"><g:message code="ltc.editor.corpus.source" /> <a target="_blank" href="http://www.wikipedia.org">Wikipedia</a>,
-                            <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/legalcode">Creative Commons Attribution-ShareAlike 3.0 Unported</a></li>
+                            <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/legalcode">CC BY-SA 3.0 Unported</a>
+                            &amp; <a target="_blank" href="http://tatoeba.org/">Tatoeba</a>, <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by/2.0/legalcode">CC-BY 2.0</a>
+                        </li>
                     </ul>
                 </td>
             </tr>
