@@ -71,6 +71,9 @@ class CorpusMatchController extends BaseController {
                     inList('ruleID', hiddenRuleIds)
                 }
             }
+            if (params.typeFilter) {
+                eq('sourceType', params.typeFilter)
+            }
             eq('languageCode', langCode)
             eq('isVisible', true)
             firstResult(params.int('offset'))
@@ -84,6 +87,9 @@ class CorpusMatchController extends BaseController {
                 not {
                     inList('ruleID', hiddenRuleIds)
                 }
+            }
+            if (params.typeFilter) {
+                eq('sourceType', params.typeFilter)
             }
             eq('languageCode', langCode)
             eq('isVisible', true)

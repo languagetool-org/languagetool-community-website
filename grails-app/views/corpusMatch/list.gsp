@@ -37,6 +37,26 @@
                         </g:else>
                     </g:each>
                 </select>
+                <select name="typeFilter">
+                    <g:if test="${params.typeFilter == ''}">
+                        <option value="" selected>Wikipedia &amp; Tatoeba</option>
+                    </g:if>
+                    <g:else>
+                        <option value="">Wikipedia &amp; Tatoeba</option>
+                    </g:else>
+                    <g:if test="${params.typeFilter == 'wikipedia'}">
+                        <option value="wikipedia" selected>Wikipedia</option>
+                    </g:if>
+                    <g:else>
+                        <option value="wikipedia">Wikipedia</option>                        
+                    </g:else>
+                    <g:if test="${params.typeFilter == 'tatoeba'}">
+                        <option value="tatoeba" selected>Tatoeba</option>
+                    </g:if>
+                    <g:else>
+                        <option value="tatoeba">Tatoeba</option>                        
+                    </g:else>
+                </select>
                 <g:actionSubmit value="${message(code:'ltc.corpus.match.filter.submit')}" action="list"/>
             </form>
             

@@ -37,6 +37,7 @@ class CorpusMatch {
     String ruleDescription
     String message
     String sourceURI
+    String sourceType
     String errorContext
     Date corpusDate
     Date checkDate
