@@ -12,7 +12,7 @@
                 <a style="color:#444444;font-weight:normal" href="http://community.languagetool.org/rule/show/${ruleId.encodeAsURL()}?lang=${lang.encodeAsHTML()}">${ruleId.encodeAsHTML()}</a>
             </g:each>
             <div style="margin-top: 5px">
-                <g:message code="ltc.wikicheck.rules.activate.all.link" args="${['?url=' + realUrl + '&amp;lang='+ params.lang + '&amp;disabled=none']}"/>
+                <g:message code="ltc.wikicheck.rules.activate.all.link" args="${['?url=' + realUrl + '&lang='+ params.lang + '&disabled=none']}"/>
             </div>
         </div>
     </div>
