@@ -163,7 +163,8 @@
                                               before="copyXml()"
                                               onLoading="onLoadingResult()"
                                               onComplete="onResultComplete()"
-                                              action="checkXml" update="checkResult" value="${message(code:'ltc.editor.expert.check.xml')}"/>
+                                              action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
+                                              value="${message(code:'ltc.editor.expert.check.xml')}"/>
                             <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                         </td>
                         <td><span class="metaInfo"><g:message code="ltc.editor.expert.submit.hint"/></span></td>

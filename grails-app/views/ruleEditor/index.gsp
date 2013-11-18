@@ -134,7 +134,8 @@
                             <g:submitToRemote name="checkRuleButton"
                                               onLoading="onLoadingResult('checkResultSpinner', 'checkRuleButton')"
                                               onComplete="onResultComplete('checkResultSpinner', 'checkRuleButton')"
-                                              action="checkRule" update="checkResult" value="${message(code:'ltc.editor.continue')}"/>
+                                              action="checkRule" update="${[success: 'checkResult', failure: 'checkResult']}"
+                                              value="${message(code:'ltc.editor.continue')}"/>
                             <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                         </td>
                     </tr>

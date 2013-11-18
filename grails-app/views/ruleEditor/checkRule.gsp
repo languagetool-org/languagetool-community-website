@@ -50,7 +50,8 @@
         <g:submitToRemote name="createXmlButton"
                           onLoading="onLoadingResult('createXmlSpinner', 'createXmlButton')"
                           onComplete="onResultComplete('createXmlSpinner', 'createXmlButton')"
-                          action="createXml" update="xml" value="${message(code:'ltc.editor.create.xml')}"/>
+                          action="createXml" update="${[success: 'xml', failure: 'xml']}"
+                          value="${message(code:'ltc.editor.create.xml')}"/>
         <img id="createXmlSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
     </td>
 </tr>
