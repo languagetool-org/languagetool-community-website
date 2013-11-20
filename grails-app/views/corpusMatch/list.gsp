@@ -23,7 +23,7 @@
             <br />
             
             <form style="margin-bottom: 5px">
-                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
+                <input type="hidden" name="lang" value="${lang.encodeAsHTML()}"/>
                 <select name="filter">
                     <option value=""><g:message code="ltc.corpus.match.filter.all"/></option>
                     <g:each in="${matchesByRule}" var="rule">
