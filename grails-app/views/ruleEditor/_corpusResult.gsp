@@ -36,6 +36,7 @@
                                             pos += token.getToken().length();
                                         %>
                                     </g:each>
+                                    <span class="metaInfo">(${matchingSentence.getSource()})</span>
                                 </li>
                             </g:each>
                         </g:each>
