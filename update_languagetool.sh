@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build LanguageTool and copied the JARs etc to "libs".
+# Build LanguageTool core test and copy the JAR to "lib".
 # Requires a local checkout of all LanguageTool sources.
 
 CUR_DIR=$(basename $PWD)
@@ -9,7 +9,7 @@ if [ $CUR_DIR != 'languagetool-community-website' ]
     exit
 fi
 
-echo "Building and copying latest LanguageTool to libs/"
+echo "Building and copying latest LanguageTool core test to lib/"
 
 cd ../languagetool
 echo "NOTE: will skip tests on build!"
@@ -20,16 +20,6 @@ cd -
 rm -r lib/META-INF
 rm -r lib/org
 
-cp -r ../languagetool/languagetool-standalone/target/LanguageTool-*-SNAPSHOT/LanguageTool-*-SNAPSHOT/org/ lib/
-cp -r ../languagetool/languagetool-standalone/target/LanguageTool-*-SNAPSHOT/LanguageTool-*-SNAPSHOT/META-INF lib/
-cp ../languagetool/languagetool-standalone/target/LanguageTool-*-SNAPSHOT/LanguageTool-*-SNAPSHOT/libs/* lib/
+cp ../languagetool/languagetool-standalone/target/LanguageTool-*-SNAPSHOT/LanguageTool-*-SNAPSHOT/libs/languagetool-core-tests.jar lib/
 
-cd ../languagetool
-./build.sh languagetool-wikipedia clean package -DskipTests
-
-cd -
-
-cp ../languagetool/languagetool-wikipedia/target/LanguageTool-wikipedia*-SNAPSHOT/LanguageTool-wikipedia*-SNAPSHOT/languagetool-wikipedia.jar lib/
-cp ../languagetool/languagetool-wikipedia/target/LanguageTool-wikipedia*-SNAPSHOT/LanguageTool-wikipedia*-SNAPSHOT/libs/* lib/
-
-echo "Done - all JARs etc. have been copied to lib/"
+echo "Done - core test JAR has been copied to lib/"
