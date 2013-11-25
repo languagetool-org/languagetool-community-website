@@ -33,6 +33,7 @@ class CorpusMatch {
 
     String languageCode
     String ruleID
+    String ruleCategory
     String ruleSubID
     String ruleDescription
     String message

@@ -56,10 +56,27 @@ class CorpusMatchController extends BaseController {
             if (params.typeFilter) {
                 eq('sourceType', params.typeFilter)
             }
+            if (params.categoryFilter) {
+                eq('ruleCategory', params.categoryFilter)
+            }
             projections {
                 groupProperty("ruleID")
                 count "ruleID", 'mycount'
                 property("ruleDescription")
+            }
+            order 'mycount', 'desc'
+        }
+        def matchByCategoryCriteria = CorpusMatch.createCriteria()
+        def matchesByCategory = matchByCategoryCriteria {
+            eq('languageCode', langCode)
+            eq('isVisible', true)
+            if (params.typeFilter) {
+                eq('sourceType', params.typeFilter)
+            }
+            projections {
+                groupProperty("ruleCategory")
+                count "ruleCategory", 'mycount'
+                property("ruleCategory")
             }
             order 'mycount', 'desc'
         }
@@ -76,6 +93,9 @@ class CorpusMatchController extends BaseController {
             }
             if (params.typeFilter) {
                 eq('sourceType', params.typeFilter)
+            }
+            if (params.categoryFilter) {
+                eq('ruleCategory', params.categoryFilter)
             }
             eq('languageCode', langCode)
             eq('isVisible', true)
@@ -94,13 +114,16 @@ class CorpusMatchController extends BaseController {
             if (params.typeFilter) {
                 eq('sourceType', params.typeFilter)
             }
+            if (params.categoryFilter) {
+                eq('ruleCategory', params.categoryFilter)
+            }
             eq('languageCode', langCode)
             eq('isVisible', true)
         }
         Language langObj = Language.getLanguageForShortName(langCode)
         [ corpusMatchList: matches,
                 languages: SortedLanguages.get(), lang: langCode, totalMatches: allMatchesCount,
-                matchesByRule: matchesByRule, hiddenRuleIds: hiddenRuleIds, language: langObj]
+                matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj]
     }
 
     private List getHiddenRuleIds(String langCode) {

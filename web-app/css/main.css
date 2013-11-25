@@ -435,6 +435,11 @@ th.desc a {
     width: 60%
 }
 
+.ruleMessage .category {
+    color: #999999;
+    font-weight: normal;
+}
+
 .ruleXmlArea {
     padding: 5px;
     background-color: #f5f5f5;

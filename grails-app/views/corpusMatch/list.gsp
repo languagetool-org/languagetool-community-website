@@ -37,6 +37,18 @@
                         </g:else>
                     </g:each>
                 </select>
+                <select name="categoryFilter">
+                    <option value=""><g:message code="ltc.corpus.match.category.filter.all"/></option>
+                    <g:each in="${matchesByCategory}" var="category">
+                        <g:set var="categoryName" value="${category[2]}"/>
+                        <g:if test="${params.categoryFilter == category[0]}">
+                            <option selected value="${category[0].encodeAsHTML()}">${categoryName.encodeAsHTML()}</option>
+                        </g:if>
+                        <g:else>
+                            <option value="${category[0].encodeAsHTML()}">${categoryName.encodeAsHTML()}</option>
+                        </g:else>
+                    </g:each>
+                </select>
                 <select name="typeFilter">
                     <g:if test="${params.typeFilter == ''}">
                         <option value="" selected>Wikipedia &amp; Tatoeba</option>
@@ -79,6 +91,7 @@
                                     <div class="ruleMessage">
                                         <g:link controller="rule" action="show" id="${match.ruleID}"
                                                 params="${[lang: lang, subId: match.ruleSubID, textToCheck: cleanText]}">${StringTools.formatError(match.message.encodeAsHTML())}</g:link>
+                                        <span class="category">${match.ruleCategory}</span>
                                     </div>
                                 </g:if>
                                 <g:set var="prevRuleId" value="${match.ruleID}"/>
