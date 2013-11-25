@@ -102,7 +102,7 @@
                     <g:hiddenField name="oldId" value="0"/>
                     <g:hiddenField name="format" value="text/x-wiki"/>
                     <g:hiddenField name="model" value="wikitext"/>
-                    <g:hiddenField name="wpSummary" value=""/>
+                    <g:hiddenField name="wpSummary" value="LanguageTool: ${message(code: 'ltc.wikicheck.summary.preset')}"/>
                     <g:hiddenField name="wpDiff" value="yes"/>
                     <g:hiddenField name="wpMinoredit" value="1"/>
                     <!-- this will be modified at submit: -->
