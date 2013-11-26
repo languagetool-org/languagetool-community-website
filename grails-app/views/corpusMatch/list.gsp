@@ -44,7 +44,7 @@
                         <option value="tatoeba">Tatoeba</option>
                     </g:else>
                 </select>
-                <select name="categoryFilter" onchange="this.form.submit()">
+                <select name="categoryFilter" onchange="this.form.filter.value='';this.form.submit()">
                     <option value=""><g:message code="ltc.corpus.match.category.filter.all"/></option>
                     <g:each in="${matchesByCategory}" var="category">
                         <g:set var="categoryName" value="${category[2]}"/>
