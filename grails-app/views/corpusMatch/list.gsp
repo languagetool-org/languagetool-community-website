@@ -24,7 +24,39 @@
             
             <form style="margin-bottom: 5px">
                 <input type="hidden" name="lang" value="${lang.encodeAsHTML()}"/>
-                <select name="filter">
+                <select name="typeFilter" onchange="this.form.submit()">
+                    <g:if test="${params.typeFilter == ''}">
+                        <option value="" selected>Wikipedia &amp; Tatoeba</option>
+                    </g:if>
+                    <g:else>
+                        <option value="">Wikipedia &amp; Tatoeba</option>
+                    </g:else>
+                    <g:if test="${params.typeFilter == 'wikipedia'}">
+                        <option value="wikipedia" selected>Wikipedia</option>
+                    </g:if>
+                    <g:else>
+                        <option value="wikipedia">Wikipedia</option>
+                    </g:else>
+                    <g:if test="${params.typeFilter == 'tatoeba'}">
+                        <option value="tatoeba" selected>Tatoeba</option>
+                    </g:if>
+                    <g:else>
+                        <option value="tatoeba">Tatoeba</option>
+                    </g:else>
+                </select>
+                <select name="categoryFilter" onchange="this.form.submit()">
+                    <option value=""><g:message code="ltc.corpus.match.category.filter.all"/></option>
+                    <g:each in="${matchesByCategory}" var="category">
+                        <g:set var="categoryName" value="${category[2]}"/>
+                        <g:if test="${params.categoryFilter == category[0]}">
+                            <option selected value="${category[0].encodeAsHTML()}">${categoryName.encodeAsHTML()}</option>
+                        </g:if>
+                        <g:else>
+                            <option value="${category[0].encodeAsHTML()}">${categoryName.encodeAsHTML()}</option>
+                        </g:else>
+                    </g:each>
+                </select>
+                <select name="filter" onchange="this.form.submit()">
                     <option value=""><g:message code="ltc.corpus.match.filter.all"/></option>
                     <g:each in="${matchesByRule}" var="rule">
                         <g:set var="ruleDesc" value="${rule[2]}"/>
@@ -37,39 +69,9 @@
                         </g:else>
                     </g:each>
                 </select>
-                <select name="categoryFilter">
-                    <option value=""><g:message code="ltc.corpus.match.category.filter.all"/></option>
-                    <g:each in="${matchesByCategory}" var="category">
-                        <g:set var="categoryName" value="${category[2]}"/>
-                        <g:if test="${params.categoryFilter == category[0]}">
-                            <option selected value="${category[0].encodeAsHTML()}">${categoryName.encodeAsHTML()}</option>
-                        </g:if>
-                        <g:else>
-                            <option value="${category[0].encodeAsHTML()}">${categoryName.encodeAsHTML()}</option>
-                        </g:else>
-                    </g:each>
-                </select>
-                <select name="typeFilter">
-                    <g:if test="${params.typeFilter == ''}">
-                        <option value="" selected>Wikipedia &amp; Tatoeba</option>
-                    </g:if>
-                    <g:else>
-                        <option value="">Wikipedia &amp; Tatoeba</option>
-                    </g:else>
-                    <g:if test="${params.typeFilter == 'wikipedia'}">
-                        <option value="wikipedia" selected>Wikipedia</option>
-                    </g:if>
-                    <g:else>
-                        <option value="wikipedia">Wikipedia</option>                        
-                    </g:else>
-                    <g:if test="${params.typeFilter == 'tatoeba'}">
-                        <option value="tatoeba" selected>Tatoeba</option>
-                    </g:if>
-                    <g:else>
-                        <option value="tatoeba">Tatoeba</option>                        
-                    </g:else>
-                </select>
-                <g:actionSubmit value="${message(code:'ltc.corpus.match.filter.submit')}" action="list"/>
+                <noscript>
+                    <g:actionSubmit value="${message(code:'ltc.corpus.match.filter.submit')}" action="list"/>
+                </noscript>
             </form>
             
             <div class="list">
