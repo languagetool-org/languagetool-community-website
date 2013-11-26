@@ -52,6 +52,9 @@ ul {
 input[type="button"] {
     background-color: #eeeeee;
 }
+input[type="submit"] {
+    background-color: #eeeeee;
+}
 
 input, select {
     background-color: #fcfcfc;
