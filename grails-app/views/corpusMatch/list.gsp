@@ -119,6 +119,10 @@
                     params="${params}"/>
             </div>
 
+            <g:if test="${date}">
+                <p class="metaInfo" style="text-align: right"><g:message code="ltc.corpus.match.last.check" args="${[formatDate(format: 'yyyy-MM-dd', date: date)]}"/></p>
+            </g:if>
+
             <p style="margin-top: 5px"><a href="http://wiki.languagetool.org/make-languagetool-better"><g:message code="ltc.make.languagetool.better"/></a></p>
 
         </div>

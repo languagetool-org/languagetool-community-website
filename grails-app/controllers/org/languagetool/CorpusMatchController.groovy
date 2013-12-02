@@ -120,10 +120,12 @@ class CorpusMatchController extends BaseController {
             eq('languageCode', langCode)
             eq('isVisible', true)
         }
+        def dateItem = CorpusMatch.findByLanguageCodeAndIsVisible(langCode, true)  // this assumes the date is the same everywhere...
         Language langObj = Language.getLanguageForShortName(langCode)
         [ corpusMatchList: matches,
                 languages: SortedLanguages.get(), lang: langCode, totalMatches: allMatchesCount,
-                matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj]
+                matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj,
+                date: dateItem ? dateItem.checkDate : null]
     }
 
     private List getHiddenRuleIds(String langCode) {
