@@ -102,7 +102,7 @@
 			                     replace("&lt;/marker&gt;", '</b>')}</li>
 			            </g:each>
 			            </ul>
-                        <g:if test="${rule.getCorrectExamples() == null}">
+                        <g:if test="${rule.getCorrectExamples().size() == 0}">
                              <span class="additional">[no examples found]</span>
                         </g:if>
                     </td>
