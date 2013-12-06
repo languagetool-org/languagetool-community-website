@@ -13,12 +13,9 @@ echo "Building and copying latest LanguageTool core test to lib/"
 
 cd ../languagetool
 echo "NOTE: will skip tests on build!"
-./build.sh languagetool-standalone clean package -DskipTests
+./build.sh languagetool-standalone clean install -DskipTests
 
 cd -
-
-rm -r lib/META-INF
-rm -r lib/org
 
 cp ../languagetool/languagetool-standalone/target/LanguageTool-*-SNAPSHOT/LanguageTool-*-SNAPSHOT/libs/languagetool-core-tests.jar lib/
 
