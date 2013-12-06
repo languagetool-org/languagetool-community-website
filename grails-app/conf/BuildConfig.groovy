@@ -37,7 +37,7 @@ grails.project.dependency.resolution = {
         runtime 'org.languagetool:languagetool-wikipedia:2.4-SNAPSHOT'
 
         runtime 'mysql:mysql-connector-java:5.1.16'
-        runtime 'javax.mail:javax.mail-api:1.5.0'
+        runtime 'com.sun.mail:javax.mail:1.5.1'
     }
 
     plugins {
