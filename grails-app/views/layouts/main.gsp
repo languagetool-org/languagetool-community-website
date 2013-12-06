@@ -31,6 +31,9 @@
                 <td valign="top">
                     <g:if test="${session.user}">
                            <div class="login"><g:message code="ltc.logged.in" args="${[session.user.username.encodeAsHTML()]}"/> -
+                           <g:if test="${session.user.isAdmin}">
+                               <g:link controller="admin">Admin</g:link> -
+                           </g:if>
                            <g:link controller="user" action="logout"><g:message code="ltc.logout"/></g:link>
                            -
                            <g:link controller="user" action="settings"><g:message code="ltc.settings"/></g:link>

@@ -19,7 +19,6 @@
 
 package org.languagetool
 
-import org.languagetool.Language
 import javax.mail.*
 import javax.mail.internet.*
 
@@ -35,10 +34,6 @@ class UserController extends BaseController {
     // the delete, save and update actions only accept POST requests
     def static allowedMethods = [delete:'POST', save:'POST', update:'POST',
             doRegister:'POST', settings:['POST', 'GET']]
-
-    def index = {
-        redirect(action:list,params:params)
-    }
 
     def register = {
     }
@@ -90,11 +85,12 @@ class UserController extends BaseController {
         }
         if (User.findByUsername(toAddress)) {
             // TODO: show as a real error message
-            flash.message = "That email address is alread in use"
-            render(view:'register',model:[params:params])
+            flash.message = "That email address is already in use"
+            render(view:'register', model:[params:params])
             return
         }
         User newUser = new User(toAddress, PasswordTools.hash(params.password1))
+        newUser.isAdmin = false
         // Note: user is not activated until we set registerDate
         boolean saved = newUser.save()
         if (!saved) {
@@ -207,7 +203,6 @@ class UserController extends BaseController {
                 session.controllerName = params.controllerName
                 session.actionName = params.actionName
             }
-            User user = new User()
         } else {
             User user = User.findByUsername(params.email)
             if (user) {
@@ -258,71 +253,4 @@ class UserController extends BaseController {
         redirect(uri:"")
     }
 
-    def list = {
-        if(!params.max) params.max = 10
-        [ userList: User.list( params ) ]
-    }
-
-    def delete = {
-        User user = User.get( params.id )
-        if(user) {
-            log.info("Deleting user ${user.username}")
-            user.delete()
-            flash.message = "User ${params.id} deleted"
-            redirect(action:list)
-        }
-        else {
-            flash.message = "User not found with id ${params.id}"
-            redirect(action:list)
-        }
-    }
-
-    def edit = {
-        User user = User.get( params.id )
-
-        if(!user) {
-            flash.message = "User not found with id ${params.id}"
-            redirect(action:list)
-        }
-        else {
-            return [ user : user ]
-        }
-    }
-
-    def update = {
-        User user = User.get( params.id )
-        if(user) {
-            user.properties = params
-            if(!user.hasErrors() && user.save()) {
-                log.info("Updted user ${user.username}")
-                flash.message = "User ${params.id} updated"
-                redirect(action:edit,id:user.id)
-            }
-            else {
-                render(view:'edit',model:[user:user])
-            }
-        }
-        else {
-            flash.message = "User not found with id ${params.id}"
-            redirect(action:edit,id:params.id)
-        }
-    }
-
-    def create = {
-        User user = new User()
-        user.properties = params
-        return ['user':user]
-    }
-
-    def save = {
-        User user = new User(params)
-        if(!user.hasErrors() && user.save()) {
-            flash.message = "User ${user.id} created"
-            log.info("User ${user.username} created")
-            redirect(action:edit,id:user.id)
-        }
-        else {
-            render(view:'create',model:[user:user])
-        }
-    }
 }
