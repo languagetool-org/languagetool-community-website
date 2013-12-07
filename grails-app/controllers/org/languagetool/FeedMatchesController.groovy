@@ -38,6 +38,7 @@ class FeedMatchesController extends BaseController {
         if (params.notFixedFilter && params.notFixedFilter != "0") {
             cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) - Integer.parseInt(params.notFixedFilter))
         }
+        int languageMatchCount = FeedMatches.countByLanguageCode(langCode)
         // Grouped Overview of Rule Matches:
         def matchByRuleCriteria = FeedMatches.createCriteria()
         def matchesByRule = matchByRuleCriteria {
@@ -110,7 +111,7 @@ class FeedMatchesController extends BaseController {
             eq('languageCode', langCode)
         }
         Language langObj = Language.getLanguageForShortName(langCode)
-        [ corpusMatchList: matches,
+        [ languageMatchCount: languageMatchCount, corpusMatchList: matches,
                 languages: SortedLanguages.get(), lang: langCode, totalMatches: allMatchesCount,
                 matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj]
     }

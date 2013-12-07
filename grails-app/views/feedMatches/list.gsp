@@ -62,7 +62,11 @@
                     <g:actionSubmit value="${message(code:'ltc.corpus.match.filter.submit')}" action="list"/>
                 </noscript>
             </form>
-            
+
+            <g:if test="${languageMatchCount == 0}">
+                <div class="warn"><g:message code="ltc.feed.matches.no.analysis"/></div>
+            </g:if>
+
             <div class="list">
                 <table>
                     <thead>
