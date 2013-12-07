@@ -88,7 +88,7 @@ class FeedMatchesController extends BaseController {
             eq('languageCode', langCode)
             firstResult(params.int('offset'))
             maxResults(params.int('max'))
-            // TODO: sort by edit date?!
+            order('editDate', 'desc')
         }
         def allMatchesCriteria = FeedMatches.createCriteria()
         def allMatchesCount = allMatchesCriteria.count {
