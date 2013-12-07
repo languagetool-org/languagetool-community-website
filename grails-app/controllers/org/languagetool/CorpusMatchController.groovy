@@ -81,7 +81,7 @@ class CorpusMatchController extends BaseController {
             order 'mycount', 'desc'
         }
         // Rule Matches for this language:
-        List hiddenRuleIds = getHiddenRuleIds(langCode)
+        List hiddenRuleIds = getHiddenRuleIds(langCode, grailsApplication.config)
         def matchCriteria = CorpusMatch.createCriteria()
         def matches = matchCriteria {
             if (params.filter) {
@@ -128,10 +128,10 @@ class CorpusMatchController extends BaseController {
                 date: dateItem ? dateItem.checkDate : null]
     }
 
-    private List getHiddenRuleIds(String langCode) {
+    static List getHiddenRuleIds(String langCode, def config) {
         List hiddenRuleIds = []
         Properties langToDisabledRules = new Properties()
-        def fis = new FileInputStream(grailsApplication.config.disabledRulesPropFile)
+        def fis = new FileInputStream(config.disabledRulesPropFile)
         try {
             langToDisabledRules.load(fis)
             hiddenRuleIds.addAll(langToDisabledRules.getProperty("all").split(",\\s*"))
@@ -162,7 +162,7 @@ class CorpusMatchController extends BaseController {
         // TODO: avoid duplicate opinions
         CorpusMatch corpusMatch = CorpusMatch.get(params.id)
         assert(corpusMatch)
-        UserOpinion opinion = new UserOpinion(session.user, corpusMatch, opinionValue)
+        UserOpinion opinion = new UserOpinion(user, corpusMatch, opinionValue)
         if (!opinion.save()) {
             throw new Exception("Could not save user opinion: ${opinion.errors}")
         }

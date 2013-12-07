@@ -67,7 +67,7 @@ class FeedMatchesController extends BaseController {
             order 'mycount', 'desc'
         }
         // Rule Matches for this language:
-        List hiddenRuleIds = getHiddenRuleIds(langCode)
+        List hiddenRuleIds = CorpusMatchController.getHiddenRuleIds(langCode, grailsApplication.config)
         def matchCriteria = FeedMatches.createCriteria()
         def matches = matchCriteria {
             if (params.filter) {
@@ -113,26 +113,6 @@ class FeedMatchesController extends BaseController {
         [ corpusMatchList: matches,
                 languages: SortedLanguages.get(), lang: langCode, totalMatches: allMatchesCount,
                 matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj]
-    }
-
-    private List getHiddenRuleIds(String langCode) {
-        List hiddenRuleIds = []
-        Properties langToDisabledRules = new Properties()
-        def fis = new FileInputStream(grailsApplication.config.disabledRulesPropFile)
-        try {
-            langToDisabledRules.load(fis)
-            hiddenRuleIds.addAll(langToDisabledRules.getProperty("all").split(",\\s*"))
-            String langSpecificDisabledRulesStr = langToDisabledRules.get(langCode)
-            if (langSpecificDisabledRulesStr) {
-                List<String> langSpecificDisabledRules = langSpecificDisabledRulesStr.split(",")
-                if (langSpecificDisabledRules) {
-                    hiddenRuleIds.addAll(langSpecificDisabledRules)
-                }
-            }
-        } finally {
-            fis.close()
-        }
-        return hiddenRuleIds
     }
 
 }
