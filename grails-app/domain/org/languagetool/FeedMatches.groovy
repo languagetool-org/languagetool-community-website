@@ -19,36 +19,28 @@
 
 package org.languagetool
 
-import java.util.Date
-
 /**
- * An error detected by the grammar checker in a text corpus.
+ * An error detected by the Atom Feed checker.
  * To be populated from external software, not from Grails.
  */
-class CorpusMatch {
+class FeedMatches {
 
     static constraints = {
-        ruleDescription(nullable: true) // nullable because it was introduced later
-        ruleSubID(nullable: true) // nullable because it was introduced later
+        fixDate(nullable: true)
+        fixDiffId(nullable: true)
     }
 
     String languageCode
-    String ruleID
-    String ruleCategory
-    String ruleSubID
+    String ruleId
+    String ruleSubId
     String ruleDescription
-    String message
-    String sourceURI
-    String sourceType
+    String ruleMessage
+    String ruleCategory
     String errorContext
-    Date corpusDate
-    Date checkDate
-    /**
-     * Set to 0 if the match if outdated, i.e. when new matches have
-     * been added to the database.
-     */
-    boolean isVisible
-
-    static hasMany = [userOpinions: UserOpinion]
-
+    Date editDate
+    String title
+    Date fixDate
+    long diffId
+    Long fixDiffId
+    
 }
