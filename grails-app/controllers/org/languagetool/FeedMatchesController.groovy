@@ -69,7 +69,8 @@ class FeedMatchesController extends BaseController {
             order 'mycount', 'desc'
         }
         // Rule Matches for this language:
-        List hiddenRuleIds = CorpusMatchController.getHiddenRuleIds(langCode, grailsApplication.config)
+        List hiddenRuleIds = CorpusMatchController.getHiddenRuleIds(langCode, grailsApplication.config.disabledRulesPropFile)
+        hiddenRuleIds.addAll(CorpusMatchController.getHiddenRuleIds(langCode, grailsApplication.config.disabledRulesForFeedPropFile))
         def matchCriteria = FeedMatches.createCriteria()
         def matches = matchCriteria {
             if (params.filter) {

@@ -51,6 +51,7 @@ expose.languages = ["en", "fr", "de", "es", "pl", "ca", "br", "nl", "pt", "es", 
 maxPatternElements = 5
 // disable some rules for WikiCheck to avoid too many false alarms:
 disabledRulesPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules.properties"
+disabledRulesForFeedPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules_for_feed.properties"
 
 // Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
 fastSearchIndex = "/home/languagetool/corpus/LANG"

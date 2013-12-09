@@ -81,7 +81,7 @@ class CorpusMatchController extends BaseController {
             order 'mycount', 'desc'
         }
         // Rule Matches for this language:
-        List hiddenRuleIds = getHiddenRuleIds(langCode, grailsApplication.config)
+        List hiddenRuleIds = getHiddenRuleIds(langCode, grailsApplication.config.disabledRulesPropFile)
         def matchCriteria = CorpusMatch.createCriteria()
         def matches = matchCriteria {
             if (params.filter) {
@@ -128,10 +128,10 @@ class CorpusMatchController extends BaseController {
                 date: dateItem ? dateItem.checkDate : null]
     }
 
-    static List getHiddenRuleIds(String langCode, def config) {
+    static List getHiddenRuleIds(String langCode, String propFileName) {
         List hiddenRuleIds = []
         Properties langToDisabledRules = new Properties()
-        def fis = new FileInputStream(config.disabledRulesPropFile)
+        def fis = new FileInputStream(propFileName)
         try {
             langToDisabledRules.load(fis)
             hiddenRuleIds.addAll(langToDisabledRules.getProperty("all").split(",\\s*"))
