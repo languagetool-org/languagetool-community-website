@@ -43,6 +43,8 @@ class FeedMatchesController extends BaseController {
         // Grouped Overview of Rule Matches:
         def matchByRuleCriteria = FeedMatches.createCriteria()
         def matchesByRule = matchByRuleCriteria {
+            // fixDate = null: neither fixed in Wikipedia (then it would also have the fixDiffId set) 
+            // nor marked as 'fixed or false alarm' by a user (then it wouldn't have fixDiffId set either):
             isNull('fixDate')
             eq('languageCode', langCode)
             if (params.notFixedFilter && params.notFixedFilter != "0") {
@@ -118,4 +120,15 @@ class FeedMatchesController extends BaseController {
                 matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj]
     }
 
+    // called via Ajax
+    def markAsFixedOrFalseAlarm = {
+        FeedMatches match = FeedMatches.get(params.id)
+        if (!match) {
+            throw new Exception("Feed match id #${params.id} not found")
+        }
+        match.fixDate = new Date()
+        match.save(failOnError: true)
+        log.info("User ${session.user.username} has marked feed match #${params.id} as 'fixed or false alarm'")
+        render "ok"
+    }
 }

@@ -4,6 +4,22 @@
     <head>
         <meta name="layout" content="main" />
         <title><g:message code="ltc.feed.matches.title"/> - ${language}</title>
+        <g:javascript library="jquery" />
+        <script language="JavaScript">
+            function markedAsFixedOrFalseAlarm(feedMatchId) {
+                jQuery.ajax('${resource(dir:'feedMatches')}/markAsFixedOrFalseAlarm?id=' + feedMatchId,
+                        {
+                            success: function(data, textStatus, jqXHR) {
+                                $('#ajaxFailure').html("");
+                                $('#ajaxFeedback' + feedMatchId).html("${message(code:'ltc.feed.matches.marked')}");
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                $('#ajaxFailure').html("<div class='warn'>Sorry, submitting your vote failed</div>");
+                            }
+                        });
+                return false;
+            }
+        </script>
     </head>
     <body>
 
@@ -19,6 +35,8 @@
             
             <br />
             
+            <div id="ajaxFailure"></div>
+
             <form style="margin-bottom: 5px">
                 <input type="hidden" name="lang" value="${lang.encodeAsHTML()}"/>
                 
@@ -99,14 +117,22 @@
                                 <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
                                     <span style="font-family: monospace">${StringTools.formatError(match.errorContext.encodeAsHTML())}</span>
                                     <br/>
-                                    <div style="margin-top: 5px">
-                                        <g:set var="articleUrl" value="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.replace(' ', '_').encodeAsURL()}"/>
-                                        <a class="additionalFeedMatchLink" href="http://${match.languageCode.encodeAsURL()}.wikipedia.org/w/index.php?title=${match.title.replace(' ', '_').encodeAsURL()}&diff=${match.diffId}"
-                                            ><g:message code="ltc.feed.matches.diff"/></a>
-                                        &middot; <g:link class="additionalFeedMatchLink" controller="wikiCheck" action="index"
-                                            params="${[url:articleUrl, enabled:match.ruleId]}"><g:message code="ltc.wikicheck.check.again"/></g:link>
-                                        &middot; <a class="additionalFeedMatchLink" href="${articleUrl}">${match.title.encodeAsHTML()}</a>
-                                    </div>
+                                    <g:form method="post" onsubmit="return markedAsFixedOrFalseAlarm(${match.id})">
+                                        <div style="margin-top: 5px">
+                                            <g:set var="articleUrl" value="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.replace(' ', '_').encodeAsURL()}"/>
+                                            <a class="additionalFeedMatchLink" href="http://${match.languageCode.encodeAsURL()}.wikipedia.org/w/index.php?title=${match.title.replace(' ', '_').encodeAsURL()}&diff=${match.diffId}"
+                                                ><g:message code="ltc.feed.matches.diff"/></a>
+                                            &middot; <g:link class="additionalFeedMatchLink" controller="wikiCheck" action="index"
+                                                params="${[url:articleUrl, enabled:match.ruleId]}"><g:message code="ltc.wikicheck.check.again"/></g:link>
+                                            &middot; <a class="additionalFeedMatchLink" href="${articleUrl}">${match.title.encodeAsHTML()}</a>
+                                            <g:if test="${session.user}">
+                                                &middot;
+                                                <span id="ajaxFeedback${match.id}">
+                                                    <input type="submit" value="${message(code:'ltc.feed.matches.mark')}"/>
+                                                </span>
+                                            </g:if>
+                                        </div>
+                                    </g:form>
                                 </div>
 
                             </td>
