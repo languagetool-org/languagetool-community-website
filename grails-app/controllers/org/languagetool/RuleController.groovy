@@ -171,25 +171,25 @@ class RuleController extends BaseController {
                 contentType: "text/html", encoding: "utf-8")
     }
 
-    def createRule = {
+    /*def createRule = {
         String langCode = getLanguage()
         //FIXME: generate a better unique ID!
         Rule newRule = new PatternRule("-1",
                 Language.getLanguageForShortName(langCode),
                 [], "", "", "")
         render(view:'edit', model:[ rule: newRule, lang: langCode, isUserRule: true ])
-    }
+    }*/
 
-    def edit = {
+    /*def edit = {
         String langCode = getLanguage()
         SelectedRule rule = getRuleById(params.id, params.subId, langCode)
         Rule selectedRule = rule.rule
         render(view:'edit', model: [ rule: selectedRule, lang: langCode,
                 isUserRule: rule.isUserRule, ruleId: params.id ],
                 contentType: "text/html", encoding: "utf-8")
-    }
+    }*/
 
-    def doEdit = {
+    /*def doEdit = {
         String langCode = getLanguage()
         UserRule userRule
         if (params.id == "null") {
@@ -231,9 +231,9 @@ class RuleController extends BaseController {
         }
         flash.message = "Changes saved"
         redirect(action:'show', id:userRule.id, params:[lang:params.lang])
-    }
+    }*/
 
-    def copyAndEditRule = {
+    /*def copyAndEditRule = {
         String langCode = getLanguage()
         JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(langCode))
         lt.activateDefaultPatternRules()
@@ -257,7 +257,7 @@ class RuleController extends BaseController {
             throw new Exception("Could not save copy of rule ${params.id.encodeAsHTML()}: ${userRule.errors}")
         }
         redirect(action:'show', id:userRule.id, params:[lang:params.lang])
-    }
+    }*/
 
     def show = {
         String langCode = getLanguage()

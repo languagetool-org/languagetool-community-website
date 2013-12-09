@@ -123,12 +123,14 @@
             <div class="paginateButtons">
                 <g:paginate total="${ruleCount}" params="${params}"/>
             </div>
+            <!--
             <g:if test="${session.user}">
                 <g:form method="post">
                    <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
                    <g:actionSubmit action="createRule" value="${message(code:'ltc.rule.browse.add.rule') }"/> &nbsp;
                 </g:form>
             </g:if>
+            -->
 
 	        <g:if test="${session.user}">
 	        	<br />
