@@ -31,7 +31,7 @@
                     <option ${params.notFixedFilter == '240' ? 'selected' : ''} value="240"><g:message code='ltc.feed.matches.unfixed.for.hours' args="${[4]}"/></option>
                     <option ${params.notFixedFilter == '480' ? 'selected' : ''} value="480"><g:message code='ltc.feed.matches.unfixed.for.hours' args="${[8]}"/></option>
                     <option ${params.notFixedFilter == '960' ? 'selected' : ''} value="960"><g:message code='ltc.feed.matches.unfixed.for.hours' args="${[16]}"/></option>
-                    <option ${params.notFixedFilter == '1440' || !params.notFixedFilter ? 'selected' : ''} value="1440"><g:message code='ltc.feed.matches.unfixed.for.hours' args="${[24]}"/></option>
+                    <option ${params.notFixedFilter == '1440' ? 'selected' : ''} value="1440"><g:message code='ltc.feed.matches.unfixed.for.hours' args="${[24]}"/></option>
                 </select>
                 <select name="categoryFilter" onchange="this.form.filter.value='';this.form.submit()">
                     <option value=""><g:message code="ltc.corpus.match.category.filter.all"/></option>

@@ -30,6 +30,7 @@ class FeedMatchesController extends BaseController {
     def list = {
         if(!params.max) params.max = 10
         if(!params.offset) params.offset = 0
+        if(!params.notFixedFilter) params.notFixedFilter = "1440"  // default to 24 hours
         String langCode = "en"
         if (params.lang) {
             langCode = params.lang
