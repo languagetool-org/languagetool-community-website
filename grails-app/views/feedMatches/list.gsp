@@ -99,9 +99,9 @@
                                 <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
                                     ${StringTools.formatError(match.errorContext.encodeAsHTML())}
                                     <span class="additional">
-                                        <g:link class="additional" url="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.encodeAsHTML()}">${match.title.encodeAsHTML()}</g:link>
-                                        &middot; <g:link class="additional" url="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/w/index.php?title=${match.title.encodeAsHTML()}&diff=${match.diffId}"
-                                        ><g:message code="ltc.feed.matches.diff"/></g:link>
+                                        <a class="additional" href="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.replace(' ', '_').encodeAsURL()}">${match.title.encodeAsHTML()}</a>
+                                        &middot; <a class="additional" href="http://${match.languageCode.encodeAsURL()}.wikipedia.org/w/index.php?title=${match.title.replace(' ', '_').encodeAsURL()}&diff=${match.diffId}"
+                                        ><g:message code="ltc.feed.matches.diff"/></a>
                                     </span>
                                 </div>
 
