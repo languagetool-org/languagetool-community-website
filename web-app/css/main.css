@@ -341,7 +341,6 @@ th.desc a {
 	background-image: url("../images/squiggle.png");
 	background-repeat: repeat-x;
 	background-position: left bottom;
-	vertical-align: text-top;
 }
 .spellingError {
 	font-weight: bold;

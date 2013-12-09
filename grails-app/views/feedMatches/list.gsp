@@ -97,7 +97,7 @@
                                 <g:set var="prevRuleId" value="${match.ruleId}"/>
 
                                 <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
-                                    ${StringTools.formatError(match.errorContext.encodeAsHTML())}
+                                    <span style="font-family: monospace">${StringTools.formatError(match.errorContext.encodeAsHTML())}</span>
                                     <br/>
                                     <div style="margin-top: 5px">
                                         <g:set var="articleUrl" value="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.replace(' ', '_').encodeAsURL()}"/>
