@@ -98,11 +98,15 @@
 
                                 <div style="margin-bottom: 5px; margin-top: 5px; margin-left: 20px;">
                                     ${StringTools.formatError(match.errorContext.encodeAsHTML())}
-                                    <span class="additional">
-                                        <a class="additional" href="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.replace(' ', '_').encodeAsURL()}">${match.title.encodeAsHTML()}</a>
-                                        &middot; <a class="additional" href="http://${match.languageCode.encodeAsURL()}.wikipedia.org/w/index.php?title=${match.title.replace(' ', '_').encodeAsURL()}&diff=${match.diffId}"
-                                        ><g:message code="ltc.feed.matches.diff"/></a>
-                                    </span>
+                                    <br/>
+                                    <div style="margin-top: 5px">
+                                        <g:set var="articleUrl" value="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.replace(' ', '_').encodeAsURL()}"/>
+                                        <a class="additionalFeedMatchLink" href="http://${match.languageCode.encodeAsURL()}.wikipedia.org/w/index.php?title=${match.title.replace(' ', '_').encodeAsURL()}&diff=${match.diffId}"
+                                            ><g:message code="ltc.feed.matches.diff"/></a>
+                                        &middot; <g:link class="additionalFeedMatchLink" controller="wikiCheck" action="index"
+                                            params="${[url:articleUrl, enabled:match.ruleId]}"><g:message code="ltc.wikicheck.check.again"/></g:link>
+                                        &middot; <a class="additionalFeedMatchLink" href="${articleUrl}">${match.title.encodeAsHTML()}</a>
+                                    </div>
                                 </div>
 
                             </td>
@@ -116,10 +120,6 @@
                 <g:paginate total="${totalMatches}" 
                     params="${params}"/>
             </div>
-
-            <g:if test="${date}">
-                <p class="metaInfo" style="text-align: right"><g:message code="ltc.corpus.match.last.check" args="${[formatDate(format: 'yyyy-MM-dd', date: date)]}"/></p>
-            </g:if>
 
             <p style="margin-top: 5px"><a href="http://wiki.languagetool.org/make-languagetool-better"><g:message code="ltc.make.languagetool.better"/></a></p>
 

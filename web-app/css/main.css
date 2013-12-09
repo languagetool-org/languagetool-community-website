@@ -367,6 +367,15 @@ th.desc a {
     color: #999 !important; 
 }
 
+.additionalFeedMatchLink {
+	font-weight: normal !important;
+    color: #666 !important; 
+}
+.additionalFeedMatchLink:hover {
+	font-weight: normal !important;
+    background-color: #eeeeee;
+}
+
 .languageButton {
 	padding: 5px;
 	padding-left: 5px;
