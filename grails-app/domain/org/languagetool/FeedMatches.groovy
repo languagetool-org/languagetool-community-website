@@ -28,6 +28,7 @@ class FeedMatches {
     static constraints = {
         fixDate(nullable: true)
         fixDiffId(nullable: true)
+        ruleSubId(nullable: true)
     }
 
     String languageCode
