@@ -10,6 +10,7 @@
             function markedAsFixedOrFalseAlarm(corpusMatchId) {
                 jQuery.ajax('${resource(dir:'corpusMatch')}/markAsFixedOrFalseAlarm?id=' + corpusMatchId,
                         {
+                            type: 'POST',
                             success: function(data, textStatus, jqXHR) {
                                 $('#ajaxFailure').html("");
                                 $('#ajaxFeedback' + corpusMatchId).html("${message(code:'ltc.feed.matches.marked')}");

@@ -23,6 +23,8 @@ class FeedMatchesController extends BaseController {
 
     def beforeInterceptor = [action: this.&auth, except: ['list', 'index']]
 
+    def static allowedMethods = [markAsFixedOrFalseAlarm: 'POST']
+    
     def index = {
         redirect(action:list,params:params)
     }

@@ -9,6 +9,7 @@
             function markedAsFixedOrFalseAlarm(feedMatchId) {
                 jQuery.ajax('${resource(dir:'feedMatches')}/markAsFixedOrFalseAlarm?id=' + feedMatchId,
                         {
+                            type: 'POST',
                             success: function(data, textStatus, jqXHR) {
                                 $('#ajaxFailure').html("");
                                 $('#ajaxFeedback' + feedMatchId).html("${message(code:'ltc.feed.matches.marked')}");
