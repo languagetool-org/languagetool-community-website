@@ -69,12 +69,6 @@
                         <td><a href="${rule.url}">${rule.url.encodeAsHTML()}</a></td>
                     </tr>
                 </g:if>
-                <g:if test="${session.user}">
-                    <tr>
-                        <td><g:message code="ltc.rule.show.active" /></td>
-                        <td><g:checkBox name="active" value="${!isDisabled}"/></td>
-                    </tr>
-                </g:if>
 
                 <tr>
                     <td><g:message code="ltc.rule.show.incorrect.sentences" /></td>

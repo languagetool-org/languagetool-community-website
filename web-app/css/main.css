@@ -426,6 +426,11 @@ th.desc a {
     color: #777777;
 }
 
+.sourceLink {
+    font-weight: normal !important;
+    color: #777777 !important;
+}
+
 .preFilledField {
     width: 400px;
     color: #999999;

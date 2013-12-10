@@ -24,18 +24,7 @@ package org.languagetool
  */
 class CorpusMatchController extends BaseController {
 
-    /**
-     * User finds the error detection wrong or useless.
-     */
-    public final static int NEGATIVE_OPINION = 0
-    /**
-     * User finds the error detection wrong or useful.
-     */
-    public final static int POSITIVE_OPINION = 1
-
     def beforeInterceptor = [action: this.&auth, except: ['list', 'index']]
-
-    def static allowedMethods = [markUseful:'POST', markUseless:'POST']
 
     def index = {
         redirect(action:list,params:params)
@@ -146,26 +135,6 @@ class CorpusMatchController extends BaseController {
             fis.close()
         }
         return hiddenRuleIds
-    }
-
-    def markUseful = {
-        saveOpinion(session.user, POSITIVE_OPINION)
-        render(text:message(code:'ltc.voted.useful'), contentType: "text/html", encoding:"UTF-8")
-    }
-
-    def markUseless = {
-        saveOpinion(session.user, NEGATIVE_OPINION)
-        render(text:message(code:'ltc.voted.useless'), contentType: "text/html", encoding:"UTF-8")
-    }
-
-    private void saveOpinion(User user, int opinionValue) {
-        // TODO: avoid duplicate opinions
-        CorpusMatch corpusMatch = CorpusMatch.get(params.id)
-        assert(corpusMatch)
-        UserOpinion opinion = new UserOpinion(user, corpusMatch, opinionValue)
-        if (!opinion.save()) {
-            throw new Exception("Could not save user opinion: ${opinion.errors}")
-        }
     }
 
     // called via Ajax
