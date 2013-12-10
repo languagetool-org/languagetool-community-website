@@ -24,9 +24,11 @@ class AdminController extends BaseController {
     def beforeInterceptor = [action: this.&adminAuth]
     
     def index() {
+        int maxUsers = params.maxUsers ? Integer.parseInt(params.maxUsers) : 10
         List admins = User.findAllByIsAdmin(true)
-        List users = User.findAllByIsAdmin(false, [sort: "registerDate", order: "desc"])
-        [admins:admins, users:users]
+        List users = User.findAllByIsAdmin(false, [sort: "registerDate", order: "desc", max: maxUsers])
+        int totalUsers = User.countByIsAdmin(false)
+        [admins:admins, users:users, totalUsers:totalUsers]
     }
 
 }

@@ -23,7 +23,7 @@
         </g:each>
     </ul>
 
-    <h3 style="margin-top: 15px">Users (${users.size()})</h3>
+    <h3 style="margin-top: 15px">Users (${totalUsers})</h3>
     
     <table>
         <tr>
@@ -39,6 +39,7 @@
             </tr>
         </g:each>
     </table>
+    <g:link params="${[maxUsers: -1]}">Show all users</g:link>
 
 </div>
 
