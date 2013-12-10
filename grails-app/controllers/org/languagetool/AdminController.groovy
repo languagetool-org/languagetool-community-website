@@ -28,7 +28,21 @@ class AdminController extends BaseController {
         List admins = User.findAllByIsAdmin(true)
         List users = User.findAllByIsAdmin(false, [sort: "registerDate", order: "desc", max: maxUsers])
         int totalUsers = User.countByIsAdmin(false)
-        [admins:admins, users:users, totalUsers:totalUsers]
+
+        def crit = FeedMatches.createCriteria()
+        def markedFeedMatches = crit.count {
+            // This is the combination where an error has been marked here manually
+            // (and not fixed from updates in the Atom feed):
+            isNotNull("fixDate")
+            isNull("fixDiffId")
+        }
+
+        int recentHiddenCorpusMatches = CorpusMatch.countByIsVisible(false)
+        int hiddenCorpusMatches = CorpusMatchHidden.count()
+        
+        [admins:admins, users:users, totalUsers:totalUsers, 
+                markedFeedMatches:markedFeedMatches,
+                recentHiddenCorpusMatches:recentHiddenCorpusMatches, hiddenCorpusMatches:hiddenCorpusMatches]
     }
 
 }
