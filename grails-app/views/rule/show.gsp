@@ -206,23 +206,6 @@
 
             </table>
 
-            <%--
-            <g:if test="${session.user}">
-                <input type="hidden" name="id" value="${ruleId.encodeAsHTML()}"/>
-                <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
-                <input type="hidden" name="disableId" value="${disableId.encodeAsHTML()}"/>
-                <g:actionSubmit action="change" value="Change Active/Inactive"/> &nbsp;
-                <g:if test="${rule instanceof PatternRule}">
-		            <g:if test="${isUserRule}">
-		            	<g:actionSubmit action="edit" value="Edit Rule"/>
-		            </g:if>
-		            <g:else>
-		                <g:actionSubmit action="copyAndEditRule" value="Copy and Edit Rule "/>
-		            </g:else>
-	            </g:if>
-            </g:if>
-            --%>
-
         </div>
     </body>
 </html>

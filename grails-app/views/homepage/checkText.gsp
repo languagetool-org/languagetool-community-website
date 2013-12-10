@@ -18,18 +18,6 @@
                     plus its variant,<br/>e.g. "English (US)" instead of just "English".</p>
             </g:if>
         
-            <g:if test="${session.user}">
-                <g:if test="${disabledRules && disabledRules.size() > 0}">
-                    <p><g:message code="ltc.home.check.rules.inactive" args="${[disabledRules.size()]}"/>
-                    <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]"><g:message code="ltc.home.check.rules.config.link"/></g:link></p>
-                </g:if>
-                <g:else>
-                    <p><g:message code="ltc.home.check.rules.active"/>
-                    <g:link controller="rule" action="list" params="[lang: params.lang.encodeAsHTML()]"><g:message code="ltc.home.check.rules.config.link"/></g:link></p>
-                </g:else>
-            </g:if>
-            <br/>
-            
             <g:if test="${autoLangDetectionWarning}">
               <div class="warn"><g:message code="ltc.home.check.detection.warning" args="${[detectedLang]}"/></div>
             </g:if>

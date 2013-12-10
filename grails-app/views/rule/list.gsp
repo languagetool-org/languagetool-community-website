@@ -47,30 +47,18 @@
                     <g:each in="${ruleList}" status="i" var="rule">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 
-                            <!-- TODO: find clean solution: -->
-							<% String userRuleId = null; %>
-                            <g:if test="${patternRuleIdToUserRuleId.containsKey(rule.id)}">
-                            	<% userRuleId = patternRuleIdToUserRuleId.get(rule.id); %>
-							</g:if>
-
                             <td>
-                                <g:if test="${userRuleId}">
-                                    <g:link action="show" id="${userRuleId}"
-                                        params="[lang:params.lang]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
+                                <g:if test="${rule instanceof PatternRule}">
+                                    <%
+                                    PatternRule pRule = (PatternRule) rule;
+                                    %>
+                                    <g:set var="subId" value="${pRule.subId}"/>
+                                    <g:link action="show" id="${rule.id}"
+                                            params="[lang:params.lang, subId: subId]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
                                 </g:if>
                                 <g:else>
-                                    <g:if test="${rule instanceof PatternRule}">
-                                        <%
-                                        PatternRule pRule = (PatternRule) rule;
-                                        %>
-                                        <g:set var="subId" value="${pRule.subId}"/>
-                                        <g:link action="show" id="${rule.id}"
-                                                params="[lang:params.lang, subId: subId]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
-                                    </g:if>
-                                    <g:else>
-                                        <g:link action="show" id="${rule.id}"
-                                                params="[lang:params.lang]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
-                                    </g:else>
+                                    <g:link action="show" id="${rule.id}"
+                                            params="[lang:params.lang]">${rule.description ? StringTools.escapeHtmlAndHighlightMatches(rule.description, params.filter) : "[unnamed]"}</g:link>
                                 </g:else>
                             </td>
 
@@ -103,14 +91,6 @@
             <div class="paginateButtons">
                 <g:paginate total="${ruleCount}" params="${params}"/>
             </div>
-            <!--
-            <g:if test="${session.user}">
-                <g:form method="post">
-                   <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
-                   <g:actionSubmit action="createRule" value="${message(code:'ltc.rule.browse.add.rule') }"/> &nbsp;
-                </g:form>
-            </g:if>
-            -->
 
 	        <g:if test="${session.user}">
 	        	<br />

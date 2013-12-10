@@ -35,6 +35,7 @@
             
             <p><g:message code="ltc.check.explain"/></p>
             
+            <br/>
             <p><g:message code="ltc.check.random.selection"/></p>
             
             <br/>
