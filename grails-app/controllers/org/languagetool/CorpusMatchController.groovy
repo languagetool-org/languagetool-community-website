@@ -168,4 +168,29 @@ class CorpusMatchController extends BaseController {
         }
     }
 
+    // called via Ajax
+    def markAsFixedOrFalseAlarm = {
+        CorpusMatch match = CorpusMatch.get(params.id)
+        if (!match) {
+            throw new Exception("Corpus match id #${params.id} not found")
+        }
+        // Set match to invisible so it disappears from the list of corpus matches:
+        match.isVisible = false
+        match.save(failOnError: true)
+
+        // Add as hidden match in a different table so it won't be re-inserted the next
+        // time the Wikipedia dump check runs: 
+        CorpusMatchHidden hiddenMatch = new CorpusMatchHidden()
+        hiddenMatch.languageCode = match.languageCode
+        hiddenMatch.sourceURI = match.sourceURI
+        hiddenMatch.ruleID = match.ruleID
+        hiddenMatch.smallErrorContext = match.smallErrorContext
+        hiddenMatch.hideDate = new Date()
+        hiddenMatch.username = session.user.username
+        hiddenMatch.save(failOnError: true)
+ 
+        log.info("User ${session.user.username} has marked corpus match #${params.id} as 'fixed or false alarm'")
+        render "ok"
+    }
+
 }

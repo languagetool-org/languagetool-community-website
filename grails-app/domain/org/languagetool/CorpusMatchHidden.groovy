@@ -1,5 +1,5 @@
 /* LanguageTool Community 
- * Copyright (C) 2008 Daniel Naber (http://www.danielnaber.de)
+ * Copyright (C) 2013 Daniel Naber (http://www.danielnaber.de)
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,33 +19,18 @@
 
 package org.languagetool
 
-import java.util.Date
-
 /**
- * An error detected by the grammar checker in a text corpus.
- * To be populated from external software, not from Grails.
+ * An error set to "hidden" by a user because it was a false alarm or it has 
+ * been fixed already. The process that adds data to CorpusMatch should make 
+ * lookups in this table so it doesn't re-insert errors that have been hidden.
  */
-class CorpusMatch {
-
-    static constraints = {
-        ruleDescription(nullable: true) // nullable because it was introduced later
-        ruleSubID(nullable: true) // nullable because it was introduced later
-    }
+class CorpusMatchHidden {
 
     String languageCode
-    String ruleID
-    String ruleCategory
-    String ruleSubID
-    String ruleDescription
-    String message
     String sourceURI
-    String sourceType
-    String errorContext
+    String ruleID
     String smallErrorContext
-    Date corpusDate
-    Date checkDate
-    boolean isVisible  // set to 0 if the match is hidden by user action
-
-    static hasMany = [userOpinions: UserOpinion]
+    String username  // the user that set this error to hidden
+    Date hideDate    // the date this error was hidden
 
 }
