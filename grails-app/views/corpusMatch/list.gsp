@@ -12,8 +12,12 @@
                         {
                             type: 'POST',
                             success: function(data, textStatus, jqXHR) {
-                                $('#ajaxFailure').html("");
-                                $('#ajaxFeedback' + corpusMatchId).html("${message(code:'ltc.feed.matches.marked')}");
+                                if (data == "ok") {
+                                    $('#ajaxFailure').html("");
+                                    $('#ajaxFeedback' + corpusMatchId).html("${message(code:'ltc.feed.matches.marked')}");
+                                } else {
+                                    $('#ajaxFailure').html("<div class='warn'>Sorry, submitting your vote failed. Are you still logged in?</div>");
+                                }
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 $('#ajaxFailure').html("<div class='warn'>Sorry, submitting your vote failed</div>");
