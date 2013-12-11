@@ -6,6 +6,7 @@
         <meta name="layout" content="main" />
         <title><g:message code="ltc.corpus.match.title"/> - ${language}</title>
         <g:javascript library="jquery" />
+        <meta name="robots" content="noindex,nofollow" />
         <script language="JavaScript">
             function markedAsFixedOrFalseAlarm(corpusMatchId) {
                 jQuery.ajax('${resource(dir:'corpusMatch')}/markAsFixedOrFalseAlarm?id=' + corpusMatchId,
