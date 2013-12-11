@@ -19,7 +19,7 @@
           
             <h1>${title}</h1>
 
-            <g:if test="${language?.hasVariant()}">
+            <g:if test="${language?.hasVariant() && !language?.getShortNameWithCountryAndVariant().contains("-")}">
                 <p class="warn"><b>Hint:</b> Note that spell checking will only work when you select a language
                     plus its variant,<br/>e.g. "English (US)" instead of just "English".</p>
             </g:if>
@@ -52,9 +52,7 @@
                             <g:set var="iteratedLangName" value="eo"/>
                         </g:if>
                         <g:set var="selected" value="${iteratedLangName == codeWithCountry ? 'selected' : ''}"/>
-                        <g:if test="${!lang.hasVariant()}">
-                            <option ${selected} value="${codeWithCountry}">${lang.name}</option>
-                        </g:if>
+                        <option ${selected} value="${codeWithCountry}">${lang.name}</option>
                     </g:each>
                 </select>
             </g:form>
