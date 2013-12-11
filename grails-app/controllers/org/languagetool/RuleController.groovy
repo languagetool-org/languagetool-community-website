@@ -23,13 +23,9 @@ import org.languagetool.rules.*
 import org.languagetool.rules.patterns.*
 
 /**
- * Display and edit error rules.
+ * Display error rules.
  */
 class RuleController extends BaseController {
-
-    def beforeInterceptor = [action: this.&auth,
-            only: ['copyAndEditRule', 'edit', 'doEdit',
-                    'createRule', 'change']]
 
     def index = { redirect(action:list,params:params) }
 
@@ -44,20 +40,6 @@ class RuleController extends BaseController {
         JLanguageTool lt = new JLanguageTool(langObj)
         lt.activateDefaultPatternRules()
         List rules = lt.getAllRules()
-        Map patternRuleIdToUserRuleId = new HashMap()
-        if (session.user) {
-            // find the user's personal rules:
-            List userRules = UserRule.findAllByUserAndLang(session.user, langCode)
-            for (userRule in userRules) {
-                // make temporary pattern rules:
-                PatternRule patternRule = userRule.toPatternRule(true)
-                //patternRule.dynamicId = userRule.id
-                // TODO: ugly hack, find a better solution to transfer the id of the dynamic rule:
-                //patternRule.patternRule.message = patternRule.message + "__//__" + userRule.id
-                patternRuleIdToUserRuleId.put(patternRule.id, userRule.id)
-                rules.add(patternRule)
-            }
-        }
         if (params.filter) {
             rules = filterRules(rules, params.filter)
         }
@@ -74,19 +56,7 @@ class RuleController extends BaseController {
         } else {
             rules = rules[offset..Math.min(rules.size()-1, offset+max-1)]
         }
-        Set disabledRuleIDs = new HashSet()      // empty = all rules activated
-        if (session.user) {
-            LanguageConfiguration langConfig = getLangConfigForUser(langObj.shortName, session)
-            if (langConfig) {
-                Set disabledRules = langConfig.getDisabledRules()
-                for (rule in disabledRules) {
-                    disabledRuleIDs.add(rule.ruleID)
-                }
-            }
-        }
-        [ ruleList: rules, ruleCount: ruleCount, languages: SortedLanguages.get(),
-                disabledRuleIDs: disabledRuleIDs, patternRuleIdToUserRuleId: patternRuleIdToUserRuleId,
-                language: langObj]
+        [ruleList: rules, ruleCount: ruleCount, languages: SortedLanguages.get(), language: langObj]
     }
 
     private filterRules(List rules, String filter) {
@@ -106,7 +76,7 @@ class RuleController extends BaseController {
                 filtered.add(rule)
                 continue
             }
-            // match category (TODO: doesn't work properly for user rules):
+            // match category:
             String catName = rule.category.name.toLowerCase()
             if (catName.contains(filter)) {
                 filtered.add(rule)
@@ -139,7 +109,6 @@ class RuleController extends BaseController {
             flash.message = "No rule with id ${params.id.encodeAsHTML()}"
             redirect(action:list)
         }
-        int disableId = getEnableDisableId(langCode)
         // disable all rules except one:
         List rules = lt.getAllRules()
         for (Rule rule in rules) {
@@ -165,9 +134,9 @@ class RuleController extends BaseController {
         }
         int corpusMatchCount = countCorpusMatches(langCode, selectedRule.id)
         List ruleMatches = lt.check(text)
-        render(view:'show', model: [ hideRuleLink: true, rule: selectedRule, isDisabled: disableId != -1, disableId: disableId,
+        render(view:'show', model: [ hideRuleLink: true, rule: selectedRule,
                 textToCheck: params.text, matches: ruleMatches, ruleId: params.id,
-                isUserRule: isUserRule, corpusMatchCount: corpusMatchCount],
+                corpusMatchCount: corpusMatchCount],
                 contentType: "text/html", encoding: "utf-8")
     }
 
@@ -176,7 +145,6 @@ class RuleController extends BaseController {
         SelectedRule rule = getRuleById(params.id, params.subId, langCode)
         Rule selectedRule = rule.rule
         boolean isUserRule = rule.isUserRule
-        int disableId = getEnableDisableId(langCode)
         if (!selectedRule) {
             log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${langCode}")
             flash.message = "No rule with id ${params.id.encodeAsHTML()}, subId ${params.subId.encodeAsHTML()}"
@@ -192,8 +160,8 @@ class RuleController extends BaseController {
             ruleSubId = ((PatternRule)selectedRule).getSubId()
         }
         int corpusMatchCount = countCorpusMatches(langCode, selectedRule.id)
-        render(view:'show', model: [rule: selectedRule, ruleSubId: ruleSubId, isDisabled: disableId != -1, disableId: disableId,
-                isUserRule: isUserRule, ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
+        render(view:'show', model: [rule: selectedRule, ruleSubId: ruleSubId,
+                ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
                 contentType: "text/html", encoding: "utf-8")
     }
 
@@ -260,37 +228,6 @@ class RuleController extends BaseController {
             }
         }
         return selectedRule
-    }
-
-    private int getEnableDisableId(String lang) {
-        LanguageConfiguration langConfig = getLangConfigForUser(lang, session)
-        int enableDisableID = -1
-        if (langConfig) {
-            Set disabledRules = langConfig.getDisabledRules()
-            for (disabledRule in disabledRules) {
-                if (disabledRule.ruleID == params.id) {
-                    enableDisableID = disabledRule.id
-                    break
-                }
-            }
-        }
-        return enableDisableID
-    }
-
-    private static LanguageConfiguration getLangConfigForUser(String lang, def session) {
-        if (session.user) {
-            def user = session.user
-            user.refresh()
-            Set<LanguageConfiguration> langConfigs = user.languagesConfigurations
-            if (langConfigs) {
-                for (langConfig in langConfigs) {
-                    if (langConfig.language == lang) {
-                        return langConfig
-                    }
-                }
-            }
-        }
-        return null
     }
 
 }

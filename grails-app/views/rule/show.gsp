@@ -174,19 +174,17 @@
                     </td>
                 </tr>
 
-                <g:if test="${!isUserRule}">
-                    <tr class="additional">
-                        <td><g:message code="ltc.rule.show.id" /></td>
-                        <td>
-                            <g:if test="${ruleSubId}">
-                                ${rule.id.encodeAsHTML()} [${ruleSubId.encodeAsHTML()}]
-                            </g:if>
-                            <g:else>
-                                ${rule.id.encodeAsHTML()}
-                            </g:else>
-                        </td>
-                    </tr>
-                </g:if>
+                <tr class="additional">
+                    <td><g:message code="ltc.rule.show.id" /></td>
+                    <td>
+                        <g:if test="${ruleSubId}">
+                            ${rule.id.encodeAsHTML()} [${ruleSubId.encodeAsHTML()}]
+                        </g:if>
+                        <g:else>
+                            ${rule.id.encodeAsHTML()}
+                        </g:else>
+                    </td>
+                </tr>
                 <tr class="additional">
                     <td><g:message code="ltc.rule.show.languagetool.version" /></td>
                     <td>
