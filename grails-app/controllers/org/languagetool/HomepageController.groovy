@@ -19,7 +19,6 @@
 
 package org.languagetool
 
-import org.hibernate.*
 import org.apache.tika.language.LanguageIdentifier
 
 /**
@@ -27,48 +26,18 @@ import org.apache.tika.language.LanguageIdentifier
  */
 class HomepageController extends BaseController {
 
-    SessionFactory sessionFactory       // will be injected automatically
-
     /**
      * Display the site's main page.
      */
     def index = {
-        request.setCharacterEncoding("UTF-8")
-        response.setCharacterEncoding("UTF-8")
         String langCode = "en"
         if (params.lang) {
             langCode = params.lang
         } else {
             params.lang = "en"
         }
-        def hibSession = sessionFactory.getCurrentSession()
-        final int maxCorpusMatches = 3
-        SQLQuery q
-        if (params.ids) {
-            // user logged in specifically to vote, we don't show random
-            // items in this case:
-            q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
-                    "language_code = ? AND (id = ? OR id = ? OR id = ?) LIMIT $maxCorpusMatches")
-            q.setString(0, langCode)
-            String[] lastShownIds = params.ids.split(",")
-            int i = 1
-            for (String id in lastShownIds) {
-                q.setString(i, id)
-                i++
-            }
-        } else {
-            q = hibSession.createSQLQuery("SELECT * FROM corpus_match WHERE " +
-                    "language_code = ? AND is_visible = 1 ORDER BY RAND() LIMIT $maxCorpusMatches")
-            q.setString(0, langCode)
-        }
-        q.addEntity("match", CorpusMatch.class)
-        def matches = []
-        for (match in q.list()) {
-            CorpusMatchInfo cmi = new CorpusMatchInfo((CorpusMatch)match)
-            matches.add(cmi)
-        }
         Language langObject = Language.getLanguageForShortName(langCode)
-        render(view:'index',model:[matches: matches, langCode: langCode,
+        render(view:'index',model:[langCode: langCode,
                 lang: langCode,		// used in _corpusMatches.gsp
                 languages: SortedLanguages.get(), language: langObject])
     }
