@@ -1,11 +1,11 @@
 
-<%@ page import="org.languagetool.User" %>
+<%@ page import="org.languagetool.Language; org.languagetool.User" %>
 <%@ page import="org.languagetool.rules.patterns.PatternRule" %>
 <%@ page import="org.languagetool.tools.StringTools" %>
 <html>
     <head>
         <script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.7.1.js')}"></script>
-        <meta name="layout" content="iframemain" />
+        <meta name="layout" content="main" />
         <title><g:message code="ltc.editor.title"/></title>
         <script type="text/javascript">
 
@@ -48,10 +48,8 @@
     </head>
     <body>
 
-        <div class="content">
+        <div class="body">
 
-            <noscript class="warn"><g:message code="ltc.editor.nojs"/></noscript>
-        
             <g:form name="ruleForm"  method="post" action="checkRule">
 
                 <g:hiddenField id="messageBackup" name="messageBackup" value=""/>
@@ -60,14 +58,14 @@
                 <table style="border: 0px">
                     <tr>
                         <td colspan="2">
-                            <p style="width:550px;text-align: right"><g:link action="expert"><g:message code="ltc.editor.advanced.mode"/></g:link></p>
+                            <p style="width:550px;margin:10px;text-align: right"><g:link action="expert"><g:message code="ltc.editor.advanced.mode"/></g:link></p>
 
                             <p style="width:550px"><g:message code="ltc.editor.intro"/></p>
                         </td>
                     </tr>
                     <tr>
                         <td width="150"><g:message code="ltc.editor.language"/></td>
-                        <td><g:select name="language" from="${languageNames}" value="English"/></td>
+                        <td><g:select name="language" from="${languageNames}" value="${params.lang ? Language.getLanguageForShortName(params.lang).getName() : 'English'}"/></td>
                     </tr>
                     <tr>
                         <td valign="top"><g:message code="ltc.editor.wrong.words"/></td>

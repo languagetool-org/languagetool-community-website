@@ -5,7 +5,7 @@
 
     <g:if test="${searcherResult.getMatchingSentences().size() > 0}">
 
-        <table>
+        <table style="border:0">
             <tr>
                 <td valign="top"><img style="margin:10px" align="left" src="${resource(dir:'images', file:'information.png')}" /></td>
                 <td>
@@ -25,7 +25,7 @@
                                     <g:set var="endMarked" value="${false}"/>
                                     <g:each in="${matchingSentence.getAnalyzedSentence().getTokens()}" var="token">
                                         <g:if test="${pos >= match.getFromPos() && !startMarked}">
-                                            <span class='errorMarker'>
+                                            <span class='error'>
                                             <g:set var="startMarked" value="${true}"/>
                                         </g:if>
                                         <span title="${StringUtils.join(token.getReadings(), ", ").encodeAsHTML()}">${token.getToken().encodeAsHTML()}</span>
@@ -52,9 +52,9 @@
     </g:if>
     <g:else>
 
-        <table>
+        <table style="border:0">
             <tr>
-                <td><img style="margin:5px" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'accept.png')}" /></td>
                 <td>
                     <p style="width:700px;">
                         <g:message code="ltc.editor.corpus.intro" args="${[docsChecked, params.language.encodeAsHTML()]}"/>
@@ -66,10 +66,10 @@
     </g:else>
 
     <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
-        <table>
+        <table style="border:0">
             <tr>
-                <td valign="top"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
-                <td>
+                <td valign="top" width="40"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                <td style="text-align: left">
                     <g:message code="ltc.editor.corpus.correct.example.sentence"/>
                     <g:if test="${incorrectExamplesMatches}">
                         <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>

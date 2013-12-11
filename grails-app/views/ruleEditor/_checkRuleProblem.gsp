@@ -7,7 +7,7 @@
     </td>
     <td>
 
-        <div class="errors"><g:message code="ltc.editor.rule.problems"/>
+        <div><g:message code="ltc.editor.rule.problems"/>
 
             <ul>
                 <g:if test="${isOff}">

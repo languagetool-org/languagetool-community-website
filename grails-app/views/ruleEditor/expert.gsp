@@ -4,7 +4,7 @@
 <html>
     <head>
         <script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.7.1.js')}"></script>
-        <meta name="layout" content="iframemain" />
+        <meta name="layout" content="main" />
         <title><g:message code="ltc.editor.expert.title" /></title>
         <script type="text/javascript">
 
@@ -47,13 +47,11 @@
     </head>
     <body>
 
-        <div class="content">
+        <div class="body">
 
-            <noscript class="warn"><g:message code="ltc.editor.nojs"/></noscript>
-        
             <g:form name="ruleForm" method="post" action="checkRule">
 
-                <p style="width:550px;text-align: right"><g:link action="index"><g:message code="ltc.editor.simple.mode"/></g:link></p>
+                <p style="width:550px;margin:10px;text-align: right"><g:link action="index"><g:message code="ltc.editor.simple.mode"/></g:link></p>
 
                 <p class="warn"><g:message code="ltc.editor.expert.beta.warning"/></p>
                 
@@ -156,9 +154,9 @@
 
                 <input id="xml" type="hidden" name="xml" value=""/>
 
-                <table>
+                <table style="border:0">
                     <tr>
-                        <td>
+                        <td style="width:10%">
                             <g:submitToRemote name="checkXmlButton"
                                               before="copyXml()"
                                               onLoading="onLoadingResult()"

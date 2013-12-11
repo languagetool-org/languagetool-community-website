@@ -37,6 +37,12 @@
                             <g:message code="ltc.browse.explain"/>
                         </div>
 
+                        <h2><g:link controller="ruleEditor" params="[lang: params.lang?.encodeAsHTML()]"><g:message code="ltc.editor.title.short"/></g:link></h2>
+
+                        <div class="mainPart">
+                            <g:message code="ltc.editor.explain"/>
+                        </div>
+
                     </td>
                     <td width="10%"></td>
                     <td width="45%">
