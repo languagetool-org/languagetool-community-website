@@ -23,24 +23,14 @@
                 <g:message code="ltc.browse.explain"/>
             </div>
 
-
             <br />
             <h2><g:link controller="wikiCheck" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.wiki.check"/></g:link></h2>
-
 
             <br />
             <h2><g:link controller="corpusMatch" action="list" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.check.results"/></g:link></h2>
             
             <div class="mainPart">
-            
-            <p><g:message code="ltc.check.explain"/></p>
-            
-            <br/>
-            <p><g:message code="ltc.check.random.selection"/></p>
-            
-            <br/>
-            <g:render template="/corpusMatches"/>
-            
+                <p><g:message code="ltc.check.explain"/></p>
             </div>
 
             <br />

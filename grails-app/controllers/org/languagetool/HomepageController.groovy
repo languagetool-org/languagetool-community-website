@@ -20,7 +20,6 @@
 package org.languagetool
 
 import org.hibernate.*
-import org.languagetool.rules.*
 import org.apache.tika.language.LanguageIdentifier
 
 /**
@@ -66,19 +65,9 @@ class HomepageController extends BaseController {
         def matches = []
         for (match in q.list()) {
             CorpusMatchInfo cmi = new CorpusMatchInfo((CorpusMatch)match)
-            if (session.user) {
-                UserOpinion opinion = UserOpinion.findByUserAndCorpusMatch(session.user, match)
-                if (opinion) {
-                    cmi.opinion = opinion.opinion
-                }
-            }
             matches.add(cmi)
         }
         Language langObject = Language.getLanguageForShortName(langCode)
-        // force some order so we show the same order again as before login
-        // (people might log in specifically to vote, we don't show random
-        // items in that case):
-        Collections.sort(matches)
         render(view:'index',model:[matches: matches, langCode: langCode,
                 lang: langCode,		// used in _corpusMatches.gsp
                 languages: SortedLanguages.get(), language: langObject])
@@ -126,20 +115,8 @@ class HomepageController extends BaseController {
         }
         JLanguageTool lt = new JLanguageTool(lang)
         lt.activateDefaultPatternRules()
-        List userRules = getUserRules()
-        for (rule in userRules) {
-            lt.addRule(rule)
-        }
         // load user configuration and disable deactivated rules:
         LanguageConfiguration langConfig = null
-        if (session.user) {
-            langConfig = RuleController.getLangConfigforUser(langStr, session)
-            if (langConfig) {
-                for (disRule in langConfig.disabledRules) {
-                    lt.disableRule(disRule.ruleID)
-                }
-            }
-        }
         final int maxTextLen = grailsApplication.config.max.text.length
         final String text = params.text
         if (text.size() > maxTextLen) {
@@ -147,22 +124,9 @@ class HomepageController extends BaseController {
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
         List ruleMatches = lt.check(text)
-        // TODO: count only disabledRules for the current language
         [matches: ruleMatches, lang: langStr, language: lang, languages: languages,
-                disabledRules: langConfig?.disabledRules, textToCheck: params.text,
+                textToCheck: params.text,
                 autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
-    }
-
-    private getUserRules() {
-        List rules = []
-        if (session.user) {
-            List userRules = UserRule.findAllByUserAndLang(session.user, params.lang)
-            for (userRule in userRules) {
-                Rule patternRule = userRule.toPatternRule(true)
-                rules.add(patternRule)
-            }
-        }
-        return rules
     }
 
 }

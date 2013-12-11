@@ -38,8 +38,8 @@
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
             </g:if>
-            
-            <p><g:message code="ltc.corpus.match.note"/></p>
+
+            <p><g:message code="ltc.check.explain"/> <g:message code="ltc.corpus.match.note"/></p>
             
             <br />
 
