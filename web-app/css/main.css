@@ -21,6 +21,16 @@ h2 a:link, a:visited, a:hover {
     color: #67a918;
 }
 
+h2 {
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.firstHeadline {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 a:link, a:visited, a:hover {
     color: #678718;
     font-weight: bold;
@@ -479,4 +489,11 @@ th.desc a {
 
 .wikiCheckTable td {
     padding: 2px;
+}
+
+.homepageArea {
+    font-size: 18pt;
+    background-color: #eee;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

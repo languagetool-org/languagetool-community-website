@@ -74,6 +74,18 @@ class HomepageController extends BaseController {
     }
 
     /**
+     * Offer a simple form that works without JavaScript.
+     */
+    def simpleCheck = {
+        List languages = SortedLanguages.get()
+        String defaultLang = "en-US"
+        params.language = defaultLang
+        params.lang = defaultLang
+        Language language = Language.getLanguageForShortName(defaultLang)
+        render(view: 'checkText', model:[languages: languages, language: language])
+    }
+    
+    /**
      * Run the grammar checker on the given text.
      */
     def checkText = {

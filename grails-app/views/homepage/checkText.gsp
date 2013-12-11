@@ -4,18 +4,28 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title><g:message code="ltc.home.check.title"/></title>
+        <g:if test="${matches}">
+            <g:set var="title" value="${message(code:'ltc.home.check.title')}"/>
+        </g:if>
+        <g:else>
+            <g:set var="title" value="${message(code:'ltc.home.check.fallback.title')}"/>
+        </g:else>
+        <title>${title}</title>
         <meta name="layout" content="main" />
     </head>
     <body>
 
         <div class="body">
           
-            <h1><g:message code="ltc.home.check.title"/></h1>
+            <h1>${title}</h1>
 
             <g:if test="${language?.hasVariant()}">
                 <p class="warn"><b>Hint:</b> Note that spell checking will only work when you select a language
                     plus its variant,<br/>e.g. "English (US)" instead of just "English".</p>
+            </g:if>
+
+            <g:if test="${!matches}">
+                <g:message code="ltc.home.check.text.intro" args="${['http://languagetool.org']}" />
             </g:if>
         
             <g:if test="${autoLangDetectionWarning}">
@@ -28,7 +38,6 @@
             <g:render template="/ruleMatches"/>
             
             <br />
-            <p><g:message code="ltc.home.check.again"/></p>
         
             <g:form method="post">
                 <g:textArea name="text" value="${params.text}" rows="5" cols="80" />
