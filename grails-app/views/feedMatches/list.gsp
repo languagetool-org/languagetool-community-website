@@ -38,6 +38,8 @@
                 <div class="message">${flash.message}</div>
             </g:if>
             
+            <p><g:message code="ltc.feed.matches.spelling"/></p>
+            
             <br />
             
             <div id="ajaxFailure"></div>
