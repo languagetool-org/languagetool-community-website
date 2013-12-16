@@ -21,11 +21,16 @@ package org.languagetool
 
 import javax.mail.*
 import javax.mail.internet.*
+import javax.servlet.http.Cookie
 
 /**
  * User login, logout, settings, and registration.
  */
 class UserController extends BaseController {
+
+    public static final String LOGIN_COOKIE_NAME = "loginCookie"
+    
+    private static final int LOGIN_COOKIE_AGE = (60*60*24*365)/2   // half a year
 
     def beforeInterceptor = [action: this.&adminAuth, except:
             ['login', 'logout', 'register', 'doRegister', 'completeRegistration', 'settings',
@@ -216,6 +221,9 @@ class UserController extends BaseController {
                     return
                 }
                 log.info("login successful for user ${user} (${request.getRemoteAddr()})")
+                if (params.logincookie) {
+                    addDurationSession(session, response, user)
+                }
                 session.user = user
                 user.lastLoginDate = new Date()
                 def redirectParams =
@@ -249,8 +257,31 @@ class UserController extends BaseController {
         session.user = null
         session.controllerName = null
         session.actionName = null
+        cleanCookie(response, LOGIN_COOKIE_NAME)
         flash.message = "Successfully logged out"
         redirect(uri:"")
     }
 
+    private void cleanCookie(def response, String cookieName) {
+        Cookie[] cookies = request.getCookies()
+        for (cookie in cookies) {
+            if (cookie.getName() == cookieName) {
+                cookie.setMaxAge(0)		// effectively deletes the cookie
+                cookie.setPath("/")
+                response.addCookie(cookie)
+                break
+            }
+        }
+    }
+
+    private void addDurationSession(def session, def response, User user) {
+        Cookie loginCookie = new Cookie(LOGIN_COOKIE_NAME, session.id)
+        loginCookie.setMaxAge(LOGIN_COOKIE_AGE)
+        loginCookie.setPath("/")
+        response.addCookie(loginCookie)
+        DurationSession dSession = new DurationSession(sessionId:session.id, user:user, insertDate:new Date())
+        if (!dSession.save()) {
+            throw new Exception("could not save duration session: ${dSession.errors}")
+        }
+    }
 }

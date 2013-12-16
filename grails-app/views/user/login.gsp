@@ -25,7 +25,7 @@
                     <input type="hidden" name="ids" value="${StringTools.escapeHTML(StringTools.listToString(Arrays.asList(params.ids), ','))}"/>
                 </g:if>
                 <g:if test="${params.lang}">
-                	<input type="hidden" name="lang" value="${params.lang?.encodeAsHTML()}"/>
+                    <input type="hidden" name="lang" value="${params.lang?.encodeAsHTML()}"/>
                 </g:if>
                 
                 <div class="dialog">
@@ -54,6 +54,13 @@
                                 </td>
                                 <td valign='top' class='value'>
                                     <input size="40" type="password" id='password' name='password' value=""/>
+                                </td>
+                            </tr> 
+                        
+                            <tr class='prop'>
+                                <td></td>
+                                <td valign='top' class='value'>
+                                    <label><input type="checkbox" name='logincookie' />&nbsp;<g:message code="ltc.login.keep"/></label>
                                 </td>
                             </tr> 
                         
