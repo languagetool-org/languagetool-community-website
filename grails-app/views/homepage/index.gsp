@@ -59,6 +59,15 @@
                             <p><g:message code="ltc.check.explain.short"/></p>
                         </div>
 
+                        <h2><g:link controller="feedMatches" action="list" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.feed.matches.title"/></g:link></h2>
+
+                        <div class="mainPart">
+                            <p>
+                                <g:message code="ltc.feed.matches.explain.short"/>
+                                <g:message code="ltc.feed.matches.not.available"/>
+                            </p>
+                        </div>
+
                     </td>
                 </tr>
             </table>
