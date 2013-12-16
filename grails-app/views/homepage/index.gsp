@@ -11,6 +11,8 @@
         <div class="body">
 
         <g:render template="/languageSelection"/>
+            
+        <g:set var="lang" value="${params.lang ? params.lang : 'en'}"/>
 
         <div class="dialog">
             
@@ -25,19 +27,19 @@
                 <tr>
                     <td width="45%">
 
-                        <h2 class="firstHeadline"><g:link controller="homepage" action="simpleCheck" params="[lang: params.lang?.encodeAsHTML()]"><g:message code="ltc.home.check.fallback.short.title"/></g:link></h2>
+                        <h2 class="firstHeadline"><g:link controller="homepage" action="simpleCheck" params="[lang: lang]"><g:message code="ltc.home.check.fallback.short.title"/></g:link></h2>
 
                         <div class="mainPart">
                             <g:message code="ltc.home.check.text.explain"/>
                         </div>
 
-                        <h2><g:link controller="rule" action="list" params="[lang: params.lang?.encodeAsHTML()]"><g:message code="ltc.browse.rules"/></g:link></h2>
+                        <h2><g:link controller="rule" action="list" params="[lang: lang]"><g:message code="ltc.browse.rules"/></g:link></h2>
 
                         <div class="mainPart">
                             <g:message code="ltc.browse.explain"/>
                         </div>
 
-                        <h2><g:link controller="ruleEditor" params="[lang: params.lang?.encodeAsHTML()]"><g:message code="ltc.editor.title.short"/></g:link></h2>
+                        <h2><g:link controller="ruleEditor" params="[lang: lang]"><g:message code="ltc.editor.title.short"/></g:link></h2>
 
                         <div class="mainPart">
                             <g:message code="ltc.editor.explain"/>
@@ -47,19 +49,19 @@
                     <td width="10%"></td>
                     <td width="45%">
 
-                        <h2 class="firstHeadline"><g:link controller="wikiCheck" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.wiki.check"/></g:link></h2>
+                        <h2 class="firstHeadline"><g:link controller="wikiCheck" params="[lang: lang]"><g:message code="ltc.wiki.check"/></g:link></h2>
 
                         <div class="mainPart">
                             <p><g:message code="ltc.wiki.check.explain"/></p>
                         </div>
 
-                        <h2><g:link controller="corpusMatch" action="list" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.check.results"/></g:link></h2>
+                        <h2><g:link controller="corpusMatch" action="list" params="[lang: lang]"><g:message code="ltc.check.results"/></g:link></h2>
 
                         <div class="mainPart">
                             <p><g:message code="ltc.check.explain.short"/></p>
                         </div>
 
-                        <h2><g:link controller="feedMatches" action="list" params="[lang: params.lang ? params.lang : 'en']"><g:message code="ltc.feed.matches.title"/></g:link></h2>
+                        <h2><g:link controller="feedMatches" action="list" params="[lang: lang]"><g:message code="ltc.feed.matches.title"/></g:link></h2>
 
                         <div class="mainPart">
                             <p>
