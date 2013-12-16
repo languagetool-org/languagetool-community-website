@@ -342,6 +342,10 @@ th.desc a {
 .login {
 	margin-left: 15px;
 }
+.imprint {
+	margin-top: 5px;
+	margin-left: 15px;
+}
 
 .error {
 	font-weight: bold;
