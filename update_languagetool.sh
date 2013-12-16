@@ -14,6 +14,7 @@ echo "Building and copying latest LanguageTool core test to lib/"
 cd ../languagetool
 echo "NOTE: will skip tests on build!"
 ./build.sh languagetool-standalone clean install -DskipTests
+./build.sh languagetool-wikipedia clean install -DskipTests
 
 cd -
 
