@@ -35,16 +35,17 @@
                         
                             <tr class='prop'>
                                 <td valign='top' class='name'>
-                                    <label for='password'><g:message code="ltc.login.password"/></label>
+                                    <label for='password1'><g:message code="ltc.login.password"/></label>
                                 </td>
                                 <td valign='top' class='value'>
                                     <input size="40" type="password" id='password1' name='password1' value=""/>
+                                    <div style="width:350px" class="metaInfo"><g:message code="ltc.login.password.hint"/></div>
                                 </td>
                             </tr> 
 
                             <tr class='prop'>
                                 <td valign='top' class='name'>
-                                    <label for='password'><g:message code="ltc.login.password.repeat"/></label>
+                                    <label for='password2'><g:message code="ltc.login.password.repeat"/></label>
                                 </td>
                                 <td valign='top' class='value'>
                                     <input size="40" type="password" id='password2' name='password2' value=""/>
