@@ -203,7 +203,6 @@ class UserController extends BaseController {
     def login = {
         if (request.method == 'GET') {
             // show login page
-            session.user = null
             if (params.controllerName && params.actionName) {
                 session.controllerName = params.controllerName
                 session.actionName = params.actionName
