@@ -23,7 +23,8 @@ h2 a:link, a:visited, a:hover {
 
 h2 {
     margin-top: 20px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    line-height: 20px;
 }
 
 .firstHeadline {
