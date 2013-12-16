@@ -64,6 +64,7 @@ class FeedMatchesController extends BaseController {
         }
         def matchByCategoryCriteria = FeedMatches.createCriteria()
         def matchesByCategory = matchByCategoryCriteria {
+            isNull('fixDate')
             eq('languageCode', langCode)
             projections {
                 groupProperty("ruleCategory")
