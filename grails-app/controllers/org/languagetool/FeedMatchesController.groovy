@@ -87,7 +87,6 @@ class FeedMatchesController extends BaseController {
             }
             if (params.notFixedFilter && params.notFixedFilter != "0") {
                 le('editDate', cal.getTime())
-                isNull('fixDate')
             }
             if (params.categoryFilter) {
                 eq('ruleCategory', params.categoryFilter)
@@ -109,7 +108,6 @@ class FeedMatchesController extends BaseController {
             }
             if (params.notFixedFilter && params.notFixedFilter != "0") {
                 le('editDate', cal.getTime())
-                isNull('fixDate')
             }
             if (params.categoryFilter) {
                 eq('ruleCategory', params.categoryFilter)
