@@ -102,7 +102,16 @@
                     </thead>
                     <tbody>
                     <g:set var="prevRuleId" value="${null}"/>
+                    <g:set var="prevDay" value=""/>
                     <g:each in="${corpusMatchList}" status="i" var="match">
+                        <g:set var="day" value="${formatDate(date:match.editDate, format:'yyyy-MM-dd')}"/>
+                        <g:if test="${prevDay != day}">
+                            <tr style="background-color: #ccc;">
+                                <td style="font-weight: bold"><g:formatDate date="${match.editDate}" format="yyyy-MM-dd"/></td>
+                                <td></td>
+                            </tr>
+                            <g:set var="prevDay" value="${day}"/>
+                        </g:if>
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 
                             <td>
