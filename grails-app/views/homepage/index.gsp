@@ -74,6 +74,10 @@
                 </tr>
             </table>
 
+            <div style="text-align: right;margin-top: 40px">
+                <g:render template="/languageToolVersion"/>
+            </div>
+
         </div>
 
         </div>
