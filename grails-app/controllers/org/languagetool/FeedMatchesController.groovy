@@ -21,6 +21,8 @@ package org.languagetool
 
 class FeedMatchesController extends BaseController {
 
+    private final static int MAXIMUM_CHECK_AGE_IN_MINUTES = 3*60
+
     def beforeInterceptor = [action: this.&auth, except: ['list', 'index']]
 
     def static allowedMethods = [markAsFixedOrFalseAlarm: 'POST']
@@ -115,10 +117,18 @@ class FeedMatchesController extends BaseController {
             isNull('fixDate')
             eq('languageCode', langCode)
         }
+        boolean latestCheckDateWarning = false
+        Date latestCheckDate = FeedChecks.findByLanguageCode(langCode)?.checkDate
+        if (latestCheckDate) {
+            Calendar earliestDateStillOkay = new Date().toCalendar()
+            earliestDateStillOkay.add(Calendar.MINUTE, - MAXIMUM_CHECK_AGE_IN_MINUTES)
+            latestCheckDateWarning = latestCheckDate.before(earliestDateStillOkay.time)
+        }
         Language langObj = Language.getLanguageForShortName(langCode)
         [ languageMatchCount: languageMatchCount, corpusMatchList: matches,
                 languages: SortedLanguages.get(), lang: langCode, totalMatches: allMatchesCount,
-                matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj]
+                matchesByRule: matchesByRule, matchesByCategory: matchesByCategory, hiddenRuleIds: hiddenRuleIds, language: langObj,
+                latestCheckDateWarning: latestCheckDateWarning, latestCheckDate: latestCheckDate]
     }
 
     // called via Ajax

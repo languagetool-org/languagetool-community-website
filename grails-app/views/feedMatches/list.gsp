@@ -92,6 +92,13 @@
                 <div class="warn"><g:message code="ltc.feed.matches.no.analysis"/></div>
             </g:if>
 
+            <g:if test="${latestCheckDateWarning}">
+                <div class="warn"><g:message code="ltc.feed.matches.no.uptodate.analysis" args="${[latestCheckDate]}"/></div>
+            </g:if>
+            <g:else>
+                <!-- this is a code for monitoring, do not remove: check_is_up_to_date -->
+            </g:else>
+
             <div class="list">
                 <table>
                     <thead>
