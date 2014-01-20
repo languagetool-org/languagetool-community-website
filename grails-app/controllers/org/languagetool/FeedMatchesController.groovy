@@ -42,6 +42,7 @@ class FeedMatchesController extends BaseController {
         Calendar cal = Calendar.getInstance()
         if (params.notFixedFilter && params.notFixedFilter != "0") {
             cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) - Integer.parseInt(params.notFixedFilter))
+            cal.set(Calendar.SECOND, 0)  // minute granularity is enough and enables use of MySQL cache (for a minute at least)
         }
         int languageMatchCount = FeedMatches.countByLanguageCode(langCode)
         // Grouped Overview of Rule Matches:
