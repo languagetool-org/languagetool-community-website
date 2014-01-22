@@ -13,7 +13,6 @@ cd i18n-temp
 for lang in en ast be br ca zh da nl eo fr gl de el_GR it pl ru sl es tl uk ro sk cs sv is lt km pt_PT pt_BR
 do
   SOURCE=downloaded.tmp
-  # download and hackish JSON cleanup:
   curl --user $USERNAME:$PASSWORD http://www.transifex.net/api/2/project/languagetool/resource/community-website/translation/$lang/?file >$SOURCE
   localLang=$lang
   if [ $lang = 'pt_PT' ]; then
