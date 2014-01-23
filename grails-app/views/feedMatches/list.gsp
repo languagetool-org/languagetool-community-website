@@ -3,6 +3,8 @@
 <html>
     <head>
         <meta name="layout" content="main" />
+        <feed:meta kind="rss" version="2.0" controller="feedMatches" action="feed" 
+                   params="${[lang:language.getShortName(), notFixedFilter:params.notFixedFilter, categoryFilter:params.categoryFilter, filter:params.filter]}"/>
         <title><g:message code="ltc.feed.matches.title"/> - ${language}</title>
         <g:javascript library="jquery" />
         <script language="JavaScript">
@@ -43,6 +45,10 @@
             <br />
             
             <div id="ajaxFailure"></div>
+
+            <div style="float: right">
+                <g:link action="feed" params="${[lang:language.getShortName(), notFixedFilter:params.notFixedFilter, categoryFilter:params.categoryFilter, filter:params.filter]}"><img src="${resource(dir:'images', file:'feed-icon-14x14.png')}" alt="Feed icon"/></g:link>
+            </div>
 
             <form style="margin-bottom: 5px">
                 <input type="hidden" name="lang" value="${lang.encodeAsHTML()}"/>
