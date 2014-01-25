@@ -22,7 +22,7 @@
                 <tr>
                     <td class="homepageArea">LanguageTool</td>
                     <td></td>
-                    <td class="homepageArea">LanguageTool &amp; Wikipedia</td>
+                    <td class="homepageArea">Wikipedia</td>
                 </tr>
                 <tr>
                     <td width="45%">
@@ -49,25 +49,10 @@
                     <td width="10%"></td>
                     <td width="45%">
 
-                        <h2 class="firstHeadline"><g:link controller="wikiCheck" params="[lang: lang]"><g:message code="ltc.wiki.check"/></g:link></h2>
+                        <h2 class="firstHeadline"><g:link controller="wikiCheck" params="[lang: lang]"><g:message code="ltc.wiki.check.homepage"/></g:link></h2>
 
                         <div class="mainPart">
-                            <p><g:message code="ltc.wiki.check.explain"/></p>
-                        </div>
-
-                        <h2><g:link controller="corpusMatch" action="list" params="[lang: lang]"><g:message code="ltc.check.results"/></g:link></h2>
-
-                        <div class="mainPart">
-                            <p><g:message code="ltc.check.explain.short"/></p>
-                        </div>
-
-                        <h2><g:link controller="feedMatches" action="list" params="[lang: lang]"><g:message code="ltc.feed.matches.title"/></g:link></h2>
-
-                        <div class="mainPart">
-                            <p>
-                                <g:message code="ltc.feed.matches.explain.short"/>
-                                <g:message code="ltc.feed.matches.not.available"/>
-                            </p>
+                            <p><g:message code="ltc.wiki.check.explain.homepage"/></p>
                         </div>
 
                     </td>
