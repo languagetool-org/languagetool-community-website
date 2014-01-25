@@ -183,7 +183,7 @@ class FeedMatchesController extends BaseController {
                 def url = "http://${lang.getShortName()}.wikipedia.org/wiki/${match.title.replace(' ', '_')}"
                 entry(match.ruleDescription) {
                     publishedDate = match.editDate
-                    link = createLink(controller: 'wikiCheck', action: 'index', params: [url: url, enabled: match.ruleId], absolute: true)
+                    link = createLink(controller: 'wikiCheck', action: 'pageCheck', params: [url: url, enabled: match.ruleId], absolute: true)
                     content
                 }
             }
