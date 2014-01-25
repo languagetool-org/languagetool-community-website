@@ -34,6 +34,8 @@
 
             <g:render template="/languageSelection"/>
 
+            <g:render template="/wikiCheck/backLink"/>
+
             <h1><g:message code="ltc.corpus.match.title"/> (${totalMatches})</h1>
 
             <g:if test="${flash.message}">

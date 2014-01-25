@@ -71,6 +71,8 @@
 
     <div class="dialog">
 
+        <g:render template="backLink"/>
+
         <h1><g:message code="ltc.wikicheck.headline"/></h1>
 
         <g:render template="urlBox"/>
