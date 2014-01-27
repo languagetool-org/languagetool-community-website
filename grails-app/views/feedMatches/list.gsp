@@ -151,7 +151,7 @@
                                     <g:form method="post" onsubmit="return markedAsFixedOrFalseAlarm(${match.id})">
                                         <div style="margin-top: 5px">
                                             <g:set var="articleUrl" value="http://${match.languageCode.encodeAsHTML()}.wikipedia.org/wiki/${match.title.replace(' ', '_').encodeAsURL()}"/>
-                                            <g:link class="additionalFeedMatchLink" controller="wikiCheck" action="index"
+                                            <g:link class="additionalFeedMatchLink" controller="wikiCheck" action="pageCheck"
                                                          params="${[url:articleUrl, enabled:match.ruleId]}"><span style="font-weight:bold"><g:message code="ltc.wikicheck.check.again"/></span></g:link>
                                             &middot; <a class="additionalFeedMatchLink" href="http://${match.languageCode.encodeAsURL()}.wikipedia.org/w/index.php?title=${match.title.replace(' ', '_').encodeAsURL()}&diff=${match.diffId}"
                                                 ><g:message code="ltc.feed.matches.diff"/></a>

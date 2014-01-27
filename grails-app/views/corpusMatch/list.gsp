@@ -129,7 +129,7 @@
                                         ${StringTools.formatError(match.errorContext.encodeAsHTML())}
                                         <span class="additional"><g:link title="${message(code:'ltc.corpus.match.check.date')} ${StringTools.formatDate(match.checkDate).encodeAsHTML()}" class="additional" url="${match.sourceURI}">${match.sourceURI.replaceFirst("http://..\\.wikipedia\\.org/wiki/", "").encodeAsHTML()}</g:link></span>
                                         <g:if test="${!match.sourceURI.startsWith('http://tatoeba.org')}">
-                                            <span class="additional"> - <g:link class="additional" controller="wikiCheck" action="index"
+                                            <span class="additional"> - <g:link class="additional" controller="wikiCheck" action="pageCheck"
                                                                                 params="${[url:match.sourceURI.replace(' ', '_'), enabled:match.ruleID]}"><g:message code="ltc.wikicheck.check.again"/></g:link></span>
                                         </g:if>
                                         <g:if test="${session.user}">
