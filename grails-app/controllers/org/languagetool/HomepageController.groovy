@@ -30,12 +30,7 @@ class HomepageController extends BaseController {
      * Display the site's main page.
      */
     def index = {
-        String langCode = "en"
-        if (params.lang) {
-            langCode = params.lang
-        } else {
-            params.lang = "en"
-        }
+        String langCode = params.lang ? params.lang : "en"
         Language langObject = Language.getLanguageForShortName(langCode)
         render(view:'index',model:[langCode: langCode,
                 lang: langCode,		// used in _corpusMatches.gsp

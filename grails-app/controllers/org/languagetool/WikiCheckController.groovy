@@ -32,7 +32,9 @@ class WikiCheckController extends BaseController {
     private static final Pattern XML_TITLE_PATTERN = Pattern.compile("title=\"(.*?)\"")
 
     def index = {
-        [languages: SortedLanguages.get()]
+        String langCode = params.lang ? params.lang : "en"
+        Language langObject = Language.getLanguageForShortName(langCode)
+        [languages: SortedLanguages.get(), lang: langObject]
     }
     
     def pageCheck = {
