@@ -34,7 +34,7 @@
             
             <g:render template="/languageSelection"/>
 
-            <g:render template="/wikiCheck/backLink"/>
+            <g:render template="/wikiCheck/backLink" model="${[langCode: language.getShortName()]}"/>
 
             <h1><g:message code="ltc.feed.matches.title"/> (${totalMatches})</h1>
 

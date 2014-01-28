@@ -71,7 +71,7 @@
 
     <div class="dialog">
 
-        <g:render template="backLink"/>
+        <g:render template="backLink" model="${[langCode: langCode]}"/>
 
         <h1><g:message code="ltc.wikicheck.headline"/></h1>
 
