@@ -180,7 +180,7 @@ class FeedMatchesController extends BaseController {
                         " <a href='http://${match.languageCode.encodeAsURL()}.wikipedia.org/w/index.php?title=${match.title.replace(' ', '_').encodeAsURL()}&diff=${match.diffId}'>(diff)</a>" +
                         "<br/><br/>" +
                         match.ruleMessage.replace('<suggestion>', '"').replace('</suggestion>', '"') + "<br/>"
-                def url = "http://${lang.getShortName()}.wikipedia.org/wiki/${match.title.replace(' ', '_')}"
+                def url = "http://${lang.getShortName()}.wikipedia.org/wiki/${match.title.replace(' ', '_').replace('&', '%26')}"
                 entry(match.ruleDescription) {
                     publishedDate = match.editDate
                     link = createLink(controller: 'wikiCheck', action: 'pageCheck', params: [url: url, enabled: match.ruleId], absolute: true)
