@@ -20,9 +20,9 @@
 
             <table style="border:0">
                 <tr>
-                    <td class="homepageArea">LanguageTool</td>
+                    <td><h1>LanguageTool</h1></td>
                     <td></td>
-                    <td class="homepageArea">Wikipedia</td>
+                    <td><h1>Wikipedia</h1></td>
                 </tr>
                 <tr>
                     <td width="45%">
@@ -59,7 +59,7 @@
                 </tr>
             </table>
 
-            <div style="text-align: right;margin-top: 40px">
+            <div style="margin-left:8px;margin-top: 50px">
                 <g:render template="/languageToolVersion"/>
             </div>
 
