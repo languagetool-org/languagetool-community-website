@@ -107,6 +107,12 @@
                 <!-- this is a code for monitoring, do not remove: check_is_up_to_date -->
             </g:else>
 
+            <g:if test="${language.getShortName() == 'fr'}">
+                <div class="warn">Please note that the checks for French have been recently activated and they
+                    need a lot of fine-tuning.<br/>
+                    <a href="https://languagetool.org/support/">Let us know which rules should be turned off by default</a></div>
+            </g:if>
+
             <div class="list">
                 <table>
                     <thead>
