@@ -34,13 +34,14 @@ enum SortField { description, pattern, category }
 public class RuleComparator implements Comparator<Rule> {
 
   private final SortField sortField;
-  private SortDirection sortDirection;
+  private final SortDirection sortDirection;
   
   RuleComparator(SortField sortField, SortDirection sortDirection) {
     this.sortField = sortField;
     this.sortDirection = sortDirection;
   }
   
+  @Override
   public int compare(Rule r1, Rule r2) {
     int val = 0;
     if (sortField == SortField.description) {
