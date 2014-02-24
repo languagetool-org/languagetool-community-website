@@ -50,6 +50,8 @@
 
         <div class="body">
 
+            <g:render template="/languageSelection"/>
+
             <g:form name="ruleForm"  method="post" action="checkRule">
 
                 <g:hiddenField id="messageBackup" name="messageBackup" value=""/>
