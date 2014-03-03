@@ -22,6 +22,11 @@
         <g:render template="textForm"/>
 
         <div class="textAnalysis">
+
+            <div style="margin-bottom: 8px">
+                LanguageTool version: ${JLanguageTool.VERSION} (${(new JLanguageTool(Language.DEMO)).BUILD_DATE})
+            </div>
+        
             <g:each in="${analyzedSentences}" var="sentence">
                 <g:if test="${sentence.getAnnotations().trim() == 'Disambiguator log:'}">
                     <pre class="disambiguatorLog">Disambiguator log: (no disambiguations)</pre>
