@@ -5,6 +5,7 @@
     <head>
         <title><g:message code="ltc.analysis.title"/></title>
         <meta name="layout" content="main" />
+        <g:render template="script"/>
     </head>
     <body>
 
@@ -17,14 +18,9 @@
             <h1><g:message code="ltc.analysis.head"/></h1>
             
             <p><g:message code="ltc.analysis.intro"/></p>
-            
-            <g:form style="margin-top: 8px" action="analyzeText" method="post">
-                <g:hiddenField name="lang" value="${language.shortName}"/>
-                <g:textArea name="text" rows="5" cols="70" maxlength="1000" autofocus="autofocus" value="${textToCheck}" />
-                <br/>
-                <g:submitButton name="submit" value="${message(code:'ltc.analysis.submit')}"/>
-            </g:form>
 
+            <g:render template="textForm"/>
+            
         </div>
 
         </div>

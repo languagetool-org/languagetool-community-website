@@ -5,6 +5,7 @@
 <head>
     <title><g:message code="ltc.analysis.title"/></title>
     <meta name="layout" content="main" />
+    <g:render template="script"/>
 </head>
 <body>
 
@@ -18,12 +19,8 @@
 
         <p><g:message code="ltc.analysis.intro"/></p>
 
-        <g:form style="margin-top: 8px;margin-bottom: 15px" action="analyzeText" method="post">
-            <g:textArea name="text" rows="5" cols="70" autofocus="autofocus" value="${textToCheck}" />
-            <br/>
-            <g:submitButton name="submit" value="${message(code:'ltc.analysis.submit')}"/>
-        </g:form>
-    
+        <g:render template="textForm"/>
+
         <div class="textAnalysis">
             <g:each in="${analyzedSentences}" var="sentence">
                 <g:if test="${sentence.getAnnotations().trim() == 'Disambiguator log:'}">
