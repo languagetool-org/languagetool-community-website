@@ -91,8 +91,6 @@ class HomepageController extends BaseController {
         }
         JLanguageTool lt = new JLanguageTool(lang)
         lt.activateDefaultPatternRules()
-        // load user configuration and disable deactivated rules:
-        LanguageConfiguration langConfig = null
         final int maxTextLen = grailsApplication.config.max.text.length
         final String text = params.text
         if (text.size() > maxTextLen) {
