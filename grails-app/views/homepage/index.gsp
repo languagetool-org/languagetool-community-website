@@ -33,6 +33,12 @@
                             <g:message code="ltc.home.check.text.explain"/>
                         </div>
 
+                        <h2><g:link controller="analysis" params="[lang: lang]"><g:message code="ltc.home.analysis.title"/></g:link></h2>
+
+                        <div class="mainPart">
+                            <g:message code="ltc.home.analysis.explain"/>
+                        </div>
+
                         <h2><g:link controller="rule" action="list" params="[lang: lang]"><g:message code="ltc.browse.rules"/></g:link></h2>
 
                         <div class="mainPart">

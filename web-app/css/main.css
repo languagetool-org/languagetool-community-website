@@ -495,3 +495,16 @@ th.desc a {
 .wikiCheckTable td {
     padding: 2px;
 }
+
+.textAnalysis {
+}
+
+.textAnalysis .disambiguatorLog {
+    color: #333;
+}
+.textAnalysis .pos {
+    color: #777;
+}
+.textAnalysis .chunk {
+    color: #556270;
+}
