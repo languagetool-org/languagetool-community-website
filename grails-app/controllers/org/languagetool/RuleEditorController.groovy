@@ -129,7 +129,7 @@ class RuleEditorController extends BaseController {
         List problems = []
         try {
             JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-            problems.addAll(checkExampleSentences(langTool, patternRule, true))
+            problems.addAll(checkExampleSentences(langTool, patternRule, params.checkMarker != 'false'))
             if (problems.size() > 0) {
                 render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                         expertMode: true, isOff: patternRule.isDefaultOff()])
