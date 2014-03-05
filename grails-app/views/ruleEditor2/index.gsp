@@ -12,7 +12,7 @@
         <style>
             #sortable { list-style-type: none; margin: 0; padding: 0; width: 80%; }
             #sortable li { margin: 0 3px 3px 3px; padding: 0.4em 0.4em 1.1em 1.5em; height: 18px; }
-            #sortable li span { position: absolute; margin-left: -1.3em; }
+            #sortable li span { position: absolute; margin-left: -1.0em; }
             .exampleSentenceField {
                 width: 300px;
             }
@@ -23,9 +23,11 @@
             }
             #patternArea {
                 margin-left: 6px;
+                max-width: 800px;
             }
             .dragHandle {
                 cursor: ns-resize;
+                font-size: 16px;
             }
             input[type='text'] {
                 width: 300px;
@@ -33,6 +35,9 @@
             .evaluationResultArea {
                 max-width: 600px;
                 margin-bottom: 30px;
+            }
+            .pos, .lemma {
+                color: #777;
             }
         </style>
 
@@ -53,6 +58,14 @@
                 };
             });
 
+            function toggle(selector) {
+                if ($(selector).css('display') == 'none') {
+                    $(selector).show();
+                } else {
+                    $(selector).hide();
+                }
+            }
+            
             function handleReturnForToken(event) {
                 if (event.keyCode == 13) {
                     event.stopPropagation();
@@ -69,43 +82,104 @@
                         clearPattern();
                     }
                 }
-                $('#errorPatternPart').css('display', 'block');
                 var wrongSentence = $('#wrongSentence').attr('value');
                 var correctedSentence = $('#correctedSentence').attr('value');
-                //TODO: tokenize on the server
-                //TODO: check if LT knows the error already + show sentence analysis
-                var wrongSentenceItems = wrongSentence.split(" ");
-                var correctedSentenceItems = correctedSentence.split(" ");
-                var diffStart = findFirstDifferentPosition(wrongSentenceItems, correctedSentenceItems);
-                var diffEnd = findLastDifferentPosition(wrongSentenceItems, correctedSentenceItems);
-                for (var i = diffStart; i <= diffEnd; i++) {
-                    addToken(wrongSentenceItems[i]);
+                $('#createPatternSpinner').show();
+                $.when(
+                        //TODO: check if LT knows the error already
+                        sendWrongSentenceAnalysisRequest(wrongSentence),
+                        sendCorrectedSentenceAnalysisRequest(correctedSentence)
+                    )
+                    .done(function() {
+                        addPatternTokens(wrongSentence, correctedSentence);
+                        patternCreated = true;
+                        $('#createPatternSpinner').hide();
+                    }
+                );
+            }
+            
+            function sendWrongSentenceAnalysisRequest(wrongSentence) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '${resource(dir: 'analysis', file: 'analyzeTextForEmbedding')}',
+                    data: {
+                        lang: '${language.getShortName().encodeAsHTML()}',
+                        text: wrongSentence,
+                        elementId: 'tokenizationOfWrongSentence'
+                    },
+                    success: function(data) {
+                        $('#wrongSentenceEvaluationResult').html(data);
+                        $('#errorPatternPart').css('display', 'block');
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $('#wrongSentenceEvaluationResult').html(xhr.status + " " + thrownError + "<br/>" + xhr.responseText);
+                    }
+                });
+            }
+            
+            function sendCorrectedSentenceAnalysisRequest(correctedSentence) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: '${resource(dir: 'analysis', file: 'analyzeTextForEmbedding')}',
+                    data: {
+                        lang: '${language.getShortName().encodeAsHTML()}',
+                        text: correctedSentence,
+                        elementId: 'tokenizationOfCorrectedSentence'
+                    },
+                    success: function(data) {
+                        $('#correctedSentenceEvaluationResult').html(data);
+                        // nothing to show, we need the result only internally for its tokens
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $('#correctedSentenceEvaluationResult').html(xhr.status + " " + thrownError + "<br/>" + xhr.responseText);
+                        $('#correctedSentenceEvaluationResult').css('display', 'block');
+                    }
+                });
+            }
+            
+            function addPatternTokens(wrongSentence, correctedSentence) {
+                var wrongSentenceTokens = getTokens('#tokenizationOfWrongSentence');
+                var correctedSentenceTokens = getTokens('#tokenizationOfCorrectedSentence');
+                var diffStart = findFirstDifferentPosition(wrongSentenceTokens, correctedSentenceTokens);
+                var diffEnd = findLastDifferentPosition(wrongSentenceTokens, correctedSentenceTokens);
+                for (var j = diffStart; j <= diffEnd; j++) {
+                    addToken(wrongSentenceTokens[j]);
                 }
-                patternCreated = true;
+            }
+            
+            function getTokens(selector) {
+                var tokenList = $(selector).find('li');
+                var tokens = [];
+                for (var i = 0; i < tokenList.length; i++) {
+                    tokens.push($(tokenList[i]).html());
+                }
+                return tokens;
             }
             
             function clearPattern() {
                 var domElements = $('#sortable li');
-                for (var j = 0; j < domElements.length; j++) {
-                    $(domElements[j]).remove();
+                for (var i = 0; i < domElements.length; i++) {
+                    $(domElements[i]).remove();
                 }
             }
 
-            function findFirstDifferentPosition(wrongSentence, correctedSentence) {
-                for (var i = 0; i < Math.min(wrongSentence.length, correctedSentence.length); i++) {
-                    if (wrongSentence[i] != correctedSentence[i]) {
+            function findFirstDifferentPosition(wrongSentenceTokens, correctedSentenceTokens) {
+                for (var i = 0; i < Math.min(wrongSentenceTokens.length, correctedSentenceTokens.length); i++) {
+                    if (wrongSentenceTokens[i] != correctedSentenceTokens[i]) {
                         return i;
                     }
                 }
                 return -1;
             }
             
-            function findLastDifferentPosition(wrongSentence, correctedSentence) {
-                var wrongSentencePos = wrongSentence.length;
-                var correctedSentencePos = correctedSentence.length;
-                var startPos = Math.max(wrongSentence.length, correctedSentence.length);
+            function findLastDifferentPosition(wrongSentenceTokens, correctedSentenceTokens) {
+                var wrongSentencePos = wrongSentenceTokens.length;
+                var correctedSentencePos = correctedSentenceTokens.length;
+                var startPos = Math.max(wrongSentenceTokens.length, correctedSentenceTokens.length);
                 for (var i = startPos; i >=  0 && wrongSentencePos > 0 && correctedSentencePos > 0 ; i--) {
-                    if (wrongSentence[wrongSentencePos] != correctedSentence[correctedSentencePos]) {
+                    if (wrongSentenceTokens[wrongSentencePos] != correctedSentenceTokens[correctedSentencePos]) {
                         return i;
                     }
                     wrongSentencePos--;
@@ -174,10 +248,11 @@
                     data: dataArray,
                     success: function(data) {
                         $('#evaluationResult').html("<h2>Evaluation Results</h2>" + data);
-                        $('#evaluateSpinner').hide();
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $('#evaluationResult').html(xhr.status + " " + thrownError + "<br/>" + xhr.responseText);
+                    },
+                    complete: function(jqXHR, textStatus) {
                         $('#evaluateSpinner').hide();
                     }
                 });
@@ -238,7 +313,7 @@
 
             <h1>LanguageTool Online Rule Editor</h1>
             
-            <div class="warn">Warning: This is still a prototype</div>
+            <div class="warn" style="width:300px">Warning: This is still a prototype</div>
 
             <g:form id="ruleForm" name="ruleForm" method="post">
 
@@ -252,15 +327,24 @@
                 <table style="width:auto;border-style: hidden">
                     <tr>
                         <td>Wrong Sentence:</td>
-                        <td><g:textField class="exampleSentenceField" id="wrongSentence" name="wrongSentence" value="Sorry for my bed English."/></td>
+                        <td>
+                            <g:textField class="exampleSentenceField" id="wrongSentence" name="wrongSentence" value="Sorry for my bed English."/>
+                            <div id="wrongSentenceEvaluationResult"></div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Corrected Sentence:</td>
-                        <td><g:textField class="exampleSentenceField" id="correctedSentence" name="correctedSentence" value="Sorry for my bad English."/></td>
+                        <td>
+                            <g:textField class="exampleSentenceField" id="correctedSentence" name="correctedSentence" value="Sorry for my bad English."/>
+                            <div id="correctedSentenceEvaluationResult" style="display: none"></div>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td><input type="submit" onclick="createPattern();return false;" value="Create Error Pattern"/></td>
+                        <td>
+                            <input type="submit" onclick="createPattern();return false;" value="Create Error Pattern"/>
+                            <img id="createPatternSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
+                        </td>
                     </tr>
                 </table>
                 

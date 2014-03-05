@@ -35,17 +35,32 @@ class AnalysisController extends BaseController {
     def analyzeText = {
         String langCode = params.lang ? params.lang : "en"
         Language langObject = Language.getLanguageForShortName(langCode)
-        final int maxTextLen = grailsApplication.config.max.text.length
-        final String text = params.text
-        if (text.size() > maxTextLen) {
-            text = text.substring(0, maxTextLen)
-            flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
-        }
-        JLanguageTool lt = new JLanguageTool(langObject)
-        lt.activateDefaultPatternRules()
-        List<AnalyzedSentence> analyzedSentences = lt.analyzeText(text)
+        List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
         [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
                 textToCheck: params.text]
     }
 
+    /**
+     * Show POS tagging etc, for embedding as a debugging help in rule editor.
+     */
+    def analyzeTextForEmbedding = {
+        String langCode = params.lang ? params.lang : "en"
+        Language langObject = Language.getLanguageForShortName(langCode)
+        List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
+        [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
+                textToCheck: params.text]
+    }
+
+    private List<AnalyzedSentence> getAnalyzedSentences(String text, Language lang) {
+        final int maxTextLen = grailsApplication.config.max.text.length
+        if (text.size() > maxTextLen) {
+            text = text.substring(0, maxTextLen)
+            // TODO: won't show up, as we're embedded via Ajax
+            flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
+        }
+        JLanguageTool lt = new JLanguageTool(lang)
+        lt.activateDefaultPatternRules()
+        List<AnalyzedSentence> analyzedSentences = lt.analyzeText(text)
+        return analyzedSentences
+    }
 }
