@@ -300,7 +300,18 @@
 
             function showXml() {
                 var xml = buildXml();
-                alert(xml);
+                var dialogElem = $("#dialog-message");
+                dialogElem.html("This is your rule in XML format:<br/><br/>" + 
+                        "<pre>" + xml.htmlEscape() + "</pre>");
+                dialogElem.dialog({
+                    modal: true,
+                    width: 600,
+                    buttons: {
+                        Ok: function() {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
             }
             
         </script>
@@ -421,7 +432,10 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><input class="evaluationResultArea" type="submit" onclick="showXml();return false;" value="Show XML"/></td>
+                            <td>
+                                <input class="evaluationResultArea" type="submit" onclick="showXml();return false;" value="Show XML"/>
+                                <div id="dialog-message" style="display: none">HALLO ich bin ein dialog</div>
+                            </td>
                         </tr>
                     </table>
 
