@@ -14,7 +14,6 @@ grails war
 scp target/ltcommunity-0.1.war languagetool@languagetool.org:/tmp
 ssh languagetool@languagetool.org unzip -d /home/languagetool/tomcat/webapps/ROOT/ /tmp/ltcommunity-0.1.war
 
-echo "Now log in to the server and:"
-echo "-Call sh /home/languagetool/languagetool.org/languagetool-website/deploy-jars.sh"
+echo "Now log in to the server and call:"
+echo "sh /home/languagetool/languagetool.org/languagetool-website/deploy-jars.sh `date +%Y%m%d` (or with yesterday's date if there's no snapshot for today yet)"
 echo " (this will place the latest LT snapshot JARs in WEB-INF/lib)"
-echo "-Call ./restart-tomcat.sh to activate the update"
