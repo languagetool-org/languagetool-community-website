@@ -74,6 +74,7 @@ class WikiCheckController extends BaseController {
 
             MarkupAwareWikipediaResult result
             try {
+                log.info("Checking page " + pageUrl)
                 result = checker.checkPage(new URL(pageUrl))
             } catch (PageNotFoundException e) {
                 throw new Exception(message(code:'ltc.wikicheck.page.not.found', args: [pageUrl]))
