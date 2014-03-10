@@ -41,26 +41,30 @@ class AnalysisController extends BaseController {
     }
 
     /**
-     * Show POS tagging etc, for embedding as a debugging help in rule editor.
+     * Tokenize two example sentences for the rule editor.
      */
-    def analyzeTextForEmbedding = {
-        String langCode = params.lang ? params.lang : "en"
-        Language langObject = Language.getLanguageForShortName(langCode)
-        List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
-        [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
-                textToCheck: params.text]
-    }
-
-    private List<AnalyzedSentence> getAnalyzedSentences(String text, Language lang) {
-        final int maxTextLen = grailsApplication.config.max.text.length
-        if (text.size() > maxTextLen) {
-            text = text.substring(0, maxTextLen)
-            // TODO: won't show up, as we're embedded via Ajax
-            flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
-        }
+    def tokenizeSentences = {
+        Language lang = Language.getLanguageForShortName(params.lang)
         JLanguageTool lt = new JLanguageTool(lang)
         lt.activateDefaultPatternRules()
-        List<AnalyzedSentence> analyzedSentences = lt.analyzeText(text)
-        return analyzedSentences
+        List<String> tokens1 = getTokens(params.sentence1, lt)
+        List<String> tokens2 = getTokens(params.sentence2, lt)
+        render(contentType: "text/json") {[
+            'sentence1': tokens1,
+            'sentence2': tokens2
+        ]}
     }
+
+    private List<String> getTokens(String text, JLanguageTool lt) {
+        List<AnalyzedSentence> analyzedSentences = lt.analyzeText(text)
+        List tokens = []
+        for (AnalyzedSentence analyzedSentence : analyzedSentences) {
+            AnalyzedTokenReadings[] readings = analyzedSentence.getTokensWithoutWhitespace()
+            for (AnalyzedTokenReadings r : readings) {
+                tokens.add(r.getToken())
+            }
+        }
+        return tokens
+    }
+
 }
