@@ -8,10 +8,9 @@ ruleEditorServices.factory('SentenceComparator',
   function($http, $q) {
     return {
       
+      // Find the difference between two example sentences, so these different
+      // tokens can be used as a basis for the error pattern:
       incorrectTokens: function(url, langCode, sentence1, sentence2) {
-        var list = [];
-        list.push("one");
-        list.push("two");
         var deferred = $q.defer();
         var data = "lang=" + langCode + "&sentence1=" + sentence1 + "&sentence2=" + sentence2;  //TODO: encode?
         var self = this;
@@ -88,18 +87,18 @@ ruleEditorServices.factory('XmlBuilder',
           val = "";
         }
         if (elem.tokenType == 'word') {
-          var negation = elem.negation ? "negate='yes'" : "";
+          var negation = elem.negation ? " negate='yes'" : "";
           if (elem.regex == true) {
-            xml += "  <token regexp='yes' " + negation + ">" + val + "</token>\n";
+            xml += "  <token regexp='yes'" + negation + ">" + val + "</token>\n";
           } else {
-            xml += "  <token " + negation + ">" + val + "</token>\n";
+            xml += "  <token" + negation + ">" + val + "</token>\n";
           }
         } else if (elem.tokenType == 'posTag') {
-          var posNegation = elem.negation ? "negate_pos='yes'" : "";
+          var posNegation = elem.negation ? " negate_pos='yes'" : "";
           if (elem.regex == true) {
-            xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='true' " + posNegation + " />\n";
+            xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='yes'" + posNegation + " />\n";
           } else {
-            xml += "  <token postag='" + val.htmlEscape() + "' " + posNegation + "/>\n";
+            xml += "  <token postag='" + val.htmlEscape() + "'" + posNegation + "/>\n";
           }
         } else if (elem.tokenType == 'regex') {
           xml += "  <token regexp='yes'>" + val + "</token>\n";

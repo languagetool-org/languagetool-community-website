@@ -1,3 +1,4 @@
+<%@ page import="org.languagetool.Language" %>
 <!doctype html>
 <html><!-- see layout for attributes -->
 <head>
@@ -26,6 +27,11 @@
 <body><!-- see layout for attributes -->
 
 <div class="body ruleEditor">
+
+  <p id="introText">LanguageTool finds errors based on rules. This page will help you
+  to create your own rules. As a result, you will have your rule in XML format, which you
+  can <a href="https://languagetool.org/support/" target="_blank">send to the developers</a> for inclusion in LanguageTool
+  or add to your <tt>grammar.xml</tt> file for local use.</p>
     
   <form>
 
@@ -35,11 +41,20 @@
       
       <table>
           <tr>
-              <td width="120"><label for="wrongSentence">Wrong sentence:</label></td>
+              <td width="120"><label for="language">Language:</label></td>
+              <td>
+                  <select name="language" id="language" ng-model="languageCode" ng-options="c.name for c in languageCodes"></select>
+              </td>
+          </tr>
+          <tr>
+              <td><label for="wrongSentence">Wrong sentence:</label></td>
               <td>
                   <input type="text" ng-model="wrongSentence" id="wrongSentence" placeholder="A example sentence"/><br/>
-                  <a href="#" ng-click="analyzeWrongSentence()" ng-show="!wrongSentenceAnalysis && wrongSentence">Show analysis</a>
-                  <a ng-show="wrongSentenceAnalysis" ng-cloak href="#" ng-click="hideWrongSentenceAnalysis()">Hide analysis</a>
+                  <a href ng-click="analyzeWrongSentence()" ng-show="!wrongSentenceAnalysis && wrongSentence">Show analysis</a>
+                  <span ng-show="wrongSentenceAnalysis" ng-cloak>
+                    <a href ng-click="analyzeWrongSentence()">Update analysis</a> &middot;
+                    <a href ng-click="hideWrongSentenceAnalysis()">Hide analysis</a>
+                  </span>
                   <div id="wrongSentenceAnalysis" ng-show="wrongSentenceAnalysis" ng-bind-html="wrongSentenceAnalysis" ng-cloak></div>
               </td>
           </tr>
@@ -73,21 +88,20 @@
                               <!-- TODO: why won't enter here show the evaluation result div? (it works for message below) -->
                               <div ng-switch on="element.tokenType">
                                   <div ng-switch-when="marker">
-                                      <span class="dragHandle">&#8691;</span>
-                                      {{element.tokenValue}}
-                                      <a class="removeLink" href="#" ng-click="removeElement(element)">Remove</a>
+                                      <span class="dragHandle">&#8691; {{element.tokenValue}}</span>
+                                      <a class="removeLink" href ng-click="removeElement(element)">Remove</a>
                                   </div>
                                   <div ng-switch-default>
-                                      <span class="dragHandle">&#8691;</span>
-                                      <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()" 
-                                             placeholder="word or part-of-speech tag" focus-me="focusInput" ng-disabled="element.tokenType == 'any'"/>
-                                      <div style="margin-left: 20px">
+                                      <span class="dragHandle">&#8691; Element #{{elementPosition(element)}}</span>
+                                      <div style="margin-left: 15px">
+                                        <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
+                                               placeholder="word or part-of-speech tag" focus-me="focusInput" ng-disabled="element.tokenType == 'any'"/><br/>
                                         <label><input type="radio" ng-model="element.tokenType" value="word"/>&nbsp;Word</label>
                                         <label><input type="radio" ng-model="element.tokenType" value="posTag"/>&nbsp;POS tag</label>
                                         <label><input type="radio" ng-model="element.tokenType" value="any"/>&nbsp;Any token</label>
                                         <label><input type="checkbox" ng-model="element.regex" value="true" ng-disabled="element.tokenType == 'any'"/>&nbsp;Regular Expression</label>
                                         <label title="Negates this condition"><input type="checkbox" ng-model="element.negation" ng-disabled="element.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
-                                        <a class="removeLink" href="#" ng-click="removeElement(element)">Remove</a>
+                                        <a class="removeLink" href ng-click="removeElement(element)">Remove</a>
                                       </div>
                                   </div>
                               </div>
@@ -96,10 +110,10 @@
                   </div>
               </div>
 
-              <a href="#" ng-click="addElement()">Add element</a>
+              &nbsp;<a href ng-click="addElement()">Add element</a>
               <span ng-show="hasNoMarker()">
               &middot;
-                  <a href="#" ng-click="addMarker()">Add marker</a>
+                  <a href ng-click="addMarker()">Add marker</a>
               </span>
           </div>
 
@@ -139,11 +153,9 @@
 
   </form>
 
-  <br/>
-  <hr/>
-  <br/>
-  
-  <p>XML: <pre ng-cloak>{{buildXml()}}</pre>
+  <h1>XML</h1>
+
+  <pre style="margin-bottom: 30px; margin-left:140px" ng-cloak>{{buildXml()}}</pre>
 
 </div>
 

@@ -99,7 +99,13 @@ class RuleEditorController extends BaseController {
     }
 
     def checkXml = {
-        Language language = getLanguage()
+        Language language
+        try {
+            language = getLanguage()
+        } catch (Exception e) {
+            // maybe it's a language code:
+            language = Language.getLanguageForShortName(params.language)
+        }
         PatternRuleLoader loader = new PatternRuleLoader()
         loader.setRelaxedMode(true)
         String xml = "<rules lang=\"" + language.getShortName() + "\"><category name=\"fakeCategory\">" + params.xml + "</category></rules>"

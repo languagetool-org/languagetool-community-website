@@ -15,16 +15,21 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   String.prototype.attributeEscape = function() {
-    return this.replace("\"", "&quot;").replace("'", "&apos;");
+    return this.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
   };
 
   $scope.sortableOptions = {
     handle: '.dragHandle', containment: '#dragContainment', axis: 'y'
   };
 
+  $scope.languageCodes = [
+    {code: 'en', name: 'English'},
+    {code: 'de', name: 'German'}
+  ];
+  $scope.languageCode = $scope.languageCodes[0];  // TODO
   $scope.ruleName = "";
-  $scope.wrongSentence = "A example sentence.";  //TODO
-  $scope.correctedSentence = "An example sentence.";
+  $scope.wrongSentence = "Sorry for my bed English.";  //TODO
+  $scope.correctedSentence = "Sorry for my bad English.";
   $scope.ruleMessage = "";
 
   $scope.patternCreated = false;
@@ -38,7 +43,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.analyzeWrongSentence = function() {
     var self = this;
-    var data = "text=" + this.wrongSentence + "&lang=en";  //TODO
+    var data = "text=" + this.wrongSentence + "&lang=" + this.languageCode.code;
+    this.patternCreationInProgress = true;
     $http({
       url: __ruleEditorSentenceAnalysisUrl,
       method: 'POST',
@@ -47,9 +53,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function(data) {
         self.wrongSentenceAnalysis = data;
+        self.patternCreationInProgress = false;
       })
       .error(function(data, status, headers, config) {
         self.wrongSentenceAnalysis = data;
+        self.patternCreationInProgress = false;
       });
   };
 
@@ -68,9 +76,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
         this.patternElements = [];
       }
     }
-    //TODO: don't hardcode 'en':
-    var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorTokenizeSentencesUrl, "en",
-      this.wrongSentence, this.correctedSentence);
+    var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorTokenizeSentencesUrl, this.languageCode.code,
+        this.wrongSentence, this.correctedSentence);
     incorrectTokensPromise.then(
       function(diffTokens) {
         for (var i = 0; i < diffTokens.length; i++) {
@@ -82,6 +89,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       },
       function(data) {
         alert("Could not tokenize example sentences: " + data);
+        self.patternCreationInProgress = false;
       },
       function(data) {}
     );
@@ -90,6 +98,19 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.addElement = function(tokenValue) {
     this.patternElements.push({'tokenValue': tokenValue, 'tokenType': 'word', regex: false, negation: false});
     this.focusInput = true;
+  };
+
+  $scope.elementPosition = function(elem) {
+    var position = 0;
+    for (var i = 0; i < this.patternElements.length; i++) {
+      if (this.patternElements[i].tokenType != 'marker') {
+        position++;
+      }
+      if (elem == this.patternElements[i]) {
+        return position;
+      }
+    }
+    return -1;
   };
 
   $scope.addMarker = function(tokenValue) {
@@ -134,10 +155,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     };*/
   
   $scope.evaluateErrorPattern = function() {
-    console.log("evaluateErrorPattern");
     this.patternEvaluationInProgress = true;
-    // See http://stackoverflow.com/questions/19254029/angularjs-http-post-does-not-send-data:
-    var data = "language=English&checkMarker=false&xml=" + this.buildXml();   // TODO: not always English
+    var data = "language=" + this.languageCode.code + "&checkMarker=false&xml=" + this.buildXml();
     var ctrl = this;
     var url = __ruleEditorEvaluationUrl;  // GSP doesn't evaluate in JS, so we need this hack
     $http({

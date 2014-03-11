@@ -16,7 +16,7 @@
                         </g:if>
                     </p>
 
-                    <ul style="margin-bottom: 10px">
+                    <ul style="margin-top: 8px; margin-bottom: 10px">
                         <g:each in="${searcherResult.getMatchingSentences()}" var="matchingSentence">
                             <g:each in="${matchingSentence.getRuleMatches()}" var="match">
                                 <li>

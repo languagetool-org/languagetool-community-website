@@ -1,12 +1,24 @@
+#introText {
+    margin-top: 15px;
+    width: 600px;
+}
+
+#patternArea {
+    margin-left: 138px;
+    width: 650px;
+}
 #dragContainment {
 }
-#patternArea {
-    margin-left: 6px;
-    width: 800px;
-}
+
 #wrongSentenceAnalysis {
     padding: 5px;
     background-color: #eeeeee;
+}
+
+#evaluationResult {
+    max-width: 600px;
+    margin-left: 70px;
+    margin-bottom: 30px;
 }
 
 .sortable { 
@@ -16,8 +28,8 @@
 }
 .sortable li {
     margin: 0 3px 3px 3px;
-    padding: 0.8em 0.4em 1.1em 1.5em;
-    background-color: #dddddd;
+    padding: 5px 5px 5px 5px;
+    background-color: #eeeeee;
 }
 
 .ruleEditor table {
@@ -33,14 +45,10 @@
 }
 .dragHandle {
     cursor: ns-resize;
-    font-size: 18px;
+    font-size: 14px;
 }
 input[type='text'] {
     width: 350px;
-}
-.evaluationResultArea {
-    max-width: 600px;
-    margin-bottom: 30px;
 }
 .pos, .lemma {
     color: #777;
