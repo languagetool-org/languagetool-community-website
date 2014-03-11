@@ -21,6 +21,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     return this.replace("\"", "&quot;").replace("'", "&apos;");
   };
 
+  $scope.sortableOptions = {
+    handle: '.dragHandle', containment: '#dragContainment', axis: 'y'
+  };
+
   $scope.ruleName = "";
   $scope.wrongSentence = "A example sentence.";  //TODO
   $scope.correctedSentence = "An example sentence.";
@@ -66,6 +70,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.addElement = function(tokenValue) {
     this.patternElements.push({'tokenValue': tokenValue, 'tokenType': 'word'});
+    this.focusInput = true;
   };
 
   $scope.addMarker = function(tokenValue) {
@@ -140,15 +145,19 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.buildXmlForElement = function(elem) {
     var xml = "";
+    var val = elem.tokenValue;
+    if (!val) {
+      val = "";
+    }
     if (elem.tokenType == 'word') {
-      xml += "  <token>" + elem.tokenValue + "</token>\n";
+      xml += "  <token>" + val + "</token>\n";
     } else if (elem.tokenType == 'posTag') {
-      xml += "  <token postag='" + elem.tokenValue.htmlEscape() + "'/>\n";
+      xml += "  <token postag='" + val.htmlEscape() + "'/>\n";
     } else if (elem.tokenType == 'regex') {
-      xml += "  <token regexp='yes'>" + elem.tokenValue + "</token>\n";
-    } else if (elem.tokenType == 'marker' && elem.tokenValue == MARKER_START) {
+      xml += "  <token regexp='yes'>" + val + "</token>\n";
+    } else if (elem.tokenType == 'marker' && val == MARKER_START) {
       xml += "  <marker>\n";
-    } else if (elem.tokenType == 'marker' && elem.tokenValue == MARKER_END) {
+    } else if (elem.tokenType == 'marker' && val == MARKER_END) {
       xml += "  </marker>\n";
     } else {
       console.warn("Unknown token type '" + elem.tokenType + "'");

@@ -1,0 +1,43 @@
+#dragContainment {
+}
+#patternArea {
+    margin-left: 6px;
+    width: 800px;
+}
+
+.sortable { 
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.sortable li {
+    margin: 0 3px 3px 3px;
+    padding: 0.8em 0.4em 1.1em 1.5em;
+    background-color: #dddddd;
+}
+
+.ruleEditor table {
+    border: 0;
+    width: auto;
+}
+.exampleSentenceField {
+    width: 300px;
+}
+.removeLink {
+    float: right;
+    margin-right: 15px;
+}
+.dragHandle {
+    cursor: ns-resize;
+    font-size: 18px;
+}
+input[type='text'] {
+    width: 350px;
+}
+.evaluationResultArea {
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+.pos, .lemma {
+    color: #777;
+}
