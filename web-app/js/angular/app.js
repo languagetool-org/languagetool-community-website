@@ -91,7 +91,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.addElement = function(tokenValue) {
-    this.patternElements.push({'tokenValue': tokenValue, 'tokenType': 'word'});
+    this.patternElements.push({'tokenValue': tokenValue, 'tokenType': 'word', regex: false, negation: false});
     this.focusInput = true;
   };
 
@@ -165,6 +165,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     this.patternEvaluated = true;
   };
 
+  // TODO: move to XmlBuilder?
   $scope.buildXmlForElement = function(elem) {
     var xml = "";
     var val = elem.tokenValue;
@@ -172,11 +173,23 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       val = "";
     }
     if (elem.tokenType == 'word') {
-      xml += "  <token>" + val + "</token>\n";
+      var negation = elem.negation ? "negate='yes'" : "";
+      if (elem.regex == true) {
+        xml += "  <token regexp='yes' " + negation + ">" + val + "</token>\n";
+      } else {
+        xml += "  <token " + negation + ">" + val + "</token>\n";
+      }
     } else if (elem.tokenType == 'posTag') {
-      xml += "  <token postag='" + val.htmlEscape() + "'/>\n";
+      var posNegation = elem.negation ? "negate_pos='yes'" : "";
+      if (elem.regex == true) {
+        xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='true' " + posNegation + " />\n";
+      } else {
+        xml += "  <token postag='" + val.htmlEscape() + "' " + posNegation + "/>\n";
+      }
     } else if (elem.tokenType == 'regex') {
       xml += "  <token regexp='yes'>" + val + "</token>\n";
+    } else if (elem.tokenType == 'any') {
+      xml += "  <token />\n";
     } else if (elem.tokenType == 'marker' && val == MARKER_START) {
       xml += "  <marker>\n";
     } else if (elem.tokenType == 'marker' && val == MARKER_END) {

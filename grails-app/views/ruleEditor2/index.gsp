@@ -35,7 +35,7 @@
               <td width="120"><label for="wrongSentence">Wrong sentence:</label></td>
               <td>
                   <input type="text" ng-model="wrongSentence" id="wrongSentence" placeholder="A example sentence"/><br/>
-                  <a href="#" ng-click="analyzeWrongSentence()" ng-show="!wrongSentenceAnalysis">Show analysis</a>
+                  <a href="#" ng-click="analyzeWrongSentence()" ng-show="!wrongSentenceAnalysis && wrongSentence">Show analysis</a>
                   <a ng-show="wrongSentenceAnalysis" ng-cloak href="#" ng-click="hideWrongSentenceAnalysis()">Hide analysis</a>
                   <div id="wrongSentenceAnalysis" ng-show="wrongSentenceAnalysis" ng-bind-html="wrongSentenceAnalysis" ng-cloak></div>
               </td>
@@ -63,7 +63,7 @@
           <div id="patternArea">
               <div id="dragContainment">
                   <!-- we need this so dragging to first and last position always works properly: -->
-                  <div style="padding-top:10px;padding-bottom:10px;">
+                  <div style="padding-top:20px;padding-bottom:30px;">
                       <ul class="sortable" ui-sortable="sortableOptions" ng-model="patternElements">
                           <li ng-repeat="element in patternElements">
                               <!--<input type="text" ng-model="element.tokenValue" ng-keypress="handleReturnForToken($event)"/>-->
@@ -77,10 +77,15 @@
                                   <div ng-switch-default>
                                       <span class="dragHandle">&#8691;</span>
                                       <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()" 
-                                             placeholder="word or part-of-speech tag" focus-me="focusInput"/>
-                                      <label><input type="radio" ng-model="element.tokenType" value="word"/>&nbsp;Word</label>
-                                      <label><input type="radio" ng-model="element.tokenType" value="posTag"/>&nbsp;POS tag</label>
-                                      <a class="removeLink" href="#" ng-click="removeElement(element)">Remove</a>
+                                             placeholder="word or part-of-speech tag" focus-me="focusInput" ng-disabled="element.tokenType == 'any'"/>
+                                      <div style="margin-left: 20px">
+                                        <label><input type="radio" ng-model="element.tokenType" value="word"/>&nbsp;Word</label>
+                                        <label><input type="radio" ng-model="element.tokenType" value="posTag"/>&nbsp;POS tag</label>
+                                        <label><input type="radio" ng-model="element.tokenType" value="any"/>&nbsp;Any token</label>
+                                        <label><input type="checkbox" ng-model="element.regex" value="true" ng-disabled="element.tokenType == 'any'"/>&nbsp;Regular Expression</label>
+                                        <label title="Negates this condition"><input type="checkbox" ng-model="element.negation" ng-disabled="element.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
+                                        <a class="removeLink" href="#" ng-click="removeElement(element)">Remove</a>
+                                      </div>
                                   </div>
                               </div>
                           </li>
@@ -100,12 +105,12 @@
           
           <table>
               <tr>
-                  <td width="120">Message:</td>
-                  <td><input type="text" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()" placeholder="Error shown to the user if pattern matches"/></td>
+                  <td width="120"><label for="ruleMessage">Message:</label></td>
+                  <td><input type="text" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()" placeholder="Error shown to the user if pattern matches"/></td>
               </tr>
               <tr>
-                  <td>Rule Name:</td>
-                  <td><input type="text" ng-model="ruleName" placeholder="Short rule description used for configuration"/></td>
+                  <td><label for="ruleName">Rule Name:</label></td>
+                  <td><input type="text" id="ruleName" ng-model="ruleName" placeholder="Short rule description used for configuration"/></td>
               </tr>
               <tr>
                   <td></td>
