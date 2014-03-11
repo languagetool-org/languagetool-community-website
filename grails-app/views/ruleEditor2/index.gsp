@@ -10,7 +10,8 @@
     <script>
         // used in *.js as GSP doesn't get evaluated there:
         var __ruleEditorEvaluationUrl = '${resource(dir: 'ruleEditor', file: 'checkXml')}';
-        var __ruleEditorSentenceAnalysisUrl = '${resource(dir: 'analysis', file: 'tokenizeSentences')}';
+        var __ruleEditorTokenizeSentencesUrl = '${resource(dir: 'analysis', file: 'tokenizeSentences')}';
+        var __ruleEditorSentenceAnalysisUrl = '${resource(dir: 'analysis', file: 'analyzeTextForEmbedding')}';
     </script>
     <script src="${resource(dir:'js/angular/lib', file:'angular.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-sanitize.min.js')}"></script>
@@ -32,7 +33,12 @@
       <table>
           <tr>
               <td width="120"><label for="wrongSentence">Wrong sentence:</label></td>
-              <td><input type="text" ng-model="wrongSentence" id="wrongSentence" placeholder="A example sentence"/><br/></td>
+              <td>
+                  <input type="text" ng-model="wrongSentence" id="wrongSentence" placeholder="A example sentence"/><br/>
+                  <a href="#" ng-click="analyzeWrongSentence()" ng-show="!wrongSentenceAnalysis">Show analysis</a>
+                  <a ng-show="wrongSentenceAnalysis" ng-cloak href="#" ng-click="hideWrongSentenceAnalysis()">Hide analysis</a>
+                  <div id="wrongSentenceAnalysis" ng-show="wrongSentenceAnalysis" ng-bind-html="wrongSentenceAnalysis" ng-cloak></div>
+              </td>
           </tr>
           <tr>
               <td><label for="correctedSentence">Corrected sentence:</label></td>

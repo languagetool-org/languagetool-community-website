@@ -1,23 +1,7 @@
 
-<!-- start internal part: we tokenize on the server side, and this is where the Javascript will extract the token from: -->
-<ul id="${params.elementId.encodeAsHTML()}" style="display: none">
-    <g:each in="${analyzedSentences}" var="sentence">
-        <g:each in="${sentence.getTokensWithoutWhitespace()}" var="token" status="i">
-            <li>${token.getToken().encodeAsHTML()}</li>
-        </g:each>
-    </g:each>
-</ul>
-<!-- end internal part -->
 
-<a href="#" onclick="toggle('#wrongSentenceEvaluation')">Show Analysis</a>
-<div id="wrongSentenceEvaluation" style="background-color: #eee; padding: 5px; display:none">
+<div id="wrongSentenceEvaluation">
 <g:each in="${analyzedSentences}" var="sentence">
-    <g:if test="${sentence.getAnnotations().trim() == 'Disambiguator log:'}">
-        <pre class="disambiguatorLog">Disambiguator log: (no disambiguations)</pre>
-    </g:if>
-    <g:else>
-        <pre class="disambiguatorLog">${sentence.getAnnotations().encodeAsHTML().replace("\n\n", "\n")}</pre>
-    </g:else>
     <table style="margin-top: 4px; margin-bottom: 15px; border-style: none">
         <tr>
             <td style="font-weight: bold">Token</td>
@@ -76,5 +60,11 @@
             </g:each>
         </tr>
     </table>
+    <g:if test="${sentence.getAnnotations().trim() == 'Disambiguator log:'}">
+        <pre class="disambiguatorLog">Disambiguator log: (no disambiguations)</pre>
+    </g:if>
+    <g:else>
+        <pre class="disambiguatorLog">${sentence.getAnnotations().encodeAsHTML().replace("\n\n", "\n")}</pre>
+    </g:else>
 </g:each>
 </div>

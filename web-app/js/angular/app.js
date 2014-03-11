@@ -35,8 +35,30 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.patternElements = [];
   $scope.evaluationResult = null;  // HTML with rule matches in Wikipedia/Tatoeba
   
+  $scope.wrongSentenceAnalysis = null;
   $scope.patternCreationInProgress = false;
   $scope.patternEvaluationInProgress = false;
+
+  $scope.analyzeWrongSentence = function() {
+    var self = this;
+    var data = "text=" + this.wrongSentence + "&lang=en";  //TODO
+    $http({
+      url: __ruleEditorSentenceAnalysisUrl,
+      method: 'POST',
+      data: data,
+      // See http://stackoverflow.com/questions/19254029/angularjs-http-post-does-not-send-data:
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function(data) {
+        self.wrongSentenceAnalysis = data;
+      })
+      .error(function(data, status, headers, config) {
+        self.wrongSentenceAnalysis = data;
+      });
+  };
+
+  $scope.hideWrongSentenceAnalysis = function() {
+    this.wrongSentenceAnalysis = null;
+  };
 
   $scope.createErrorPattern = function() {
     var self = this;
@@ -50,7 +72,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       }
     }
     //TODO: don't hardcode 'en':
-    var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorSentenceAnalysisUrl, "en",
+    var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorTokenizeSentencesUrl, "en",
       this.wrongSentence, this.correctedSentence);
     incorrectTokensPromise.then(
       function(diffTokens) {
