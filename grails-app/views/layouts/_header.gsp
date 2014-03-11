@@ -30,10 +30,10 @@
                     <div class="login">
                         <g:link controller="user" action="login"><g:message code="ltc.login"/></g:link>
                     </div>
-                    <div class="imprint">
-                        <a href="http://languagetool.org/contact/"><g:message code="ltc.imprint"/></a>
-                    </div>
                 </g:else>
+                <div class="imprint">
+                    <a href="http://languagetool.org/contact/"><g:message code="ltc.imprint"/></a>
+                </div>
             </td>
         </tr>
     </table>
