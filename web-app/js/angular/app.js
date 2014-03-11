@@ -10,9 +10,6 @@ var ruleEditor = angular.module('ruleEditor', [
 
 ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceComparator, XmlBuilder) {
 
-  var MARKER_START = 'Marker start';
-  var MARKER_END = 'Marker end';
-
   String.prototype.htmlEscape = function() {
     return $('<div/>').text(this.toString()).html();
   };
@@ -96,8 +93,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.addMarker = function(tokenValue) {
-    this.patternElements.unshift({'tokenValue': MARKER_START, 'tokenType': 'marker'});
-    this.patternElements.push({'tokenValue': MARKER_END, 'tokenType': 'marker'});
+    this.patternElements.unshift({'tokenValue': __LT_MARKER_START, 'tokenType': 'marker'});
+    this.patternElements.push({'tokenValue': __LT_MARKER_END, 'tokenType': 'marker'});
   };
 
   $scope.hasNoMarker = function(tokenValue) {
@@ -165,47 +162,12 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     this.patternEvaluated = true;
   };
 
-  // TODO: move to XmlBuilder?
-  $scope.buildXmlForElement = function(elem) {
-    var xml = "";
-    var val = elem.tokenValue;
-    if (!val) {
-      val = "";
-    }
-    if (elem.tokenType == 'word') {
-      var negation = elem.negation ? "negate='yes'" : "";
-      if (elem.regex == true) {
-        xml += "  <token regexp='yes' " + negation + ">" + val + "</token>\n";
-      } else {
-        xml += "  <token " + negation + ">" + val + "</token>\n";
-      }
-    } else if (elem.tokenType == 'posTag') {
-      var posNegation = elem.negation ? "negate_pos='yes'" : "";
-      if (elem.regex == true) {
-        xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='true' " + posNegation + " />\n";
-      } else {
-        xml += "  <token postag='" + val.htmlEscape() + "' " + posNegation + "/>\n";
-      }
-    } else if (elem.tokenType == 'regex') {
-      xml += "  <token regexp='yes'>" + val + "</token>\n";
-    } else if (elem.tokenType == 'any') {
-      xml += "  <token />\n";
-    } else if (elem.tokenType == 'marker' && val == MARKER_START) {
-      xml += "  <marker>\n";
-    } else if (elem.tokenType == 'marker' && val == MARKER_END) {
-      xml += "  </marker>\n";
-    } else {
-      console.warn("Unknown token type '" + elem.tokenType + "'");
-    }
-    return xml;
-  };
-
   $scope.buildXml = function() {
     return XmlBuilder.buildXml(this);
   };
 
-  $scope.showXml = function() {
-    alert(this.buildXml());
-  };
+  //$scope.showXml = function() {
+  //  alert(this.buildXml());
+  //};
 
 });

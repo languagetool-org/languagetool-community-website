@@ -71,7 +71,7 @@ ruleEditorServices.factory('XmlBuilder',
         xml += "<rule name=\"" + model.ruleName.attributeEscape() + "\">\n";
         xml += " <pattern>\n";
         for (var i = 0; i < model.patternElements.length; i++) {
-          xml += model.buildXmlForElement(model.patternElements[i]);
+          xml += this.buildXmlForElement(model.patternElements[i]);
         }
         xml += " </pattern>\n";
         xml += " <message>" + model.ruleMessage.htmlEscape() + "</message>\n";
@@ -79,7 +79,41 @@ ruleEditorServices.factory('XmlBuilder',
         xml += " <example type='correct'>" + model.correctedSentence.htmlEscape() + "</example>\n";
         xml += "</rule>\n";
         return xml;
+      },
+
+      buildXmlForElement: function(elem) {
+        var xml = "";
+        var val = elem.tokenValue;
+        if (!val) {
+          val = "";
+        }
+        if (elem.tokenType == 'word') {
+          var negation = elem.negation ? "negate='yes'" : "";
+          if (elem.regex == true) {
+            xml += "  <token regexp='yes' " + negation + ">" + val + "</token>\n";
+          } else {
+            xml += "  <token " + negation + ">" + val + "</token>\n";
+          }
+        } else if (elem.tokenType == 'posTag') {
+          var posNegation = elem.negation ? "negate_pos='yes'" : "";
+          if (elem.regex == true) {
+            xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='true' " + posNegation + " />\n";
+          } else {
+            xml += "  <token postag='" + val.htmlEscape() + "' " + posNegation + "/>\n";
+          }
+        } else if (elem.tokenType == 'regex') {
+          xml += "  <token regexp='yes'>" + val + "</token>\n";
+        } else if (elem.tokenType == 'any') {
+          xml += "  <token />\n";
+        } else if (elem.tokenType == 'marker' && val == __LT_MARKER_START) {
+          xml += "  <marker>\n";
+        } else if (elem.tokenType == 'marker' && val == __LT_MARKER_END) {
+          xml += "  </marker>\n";
+        } else {
+          console.warn("Unknown token type '" + elem.tokenType + "'");
+        }
+        return xml;
       }
 
-    };
+  };
 });
