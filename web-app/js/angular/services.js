@@ -25,18 +25,23 @@ ruleEditorServices.factory('SentenceComparator',
           // See http://stackoverflow.com/questions/19254029/angularjs-http-post-does-not-send-data:
           headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data) {
-            var diffStart = self.findFirstDifferentPosition(data.sentence1, data.sentence2);
-            var diffEnd = self.findLastDifferentPosition(data.sentence1, data.sentence2);
-            var tokens = [];
-            for (var i = diffStart; i <= diffEnd; i++) {
-              tokens.push(data.sentence1[i]);
-            }
-            deferred.resolve({'tokens': tokens, 'matchesHtml': data.sentence1Matches});
+            var errorTokens = self.getErrorTokens(data.sentence1, data.sentence2);
+            deferred.resolve({'tokens': errorTokens, 'matchesHtml': data.sentence1Matches});
           })
           .error(function(data, status, headers, config) {
             deferred.reject("Response status " + status);
           });
         return deferred.promise;
+      },
+
+      getErrorTokens: function(tokens1, tokens2) {
+        var diffStart = this.findFirstDifferentPosition(tokens1, tokens2);
+        var diffEnd = this.findLastDifferentPosition(tokens1, tokens2);
+        var errorTokens = [];
+        for (var i = diffStart; i <= diffEnd; i++) {
+          errorTokens.push(tokens1[i]);
+        }
+        return errorTokens;
       },
 
       findFirstDifferentPosition: function(wrongSentenceTokens, correctedSentenceTokens) {
