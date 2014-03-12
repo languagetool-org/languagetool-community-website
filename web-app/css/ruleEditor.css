@@ -31,6 +31,12 @@
     padding: 5px 5px 5px 5px;
     background-color: #eeeeee;
 }
+.sortable li ul {
+    list-style-type: none;
+}
+.sortable li ul li {
+    background-color: #dddddd;
+}
 
 .ruleEditor table {
     border: 0;
@@ -41,7 +47,7 @@
 }
 .removeLink {
     float: right;
-    margin-right: 15px;
+    margin-right: 5px;
 }
 .dragHandle {
     cursor: ns-resize;

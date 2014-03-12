@@ -104,16 +104,39 @@
                                       <a class="removeLink" href ng-click="removeElement(element)">Remove</a>
                                   </div>
                                   <div ng-switch-default>
-                                      <span class="dragHandle">&#8691; Element #{{elementPosition(element)}}</span>
+                                      <span class="dragHandle">&#8691; Token #{{elementPosition(element)}}</span>
+                                      <a class="removeLink" href ng-click="removeElement(element)">Remove</a>
                                       <div style="margin-left: 15px">
+
                                         <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
                                                placeholder="word or part-of-speech tag" focus-me="focusInput" ng-disabled="element.tokenType == 'any'"/><br/>
                                         <label><input type="radio" ng-model="element.tokenType" value="word"/>&nbsp;Word</label>
                                         <label><input type="radio" ng-model="element.tokenType" value="posTag"/>&nbsp;POS tag</label>
                                         <label><input type="radio" ng-model="element.tokenType" value="any"/>&nbsp;Any token</label>
+                                        &nbsp;&nbsp;
                                         <label><input type="checkbox" ng-model="element.regex" value="true" ng-disabled="element.tokenType == 'any'"/>&nbsp;Regular Expression</label>
                                         <label title="Negates this condition"><input type="checkbox" ng-model="element.negation" ng-disabled="element.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
-                                        <a class="removeLink" href ng-click="removeElement(element)">Remove</a>
+                                        
+                                        <ul>
+                                          <li ng-repeat="condition in element.conditions">
+                                              and:<br/>
+                                              <input type="text" ng-model="condition.tokenValue" ng-enter="evaluateErrorPattern()"
+                                                     placeholder="word or part-of-speech tag" focus-me="focusConditionInput" ng-disabled="condition.tokenType == 'any'"/>
+                                              <a href ng-click="removeCondition(element, condition)">Remove condition</a>
+                                              <br/>
+                                              <label><input type="radio" ng-model="condition.tokenType" value="word"/>&nbsp;Word</label>
+                                              <label><input type="radio" ng-model="condition.tokenType" value="posTag"/>&nbsp;POS tag</label>
+                                              <label><input type="radio" ng-model="condition.tokenType" value="any"/>&nbsp;Any token</label>
+                                              &nbsp;&nbsp;
+                                              <label><input type="checkbox" ng-model="condition.regex" value="true" ng-disabled="condition.tokenType == 'any'"/>&nbsp;Regular Expression</label>
+                                              <label title="Negates this condition"><input type="checkbox" ng-model="condition.negation" ng-disabled="condition.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
+                                          </li>
+                                        </ul>
+                                          
+                                        <div>
+                                            <a href ng-click="addCondition(element)" title="Add another condition for this element">Add condition</a>
+                                        </div>
+                                          
                                       </div>
                                   </div>
                               </div>
@@ -122,10 +145,10 @@
                   </div>
               </div>
 
-              &nbsp;<a href ng-click="addElement()">Add element</a>
+              &nbsp;<a href ng-click="addElement()">Add token to pattern</a>
               <span ng-show="hasNoMarker()">
               &middot;
-                  <a href ng-click="addMarker()">Add marker</a>
+                  <a href ng-click="addMarker()">Add error marker to pattern</a>
               </span>
           </div>
 

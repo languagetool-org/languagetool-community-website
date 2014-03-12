@@ -21,12 +21,39 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.sortableOptions = {
     handle: '.dragHandle', containment: '#dragContainment', axis: 'y'
   };
-
+  
   $scope.languageCodes = [
+    {code: 'ast', name: 'Asturian'},
+    {code: 'be', name: 'Belarusian'},
+    {code: 'br', name: 'Breton'},
+    {code: 'ca', name: 'Catalan'},
+    {code: 'zh', name: 'Chinese'},
+    {code: 'da', name: 'Danish'},
     {code: 'en', name: 'English'},
-    {code: 'de', name: 'German'}
+    {code: 'nl', name: 'Dutch'},
+    {code: 'eo', name: 'Esperanto'},
+    {code: 'fr', name: 'French'},
+    {code: 'gl', name: 'Galician'},
+    {code: 'de', name: 'German'},
+    {code: 'el', name: 'Greek'},
+    {code: 'is', name: 'Icelandic'},
+    {code: 'it', name: 'Italian'},
+    {code: 'ja', name: 'Japanese'},
+    {code: 'km', name: 'Khmer'},
+    {code: 'lt', name: 'Lithuanian'},
+    {code: 'ml', name: 'Malayalam'},
+    {code: 'pl', name: 'Polish'},
+    {code: 'pt', name: 'Portuguese'},
+    {code: 'ro', name: 'Romanian'},
+    {code: 'ru', name: 'Russian'},
+    {code: 'sk', name: 'Slovak'},
+    {code: 'sl', name: 'Slovenian'},
+    {code: 'es', name: 'Spanish'},
+    {code: 'sv', name: 'Swedish'},
+    {code: 'tl', name: 'Tagalog'},
+    {code: 'uk', name: 'Ukrainian'}
   ];
-  $scope.languageCode = $scope.languageCodes[0];  // TODO
+  $scope.languageCode = $scope.languageCodes[6];  // English
   $scope.ruleName = "";
   $scope.wrongSentence = "Sorry for my bed English.";  //TODO
   $scope.correctedSentence = "Sorry for my bad English.";
@@ -98,8 +125,40 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.addElement = function(tokenValue) {
-    this.patternElements.push({'tokenValue': tokenValue, 'tokenType': 'word', regex: false, negation: false});
+    this.patternElements.push(
+      {
+        tokenValue: tokenValue,
+        tokenType: 'word',
+        regex: false,
+        negation: false,
+        conditions: []
+      });
     this.focusInput = true;
+  };
+
+  $scope.addCondition = function(element) {
+    element.conditions.push(
+      {
+        tokenValue: '',
+        tokenType: 'word',
+        regex: false,
+        negation: false
+      });
+    this.focusConditionInput = true;
+  };
+
+  $scope.removeCondition = function(element, condition) {
+    var index = this.patternElements.indexOf(element);
+    if (index > -1) {
+      var conditionIndex = this.patternElements[index].conditions.indexOf(condition);
+      if (conditionIndex > -1) {
+        this.patternElements[index].conditions.splice(conditionIndex, 1);
+      } else {
+        console.warn("No element/condition found: " + element + " / " + condition);
+      }
+    } else {
+      console.warn("No element found: " + element);
+    }
   };
 
   $scope.elementPosition = function(elem) {

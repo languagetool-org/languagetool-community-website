@@ -89,21 +89,29 @@ ruleEditorServices.factory('XmlBuilder',
         if (elem.tokenType == 'word') {
           var negation = elem.negation ? " negate='yes'" : "";
           if (elem.regex == true) {
-            xml += "  <token regexp='yes'" + negation + ">" + val + "</token>\n";
+            xml += "  <token regexp='yes'" + negation + ">" + val;
           } else {
-            xml += "  <token" + negation + ">" + val + "</token>\n";
+            xml += "  <token" + negation + ">" + val;
           }
+          //TODO: add conditions
+          xml += "</token>\n";
         } else if (elem.tokenType == 'posTag') {
           var posNegation = elem.negation ? " negate_pos='yes'" : "";
           if (elem.regex == true) {
-            xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='yes'" + posNegation + " />\n";
+            xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='yes'" + posNegation + ">";
           } else {
-            xml += "  <token postag='" + val.htmlEscape() + "'" + posNegation + "/>\n";
+            xml += "  <token postag='" + val.htmlEscape() + "'" + posNegation + ">";
           }
+          //TODO: add conditions
+          xml += "</token>\n";
         } else if (elem.tokenType == 'regex') {
-          xml += "  <token regexp='yes'>" + val + "</token>\n";
+          xml += "  <token regexp='yes'>" + val;
+          //TODO: add conditions
+          xml += "</token>\n";
         } else if (elem.tokenType == 'any') {
-          xml += "  <token />\n";
+          xml += "  <token>";
+          //TODO: add conditions
+          xml += "  </token>\n";
         } else if (elem.tokenType == 'marker' && val == __LT_MARKER_START) {
           xml += "  <marker>\n";
         } else if (elem.tokenType == 'marker' && val == __LT_MARKER_END) {
@@ -112,6 +120,10 @@ ruleEditorServices.factory('XmlBuilder',
           console.warn("Unknown token type '" + elem.tokenType + "'");
         }
         return xml;
+      },
+
+      buildXmlForConditions: function(elem) {
+        // TODO
       }
 
   };
