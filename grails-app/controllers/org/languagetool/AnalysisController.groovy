@@ -41,16 +41,23 @@ class AnalysisController extends BaseController {
     }
 
     /**
-     * Tokenize two example sentences for the rule editor.
+     * Tokenize two example sentences for the rule editor and check the first (incorrect) sentence.
      */
     def tokenizeSentences = {
         Language lang = Language.getLanguageForShortName(params.lang)
         JLanguageTool lt = new JLanguageTool(lang)
         lt.activateDefaultPatternRules()
         List<String> tokens1 = getTokens(params.sentence1, lt)
+        def ruleMatches = lt.check((String)params.sentence1)
+        String ruleMatchesHtml
+        if (ruleMatches.size() > 0) {
+            ruleMatchesHtml = g.render(template: '/ruleMatches',
+                    model: [matches: ruleMatches, textToCheck: params.sentence1, hideRuleLink: true])
+        }
         List<String> tokens2 = getTokens(params.sentence2, lt)
         render(contentType: "text/json") {[
             'sentence1': tokens1,
+            'sentence1Matches': ruleMatchesHtml,
             'sentence2': tokens2
         ]}
     }

@@ -27,7 +27,7 @@ ruleEditorServices.factory('SentenceComparator',
             for (var i = diffStart; i <= diffEnd; i++) {
               tokens.push(data.sentence1[i]);
             }
-            deferred.resolve(tokens);
+            deferred.resolve({'tokens': tokens, 'matchesHtml': data.sentence1Matches});
           })
           .error(function(data, status, headers, config) {
             deferred.reject("Response status " + status);

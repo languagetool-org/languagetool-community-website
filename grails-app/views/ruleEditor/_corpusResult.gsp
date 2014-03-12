@@ -16,7 +16,7 @@
                         </g:if>
                     </p>
 
-                    <ul style="margin-top: 8px; margin-bottom: 10px">
+                    <ol style="margin-top: 8px; margin-bottom: 10px">
                         <g:each in="${searcherResult.getMatchingSentences()}" var="matchingSentence">
                             <g:each in="${matchingSentence.getRuleMatches()}" var="match">
                                 <li>
@@ -44,7 +44,7 @@
                             <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/legalcode">CC BY-SA 3.0 Unported</a>
                             &amp; <a target="_blank" href="http://tatoeba.org/">Tatoeba</a>, <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by/2.0/legalcode">CC-BY 2.0</a>
                         </li>
-                    </ul>
+                    </ol>
                 </td>
             </tr>
         </table>

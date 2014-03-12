@@ -1,4 +1,4 @@
-<%@ page import="org.languagetool.Language" %>
+<%@ page import="org.languagetool.JLanguageTool; org.languagetool.Language" %>
 <!doctype html>
 <html><!-- see layout for attributes -->
 <head>
@@ -41,7 +41,13 @@
       
       <table>
           <tr>
-              <td width="120"><label for="language">Language:</label></td>
+              <td width="120" class="metaInfo">Version:</td>
+              <td class="metaInfo">
+                  LanguageTool ${JLanguageTool.VERSION} (${JLanguageTool.BUILD_DATE})
+              </td>
+          </tr>
+          <tr>
+              <td><label for="language">Language:</label></td>
               <td>
                   <select name="language" id="language" ng-model="languageCode" ng-options="c.name for c in languageCodes"></select>
               </td>
@@ -75,10 +81,16 @@
       <div ng-show="patternCreated" ng-cloak>
       
           <h1>Error Pattern</h1>
-          
-          <span class="warn" ng-show="patternElements.length == 0">Please add at least one element</span>
 
           <div id="patternArea">
+
+              <div ng-cloak ng-show="knownMatchesHtml">
+                  <strong>Note:</strong> LanguageTool can already detect the following error(s) in your example sentence:
+                  <div ng-cloak ng-bind-html="knownMatchesHtml"></div>
+              </div>
+
+              <div class="warn" ng-show="patternElements.length == 0">Please add at least one element</div>
+
               <div id="dragContainment">
                   <!-- we need this so dragging to first and last position always works properly: -->
                   <div style="padding-top:20px;padding-bottom:30px;">

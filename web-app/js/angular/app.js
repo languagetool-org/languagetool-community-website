@@ -35,6 +35,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.patternCreated = false;
   $scope.patternEvaluated = false;
   $scope.patternElements = [];
+  $scope.knownMatchesHtml = null;  // rule matches that LT already can find without this new rule
   $scope.evaluationResult = null;  // HTML with rule matches in Wikipedia/Tatoeba
   
   $scope.wrongSentenceAnalysis = null;
@@ -79,10 +80,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorTokenizeSentencesUrl, this.languageCode.code,
         this.wrongSentence, this.correctedSentence);
     incorrectTokensPromise.then(
-      function(diffTokens) {
-        for (var i = 0; i < diffTokens.length; i++) {
-          self.addElement(diffTokens[i]);
+      function(result) {
+        for (var i = 0; i < result.tokens.length; i++) {
+          self.addElement(result.tokens[i]);
         }
+        self.knownMatchesHtml = result.matchesHtml;
         self.patternCreated = true;
         self.patternEvaluated = false;
         self.patternCreationInProgress = false;
@@ -168,7 +170,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     }).success(function(data) {
         // TODO: slooooow! see https://github.com/Pasvaz/bindonce
         //ctrl.evaluationResult = data;
-        ctrl.patternEvaluated = true;
         $('#evaluationResult').html(data);
         ctrl.patternEvaluated = true;
         ctrl.patternEvaluationInProgress = false;
@@ -178,7 +179,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
         $('#evaluationResult').html(data);
         ctrl.patternEvaluationInProgress = false;
       });
-    this.patternEvaluated = true;
   };
 
   $scope.buildXml = function() {
