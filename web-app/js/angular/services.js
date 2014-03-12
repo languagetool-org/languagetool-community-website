@@ -120,7 +120,7 @@ ruleEditorServices.factory('XmlBuilder',
           } else {
             xml += "  <token" + negation + ">" + val;
           }
-          this.buildXmlForConditions(elem.conditions);
+          this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'posTag') {
           var posNegation = elem.negation ? " negate_pos='yes'" : "";
@@ -129,15 +129,15 @@ ruleEditorServices.factory('XmlBuilder',
           } else {
             xml += "  <token postag='" + val.htmlEscape() + "'" + posNegation + ">";
           }
-          this.buildXmlForConditions(elem.conditions);
+          this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'regex') {
           xml += "  <token regexp='yes'>" + val;
-          this.buildXmlForConditions(elem.conditions);
+          this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'any') {
           xml += "  <token>";
-          this.buildXmlForConditions(elem.conditions);
+          this.buildXmlForExceptions(elem.exceptions);
           xml += "  </token>\n";
         } else if (elem.tokenType == 'marker' && val == __LT_MARKER_START) {
           xml += "  <marker>\n";
@@ -149,22 +149,22 @@ ruleEditorServices.factory('XmlBuilder',
         return xml;
       },
 
-      buildXmlForConditions: function(conditions) {
+      buildXmlForExceptions: function(exceptions) {
         var xml;
-        for (var i = 0; i < conditions.length; i++) {
-          var condition = conditions[i];
-          xml += this.buildXmlForCondition(condition);
+        for (var i = 0; i < exceptions.length; i++) {
+          var exception = exceptions[i];
+          xml += this.buildXmlForException(exception);
         }
         return xml;
       },
 
-      buildXmlForCondition: function(condition) {
+      buildXmlForException: function(exception) {
         var xml;
-        if (condition.negation) {
-          if (condition.tokenType == 'word') {
-            xml += "<exception>" + condition.tokenValue.htmlEscape() + "</exception>";
-          } else if (condition.tokenType == 'posTag') {
-            xml += "<exception postag=''/>" + condition.tokenValue.htmlEscape() + "</exception>";
+        if (exception.negation) {
+          if (exception.tokenType == 'word') {
+            xml += "<exception>" + exception.tokenValue.htmlEscape() + "</exception>";
+          } else if (exception.tokenType == 'posTag') {
+            xml += "<exception postag=''/>" + exception.tokenValue.htmlEscape() + "</exception>";
           }
         } else {
           //TODO

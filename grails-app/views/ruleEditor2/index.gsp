@@ -115,23 +115,23 @@
                                         <label title="Negates this condition"><input type="checkbox" ng-model="element.negation" ng-disabled="element.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
                                         
                                         <ul>
-                                          <li ng-repeat="condition in element.conditions">
+                                          <li ng-repeat="exception in element.exceptions">
                                               and:<br/>
-                                              <input type="text" ng-model="condition.tokenValue" ng-enter="evaluateErrorPattern()"
-                                                     placeholder="word or part-of-speech tag" focus-me="focusConditionInput" ng-disabled="condition.tokenType == 'any'"/>
-                                              <a href ng-click="removeCondition(element, condition)">Remove condition</a>
+                                              <input type="text" ng-model="exception.tokenValue" ng-enter="evaluateErrorPattern()"
+                                                     placeholder="word or part-of-speech tag" focus-me="focusExceptionInput" ng-disabled="exception.tokenType == 'any'"/>
+                                              <a href ng-click="removeException(element, exception)">Remove exception</a>
                                               <br/>
-                                              <label><input type="radio" ng-model="condition.tokenType" value="word"/>&nbsp;Word</label>
-                                              <label><input type="radio" ng-model="condition.tokenType" value="posTag"/>&nbsp;POS tag</label>
-                                              <label><input type="radio" ng-model="condition.tokenType" value="any"/>&nbsp;Any token</label>
+                                              <label><input type="radio" ng-model="exception.tokenType" value="word"/>&nbsp;Word</label>
+                                              <label><input type="radio" ng-model="exception.tokenType" value="posTag"/>&nbsp;POS tag</label>
+                                              <label><input type="radio" ng-model="exception.tokenType" value="any"/>&nbsp;Any token</label>
                                               &nbsp;&nbsp;
-                                              <label><input type="checkbox" ng-model="condition.regex" value="true" ng-disabled="condition.tokenType == 'any'"/>&nbsp;Regular Expression</label>
-                                              <label title="Negates this condition"><input type="checkbox" ng-model="condition.negation" ng-disabled="condition.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
+                                              <label><input type="checkbox" ng-model="exception.regex" value="true" ng-disabled="exception.tokenType == 'any'"/>&nbsp;Regular Expression</label>
+                                              <label title="Negates this exception"><input type="checkbox" ng-model="exception.negation" ng-disabled="exception.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
                                           </li>
                                         </ul>
                                           
                                         <div>
-                                            <a href ng-click="addCondition(element)" title="Add another condition for this element">Add condition</a>
+                                            <a href ng-click="addException(element)" title="Add an exception for this element">Add exception</a>
                                         </div>
                                           
                                       </div>

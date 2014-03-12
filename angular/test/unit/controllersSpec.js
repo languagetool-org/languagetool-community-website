@@ -38,13 +38,13 @@ describe('RuleEditor controllers', function() {
       expect(elems.length).toBe(1);
       expect(elems[0].tokenValue).toBe("foo");
 
-      expect(elems[0].conditions.length).toBe(0);
-      scope.addCondition(elems[0]);
+      expect(elems[0].exceptions.length).toBe(0);
+      scope.addException(elems[0]);
       expect(elems.length).toBe(1);
-      expect(elems[0].conditions.length).toBe(1);
+      expect(elems[0].exceptions.length).toBe(1);
 
-      scope.removeCondition(elems[0], elems[0].conditions[0]);
-      expect(elems[0].conditions.length).toBe(0);
+      scope.removeException(elems[0], elems[0].exceptions[0]);
+      expect(elems[0].exceptions.length).toBe(0);
       
       scope.removeElement(elems[0]);
       expect(elems.length).toBe(0);
@@ -134,7 +134,7 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml()).toContain("<marker>");
       expect(scope.buildXml()).toContain("</marker>");
       
-      // TODO: test conditions
+      // TODO: test exception
       
     }));
     

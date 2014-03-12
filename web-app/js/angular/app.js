@@ -151,7 +151,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       tokenType: 'word',
       regex: false,
       negation: false,
-      conditions: []
+      exceptions: []
     };
     if (properties) {
       elem = jQuery.extend({}, elem, properties);
@@ -166,25 +166,25 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     this.addElement(tokenValue, properties);
   };
 
-  $scope.addCondition = function(element) {
-    element.conditions.push(
+  $scope.addException = function(element) {
+    element.exceptions.push(
       {
         tokenValue: '',
         tokenType: 'word',
         regex: false,
         negation: false
       });
-    this.focusConditionInput = true;
+    this.focusExceptionInput = true;
   };
 
-  $scope.removeCondition = function(element, condition) {
+  $scope.removeException = function(element, exception) {
     var index = this.patternElements.indexOf(element);
     if (index > -1) {
-      var conditionIndex = this.patternElements[index].conditions.indexOf(condition);
-      if (conditionIndex > -1) {
-        this.patternElements[index].conditions.splice(conditionIndex, 1);
+      var exceptionIndex = this.patternElements[index].exceptions.indexOf(exception);
+      if (exceptionIndex > -1) {
+        this.patternElements[index].exceptions.splice(exceptionIndex, 1);
       } else {
-        console.warn("No element/condition found: " + element + " / " + condition);
+        console.warn("No element/exception found: " + element + " / " + exception);
       }
     } else {
       console.warn("No element found: " + element);
