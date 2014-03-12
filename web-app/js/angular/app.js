@@ -21,7 +21,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.sortableOptions = {
     handle: '.dragHandle', containment: '#dragContainment', axis: 'y'
   };
-  
+
+  var __LT_MARKER_START = 'Marker start';
+  var __LT_MARKER_END = 'Marker end';
+
   $scope.languageCodes = [
     {code: 'ast', name: 'Asturian'},
     {code: 'be', name: 'Belarusian'},
@@ -124,16 +127,25 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     );
   };
 
-  $scope.addElement = function(tokenValue) {
-    this.patternElements.push(
-      {
-        tokenValue: tokenValue,
-        tokenType: 'word',
-        regex: false,
-        negation: false,
-        conditions: []
-      });
+  $scope.addElement = function(tokenValue, properties) {
+    var elem = {
+      tokenValue: tokenValue,
+      tokenType: 'word',
+      regex: false,
+      negation: false,
+      conditions: []
+    };
+    if (properties) {
+      elem = jQuery.extend({}, elem, properties);
+    }
+    this.patternElements.push(elem);
     this.focusInput = true;
+    return elem;
+  };
+
+  $scope.setElement = function(tokenValue, properties) {
+    this.patternElements = [];
+    this.addElement(tokenValue, properties);
   };
 
   $scope.addCondition = function(element) {
@@ -174,12 +186,12 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     return -1;
   };
 
-  $scope.addMarker = function(tokenValue) {
+  $scope.addMarker = function() {
     this.patternElements.unshift({'tokenValue': __LT_MARKER_START, 'tokenType': 'marker'});
     this.patternElements.push({'tokenValue': __LT_MARKER_END, 'tokenType': 'marker'});
   };
 
-  $scope.hasNoMarker = function(tokenValue) {
+  $scope.hasNoMarker = function() {
     for (var i = 0; i < this.patternElements.length; i++) {
       if (this.patternElements[i].tokenType == 'marker') {
         return false;

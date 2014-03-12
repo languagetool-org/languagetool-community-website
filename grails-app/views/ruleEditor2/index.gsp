@@ -13,9 +13,6 @@
         var __ruleEditorEvaluationUrl = '${resource(dir: 'ruleEditor', file: 'checkXml')}';
         var __ruleEditorTokenizeSentencesUrl = '${resource(dir: 'analysis', file: 'tokenizeSentences')}';
         var __ruleEditorSentenceAnalysisUrl = '${resource(dir: 'analysis', file: 'analyzeTextForEmbedding')}';
-
-        var __LT_MARKER_START = 'Marker start';
-        var __LT_MARKER_END = 'Marker end';
     </script>
     <script src="${resource(dir:'js/angular/lib', file:'angular.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-sanitize.min.js')}"></script>
