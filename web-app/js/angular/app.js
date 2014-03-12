@@ -50,8 +50,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     {code: 'ca', name: 'Catalan'},
     {code: 'zh', name: 'Chinese'},
     {code: 'da', name: 'Danish'},
-    {code: 'en', name: 'English'},
     {code: 'nl', name: 'Dutch'},
+    {code: 'en', name: 'English'},
     {code: 'eo', name: 'Esperanto'},
     {code: 'fr', name: 'French'},
     {code: 'gl', name: 'Galician'},
@@ -74,7 +74,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     {code: 'tl', name: 'Tagalog'},
     {code: 'uk', name: 'Ukrainian'}
   ];
-  $scope.languageCode = $scope.languageCodes[6];  // English
+  $scope.languageCode = $scope.languageCodes[7];  // English
   $scope.ruleName = "";
   $scope.wrongSentence = "Sorry for my bed English.";  //TODO
   $scope.correctedSentence = "Sorry for my bad English.";
