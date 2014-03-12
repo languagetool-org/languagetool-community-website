@@ -143,8 +143,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.removeMarkers = function() {
-    var idx = -1;
-    for (var i = 0; i < this.patternElements.length; i++) {
+    for (var i = this.patternElements.length - 1; i >= 0; i--) {
       if (this.patternElements[i].tokenType == 'marker') {
         this.patternElements.splice(i, 1);
       }
