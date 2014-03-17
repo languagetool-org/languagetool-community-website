@@ -157,17 +157,45 @@
                                           
                                         <ul>
                                           <li ng-repeat="exception in element.exceptions">
-                                              and:<br/>
-                                              <input type="text" ng-model="exception.tokenValue" ng-enter="evaluateErrorPattern()"
-                                                     placeholder="word or part-of-speech tag" focus-me="focusExceptionInput" ng-disabled="exception.tokenType == 'any'"/>
-                                              <a href ng-click="removeException(element, exception)">Remove exception</a>
-                                              <br/>
+                                              and:
+
+                                              <a href ng-click="removeException(element, exception)" class="removeLink">Remove exception</a>
+
+                                              <!-- copied from above, 'element' replaced with 'exception': -->
+
                                               <label><input type="radio" ng-model="exception.tokenType" value="word"/>&nbsp;Word</label>
-                                              <label><input type="radio" ng-model="exception.tokenType" value="posTag"/>&nbsp;POS tag</label>
-                                              <label><input type="radio" ng-model="exception.tokenType" value="any"/>&nbsp;Any token</label>
-                                              &nbsp;&nbsp;
-                                              <label><input type="checkbox" ng-model="exception.regex" value="true" ng-disabled="exception.tokenType == 'any'"/>&nbsp;Regular Expression</label>
-                                              <label title="Negates this exception"><input type="checkbox" ng-model="exception.negation" ng-disabled="exception.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
+                                              <label><input type="radio" ng-model="exception.tokenType" value="posTag"/>&nbsp;Part-of-speech</label>
+                                              <label><input type="radio" ng-model="exception.tokenType" value="word_and_posTag"/>&nbsp;Word + Part-of-speech</label>
+
+                                              <table>
+                                                  <tr ng-show="exception.tokenType == 'word' || exception.tokenType == 'word_and_posTag'">
+                                                      <td>Word:</td>
+                                                      <td>
+                                                          <div>
+                                                              <input type="text" ng-model="exception.tokenValue" ng-enter="evaluateErrorPattern()"
+                                                                     placeholder="word" focus-me="focusInput" />
+                                                              <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="exception.regex" value="true" ng-disabled="exception.tokenType == 'any'"/>&nbsp;RegExp</label>
+                                                              <label title="Matches anything but the given word"><input type="checkbox" ng-model="exception.negation" value="false" />&nbsp;Negate</label>
+                                                              <br/>
+                                                              <div ng-show="exception.tokenValue.contains(' ')">
+                                                                  <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> Add another token instead of using spaces in a token
+                                                              </div>
+                                                          </div>
+                                                      </td>
+                                                  </tr>
+                                                  <tr ng-show="exception.tokenType == 'posTag' || exception.tokenType == 'word_and_posTag'">
+                                                      <td>Part-of-speech:</td>
+                                                      <td>
+                                                          <div>
+                                                              <input type="text" ng-model="exception.posTag" ng-enter="evaluateErrorPattern()"
+                                                                     placeholder="part-of-speech tag" focus-me="focusInput" />
+                                                              <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" ng-model="exception.posTagRegex" value="true" ng-disabled="exception.tokenType == 'any'"/>&nbsp;RegExp</label>
+                                                              <label title="Matches anything but the given part-of-speech tag"><input type="checkbox" ng-model="exception.posTagNegation" value="false" />&nbsp;Negate</label>
+                                                          </div>
+                                                      </td>
+                                                  </tr>
+                                              </table>
+
                                           </li>
                                         </ul>
                                           

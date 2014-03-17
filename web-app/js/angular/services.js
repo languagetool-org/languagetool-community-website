@@ -113,25 +113,25 @@ ruleEditorServices.factory('XmlBuilder',
         if (!val) {
           val = "";
         }
-        var regex = elem.regex ? " regexp='yes'" : "";
-        var negation = elem.negation ? " negate='yes'" : "";
-        var posTagRegex = elem.posTagRegex ? " postag_regexp='yes'" : "";
-        var posTagNegation = elem.posTagNegation ? " negate_pos='yes'" : "";
+        var regex = this.getRegexAttribute(elem);
+        var negation = this.getNegationAttribute(elem);
+        var posTagRegex = this.getPosTagRegexAttribute(elem);
+        var posTagNegation = this.getPosTagNegationAttribute(elem);
         if (elem.tokenType == 'word') {
           xml += "  <token" + regex + negation + ">" + val;
-          this.buildXmlForExceptions(elem.exceptions);
+          xml += this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'posTag') {
           xml += "  <token postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">";
-          this.buildXmlForExceptions(elem.exceptions);
+          xml += this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'word_and_posTag') {
           xml += "  <token" + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
-          this.buildXmlForExceptions(elem.exceptions);
+          xml += this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'any') {
           xml += "  <token>";
-          this.buildXmlForExceptions(elem.exceptions);
+          xml += this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'marker' && val == __LT_MARKER_START) {
           xml += "  <marker>\n";
@@ -143,8 +143,21 @@ ruleEditorServices.factory('XmlBuilder',
         return xml;
       },
 
+      getRegexAttribute: function(elem) {
+        return elem.regex ? " regexp='yes'" : "";
+      },
+      getNegationAttribute: function(elem) {
+        return elem.negation ? " negate='yes'" : "";
+      },
+      getPosTagRegexAttribute: function(elem) {
+        return elem.posTagRegex ? " postag_regexp='yes'" : "";
+      },
+      getPosTagNegationAttribute: function(elem) {
+        return elem.posTagNegation ? " negate_pos='yes'" : "";
+      },
+      
       buildXmlForExceptions: function(exceptions) {
-        var xml;
+        var xml = "";
         for (var i = 0; i < exceptions.length; i++) {
           var exception = exceptions[i];
           xml += this.buildXmlForException(exception);
@@ -153,15 +166,26 @@ ruleEditorServices.factory('XmlBuilder',
       },
 
       buildXmlForException: function(exception) {
-        var xml;
-        if (exception.negation) {
-          if (exception.tokenType == 'word') {
-            xml += "<exception>" + exception.tokenValue.htmlEscape() + "</exception>";
-          } else if (exception.tokenType == 'posTag') {
-            xml += "<exception postag=''/>" + exception.tokenValue.htmlEscape() + "</exception>";
-          }
+        var xml = "";
+        var val = exception.tokenValue;
+        if (!val) {
+          val = "";
+        }
+        var regex = this.getRegexAttribute(exception);
+        var negation = this.getNegationAttribute(exception);
+        var posTagRegex = this.getPosTagRegexAttribute(exception);
+        var posTagNegation = this.getPosTagNegationAttribute(exception);
+        if (exception.tokenType == 'word') {
+          xml += "<exception" + regex + negation + ">" + val;
+          xml += "</exception>";
+        } else if (exception.tokenType == 'posTag') {
+          xml += "<exception postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">";
+          xml += "</exception>";
+        } else if (exception.tokenType == 'word_and_posTag') {
+          xml += "<exception" + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
+          xml += "</exception>";
         } else {
-          //TODO
+          console.warn("Unknown exception  type '" + exception.tokenType + "'");
         }
         return xml;
       }

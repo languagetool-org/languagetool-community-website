@@ -160,8 +160,41 @@ describe('RuleEditor controllers', function() {
     it('should build XML with exception elements', inject(function($controller) {
       var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
 
-      // TODO: test exception
+      var elem = scope.setElement("hallo");
+      scope.addException(elem);
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception></exception>\\s*</token>");
       
+      elem = scope.setElement("hallo");
+      scope.addException(elem);
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception></exception>\\s*</token>");
+      
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException'});
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception>myException</exception>\\s*</token>");
+      
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', regex: true});
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
+      
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', regex: true});
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
+      
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', regex: true, negation:true});
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes' negate='yes'>myException</exception>\\s*</token>");
+      
+      elem = scope.setElement("");
+      scope.addException(elem, {tokenType: 'posTag', posTag: 'XTAG'});
+      expect(scope.buildXml()).toMatch("<token>\\s*<exception postag='XTAG'></exception>");
+      
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', tokenType: 'word_and_posTag', posTag: 'XTAG'});
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception postag='XTAG'>myException</exception>\\s*</token>");
+      
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', tokenType: 'word_and_posTag', posTag: 'XTAG', posTagRegex: true, posTagNegation: true});
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception postag='XTAG' postag_regexp='yes' negate_pos='yes'>myException</exception>\\s*</token>");
     }));
     
   });

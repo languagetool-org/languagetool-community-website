@@ -184,17 +184,23 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.setElement = function(tokenValue, properties) {
     this.patternElements = [];
-    this.addElement(tokenValue, properties);
+    return this.addElement(tokenValue, properties);
   };
 
-  $scope.addException = function(element) {
-    element.exceptions.push(
-      {
-        tokenValue: '',
-        tokenType: 'word',
-        regex: false,
-        negation: false
-      });
+  $scope.addException = function(element, properties) {
+    var ex = {
+      tokenValue: '',
+      tokenType: 'word',
+      regex: false,
+      negation: false,
+      posTag: '',
+      posTagRegex: false,
+      posTagNegation: false
+    };
+    if (properties) {
+      ex = jQuery.extend({}, ex, properties);
+    }
+    element.exceptions.push(ex);
     this.focusExceptionInput = true;
   };
 
