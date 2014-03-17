@@ -86,7 +86,7 @@
                   <div ng-cloak ng-bind-html="knownMatchesHtml"></div>
               </div>
 
-              <div class="warn" ng-show="patternElements.length == 0">Please add at least one element</div>
+              <div class="warn" ng-show="patternElements.length == 0">Please add at least one token to the pattern</div>
 
               <div id="dragContainment">
                   <!-- we need this so dragging to first and last position always works properly: -->
@@ -107,6 +107,9 @@
 
                                         <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
                                                placeholder="word or part-of-speech tag" focus-me="focusInput" ng-disabled="element.tokenType == 'any'"/><br/>
+                                        <div ng-show="element.tokenValue.contains(' ')">
+                                            <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> Add another token instead of using spaces in a token
+                                        </div>
                                         <label><input type="radio" ng-model="element.tokenType" value="word"/>&nbsp;Word</label>
                                         <label><input type="radio" ng-model="element.tokenType" value="posTag"/>&nbsp;POS tag</label>
                                         <label><input type="radio" ng-model="element.tokenType" value="any"/>&nbsp;Any token</label>
@@ -187,7 +190,7 @@
 
   <h1>XML</h1>
 
-  <pre style="margin-bottom: 30px; margin-left:140px" ng-cloak>{{buildXml()}}</pre>
+  <pre id="ruleAsXml" ng-cloak>{{buildXml()}}</pre>
 
 </div>
 

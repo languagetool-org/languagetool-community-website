@@ -21,13 +21,19 @@
     margin-bottom: 30px;
 }
 
+#ruleAsXml {
+    color: #555555;
+    margin-bottom: 30px;
+    margin-left: 140px
+}
+
 .sortable { 
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 .sortable li {
-    margin: 0 3px 3px 3px;
+    margin: 0 3px 6px 3px;
     padding: 5px 5px 5px 5px;
     background-color: #eeeeee;
 }

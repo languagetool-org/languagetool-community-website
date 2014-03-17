@@ -273,8 +273,4 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     return XmlBuilder.buildXml(this);
   };
 
-  //$scope.showXml = function() {
-  //  alert(this.buildXml());
-  //};
-
 });

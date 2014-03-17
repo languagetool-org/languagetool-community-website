@@ -138,7 +138,7 @@ ruleEditorServices.factory('XmlBuilder',
         } else if (elem.tokenType == 'any') {
           xml += "  <token>";
           this.buildXmlForExceptions(elem.exceptions);
-          xml += "  </token>\n";
+          xml += "</token>\n";
         } else if (elem.tokenType == 'marker' && val == __LT_MARKER_START) {
           xml += "  <marker>\n";
         } else if (elem.tokenType == 'marker' && val == __LT_MARKER_END) {

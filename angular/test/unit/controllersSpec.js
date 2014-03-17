@@ -130,6 +130,9 @@ describe('RuleEditor controllers', function() {
       scope.setElement("NN", {regex: true, negation: true, tokenType: 'posTag'});
       expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes' negate_pos='yes'></token>");
 
+      scope.setElement("", {tokenType: 'any'});
+      expect(scope.buildXml()).toContain("<token></token>");
+
       scope.addMarker();
       expect(scope.buildXml()).toContain("<marker>");
       expect(scope.buildXml()).toContain("</marker>");
