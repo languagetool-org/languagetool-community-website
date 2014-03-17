@@ -87,6 +87,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.evaluationResult = null;  // HTML with rule matches in Wikipedia/Tatoeba
   
   $scope.wrongSentenceAnalysis = null;
+  $scope.correctedSentenceAnalysis = null;
   $scope.patternCreationInProgress = false;
   $scope.patternEvaluationInProgress = false;
 
@@ -110,8 +111,31 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       });
   };
 
+  $scope.analyzeCorrectedSentence = function() {
+    var self = this;
+    var data = "text=" + this.correctedSentence + "&lang=" + this.languageCode.code;
+    this.patternCreationInProgress = true;
+    $http({
+      url: __ruleEditorSentenceAnalysisUrl,
+      method: 'POST',
+      data: data,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function(data) {
+        self.correctedSentenceAnalysis = data;
+        self.patternCreationInProgress = false;
+      })
+      .error(function(data, status, headers, config) {
+        self.correctedSentenceAnalysis = data;
+        self.patternCreationInProgress = false;
+      });
+  };
+
   $scope.hideWrongSentenceAnalysis = function() {
     this.wrongSentenceAnalysis = null;
+  };
+
+  $scope.hideCorrectedSentenceAnalysis = function() {
+    this.correctedSentenceAnalysis = null;
   };
 
   $scope.createErrorPattern = function() {

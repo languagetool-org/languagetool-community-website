@@ -52,18 +52,34 @@
           <tr>
               <td><label for="wrongSentence">Wrong sentence:</label></td>
               <td>
-                  <input type="text" ng-model="wrongSentence" id="wrongSentence" placeholder="A example sentence"/><br/>
+                  <input type="text" ng-model="wrongSentence" id="wrongSentence" placeholder="A example sentence"/>
+              </td>
+          </tr>
+          <tr>
+              <td></td>
+              <td>
                   <a href ng-click="analyzeWrongSentence()" ng-show="!wrongSentenceAnalysis && wrongSentence">Show analysis</a>
                   <span ng-show="wrongSentenceAnalysis" ng-cloak>
                     <a href ng-click="analyzeWrongSentence()">Update analysis</a> &middot;
                     <a href ng-click="hideWrongSentenceAnalysis()">Hide analysis</a>
                   </span>
-                  <div id="wrongSentenceAnalysis" ng-show="wrongSentenceAnalysis" ng-bind-html="wrongSentenceAnalysis" ng-cloak></div>
+                  <div id="wrongSentenceAnalysis" class="sentenceAnalysis" ng-show="wrongSentenceAnalysis" ng-bind-html="wrongSentenceAnalysis" ng-cloak></div>
               </td>
           </tr>
           <tr>
               <td><label for="correctedSentence">Corrected sentence:</label></td>
               <td><input type="text" ng-model="correctedSentence" id="correctedSentence" placeholder="An example sentence"/></td>
+          </tr>
+          <tr>
+              <td></td>
+              <td>
+                  <a href ng-click="analyzeCorrectedSentence()" ng-show="!correctedSentenceAnalysis && correctedSentence">Show analysis</a>
+                  <span ng-show="correctedSentenceAnalysis" ng-cloak>
+                      <a href ng-click="analyzeCorrectedSentence()">Update analysis</a> &middot;
+                      <a href ng-click="hideCorrectedSentenceAnalysis()">Hide analysis</a>
+                  </span>
+                  <div id="correctedSentenceAnalysis" class="sentenceAnalysis" ng-show="correctedSentenceAnalysis" ng-bind-html="correctedSentenceAnalysis" ng-cloak></div>
+              </td>
           </tr>
           <tr>
               <td></td>
@@ -112,7 +128,7 @@
                                           
                                         <table>
                                             <tr ng-show="element.tokenType == 'word' || element.tokenType == 'word_and_posTag'">
-                                                <td style="vertical-align: middle">Word:</td>
+                                                <td>Word:</td>
                                                 <td>
                                                     <div>
                                                         <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
@@ -127,7 +143,7 @@
                                                 </td>
                                             </tr>
                                             <tr ng-show="element.tokenType == 'posTag' || element.tokenType == 'word_and_posTag'">
-                                                <td style="vertical-align: middle">Part-of-speech:</td>
+                                                <td>Part-of-speech:</td>
                                                 <td>
                                                     <div>
                                                         <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
@@ -207,7 +223,7 @@
 
           <h1>Evaluation Results</h1>
 
-          <div id="evaluationResult"></div>
+          <div id="evaluationResult" ng-class="{inProgress: patternEvaluationInProgress}"></div>
           <!-- too slow: <div ng-bind-html="evaluationResult"></div>-->
           
       </div>

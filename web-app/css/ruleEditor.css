@@ -10,7 +10,7 @@
 #dragContainment {
 }
 
-#wrongSentenceAnalysis {
+#wrongSentenceAnalysis, #correctedSentenceAnalysis {
     padding: 5px;
     background-color: #eeeeee;
 }
@@ -48,6 +48,16 @@
     border: 0;
     width: auto;
 }
+.ruleEditor table td {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    vertical-align: middle;
+}
+.sentenceAnalysis table td {
+    padding: 3px;
+}
 .exampleSentenceField {
     width: 300px;
 }
@@ -67,6 +77,10 @@ input[type='text'] {
 }
 
 .disambiguatorLog {
-    margin-left: 8px;
+    margin-left: 4px;
     color: #777;
+}
+
+.inProgress {
+    opacity: 0.5;
 }

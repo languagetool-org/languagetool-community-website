@@ -7,7 +7,7 @@
 
         <table style="border:0">
             <tr>
-                <td valign="top"><img style="margin:10px" align="left" src="${resource(dir:'images', file:'information.png')}" /></td>
+                <td style="vertical-align: top"><img style="margin:10px" align="left" src="${resource(dir:'images', file:'information.png')}" /></td>
                 <td>
                     <p style="width:700px;">
                         <g:message code="ltc.editor.corpus.intro.problem" args="${[docsChecked, params.language.encodeAsHTML()]}"/>
@@ -54,7 +54,7 @@
 
         <table style="border:0">
             <tr>
-                <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                <td style="width:40px"><img style="margin:5px" src="${resource(dir:'images', file:'accept.png')}" /></td>
                 <td>
                     <p style="width:700px;">
                         <g:message code="ltc.editor.corpus.intro" args="${[docsChecked, params.language.encodeAsHTML()]}"/>
@@ -68,7 +68,7 @@
     <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
         <table style="border:0">
             <tr>
-                <td valign="top" width="40"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                <td style="vertical-align: top;width:40px"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
                 <td style="text-align: left">
                     <g:message code="ltc.editor.corpus.correct.example.sentence"/>
                     <g:if test="${incorrectExamplesMatches}">
