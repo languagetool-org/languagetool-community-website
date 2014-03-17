@@ -6,6 +6,7 @@
         <feed:meta kind="rss" version="2.0" controller="feedMatches" action="feed" 
                    params="${[lang:language.getShortName(), notFixedFilter:params.notFixedFilter, categoryFilter:params.categoryFilter, filter:params.filter]}"/>
         <title><g:message code="ltc.feed.matches.title"/> - ${language}</title>
+        <meta name="robots" content="noindex,nofollow" />
         <g:javascript library="jquery" />
         <script language="JavaScript">
             function markedAsFixedOrFalseAlarm(feedMatchId) {
