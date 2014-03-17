@@ -93,27 +93,21 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.analyzeWrongSentence = function() {
     var self = this;
-    var data = "text=" + this.wrongSentence + "&lang=" + this.languageCode.code;
-    this.patternCreationInProgress = true;
-    $http({
-      url: __ruleEditorSentenceAnalysisUrl,
-      method: 'POST',
-      data: data,
-      // See http://stackoverflow.com/questions/19254029/angularjs-http-post-does-not-send-data:
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    }).success(function(data) {
-        self.wrongSentenceAnalysis = data;
-        self.patternCreationInProgress = false;
-      })
-      .error(function(data, status, headers, config) {
-        self.wrongSentenceAnalysis = data;
-        self.patternCreationInProgress = false;
-      });
+    this.analyzeSentence(this.wrongSentence, function(data) {
+      self.wrongSentenceAnalysis = data;
+    });
   };
 
   $scope.analyzeCorrectedSentence = function() {
     var self = this;
-    var data = "text=" + this.correctedSentence + "&lang=" + this.languageCode.code;
+    this.analyzeSentence(this.correctedSentence, function(data) {
+      self.correctedSentenceAnalysis = data;
+    });
+  };
+
+  $scope.analyzeSentence = function(sentence, finishFunction) {
+    var self = this;
+    var data = "text=" + sentence + "&lang=" + this.languageCode.code;
     this.patternCreationInProgress = true;
     $http({
       url: __ruleEditorSentenceAnalysisUrl,
@@ -121,11 +115,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       data: data,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function(data) {
-        self.correctedSentenceAnalysis = data;
+        finishFunction(data);
         self.patternCreationInProgress = false;
       })
       .error(function(data, status, headers, config) {
-        self.correctedSentenceAnalysis = data;
+        finishFunction(data);
         self.patternCreationInProgress = false;
       });
   };
