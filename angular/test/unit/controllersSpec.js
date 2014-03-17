@@ -118,17 +118,35 @@ describe('RuleEditor controllers', function() {
       scope.setElement("hallo", {negation: true});
       expect(scope.buildXml()).toContain("<token negate='yes'>hallo</token>");
 
-      scope.setElement("NN", {tokenType: 'posTag'});
+
+      scope.setElement("", {posTag: 'NN', tokenType: 'posTag'});
       expect(scope.buildXml()).toContain("<token postag='NN'></token>");
 
-      scope.setElement("NN", {negation: true, tokenType: 'posTag'});
+      scope.setElement("", {posTag: 'NN', posTagNegation: true, tokenType: 'posTag'});
       expect(scope.buildXml()).toContain("<token postag='NN' negate_pos='yes'></token>");
 
-      scope.setElement("NN", {regex: true, tokenType: 'posTag'});
+      scope.setElement("", {posTag: 'NN', posTagRegex: true, tokenType: 'posTag'});
       expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes'></token>");
 
-      scope.setElement("NN", {regex: true, negation: true, tokenType: 'posTag'});
+      scope.setElement("", {posTag: 'NN', posTagRegex: true, posTagNegation: true, tokenType: 'posTag'});
       expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes' negate_pos='yes'></token>");
+
+
+      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag'});
+      expect(scope.buildXml()).toContain("<token postag='NN'>hallo</token>");
+      
+      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true});
+      expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes'>hallo</token>");
+      
+      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true, regex: true});
+      expect(scope.buildXml()).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
+      
+      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true, regex: true});
+      expect(scope.buildXml()).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
+
+      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true, regex: true, negation: true, posTagNegation: true});
+      expect(scope.buildXml()).toContain("<token regexp='yes' negate='yes' postag='NN' postag_regexp='yes' negate_pos='yes'>hallo</token>");
+
 
       scope.setElement("", {tokenType: 'any'});
       expect(scope.buildXml()).toContain("<token></token>");
@@ -136,7 +154,12 @@ describe('RuleEditor controllers', function() {
       scope.addMarker();
       expect(scope.buildXml()).toContain("<marker>");
       expect(scope.buildXml()).toContain("</marker>");
-      
+    }));
+
+    // testing XML here as it depends on the controller:
+    it('should build XML with exception elements', inject(function($controller) {
+      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
+
       // TODO: test exception
       
     }));

@@ -151,6 +151,9 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       tokenType: 'word',
       regex: false,
       negation: false,
+      posTag: '',
+      posTagRegex: false,
+      posTagNegation: false,
       exceptions: []
     };
     if (properties) {

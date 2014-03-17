@@ -105,18 +105,40 @@
                                       <a class="removeLink" href ng-click="removeElement(element)">Remove</a>
                                       <div style="margin-left: 15px">
 
-                                        <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
-                                               placeholder="word or part-of-speech tag" focus-me="focusInput" ng-disabled="element.tokenType == 'any'"/><br/>
-                                        <div ng-show="element.tokenValue.contains(' ')">
-                                            <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> Add another token instead of using spaces in a token
-                                        </div>
                                         <label><input type="radio" ng-model="element.tokenType" value="word"/>&nbsp;Word</label>
-                                        <label><input type="radio" ng-model="element.tokenType" value="posTag"/>&nbsp;POS tag</label>
-                                        <label><input type="radio" ng-model="element.tokenType" value="any"/>&nbsp;Any token</label>
-                                        &nbsp;&nbsp;
-                                        <label><input type="checkbox" ng-model="element.regex" value="true" ng-disabled="element.tokenType == 'any'"/>&nbsp;Regular Expression</label>
-                                        <label title="Negates this condition"><input type="checkbox" ng-model="element.negation" ng-disabled="element.tokenType == 'any'" value="false" />&nbsp;Anything but this</label>
-                                        
+                                        <label><input type="radio" ng-model="element.tokenType" value="posTag"/>&nbsp;Part-of-speech</label>
+                                        <label><input type="radio" ng-model="element.tokenType" value="word_and_posTag"/>&nbsp;Word + Part-of-speech</label>
+                                        <label><input type="radio" ng-model="element.tokenType" value="any"/>&nbsp;Any word</label>
+                                          
+                                        <table>
+                                            <tr ng-show="element.tokenType == 'word' || element.tokenType == 'word_and_posTag'">
+                                                <td style="vertical-align: middle">Word:</td>
+                                                <td>
+                                                    <div>
+                                                        <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
+                                                                     placeholder="word" focus-me="focusInput" />
+                                                        <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="element.regex" value="true" ng-disabled="element.tokenType == 'any'"/>&nbsp;RegExp</label>
+                                                        <label title="Matches anything but the given word"><input type="checkbox" ng-model="element.negation" value="false" />&nbsp;Negate</label>
+                                                        <br/>
+                                                        <div ng-show="element.tokenValue.contains(' ')">
+                                                            <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> Add another token instead of using spaces in a token
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="element.tokenType == 'posTag' || element.tokenType == 'word_and_posTag'">
+                                                <td style="vertical-align: middle">Part-of-speech:</td>
+                                                <td>
+                                                    <div>
+                                                        <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
+                                                                               placeholder="part-of-speech tag" focus-me="focusInput" />
+                                                        <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" ng-model="element.posTagRegex" value="true" ng-disabled="element.tokenType == 'any'"/>&nbsp;RegExp</label>
+                                                        <label title="Matches anything but the given part-of-speech tag"><input type="checkbox" ng-model="element.posTagNegation" value="false" />&nbsp;Negate</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                          
                                         <ul>
                                           <li ng-repeat="exception in element.exceptions">
                                               and:<br/>
@@ -176,6 +198,10 @@
 
       </div>
 
+      <h1>Debugging: XML</h1>
+
+      <pre id="ruleAsXml" ng-cloak>{{buildXml()}}</pre>
+
 
       <div ng-show="patternEvaluated" ng-cloak>
 
@@ -187,10 +213,6 @@
       </div>
 
   </form>
-
-  <h1>XML</h1>
-
-  <pre id="ruleAsXml" ng-cloak>{{buildXml()}}</pre>
 
 </div>
 

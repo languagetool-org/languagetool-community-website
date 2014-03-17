@@ -113,26 +113,20 @@ ruleEditorServices.factory('XmlBuilder',
         if (!val) {
           val = "";
         }
+        var regex = elem.regex ? " regexp='yes'" : "";
+        var negation = elem.negation ? " negate='yes'" : "";
+        var posTagRegex = elem.posTagRegex ? " postag_regexp='yes'" : "";
+        var posTagNegation = elem.posTagNegation ? " negate_pos='yes'" : "";
         if (elem.tokenType == 'word') {
-          var negation = elem.negation ? " negate='yes'" : "";
-          if (elem.regex == true) {
-            xml += "  <token regexp='yes'" + negation + ">" + val;
-          } else {
-            xml += "  <token" + negation + ">" + val;
-          }
+          xml += "  <token" + regex + negation + ">" + val;
           this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'posTag') {
-          var posNegation = elem.negation ? " negate_pos='yes'" : "";
-          if (elem.regex == true) {
-            xml += "  <token postag='" + val.htmlEscape() + "' postag_regexp='yes'" + posNegation + ">";
-          } else {
-            xml += "  <token postag='" + val.htmlEscape() + "'" + posNegation + ">";
-          }
+          xml += "  <token postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">";
           this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
-        } else if (elem.tokenType == 'regex') {
-          xml += "  <token regexp='yes'>" + val;
+        } else if (elem.tokenType == 'word_and_posTag') {
+          xml += "  <token" + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
           this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'any') {
