@@ -154,6 +154,11 @@ describe('RuleEditor controllers', function() {
       scope.addMarker();
       expect(scope.buildXml()).toContain("<marker>");
       expect(scope.buildXml()).toContain("</marker>");
+
+      expect(scope.buildXml()).toContain("<pattern>");
+      scope.caseSensitive = true;
+      expect(scope.buildXml()).toContain("<pattern case_sensitive='yes'>");
+
     }));
 
     // testing XML here as it depends on the controller:

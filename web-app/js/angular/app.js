@@ -76,8 +76,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   ];
   $scope.languageCode = $scope.languageCodes[7];  // English
   $scope.ruleName = "";
-  $scope.wrongSentence = "Sorry for my bed English.";  //TODO
-  $scope.correctedSentence = "Sorry for my bad English.";
+  $scope.caseSensitive = false;
+  //$scope.wrongSentence = "Sorry for my bed English.";  //for easier testing
+  //$scope.correctedSentence = "Sorry for my bad English.";
+  $scope.wrongSentence = "";
+  $scope.correctedSentence = "";
   $scope.ruleMessage = "";
 
   $scope.patternCreated = false;

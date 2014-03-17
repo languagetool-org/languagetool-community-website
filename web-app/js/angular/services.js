@@ -95,7 +95,11 @@ ruleEditorServices.factory('XmlBuilder',
       buildXml: function(model) {
         var xml = "";
         xml += "<rule name=\"" + model.ruleName.attributeEscape() + "\">\n";
-        xml += " <pattern>\n";
+        if (model.caseSensitive) {
+          xml += " <pattern case_sensitive='yes'>\n";
+        } else {
+          xml += " <pattern>\n";
+        }
         for (var i = 0; i < model.patternElements.length; i++) {
           xml += this.buildXmlForElement(model.patternElements[i]);
         }

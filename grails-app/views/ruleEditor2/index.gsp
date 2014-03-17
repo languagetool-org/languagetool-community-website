@@ -29,6 +29,8 @@
   to create your own rules. As a result, you will have your rule in XML format, which you
   can <a href="https://languagetool.org/support/" target="_blank">send to the developers</a> for inclusion in LanguageTool
   or add to your <tt>grammar.xml</tt> file for local use.</p>
+
+  <p class="warn">Note: this version of the rule editor is an incomplete prototype</p>
     
   <form>
 
@@ -101,6 +103,8 @@
                   <strong>Note:</strong> LanguageTool can already detect the following error(s) in your example sentence:
                   <div ng-cloak ng-bind-html="knownMatchesHtml"></div>
               </div>
+              
+              <label><input ng-model="caseSensitive" type="checkbox"/>&nbsp;Case-sensitive word matching</label>
 
               <div class="warn" ng-show="patternElements.length == 0">Please add at least one token to the pattern</div>
 
