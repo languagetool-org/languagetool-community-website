@@ -2,7 +2,7 @@
 
 <table style="border: 0">
 <tr>
-    <td valign="top">
+    <td style="vertical-align:top">
         <img style="margin:5px" src="${resource(dir:'images', file:'exclamation.png')}" />
     </td>
     <td>

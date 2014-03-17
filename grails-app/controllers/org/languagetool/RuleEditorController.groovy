@@ -192,7 +192,7 @@ class RuleEditorController extends BaseController {
                     // we accept this (but later display a warning) because it's handy to try some patterns
                     // without setting a sentence just to see the Wikipedia results
                 } else {
-                    String msg = message(code: 'ltc.editor.error.not.found', args: [sentence])
+                    String msg = message(code: 'ltc.editor.error.not.found', args: [sentence], encodeAs: 'None')
                     msg += "<br/>"
                     msg += message(code: 'ltc.editor.error.not.found.analysis')
                     msg += "<br/>"

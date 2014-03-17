@@ -110,7 +110,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.analyzeSentence = function(sentence, finishFunction) {
     var self = this;
-    var data = "text=" + sentence + "&lang=" + this.languageCode.code;
+    var data = "text=" + encodeURIComponent(sentence) + "&lang=" + this.languageCode.code;
     this.patternCreationInProgress = true;
     $http({
       url: __ruleEditorSentenceAnalysisUrl,
@@ -278,7 +278,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   
   $scope.evaluateErrorPattern = function() {
     this.patternEvaluationInProgress = true;
-    var data = "language=" + this.languageCode.code + "&checkMarker=false&xml=" + this.buildXml();
+    var data = "language=" + encodeURIComponent(this.languageCode.code) + "&checkMarker=false&xml=" + encodeURIComponent(this.buildXml());
     var ctrl = this;
     var url = __ruleEditorEvaluationUrl;  // GSP doesn't evaluate in JS, so we need this hack
     $http({
@@ -296,7 +296,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       })
       .error(function(data, status, headers, config) {
         // TODO: see above:
-        $('#evaluationResult').html(data);
+        ctrl.patternEvaluated = true;
+        $('#evaluationResult').html("Error " + status + ":<br>" + data);
         ctrl.patternEvaluationInProgress = false;
       });
   };

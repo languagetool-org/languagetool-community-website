@@ -34,7 +34,8 @@ ruleEditorServices.factory('SentenceComparator',
       // tokens can be used as a basis for the error pattern:
       incorrectTokens: function(url, langCode, sentence1, sentence2) {
         var deferred = $q.defer();
-        var data = "lang=" + langCode + "&sentence1=" + sentence1 + "&sentence2=" + sentence2;  //TODO: encode?
+        var data = "lang=" + encodeURIComponent(langCode)
+          + "&sentence1=" + encodeURIComponent(sentence1) + "&sentence2=" + encodeURIComponent(sentence2);
         var self = this;
         $http({
           url: url,
@@ -96,7 +97,7 @@ ruleEditorServices.factory('XmlBuilder',
         var date = new Date();
         var dateStr = jQuery.datepicker.formatDate('yy-mm-dd', date);
         var xml = "<!-- " + model.languageCode.name.htmlEscape() + " rule, " + dateStr + " -->\n";
-        xml += "<rule name=\"" + model.ruleName.attributeEscape() + "\">\n";
+        xml += "<rule id=\"ID\" name=\"" + model.ruleName.attributeEscape() + "\">\n";
         if (model.caseSensitive) {
           xml += " <pattern case_sensitive='yes'>\n";
         } else {
