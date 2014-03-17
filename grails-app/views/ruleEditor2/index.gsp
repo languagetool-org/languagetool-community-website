@@ -138,6 +138,7 @@
                                                         <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
                                                                      placeholder="word" focus-me="focusInput" />
                                                         <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="element.regex" value="true" ng-disabled="element.tokenType == 'any'"/>&nbsp;RegExp</label>
+                                                        <label title="Matches the base form (e.g. the singular for nouns) of the given word"><input type="checkbox" ng-model="element.baseform" value="false" />&nbsp;Base&nbsp;form</label>
                                                         <label title="Matches anything but the given word"><input type="checkbox" ng-model="element.negation" value="false" />&nbsp;Negate</label>
                                                         <br/>
                                                         <div ng-show="element.tokenValue.contains(' ')">
@@ -179,6 +180,7 @@
                                                               <input type="text" ng-model="exception.tokenValue" ng-enter="evaluateErrorPattern()"
                                                                      placeholder="word" focus-me="focusInput" />
                                                               <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="exception.regex" value="true" ng-disabled="exception.tokenType == 'any'"/>&nbsp;RegExp</label>
+                                                              <label title="Matches the base form (e.g. the singular for nouns) of the given word"><input type="checkbox" ng-model="exception.baseform" value="false" />&nbsp;Base&nbsp;form</label>
                                                               <label title="Matches anything but the given word"><input type="checkbox" ng-model="exception.negation" value="false" />&nbsp;Negate</label>
                                                               <br/>
                                                               <div ng-show="exception.tokenValue.contains(' ')">

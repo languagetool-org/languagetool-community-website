@@ -170,6 +170,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     var elem = {
       tokenValue: tokenValue,
       tokenType: 'word',
+      inflected: false,
       regex: false,
       negation: false,
       posTag: '',
@@ -194,6 +195,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     var ex = {
       tokenValue: '',
       tokenType: 'word',
+      inflected: false,
       regex: false,
       negation: false,
       posTag: '',

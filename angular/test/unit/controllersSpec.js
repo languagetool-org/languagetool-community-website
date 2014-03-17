@@ -112,11 +112,14 @@ describe('RuleEditor controllers', function() {
       scope.setElement("hallo", {regex: true});
       expect(scope.buildXml()).toContain("<token regexp='yes'>hallo</token>");
 
+      scope.setElement("hallo", {negation: true});
+      expect(scope.buildXml()).toContain("<token negate='yes'>hallo</token>");
+
       scope.setElement("hallo", {regex: true, negation: true});
       expect(scope.buildXml()).toContain("<token regexp='yes' negate='yes'>hallo</token>");
 
-      scope.setElement("hallo", {negation: true});
-      expect(scope.buildXml()).toContain("<token negate='yes'>hallo</token>");
+      scope.setElement("hallo", {regex: true, negation: true, baseform: true});
+      expect(scope.buildXml()).toContain("<token inflected='yes' regexp='yes' negate='yes'>hallo</token>");
 
 
       scope.setElement("", {posTag: 'NN', tokenType: 'posTag'});
@@ -180,6 +183,10 @@ describe('RuleEditor controllers', function() {
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', regex: true});
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
+      
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', baseform: true});
+      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception inflected='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', regex: true});

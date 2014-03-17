@@ -117,12 +117,13 @@ ruleEditorServices.factory('XmlBuilder',
         if (!val) {
           val = "";
         }
+        var baseform = this.getBaseformAttribute(elem);
         var regex = this.getRegexAttribute(elem);
         var negation = this.getNegationAttribute(elem);
         var posTagRegex = this.getPosTagRegexAttribute(elem);
         var posTagNegation = this.getPosTagNegationAttribute(elem);
         if (elem.tokenType == 'word') {
-          xml += "  <token" + regex + negation + ">" + val;
+          xml += "  <token" + baseform + regex + negation + ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'posTag') {
@@ -130,7 +131,7 @@ ruleEditorServices.factory('XmlBuilder',
           xml += this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'word_and_posTag') {
-          xml += "  <token" + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
+          xml += "  <token" + baseform + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions);
           xml += "</token>\n";
         } else if (elem.tokenType == 'any') {
@@ -147,6 +148,9 @@ ruleEditorServices.factory('XmlBuilder',
         return xml;
       },
 
+      getBaseformAttribute: function(elem) {
+        return elem.baseform ? " inflected='yes'" : "";
+      },
       getRegexAttribute: function(elem) {
         return elem.regex ? " regexp='yes'" : "";
       },
@@ -175,18 +179,19 @@ ruleEditorServices.factory('XmlBuilder',
         if (!val) {
           val = "";
         }
+        var baseform = this.getBaseformAttribute(exception);
         var regex = this.getRegexAttribute(exception);
         var negation = this.getNegationAttribute(exception);
         var posTagRegex = this.getPosTagRegexAttribute(exception);
         var posTagNegation = this.getPosTagNegationAttribute(exception);
         if (exception.tokenType == 'word') {
-          xml += "<exception" + regex + negation + ">" + val;
+          xml += "<exception" + baseform + regex + negation + ">" + val;
           xml += "</exception>";
         } else if (exception.tokenType == 'posTag') {
           xml += "<exception postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">";
           xml += "</exception>";
         } else if (exception.tokenType == 'word_and_posTag') {
-          xml += "<exception" + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
+          xml += "<exception" + baseform + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
           xml += "</exception>";
         } else {
           console.warn("Unknown exception  type '" + exception.tokenType + "'");
