@@ -144,6 +144,9 @@
                                                         <div ng-show="element.tokenValue.contains(' ')">
                                                             <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> Add another token instead of using spaces in a token
                                                         </div>
+                                                        <div ng-show="looksLikeRegex(element.tokenValue) && !element.regex">
+                                                            <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This looks like a regular expression, but the "RegExp" checkbox is not checked
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -185,6 +188,9 @@
                                                               <br/>
                                                               <div ng-show="exception.tokenValue.contains(' ')">
                                                                   <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> Add another token instead of using spaces in a token
+                                                              </div>
+                                                              <div ng-show="looksLikeRegex(exception.tokenValue) && !exception.regex">
+                                                                  <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This looks like a regular expression, but the "RegExp" checkbox is not checked 
                                                               </div>
                                                           </div>
                                                       </td>
