@@ -93,7 +93,9 @@ ruleEditorServices.factory('XmlBuilder',
     return {
       
       buildXml: function(model) {
-        var xml = "";
+        var date = new Date();
+        var dateStr = jQuery.datepicker.formatDate('yy-mm-dd', date);
+        var xml = "<!-- " + model.languageCode.name.htmlEscape() + " rule, " + dateStr + " -->\n";
         xml += "<rule name=\"" + model.ruleName.attributeEscape() + "\">\n";
         if (model.caseSensitive) {
           xml += " <pattern case_sensitive='yes'>\n";
