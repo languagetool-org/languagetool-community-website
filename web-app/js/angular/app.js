@@ -101,6 +101,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     //{text: '', type: SentenceTypes.CORRECTED, analysis: null}
   ];
   $scope.ruleMessage = "";
+  $scope.shortRuleMessage = "";
   $scope.patternElements = [];
   $scope.detailUrl = "";
 

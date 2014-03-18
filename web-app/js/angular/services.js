@@ -111,6 +111,9 @@ ruleEditorServices.factory('XmlBuilder',
         if (model.detailUrl) {
           xml += " <url>" + model.detailUrl.htmlEscape() + "</url>\n";
         }
+        if (model.shortRuleMessage) {
+          xml += " <short>" + model.shortRuleMessage.htmlEscape() + "</short>\n";
+        }
         for (var j = 0; j < model.exampleSentences.length; j++) {
           var sentence = model.exampleSentences[j];
           if (sentence.type == model.SentenceTypes.WRONG) {

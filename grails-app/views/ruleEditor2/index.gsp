@@ -233,8 +233,8 @@
                   <td><textarea rows="3" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()" placeholder="Error message shown to the user if error pattern matches"></textarea></td>
               </tr>
               <tr>
-                  <td><label for="ruleName">Rule Name:</label></td>
-                  <td><input type="text" id="ruleName" ng-model="ruleName" ng-enter="evaluateErrorPattern()" placeholder="Short rule description used for configuration"/></td>
+                  <td><label for="shortRuleMessage">Short message (optional):</label></td>
+                  <td><input type="text" id="shortRuleMessage" ng-model="shortRuleMessage" ng-enter="evaluateErrorPattern()" placeholder="A short error message shown in e.g. context menus"/></td>
               </tr>
               <tr>
                   <td><label for="detailUrl">URL (optional):</label></td>
@@ -244,6 +244,10 @@
                         <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This does not seem to be a valid HTTP or HTTPS URL
                       </div>
                   </td>
+              </tr>
+              <tr>
+                  <td><label for="ruleName">Rule Name:</label></td>
+                  <td><input type="text" id="ruleName" ng-model="ruleName" ng-enter="evaluateErrorPattern()" placeholder="Short rule description used for configuration"/></td>
               </tr>
               <tr>
                   <td></td>
