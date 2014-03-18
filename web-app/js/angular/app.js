@@ -47,6 +47,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     WRONG: 'wrong',
     CORRECTED: 'corrected'
   };
+  $scope.SentenceTypes = SentenceTypes;
 
   var TokenTypes = {
     WORD: 'word',
@@ -55,7 +56,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     ANY: 'any',
     MARKER: 'marker'
   };
-
   $scope.TokenTypes = TokenTypes;
     
   $scope.languageCodes = [
@@ -102,6 +102,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   ];
   $scope.ruleMessage = "";
   $scope.patternElements = [];
+  $scope.detailUrl = "";
 
   $scope.gui = {
     patternCreationInProgress: false,
@@ -199,7 +200,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       posTag: '',
       posTagRegex: false,
       posTagNegation: false,
-      exceptions: []
+      exceptions: [],
+      detailUrl: ''
     };
     if (properties) {
       elem = jQuery.extend({}, elem, properties);
@@ -294,11 +296,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       }
     }
   };
-  
-  /*$scope.handleReturnForToken = function() {
-      // TODO: why won't this show the evaluation result div? (this.gui.patternEvaluated = true;) 
-      this.evaluateErrorPattern();
-    };*/
   
   $scope.evaluateErrorPattern = function() {
     this.gui.patternEvaluationInProgress = true;

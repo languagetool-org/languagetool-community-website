@@ -109,8 +109,6 @@
                   <div style="padding-top:20px;padding-bottom:30px;">
                       <ul class="sortable" ui-sortable="sortableOptions" ng-model="patternElements">
                           <li ng-repeat="element in patternElements">
-                              <!--<input type="text" ng-model="element.tokenValue" ng-keypress="handleReturnForToken($event)"/>-->
-                              <!-- TODO: why won't enter here show the evaluation result div? (it works for message below) -->
                               <div ng-switch on="element.tokenType">
                                   <div ng-switch-when="marker">
                                       <span class="dragHandle">&#8691; {{element.tokenValue}}</span>
@@ -232,11 +230,20 @@
           <table>
               <tr>
                   <td width="120"><label for="ruleMessage">Message:</label></td>
-                  <td><input type="text" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()" placeholder="Error shown to the user if pattern matches"/></td>
+                  <td><textarea rows="3" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()" placeholder="Error message shown to the user if error pattern matches"></textarea></td>
               </tr>
               <tr>
                   <td><label for="ruleName">Rule Name:</label></td>
-                  <td><input type="text" id="ruleName" ng-model="ruleName" placeholder="Short rule description used for configuration"/></td>
+                  <td><input type="text" id="ruleName" ng-model="ruleName" ng-enter="evaluateErrorPattern()" placeholder="Short rule description used for configuration"/></td>
+              </tr>
+              <tr>
+                  <td><label for="detailUrl">URL (optional):</label></td>
+                  <td>
+                      <input type="text" id="detailUrl" ng-model="detailUrl" ng-enter="evaluateErrorPattern()" placeholder="URL with more information about the error"/>
+                      <div ng-show="detailUrl && !(detailUrl.startsWith('http://') || detailUrl.startsWith('https://'))">
+                        <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This does not seem to be a valid HTTP or HTTPS URL
+                      </div>
+                  </td>
               </tr>
               <tr>
                   <td></td>

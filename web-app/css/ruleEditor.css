@@ -22,6 +22,10 @@
     margin-left: 140px
 }
 
+#ruleMessage {
+    width: 350px;
+}
+
 .sortable { 
     list-style-type: none;
     margin: 0;
