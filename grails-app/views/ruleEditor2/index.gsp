@@ -53,7 +53,7 @@
           </tr>
 
           <tr ng-repeat="exampleSentence in exampleSentences">
-              <td><label for="wrongSentence">{{exampleSentence.type}} sentence:</label></td>
+              <td><label for="wrongSentence" ng-cloak>{{exampleSentence.type}} sentence:</label></td>
               <td>
                   <input type="text" ng-model="exampleSentence.text" id="wrongSentence" placeholder="A example sentence" ng-value="exampleSentence.text"/>
                   <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1">Remove</a>
