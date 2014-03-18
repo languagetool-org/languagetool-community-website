@@ -89,6 +89,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     {code: 'tl', name: 'Tagalog'},
     {code: 'uk', name: 'Ukrainian'}
   ];
+
   $scope.languageCode = $scope.languageCodes[7];  // English
   $scope.ruleName = "";
   $scope.caseSensitive = false;
@@ -99,18 +100,18 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     //{text: '', type: SentenceTypes.WRONG, analysis: null},
     //{text: '', type: SentenceTypes.CORRECTED, analysis: null}
   ];
-
   $scope.ruleMessage = "";
-
-  $scope.patternCreated = false;
-  $scope.patternEvaluated = false;
   $scope.patternElements = [];
-  $scope.knownMatchesHtml = null;  // rule matches that LT already can find without this new rule
-  $scope.evaluationResult = null;  // HTML with rule matches in Wikipedia/Tatoeba
-  
-  $scope.patternCreationInProgress = false;
-  $scope.patternEvaluationInProgress = false;
 
+  $scope.gui = {
+    patternCreationInProgress: false,
+    patternEvaluationInProgress: false,
+    patternCreated: false,
+    patternEvaluated: false,
+    knownMatchesHtml: null     // rule matches that LT already can find without this new rule
+    //evaluationResult: null  // HTML with rule matches in Wikipedia/Tatoeba
+  };
+  
   $scope.addWrongExampleSentence = function() {
     var sentence = {text: '', type: SentenceTypes.WRONG, analysis: null};
     this.exampleSentences.push(sentence);
@@ -135,7 +136,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.analyzeSentence = function(exampleSentence) {
     var self = this;
     var data = "text=" + encodeURIComponent(exampleSentence.text) + "&lang=" + this.languageCode.code;
-    this.patternCreationInProgress = true;
+    this.gui.patternCreationInProgress = true;
     $http({
       url: __ruleEditorSentenceAnalysisUrl,
       method: 'POST',
@@ -143,11 +144,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function(data) {
         exampleSentence.analysis = data;
-        self.patternCreationInProgress = false;
+        self.gui.patternCreationInProgress = false;
       })
       .error(function(data, status, headers, config) {
         exampleSentence.analysis = data;
-        self.patternCreationInProgress = false;
+        self.gui.patternCreationInProgress = false;
       });
   };
 
@@ -157,10 +158,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.createErrorPattern = function() {
     var self = this;
-    this.patternCreationInProgress = true;
-    if (this.patternCreated) {
+    this.gui.patternCreationInProgress = true;
+    if (this.gui.patternCreated) {
       if (!confirm("Re-create the pattern, overwriting the existing one?")) {
-        this.patternCreationInProgress = false;
+        this.gui.patternCreationInProgress = false;
         return;
       } else {
         this.patternElements = [];
@@ -175,14 +176,14 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
         for (var i = 0; i < result.tokens.length; i++) {
           self.addElement(result.tokens[i]);
         }
-        self.knownMatchesHtml = result.matchesHtml;
-        self.patternCreated = true;
-        self.patternEvaluated = false;
-        self.patternCreationInProgress = false;
+        self.gui.knownMatchesHtml = result.matchesHtml;
+        self.gui.patternCreated = true;
+        self.gui.patternEvaluated = false;
+        self.gui.patternCreationInProgress = false;
       },
       function(data) {
         alert("Could not tokenize example sentences: " + data);
-        self.patternCreationInProgress = false;
+        self.gui.patternCreationInProgress = false;
       },
       function(data) {}
     );
@@ -295,12 +296,12 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
   
   /*$scope.handleReturnForToken = function() {
-      // TODO: why won't this show the evaluation result div? (this.patternEvaluated = true;) 
+      // TODO: why won't this show the evaluation result div? (this.gui.patternEvaluated = true;) 
       this.evaluateErrorPattern();
     };*/
   
   $scope.evaluateErrorPattern = function() {
-    this.patternEvaluationInProgress = true;
+    this.gui.patternEvaluationInProgress = true;
     var data = "language=" + encodeURIComponent(this.languageCode.code) + "&checkMarker=false&xml=" + encodeURIComponent(this.buildXml());
     var ctrl = this;
     var url = __ruleEditorEvaluationUrl;  // GSP doesn't evaluate in JS, so we need this hack
@@ -312,16 +313,16 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function(data) {
         // TODO: slooooow! see https://github.com/Pasvaz/bindonce
-        //ctrl.evaluationResult = data;
+        //ctrl.gui.evaluationResult = data;
         $('#evaluationResult').html(data);
-        ctrl.patternEvaluated = true;
-        ctrl.patternEvaluationInProgress = false;
+        ctrl.gui.patternEvaluated = true;
+        ctrl.gui.patternEvaluationInProgress = false;
       })
       .error(function(data, status, headers, config) {
         // TODO: see above:
-        ctrl.patternEvaluated = true;
+        ctrl.gui.patternEvaluated = true;
         $('#evaluationResult').html("Error " + status + ":<br>" + data);
-        ctrl.patternEvaluationInProgress = false;
+        ctrl.gui.patternEvaluationInProgress = false;
       });
   };
 

@@ -81,22 +81,23 @@
           <tr>
               <td></td>
               <td>
-                  <input type="submit" ng-click="createErrorPattern()" value="Create error pattern" ng-disabled="!(exampleSentences[0].text && exampleSentences[1].text)"/>
-                  <img ng-show="patternCreationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol" ng-cloak/>
+                  <input type="submit" ng-click="createErrorPattern()" value="Create error pattern"
+                         ng-disabled="!(exampleSentences[0].text && exampleSentences[1].text) || gui.patternCreationInProgress"/>
+                  <img ng-show="gui.patternCreationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol" ng-cloak/>
               </td>
           </tr>
       </table>
 
 
-      <div ng-show="patternCreated" ng-cloak>
+      <div ng-show="gui.patternCreated" ng-cloak>
       
           <h1>Error Pattern</h1>
 
           <div id="patternArea">
 
-              <div ng-cloak ng-show="knownMatchesHtml">
-                  <strong>Note:</strong> LanguageTool can already detect the following error(s) in your example sentence:
-                  <div ng-cloak ng-bind-html="knownMatchesHtml"></div>
+              <div ng-cloak ng-show="gui.knownMatchesHtml">
+                  <strong>Note:</strong> LanguageTool can already detect the following error(s) in your first wrong example sentence:
+                  <div ng-cloak ng-bind-html="gui.knownMatchesHtml"></div>
               </div>
               
               <label><input ng-model="caseSensitive" type="checkbox"/>&nbsp;Case-sensitive word matching</label>
@@ -240,9 +241,9 @@
               <tr>
                   <td></td>
                   <td>
-                      <input ng-show="patternCreated" type="submit" ng-click="evaluateErrorPattern()" 
-                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0">
-                      <img ng-show="patternEvaluationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
+                      <input ng-show="gui.patternCreated" type="submit" ng-click="evaluateErrorPattern()" 
+                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0 || gui.patternEvaluationInProgress">
+                      <img ng-show="gui.patternEvaluationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                   </td>
               </tr>
           </table>
@@ -254,11 +255,11 @@
       <pre id="ruleAsXml" ng-cloak>{{buildXml()}}</pre>
 
 
-      <div ng-show="patternEvaluated" ng-cloak>
+      <div ng-show="gui.patternEvaluated" ng-cloak>
 
-          <h1 ng-class="{inProgress: patternEvaluationInProgress}">Evaluation Results</h1>
+          <h1 ng-class="{inProgress: gui.patternEvaluationInProgress}">Evaluation Results</h1>
 
-          <div id="evaluationResult" ng-class="{inProgress: patternEvaluationInProgress}"></div>
+          <div id="evaluationResult" ng-class="{inProgress: gui.patternEvaluationInProgress}"></div>
           <!-- too slow: <div ng-bind-html="evaluationResult"></div>-->
           
       </div>
