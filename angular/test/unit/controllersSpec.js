@@ -48,6 +48,14 @@ describe('RuleEditor controllers', function() {
       
       scope.removeElement(elems[0]);
       expect(elems.length).toBe(0);
+
+      expect(scope.exampleSentences.length).toBe(2);
+      scope.addWrongExampleSentence();
+      expect(scope.exampleSentences.length).toBe(3);
+      var exampleSentence = scope.addCorrectedExampleSentence();
+      expect(scope.exampleSentences.length).toBe(4);
+      scope.removeExampleSentence(exampleSentence);
+      expect(scope.exampleSentences.length).toBe(3);
     }));
 
     it('should not count markers in elementPosition()', inject(function($controller) {
@@ -161,10 +169,8 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml()).toContain("<pattern>");
       scope.caseSensitive = true;
       expect(scope.buildXml()).toContain("<pattern case_sensitive='yes'>");
-
     }));
 
-    // testing XML here as it depends on the controller:
     it('should build XML with exception elements', inject(function($controller) {
       var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
 
@@ -208,6 +214,23 @@ describe('RuleEditor controllers', function() {
       scope.addException(elem, {tokenValue: 'myException', tokenType: 'word_and_posTag', posTag: 'XTAG', posTagRegex: true, posTagNegation: true});
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception postag='XTAG' postag_regexp='yes' negate_pos='yes'>myException</exception>\\s*</token>");
     }));
-    
+
+    it('should build XML with more examples', inject(function($controller) {
+      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
+
+      // the default examples:
+      expect(scope.buildXml()).toMatch("<example type='correct'>");
+      expect(scope.buildXml()).toMatch("<example type='incorrect'>");
+      
+      var example = scope.addWrongExampleSentence();
+      example.text = "example one";
+      expect(scope.buildXml()).toMatch("<example type='incorrect'>example one</example>");
+
+      example = scope.addCorrectedExampleSentence();
+      example.text = "example two";
+      expect(scope.buildXml()).toMatch("<example type='incorrect'>example one</example>");
+      expect(scope.buildXml()).toMatch("<example type='correct'>example two</example>");
+    }));
+
   });
 });

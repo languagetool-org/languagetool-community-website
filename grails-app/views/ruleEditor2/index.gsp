@@ -30,7 +30,7 @@
   can <a href="https://languagetool.org/support/" target="_blank">send to the developers</a> for inclusion in LanguageTool
   or add to your <tt>grammar.xml</tt> file for local use.</p>
 
-  <p class="warn">Note: this version of the rule editor is an incomplete prototype</p>
+  <p class="warn" style="width:400px">Note: this version of the rule editor is an incomplete prototype</p>
     
   <form>
 
@@ -51,42 +51,37 @@
                   <select name="language" id="language" ng-model="languageCode" ng-options="c.name for c in languageCodes"></select>
               </td>
           </tr>
-          <tr>
-              <td><label for="wrongSentence">Wrong sentence:</label></td>
+
+          <tr ng-repeat="exampleSentence in exampleSentences">
+              <td style="vertical-align: top"><label for="wrongSentence">{{exampleSentence.type}} sentence:</label></td>
               <td>
-                  <input type="text" ng-model="wrongSentence" id="wrongSentence" placeholder="A example sentence"/>
-              </td>
-          </tr>
-          <tr>
-              <td></td>
-              <td>
-                  <a href ng-click="analyzeWrongSentence()" ng-show="!wrongSentenceAnalysis && wrongSentence">Show analysis</a>
-                  <span ng-show="wrongSentenceAnalysis" ng-cloak>
-                    <a href ng-click="analyzeWrongSentence()">Update analysis</a> &middot;
-                    <a href ng-click="hideWrongSentenceAnalysis()">Hide analysis</a>
+                  <input type="text" ng-model="exampleSentence.text" id="wrongSentence" placeholder="A example sentence" ng-value="exampleSentence.text"/>
+                  <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1">Remove</a>
+                  <a href ng-click="analyzeSentence(exampleSentence)" ng-show="!exampleSentence.analysis && exampleSentence.text">
+                      <span ng-show="exampleSentences.indexOf(exampleSentence) > 1">&middot;</span> Show analysis</a>
+                  <span ng-show="exampleSentence.analysis" ng-cloak>
+                      <span ng-show="exampleSentences.indexOf(exampleSentence) > 1">&middot;</span>
+                      <a href ng-click="analyzeSentence(exampleSentence)">Update analysis</a> &middot;
+                      <a href ng-click="hideSentenceAnalysis(exampleSentence)">Hide analysis</a>
                   </span>
-                  <div id="wrongSentenceAnalysis" class="sentenceAnalysis" ng-show="wrongSentenceAnalysis" ng-bind-html="wrongSentenceAnalysis" ng-cloak></div>
+                  <div class="sentenceAnalysis" ng-show="exampleSentence.analysis" ng-bind-html="exampleSentence.analysis" ng-cloak></div>
               </td>
           </tr>
-          <tr>
-              <td><label for="correctedSentence">Corrected sentence:</label></td>
-              <td><input type="text" ng-model="correctedSentence" id="correctedSentence" placeholder="An example sentence"/></td>
-          </tr>
+
           <tr>
               <td></td>
               <td>
-                  <a href ng-click="analyzeCorrectedSentence()" ng-show="!correctedSentenceAnalysis && correctedSentence">Show analysis</a>
-                  <span ng-show="correctedSentenceAnalysis" ng-cloak>
-                      <a href ng-click="analyzeCorrectedSentence()">Update analysis</a> &middot;
-                      <a href ng-click="hideCorrectedSentenceAnalysis()">Hide analysis</a>
-                  </span>
-                  <div id="correctedSentenceAnalysis" class="sentenceAnalysis" ng-show="correctedSentenceAnalysis" ng-bind-html="correctedSentenceAnalysis" ng-cloak></div>
+                  <div style="margin-top: 5px; margin-bottom: 5px">
+                      <a href ng-click="addWrongExampleSentence()">Add another wrong example</a> &middot;
+                      <a href ng-click="addCorrectedExampleSentence()">Add another corrected example</a>
+                  </div>
               </td>
           </tr>
+
           <tr>
               <td></td>
               <td>
-                  <input type="submit" ng-click="createErrorPattern()" value="Create error pattern" ng-disabled="!(wrongSentence && correctedSentence)"/>
+                  <input type="submit" ng-click="createErrorPattern()" value="Create error pattern" ng-disabled="!(exampleSentences[0].text && exampleSentences[1].text)"/>
                   <img ng-show="patternCreationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol" ng-cloak/>
               </td>
           </tr>
@@ -261,7 +256,7 @@
 
       <div ng-show="patternEvaluated" ng-cloak>
 
-          <h1>Evaluation Results</h1>
+          <h1 ng-class="{inProgress: patternEvaluationInProgress}">Evaluation Results</h1>
 
           <div id="evaluationResult" ng-class="{inProgress: patternEvaluationInProgress}"></div>
           <!-- too slow: <div ng-bind-html="evaluationResult"></div>-->

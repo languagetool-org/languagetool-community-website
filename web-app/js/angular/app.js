@@ -77,10 +77,14 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.languageCode = $scope.languageCodes[7];  // English
   $scope.ruleName = "";
   $scope.caseSensitive = false;
-  //$scope.wrongSentence = "Sorry for my bed English.";  //for easier testing
-  //$scope.correctedSentence = "Sorry for my bad English.";
-  $scope.wrongSentence = "";
-  $scope.correctedSentence = "";
+  $scope.exampleSentences = [
+    //for easier/faster testing:
+    {text: 'Sorry for my bed English.', type: 'wrong', analysis: null},
+    {text: 'Sorry for my bad English.', type: 'corrected', analysis: null}
+    //{text: '', type: 'wrong', analysis: null},
+    //{text: '', type: 'corrected', analysis: null}
+  ];
+
   $scope.ruleMessage = "";
 
   $scope.patternCreated = false;
@@ -94,23 +98,30 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.patternCreationInProgress = false;
   $scope.patternEvaluationInProgress = false;
 
-  $scope.analyzeWrongSentence = function() {
-    var self = this;
-    this.analyzeSentence(this.wrongSentence, function(data) {
-      self.wrongSentenceAnalysis = data;
-    });
+  $scope.addWrongExampleSentence = function() {
+    var sentence = {text: '', type: 'wrong', analysis: null};
+    this.exampleSentences.push(sentence);
+    return sentence;
   };
-
-  $scope.analyzeCorrectedSentence = function() {
-    var self = this;
-    this.analyzeSentence(this.correctedSentence, function(data) {
-      self.correctedSentenceAnalysis = data;
-    });
+  
+  $scope.addCorrectedExampleSentence = function() {
+    var sentence = {text: '', type: 'corrected', analysis: null};
+    this.exampleSentences.push(sentence);
+    return sentence;
   };
-
-  $scope.analyzeSentence = function(sentence, finishFunction) {
+  
+  $scope.removeExampleSentence = function(exampleSentence) {
+    var index = this.exampleSentences.indexOf(exampleSentence);
+    if (index > -1) {
+      this.exampleSentences.splice(index, 1);
+    } else {
+      console.warn("Example sentence not found: " + exampleSentence);
+    }
+  };
+  
+  $scope.analyzeSentence = function(exampleSentence) {
     var self = this;
-    var data = "text=" + encodeURIComponent(sentence) + "&lang=" + this.languageCode.code;
+    var data = "text=" + encodeURIComponent(exampleSentence.text) + "&lang=" + this.languageCode.code;
     this.patternCreationInProgress = true;
     $http({
       url: __ruleEditorSentenceAnalysisUrl,
@@ -118,21 +129,17 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       data: data,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function(data) {
-        finishFunction(data);
+        exampleSentence.analysis = data;
         self.patternCreationInProgress = false;
       })
       .error(function(data, status, headers, config) {
-        finishFunction(data);
+        exampleSentence.analysis = data;
         self.patternCreationInProgress = false;
       });
   };
 
-  $scope.hideWrongSentenceAnalysis = function() {
-    this.wrongSentenceAnalysis = null;
-  };
-
-  $scope.hideCorrectedSentenceAnalysis = function() {
-    this.correctedSentenceAnalysis = null;
+  $scope.hideSentenceAnalysis = function(exampleSentence) {
+    exampleSentence.analysis = null;
   };
 
   $scope.createErrorPattern = function() {
@@ -146,8 +153,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
         this.patternElements = [];
       }
     }
+    var wrongSentence = this.exampleSentences[0].text;
+    var correctedSentence = this.exampleSentences[1].text;
     var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorTokenizeSentencesUrl, this.languageCode.code,
-        this.wrongSentence, this.correctedSentence);
+        wrongSentence, correctedSentence);
     incorrectTokensPromise.then(
       function(result) {
         for (var i = 0; i < result.tokens.length; i++) {
@@ -223,6 +232,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     }
   };
 
+  /** Get the position of the element, not counting markers. */
   $scope.elementPosition = function(elem) {
     var position = 0;
     for (var i = 0; i < this.patternElements.length; i++) {

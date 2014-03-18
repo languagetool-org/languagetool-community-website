@@ -90,12 +90,12 @@ ruleEditorServices.factory('SentenceComparator',
 });
 
 ruleEditorServices.factory('XmlBuilder',
-  function($http, $q) {
+  function($http, $q, $filter) {
     return {
       
       buildXml: function(model) {
         var date = new Date();
-        var dateStr = jQuery.datepicker.formatDate('yy-mm-dd', date);
+        var dateStr = $filter('date')(date, "yyyy-MM-dd");
         var xml = "<!-- " + model.languageCode.name.htmlEscape() + " rule, " + dateStr + " -->\n";
         xml += "<rule id=\"ID\" name=\"" + model.ruleName.attributeEscape() + "\">\n";
         if (model.caseSensitive) {
@@ -108,8 +108,14 @@ ruleEditorServices.factory('XmlBuilder',
         }
         xml += " </pattern>\n";
         xml += " <message>" + model.ruleMessage.htmlEscape() + "</message>\n";
-        xml += " <example type='incorrect'>" + model.wrongSentence.htmlEscape() +  "</example>\n";
-        xml += " <example type='correct'>" + model.correctedSentence.htmlEscape() + "</example>\n";
+        for (var j = 0; j < model.exampleSentences.length; j++) {
+          var sentence = model.exampleSentences[j];
+          if (sentence.type == 'wrong') {
+            xml += " <example type='incorrect'>" + sentence.text.htmlEscape() + "</example>\n";
+          } else {
+            xml += " <example type='correct'>" + sentence.text.htmlEscape() + "</example>\n";
+          }
+        }
         xml += "</rule>\n";
         return xml;
       },

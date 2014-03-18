@@ -10,11 +10,6 @@
 #dragContainment {
 }
 
-#wrongSentenceAnalysis, #correctedSentenceAnalysis {
-    padding: 5px;
-    background-color: #eeeeee;
-}
-
 #evaluationResult {
     max-width: 600px;
     margin-left: 70px;
@@ -55,6 +50,12 @@
     padding-bottom: 0;
     vertical-align: middle;
 }
+
+.sentenceAnalysis {
+    padding: 5px;
+    background-color: #eeeeee;
+}
+
 .sentenceAnalysis table td {
     padding: 3px;
 }
