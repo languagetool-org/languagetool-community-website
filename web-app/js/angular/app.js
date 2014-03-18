@@ -48,6 +48,16 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     CORRECTED: 'corrected'
   };
 
+  var TokenTypes = {
+    WORD: 'word',
+    POS_TAG: 'posTag',
+    WORD_AND_POS_TAG: 'word_and_posTag',
+    ANY: 'any',
+    MARKER: 'marker'
+  };
+
+  $scope.TokenTypes = TokenTypes;
+    
   $scope.languageCodes = [
     {code: 'ast', name: 'Asturian'},
     {code: 'be', name: 'Belarusian'},
@@ -181,7 +191,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.addElement = function(tokenValue, properties) {
     var elem = {
       tokenValue: tokenValue,
-      tokenType: 'word',
+      tokenType: TokenTypes.WORD,
       inflected: false,
       regex: false,
       negation: false,
@@ -206,7 +216,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.addException = function(element, properties) {
     var ex = {
       tokenValue: '',
-      tokenType: 'word',
+      tokenType: TokenTypes.WORD,
       inflected: false,
       regex: false,
       negation: false,
@@ -239,7 +249,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.elementPosition = function(elem) {
     var position = 0;
     for (var i = 0; i < this.patternElements.length; i++) {
-      if (this.patternElements[i].tokenType != 'marker') {
+      if (this.patternElements[i].tokenType != TokenTypes.MARKER) {
         position++;
       }
       if (elem == this.patternElements[i]) {
@@ -250,13 +260,13 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.addMarker = function() {
-    this.patternElements.unshift({'tokenValue': __LT_MARKER_START, 'tokenType': 'marker'});
-    this.patternElements.push({'tokenValue': __LT_MARKER_END, 'tokenType': 'marker'});
+    this.patternElements.unshift({'tokenValue': __LT_MARKER_START, 'tokenType': TokenTypes.MARKER});
+    this.patternElements.push({'tokenValue': __LT_MARKER_END, 'tokenType': TokenTypes.MARKER});
   };
 
   $scope.hasNoMarker = function() {
     for (var i = 0; i < this.patternElements.length; i++) {
-      if (this.patternElements[i].tokenType == 'marker') {
+      if (this.patternElements[i].tokenType == TokenTypes.MARKER) {
         return false;
       }
     }
@@ -265,7 +275,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.removeElement = function(element) {
     var index = this.patternElements.indexOf(element);
-    if (this.patternElements[index].tokenType == 'marker') {
+    if (this.patternElements[index].tokenType == TokenTypes.MARKER) {
       this.removeMarkers();
     } else {
       if (index > -1) {
@@ -278,7 +288,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.removeMarkers = function() {
     for (var i = this.patternElements.length - 1; i >= 0; i--) {
-      if (this.patternElements[i].tokenType == 'marker') {
+      if (this.patternElements[i].tokenType == TokenTypes.MARKER) {
         this.patternElements.splice(i, 1);
       }
     }
@@ -320,7 +330,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.looksLikeRegex = function(str) {
-    return str.match(/[\[\]\|]/);
+    return str && str.match(/[\[\]\|]/);
   };
 
 });

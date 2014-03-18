@@ -84,8 +84,8 @@ describe('RuleEditor controllers', function() {
       scope.addMarker();
       expect(scope.hasNoMarker()).toBeFalsy();
       expect(scope.patternElements.length).toBe(3);
-      expect(scope.patternElements[0].tokenType).toBe("marker");
-      expect(scope.patternElements[2].tokenType).toBe("marker");
+      expect(scope.patternElements[0].tokenType).toBe(scope.TokenTypes.MARKER);
+      expect(scope.patternElements[2].tokenType).toBe(scope.TokenTypes.MARKER);
       scope.removeMarkers();
       expect(scope.hasNoMarker()).toBeTruthy();
       expect(scope.patternElements.length).toBe(1);
@@ -134,36 +134,36 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml()).toContain("<token inflected='yes' regexp='yes' negate='yes'>hallo</token>");
 
 
-      scope.setElement("", {posTag: 'NN', tokenType: 'posTag'});
+      scope.setElement("", {posTag: 'NN', tokenType: scope.TokenTypes.POS_TAG});
       expect(scope.buildXml()).toContain("<token postag='NN'></token>");
 
-      scope.setElement("", {posTag: 'NN', posTagNegation: true, tokenType: 'posTag'});
+      scope.setElement("", {posTag: 'NN', posTagNegation: true, tokenType: scope.TokenTypes.POS_TAG});
       expect(scope.buildXml()).toContain("<token postag='NN' negate_pos='yes'></token>");
 
-      scope.setElement("", {posTag: 'NN', posTagRegex: true, tokenType: 'posTag'});
+      scope.setElement("", {posTag: 'NN', posTagRegex: true, tokenType: scope.TokenTypes.POS_TAG});
       expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes'></token>");
 
-      scope.setElement("", {posTag: 'NN', posTagRegex: true, posTagNegation: true, tokenType: 'posTag'});
+      scope.setElement("", {posTag: 'NN', posTagRegex: true, posTagNegation: true, tokenType: scope.TokenTypes.POS_TAG});
       expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes' negate_pos='yes'></token>");
 
 
-      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag'});
+      scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG});
       expect(scope.buildXml()).toContain("<token postag='NN'>hallo</token>");
       
-      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true});
+      scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true});
       expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes'>hallo</token>");
       
-      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true, regex: true});
+      scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true, regex: true});
       expect(scope.buildXml()).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
       
-      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true, regex: true});
+      scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true, regex: true});
       expect(scope.buildXml()).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
 
-      scope.setElement("hallo", {posTag: 'NN', tokenType: 'word_and_posTag', posTagRegex: true, regex: true, negation: true, posTagNegation: true});
+      scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true, regex: true, negation: true, posTagNegation: true});
       expect(scope.buildXml()).toContain("<token regexp='yes' negate='yes' postag='NN' postag_regexp='yes' negate_pos='yes'>hallo</token>");
 
 
-      scope.setElement("", {tokenType: 'any'});
+      scope.setElement("", {tokenType: scope.TokenTypes.ANY});
       expect(scope.buildXml()).toContain("<token></token>");
 
       scope.addMarker();
@@ -207,15 +207,15 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes' negate='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("");
-      scope.addException(elem, {tokenType: 'posTag', posTag: 'XTAG'});
+      scope.addException(elem, {tokenType: scope.TokenTypes.POS_TAG, posTag: 'XTAG'});
       expect(scope.buildXml()).toMatch("<token>\\s*<exception postag='XTAG'></exception>");
       
       elem = scope.setElement("hallo");
-      scope.addException(elem, {tokenValue: 'myException', tokenType: 'word_and_posTag', posTag: 'XTAG'});
+      scope.addException(elem, {tokenValue: 'myException', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XTAG'});
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception postag='XTAG'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
-      scope.addException(elem, {tokenValue: 'myException', tokenType: 'word_and_posTag', posTag: 'XTAG', posTagRegex: true, posTagNegation: true});
+      scope.addException(elem, {tokenValue: 'myException', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XTAG', posTagRegex: true, posTagNegation: true});
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception postag='XTAG' postag_regexp='yes' negate_pos='yes'>myException</exception>\\s*</token>");
     }));
 
