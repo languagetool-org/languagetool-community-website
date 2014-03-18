@@ -3,11 +3,26 @@
     <g:set var="sentencesChecked" value="${formatNumber(number:searcherResult.getCheckedSentences(), type: 'number')}"/>
     <g:set var="docsChecked" value="${formatNumber(number:searcherResult.getDocCount(), type: 'number')}"/>
 
+    <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
+        <table style="border:0">
+            <tr>
+                <td style="vertical-align: top;width:40px"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                <td style="text-align: left">
+                    <g:message code="ltc.editor.corpus.correct.example.sentence"/>
+                    <g:if test="${incorrectExamplesMatches}">
+                        <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>
+                        <g:render template="/ruleMatches" model="${[matches: incorrectExamplesMatches, textToCheck: incorrectExamples, hideRuleLink: true]}"/>
+                    </g:if>
+                </td>
+            </tr>
+        </table>
+    </g:if>
+
     <g:if test="${searcherResult.getMatchingSentences().size() > 0}">
 
         <table style="border:0">
             <tr>
-                <td style="vertical-align: top"><img style="margin:10px" align="left" src="${resource(dir:'images', file:'information.png')}" /></td>
+                <td style="vertical-align: top"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'information.png')}" /></td>
                 <td>
                     <p style="width:700px;">
                         <g:message code="ltc.editor.corpus.intro.problem" args="${[docsChecked, params.language.encodeAsHTML()]}"/>
@@ -64,21 +79,6 @@
         </table>
 
     </g:else>
-
-    <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
-        <table style="border:0">
-            <tr>
-                <td style="vertical-align: top;width:40px"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
-                <td style="text-align: left">
-                    <g:message code="ltc.editor.corpus.correct.example.sentence"/>
-                    <g:if test="${incorrectExamplesMatches}">
-                        <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>
-                        <g:render template="/ruleMatches" model="${[matches: incorrectExamplesMatches, textToCheck: incorrectExamples, hideRuleLink: true]}"/>
-                    </g:if>
-                </td>
-            </tr>
-        </table>
-    </g:if>
 
 </g:if>
 <g:else>

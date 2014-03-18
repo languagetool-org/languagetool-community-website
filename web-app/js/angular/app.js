@@ -57,6 +57,15 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     MARKER: 'marker'
   };
   $scope.TokenTypes = TokenTypes;
+  
+  var CaseConversion = {
+    START_LOWER: 'start lower',
+    START_UPPER: 'start upper',
+    ALL_LOWER: 'all lower',
+    ALL_UPPER: 'all upper',
+    PRESERVE: 'preserve'
+  };
+  $scope.CaseConversion = CaseConversion;
     
   $scope.languageCodes = [
     {code: 'ast', name: 'Asturian'},
@@ -101,6 +110,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     //{text: '', type: SentenceTypes.CORRECTED, analysis: null}
   ];
   $scope.ruleMessage = "";
+  $scope.messageMatches = [];
   $scope.shortRuleMessage = "";
   $scope.patternElements = [];
   $scope.detailUrl = "";
@@ -112,6 +122,39 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     patternEvaluated: false,
     knownMatchesHtml: null     // rule matches that LT already can find without this new rule
     //evaluationResult: null  // HTML with rule matches in Wikipedia/Tatoeba
+  };
+
+  /** update this.messageMatches depending on "\1" etc. in the rule message. */
+  $scope.$watch('ruleMessage', function(data) {
+    var references = data.match(/\\(\d+)/g);
+    var largestNumber = -1;
+    if (references) {
+      for (var i = 0; i < references.length; i++) {
+        var refNumber = references[i].substring(1);
+        var matchExists = $scope.findMessageMatchByNumber(refNumber);
+        if (!matchExists) {
+          $scope.addMessageMatch(refNumber);
+          $scope.$apply();
+        }
+      }
+    }
+    // TODO? does it make sense to remove matches automatically if the ref has been deleted?
+  });
+  
+  $scope.findMessageMatchByNumber = function(refNumber) {
+    for (var i = 0; i < this.messageMatches.length; i++) {
+      if (this.messageMatches[i].tokenNumber == refNumber) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  $scope.addMessageMatch = function(refNumber) {
+    this.messageMatches.push({
+      tokenNumber: refNumber,
+      caseConversion: CaseConversion.PRESERVE
+    });
   };
   
   $scope.addWrongExampleSentence = function() {

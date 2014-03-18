@@ -20,14 +20,19 @@
 
 describe('RuleEditor controllers', function() {
   
-  beforeEach(module('ruleEditor'));
-  beforeEach(module('ruleEditor.services'));
-
   describe('RuleEditorCtrl', function() {
 
+    var scope, ctrl;
+    beforeEach(module('ruleEditor'));
+    beforeEach(module('ruleEditor.services'));
+    beforeEach(inject(function($rootScope, $controller) {
+      scope = $rootScope.$new();
+      ctrl = $controller('RuleEditorCtrl', {
+        $scope: scope
+      });
+    }));
+    
     it('should provide some basic elements manipulations', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       expect(scope.languageCode.code).toBe("en");
       expect(scope.languageCode.name).toBe("English");
       expect(scope.languageCodes.length).toBeGreaterThan(28);
@@ -63,8 +68,6 @@ describe('RuleEditor controllers', function() {
     }));
 
     it('should not count markers in elementPosition()', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       scope.addElement("foo");
       expect(scope.patternElements.length).toBe(1);
       expect(scope.elementPosition(scope.patternElements[0])).toBe(1);
@@ -76,8 +79,6 @@ describe('RuleEditor controllers', function() {
     }));
     
     it('should handle markers correctly', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       scope.addElement("foo");
       expect(scope.patternElements.length).toBe(1);
       expect(scope.hasNoMarker()).toBeTruthy();
@@ -93,8 +94,6 @@ describe('RuleEditor controllers', function() {
     }));
 
     it('should remove both markers in removeElement()', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       scope.addElement("foo");
       scope.addMarker();
       scope.removeElement(scope.patternElements[0]);
@@ -106,16 +105,12 @@ describe('RuleEditor controllers', function() {
     }));
     
     it('should create elements', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       expect(scope.addElement("hallo").regex).toBe(false);
       expect(scope.addElement("hallo", {regex: true}).regex).toBe(true);
     }));
     
     // testing XML here as it depends on the controller:
     it('should build XML', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       expect(scope.buildXml()).toContain("<pattern>");
       
       scope.setElement("hallo");
@@ -176,8 +171,6 @@ describe('RuleEditor controllers', function() {
     }));
 
     it('should build XML with exception elements', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       var elem = scope.setElement("hallo");
       scope.addException(elem);
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception></exception>\\s*</token>");
@@ -220,8 +213,6 @@ describe('RuleEditor controllers', function() {
     }));
 
     it('should build XML with more examples', inject(function($controller) {
-      var scope = {}, ctrl = $controller('RuleEditorCtrl', { $scope: scope });
-
       // the default examples:
       expect(scope.buildXml()).toMatch("<example type='correct'>");
       expect(scope.buildXml()).toMatch("<example type='incorrect'>");

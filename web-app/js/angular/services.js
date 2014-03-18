@@ -107,7 +107,7 @@ ruleEditorServices.factory('XmlBuilder',
           xml += this.buildXmlForElement(model.patternElements[i], model);
         }
         xml += " </pattern>\n";
-        xml += " <message>" + model.ruleMessage.htmlEscape() + "</message>\n";
+        xml += this.buildXmlForMessage(model.ruleMessage, model);
         if (model.detailUrl) {
           xml += " <url>" + model.detailUrl.htmlEscape() + "</url>\n";
         }
@@ -126,6 +126,23 @@ ruleEditorServices.factory('XmlBuilder',
         return xml;
       },
 
+      buildXmlForMessage: function(ruleMessage, model) {
+        var xml = "";
+        var ruleMessageText = ruleMessage;
+        for (var i = 0; i < model.messageMatches.length; i++) {
+          var messageMatch = model.messageMatches[i];
+          var caseAttribute = "";
+          if (messageMatch.caseConversion != model.CaseConversion.PRESERVE) {
+            caseAttribute = " case_conversion=\"" + messageMatch.caseConversion.replace(' ', '') + "\"";
+          }
+          var replacement = "<match no=\"" + messageMatch.tokenNumber + "\"" + caseAttribute + "/>";
+          ruleMessageText = ruleMessageText.replace("\\" + messageMatch.tokenNumber, replacement);
+        }
+        ruleMessageText = ruleMessageText.replace(/'(.*?)'/g, "<suggestion>$1</suggestion>");
+        xml += " <message>" + ruleMessageText + "</message>\n";
+        return xml;
+      },
+      
       buildXmlForElement: function(elem, model) {
         var xml = "";
         var val = elem.tokenValue;

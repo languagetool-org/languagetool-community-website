@@ -53,7 +53,7 @@
           </tr>
 
           <tr ng-repeat="exampleSentence in exampleSentences">
-              <td style="vertical-align: top"><label for="wrongSentence">{{exampleSentence.type}} sentence:</label></td>
+              <td><label for="wrongSentence">{{exampleSentence.type}} sentence:</label></td>
               <td>
                   <input type="text" ng-model="exampleSentence.text" id="wrongSentence" placeholder="A example sentence" ng-value="exampleSentence.text"/>
                   <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1">Remove</a>
@@ -126,7 +126,7 @@
                                           
                                         <table>
                                             <tr ng-show="element.tokenType == TokenTypes.WORD || element.tokenType == TokenTypes.WORD_AND_POS_TAG">
-                                                <td>Word:</td>
+                                                <td style="vertical-align: middle">Word:</td>
                                                 <td>
                                                     <div>
                                                         <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
@@ -171,7 +171,7 @@
 
                                               <table>
                                                   <tr ng-show="exception.tokenType == TokenTypes.WORD || exception.tokenType == TokenTypes.WORD_AND_POS_TAG">
-                                                      <td>Word:</td>
+                                                      <td style="vertical-align: middle">Word:</td>
                                                       <td>
                                                           <div>
                                                               <input type="text" ng-model="exception.tokenValue" ng-enter="evaluateErrorPattern()"
@@ -229,17 +229,33 @@
           
           <table>
               <tr>
-                  <td width="120"><label for="ruleMessage">Message:</label></td>
-                  <td><textarea rows="3" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()" placeholder="Error message shown to the user if error pattern matches"></textarea></td>
-              </tr>
-              <tr>
-                  <td><label for="shortRuleMessage">Short message (optional):</label></td>
-                  <td><input type="text" id="shortRuleMessage" ng-model="shortRuleMessage" ng-enter="evaluateErrorPattern()" placeholder="A short error message shown in e.g. context menus"/></td>
-              </tr>
-              <tr>
-                  <td><label for="detailUrl">URL (optional):</label></td>
+                  <td style="width:120px"><label for="ruleMessage">Message:</label></td>
                   <td>
-                      <input type="text" id="detailUrl" ng-model="detailUrl" ng-enter="evaluateErrorPattern()" placeholder="URL with more information about the error"/>
+                      <textarea rows="3" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()"
+                                placeholder="Error message shown to the user if error pattern matches"></textarea>
+                      <br/>
+                      <span class="metaInfo">
+                        Use \1, \2 to refer to the first, second token etc. of the matched text.<br/>
+                        Use 'single quotes' to mark words  that will be shown as suggestions to the user.
+                      </span>
+                      <ul>
+                        <li ng-repeat="messageMatch in messageMatches">
+                            Token Match #{{messageMatch.tokenNumber}}:
+                            Case conversion: <select ng-model="messageMatch.caseConversion" ng-options="value for (key, value) in CaseConversion"></select>
+                        </li>
+                      </ul>
+                  </td>
+              </tr>
+              <tr>
+                  <td><label for="shortRuleMessage">Short message:</label></td>
+                  <td><input type="text" id="shortRuleMessage" ng-model="shortRuleMessage" ng-enter="evaluateErrorPattern()"
+                             placeholder="A short error message shown in e.g. context menus"/>&nbsp;<span class="metaInfo">optional</span></td>
+              </tr>
+              <tr>
+                  <td><label for="detailUrl">URL:</label></td>
+                  <td>
+                      <input type="text" id="detailUrl" ng-model="detailUrl" ng-enter="evaluateErrorPattern()" 
+                             placeholder="URL with more information about the error"/>&nbsp;<span class="metaInfo">optional</span>
                       <div ng-show="detailUrl && !(detailUrl.startsWith('http://') || detailUrl.startsWith('https://'))">
                         <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This does not seem to be a valid HTTP or HTTPS URL
                       </div>
