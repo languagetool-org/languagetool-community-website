@@ -42,6 +42,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   var __LT_MARKER_START = 'Marker start';
   var __LT_MARKER_END = 'Marker end';
+  
+  var SentenceTypes = {
+    WRONG: 'wrong',
+    CORRECTED: 'corrected'
+  };
 
   $scope.languageCodes = [
     {code: 'ast', name: 'Asturian'},
@@ -79,10 +84,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.caseSensitive = false;
   $scope.exampleSentences = [
     //for easier/faster testing:
-    {text: 'Sorry for my bed English.', type: 'wrong', analysis: null},
-    {text: 'Sorry for my bad English.', type: 'corrected', analysis: null}
-    //{text: '', type: 'wrong', analysis: null},
-    //{text: '', type: 'corrected', analysis: null}
+    {text: 'Sorry for my bed English.', type: SentenceTypes.WRONG, analysis: null},
+    {text: 'Sorry for my bad English.', type: SentenceTypes.CORRECTED, analysis: null}
+    //{text: '', type: SentenceTypes.WRONG, analysis: null},
+    //{text: '', type: SentenceTypes.CORRECTED, analysis: null}
   ];
 
   $scope.ruleMessage = "";
@@ -93,19 +98,17 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.knownMatchesHtml = null;  // rule matches that LT already can find without this new rule
   $scope.evaluationResult = null;  // HTML with rule matches in Wikipedia/Tatoeba
   
-  $scope.wrongSentenceAnalysis = null;
-  $scope.correctedSentenceAnalysis = null;
   $scope.patternCreationInProgress = false;
   $scope.patternEvaluationInProgress = false;
 
   $scope.addWrongExampleSentence = function() {
-    var sentence = {text: '', type: 'wrong', analysis: null};
+    var sentence = {text: '', type: SentenceTypes.WRONG, analysis: null};
     this.exampleSentences.push(sentence);
     return sentence;
   };
   
   $scope.addCorrectedExampleSentence = function() {
-    var sentence = {text: '', type: 'corrected', analysis: null};
+    var sentence = {text: '', type: SentenceTypes.CORRECTED, analysis: null};
     this.exampleSentences.push(sentence);
     return sentence;
   };

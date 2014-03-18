@@ -52,8 +52,12 @@ describe('RuleEditor controllers', function() {
       expect(scope.exampleSentences.length).toBe(2);
       scope.addWrongExampleSentence();
       expect(scope.exampleSentences.length).toBe(3);
+      expect(scope.exampleSentences[2].text).toBe('');
+      expect(scope.exampleSentences[2].type).toBe('wrong');
       var exampleSentence = scope.addCorrectedExampleSentence();
       expect(scope.exampleSentences.length).toBe(4);
+      expect(scope.exampleSentences[3].text).toBe('');
+      expect(scope.exampleSentences[3].type).toBe('corrected');
       scope.removeExampleSentence(exampleSentence);
       expect(scope.exampleSentences.length).toBe(3);
     }));
