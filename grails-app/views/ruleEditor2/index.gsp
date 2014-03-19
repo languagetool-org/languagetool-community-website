@@ -28,9 +28,10 @@
 <div class="body ruleEditor">
 
   <p id="introText">LanguageTool finds errors based on rules. This page will help you
-  to create your own rules. As a result, you will have your rule in XML format, which you
+  to create new rules. As a result, you will have your rule in XML format, which you
   can <a href="https://languagetool.org/support/" target="_blank">send to the developers</a> for inclusion in LanguageTool
-  or add to your <tt>grammar.xml</tt> file for local use. Need help? <a href="https://languagetool.org/forum/">Ask in our forum.</a></p>
+  or add to your <tt>grammar.xml</tt> file for local use. 
+  Need help? <a target="_blank" href="https://languagetool.org/forum/">Ask in our forum.</a></p>
 
   <form>
 
