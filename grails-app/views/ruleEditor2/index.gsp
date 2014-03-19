@@ -153,6 +153,10 @@
                                                                                placeholder="part-of-speech tag" focus-me="focusInput" />
                                                         <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" ng-model="element.posTagRegex" value="true" ng-disabled="element.tokenType == TokenTypes.ANY"/>&nbsp;RegExp</label>
                                                         <label title="Matches anything but the given part-of-speech tag"><input type="checkbox" ng-model="element.posTagNegation" value="false" />&nbsp;Negate</label>
+                                                        <br/>
+                                                        <div ng-show="looksLikeRegex(element.posTag) && !element.posTagRegex">
+                                                            <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This looks like a regular expression, but the "RegExp" checkbox is not checked
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -198,6 +202,10 @@
                                                                      placeholder="part-of-speech tag" focus-me="focusInput" />
                                                               <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" ng-model="exception.posTagRegex" value="true" ng-disabled="exception.tokenType == TokenTypes.ANY"/>&nbsp;RegExp</label>
                                                               <label title="Matches anything but the given part-of-speech tag"><input type="checkbox" ng-model="exception.posTagNegation" value="false" />&nbsp;Negate</label>
+                                                              <br/>
+                                                              <div ng-show="looksLikeRegex(exception.posTag) && !exception.posTagRegex">
+                                                                  <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This looks like a regular expression, but the "RegExp" checkbox is not checked
+                                                              </div>
                                                           </div>
                                                       </td>
                                                   </tr>
