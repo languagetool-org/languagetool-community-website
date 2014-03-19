@@ -99,9 +99,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     {code: 'uk', name: 'Ukrainian'}
   ];
 
+  var self = this;
   $scope.language = $scope.languages[7];  // English
   $scope.languages.forEach(function($data) {
-    if($data.code == __ruleEditorLangCode) {
+    if($data.code == self.__ruleEditorLangCode) {
       $scope.language = $data;
     }
   });
