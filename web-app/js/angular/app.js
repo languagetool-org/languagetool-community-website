@@ -100,14 +100,20 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   ];
 
   $scope.languageCode = $scope.languageCodes[7];  // English
+  $scope.languageCodes.forEach(function($data) {
+    if($data.code == __ruleEditorLangCode) {
+      $scope.languageCode = $data;
+    }
+  });
+  
   $scope.ruleName = "";
   $scope.caseSensitive = false;
   $scope.exampleSentences = [
     //for easier/faster testing:
-    {text: 'Sorry for my bed English.', type: SentenceTypes.WRONG, analysis: null},
-    {text: 'Sorry for my bad English.', type: SentenceTypes.CORRECTED, analysis: null}
-    //{text: '', type: SentenceTypes.WRONG, analysis: null},
-    //{text: '', type: SentenceTypes.CORRECTED, analysis: null}
+    //{text: 'Sorry for my bed English.', type: SentenceTypes.WRONG, analysis: null},
+    //{text: 'Sorry for my bad English.', type: SentenceTypes.CORRECTED, analysis: null}
+    {text: '', type: SentenceTypes.WRONG, analysis: null},
+    {text: '', type: SentenceTypes.CORRECTED, analysis: null}
   ];
   $scope.ruleMessage = "";
   $scope.messageMatches = [];
