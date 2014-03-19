@@ -13,6 +13,7 @@
         var __ruleEditorEvaluationUrl = '${resource(dir: 'ruleEditor', file: 'checkXml')}';
         var __ruleEditorTokenizeSentencesUrl = '${resource(dir: 'analysis', file: 'tokenizeSentences')}';
         var __ruleEditorSentenceAnalysisUrl = '${resource(dir: 'analysis', file: 'analyzeTextForEmbedding')}';
+        var __ruleEditorPosInfoUrl = '${resource(dir: 'ruleEditor2', file: 'posTagInformation')}';
     </script>
     <script src="${resource(dir:'js/angular/lib', file:'angular.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-sanitize.min.js')}"></script>
@@ -145,7 +146,7 @@
                                                 </td>
                                             </tr>
                                             <tr ng-show="element.tokenType == TokenTypes.POS_TAG || element.tokenType == TokenTypes.WORD_AND_POS_TAG">
-                                                <td>Part-of-speech:</td>
+                                                <td style="vertical-align: middle"><a ng-href="{{getPosTagUrl()}}" target="_blank">Part-of-speech:</a></td>
                                                 <td>
                                                     <div>
                                                         <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
@@ -190,7 +191,7 @@
                                                       </td>
                                                   </tr>
                                                   <tr ng-show="exception.tokenType == TokenTypes.POS_TAG || exception.tokenType == TokenTypes.WORD_AND_POS_TAG">
-                                                      <td>Part-of-speech:</td>
+                                                      <td style="vertical-align: middle"><a ng-href="{{getPosTagUrl()}}" target="_blank">Part-of-speech:</a></td>
                                                       <td>
                                                           <div>
                                                               <input type="text" ng-model="exception.posTag" ng-enter="evaluateErrorPattern()"

@@ -18,22 +18,28 @@
  */
 package org.languagetool
 
+import org.languagetool.tagging.xx.DemoTagger
+
 /**
  * Editor that helps with creating the XML for simple rules.
  * Supposed to replace RuleEditor2Controller when it's ready.
  */
 class RuleEditor2Controller extends BaseController {
 
-    def patternStringConverterService
-    def searchService
-
-    int CORPUS_MATCH_LIMIT = 20
-    int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
-
-    def index = {
+    def index() {
         String langCode = params.lang ? params.lang : "en"
         Language language = Language.getLanguageForShortName(langCode)
         [languages: Language.REAL_LANGUAGES, language: language]
     }
 
+    def posTagInformation() {
+        String langCode = params.lang ? params.lang : "en"
+        Language language = Language.getLanguageForShortName(langCode)
+        if (language.getTagger() && !(language.getTagger() instanceof DemoTagger)) {
+            redirect(url: "https://raw.githubusercontent.com/languagetool-org/languagetool/master/languagetool-language-modules/" +
+                    langCode + "/src/main/resources/org/languagetool/resource/" + langCode + "/tagset.txt")
+        } else {
+            [languages: Language.REAL_LANGUAGES, language: language]
+        }
+    }
 }

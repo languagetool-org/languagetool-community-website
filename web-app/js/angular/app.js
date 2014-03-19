@@ -375,4 +375,9 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     return str && str.match(/[\[\]\|]/);
   };
 
+  $scope.getPosTagUrl = function() {
+    var langCode = this.languageCode.code;
+    return __ruleEditorPosInfoUrl + "?lang=" + langCode;
+  };
+
 });
