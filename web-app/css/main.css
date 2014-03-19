@@ -58,7 +58,7 @@ a:active {
 } 
 
 ul {
-    padding-left: 15px;	
+    padding-left: 15px;
 }
 input[type="button"] {
     background-color: #eeeeee;
@@ -99,7 +99,7 @@ input:focus, select:focus, textarea:focus {
 .nav {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #ccc;
-    border-style: solid none solid none;	
+    border-style: solid none solid none;
     margin-top: 5px;
     padding: 7px 12px;
 }
@@ -155,10 +155,10 @@ div.errors {
 }
 div.errors ul {
     list-style: none;
-    padding: 0;	
+    padding: 0;
 }
 div.errors li {
-	background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
+    background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
     line-height: 16px;
     padding-left: 30px;
 }
@@ -320,14 +320,14 @@ th.desc a {
 .mainPart {
     margin-left: 15px;
 }
-	
+
 .header {
-	background: #87b220;
+    background: #87b220;
     padding-bottom: 15px;
 }
 
 .header a {
-	color: white;
+    color: white;
 }
 
 .logo {
@@ -340,37 +340,37 @@ th.desc a {
     margin-left: 15px;
     margin-bottom: 5px;
 }
-	
+
 .login {
-	margin-left: 15px;
+    margin-left: 15px;
 }
 .imprint {
-	margin-top: 5px;
-	margin-left: 15px;
+    margin-top: 5px;
+    margin-left: 15px;
 }
 
 .error {
-	font-weight: bold;
-	padding-left: 2px;
-	padding-right: 2px;
-	padding-bottom: 2px;
-	background-image: url("../images/squiggle.png");
-	background-repeat: repeat-x;
-	background-position: left bottom;
+    font-weight: bold;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    background-image: url("../images/squiggle.png");
+    background-repeat: repeat-x;
+    background-position: left bottom;
 }
 .spellingError {
-	font-weight: bold;
-	padding-left: 2px;
-	padding-right: 2px;
-	padding-bottom: 2px;
-	background-image: url("../images/squiggle_red.png");
-	background-repeat: repeat-x;
-	background-position: left bottom;
-	vertical-align: text-top;
+    font-weight: bold;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    background-image: url("../images/squiggle_red.png");
+    background-repeat: repeat-x;
+    background-position: left bottom;
+    vertical-align: text-top;
 }
 
 .exampleSentence {
-	background-color: #eee;
+    background-color: #eee;
 }
 
 .correction {
@@ -378,39 +378,39 @@ th.desc a {
 }
 
 .additional {
-	font-weight: normal !important;
+    font-weight: normal !important;
     color: #999 !important; 
 }
 
 .additionalFeedMatchLink {
-	font-weight: normal !important;
+    font-weight: normal !important;
     color: #666 !important; 
 }
 .additionalFeedMatchLink:hover {
-	font-weight: normal !important;
+    font-weight: normal !important;
     background-color: #eeeeee;
 }
 
 .languageButton {
-	padding: 5px;
-	padding-left: 5px;
-	padding-right: 5px;
-	margin-left: 0;
-	margin-right: 0;
-	background: #94c324;
+    padding: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 0;
+    margin-right: 0;
+    background: #94c324;
 }
 
 .languageButton a {
-	color: black;
+    color: black;
 }
 
 .languageButton a:hover {
-	background-color: #9ed025;
+    background-color: #9ed025;
 }
 
 .activelang {
-	color: white;
-	font-weight: bold;
+    color: white;
+    font-weight: bold;
 }
 
 .errorList {
@@ -419,19 +419,19 @@ th.desc a {
 
 
 .pattern {
-	font-family: monospace;
-	font-size: larger;
+    font-family: monospace;
+    font-size: larger;
 }
 
 /* link to LT homage */
 .lthomepage {
-	margin-top: 15px;
+    margin-top: 15px;
 }
 
 /* link list with all supported languages */
 .langselection {
-	line-height: 30px;
-	margin-bottom: 15px;
+    line-height: 30px;
+    margin-bottom: 15px;
 }
 
 .javaRule {
