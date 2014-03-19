@@ -274,17 +274,13 @@
                   <td></td>
                   <td>
                       <input ng-show="gui.patternCreated" type="submit" ng-click="evaluateErrorPattern()" 
-                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0 || gui.patternEvaluationInProgress">
+                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0 || !ruleMessage || !ruleName || gui.patternEvaluationInProgress">
                       <img ng-show="gui.patternEvaluationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                   </td>
               </tr>
           </table>
 
       </div>
-
-      <h1>Debugging: XML</h1>
-
-      <pre id="ruleAsXml" ng-cloak>{{buildXml()}}</pre>
 
 
       <div ng-show="gui.patternEvaluated" ng-cloak>
@@ -294,6 +290,21 @@
           <div id="evaluationResult" ng-class="{inProgress: gui.patternEvaluationInProgress}"></div>
           <!-- too slow: <div ng-bind-html="evaluationResult"></div>-->
           
+      </div>
+
+
+      <div ng-show="gui.patternEvaluated" ng-cloak>
+
+          <h1>XML</h1>
+          
+          <p id="xmlIntro">Thanks for using the online rule editor. Here's your rule in the format
+          that the developers will use to integrate your rule. If you think your rule might be
+          useful to other users of LanguageTool, and if all the checks under 'Evaluation Results'
+          are okay, please send this rule
+          <a href="https://languagetool.org/support/" target="_blank">to the LanguageTool developers</a>.</p>
+
+          <pre id="ruleAsXml" ng-cloak>{{buildXml()}}</pre>
+
       </div>
 
   </form>

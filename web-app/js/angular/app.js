@@ -374,7 +374,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.looksLikeRegex = function(str) {
-    return str && (str.match(/[\[\]\|]/) || str.match(/\\[A-Za-z]/));
+    return str && (str.match(/[\[\]\|]/) || str.match(/\\[A-Za-z]/) || str.match(/\.[*+]/));
   };
 
   $scope.getPosTagUrl = function() {
