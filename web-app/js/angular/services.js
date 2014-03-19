@@ -96,7 +96,7 @@ ruleEditorServices.factory('XmlBuilder',
       buildXml: function(model) {
         var date = new Date();
         var dateStr = $filter('date')(date, "yyyy-MM-dd");
-        var xml = "<!-- " + model.languageCode.name.htmlEscape() + " rule, " + dateStr + " -->\n";
+        var xml = "<!-- " + model.language.name.htmlEscape() + " rule, " + dateStr + " -->\n";
         xml += "<rule id=\"ID\" name=\"" + model.ruleName.attributeEscape() + "\">\n";
         if (model.caseSensitive) {
           xml += " <pattern case_sensitive='yes'>\n";

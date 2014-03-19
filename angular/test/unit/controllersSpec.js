@@ -33,9 +33,9 @@ describe('RuleEditor controllers', function() {
     }));
     
     it('should provide some basic elements manipulations', inject(function($controller) {
-      expect(scope.languageCode.code).toBe("en");
-      expect(scope.languageCode.name).toBe("English");
-      expect(scope.languageCodes.length).toBeGreaterThan(28);
+      expect(scope.language.code).toBe("en");
+      expect(scope.language.name).toBe("English");
+      expect(scope.languages.length).toBeGreaterThan(28);
 
       var elems = scope.patternElements;
       expect(elems.length).toBe(0);

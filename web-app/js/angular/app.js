@@ -67,7 +67,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
   $scope.CaseConversion = CaseConversion;
     
-  $scope.languageCodes = [
+  $scope.languages = [
     {code: 'ast', name: 'Asturian'},
     {code: 'be', name: 'Belarusian'},
     {code: 'br', name: 'Breton'},
@@ -99,10 +99,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     {code: 'uk', name: 'Ukrainian'}
   ];
 
-  $scope.languageCode = $scope.languageCodes[7];  // English
-  $scope.languageCodes.forEach(function($data) {
+  $scope.language = $scope.languages[7];  // English
+  $scope.languages.forEach(function($data) {
     if($data.code == __ruleEditorLangCode) {
-      $scope.languageCode = $data;
+      $scope.language = $data;
     }
   });
   
@@ -188,7 +188,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   
   $scope.analyzeSentence = function(exampleSentence) {
     var self = this;
-    var data = "text=" + encodeURIComponent(exampleSentence.text) + "&lang=" + this.languageCode.code;
+    var data = "text=" + encodeURIComponent(exampleSentence.text) + "&lang=" + this.language.code;
     this.gui.patternCreationInProgress = true;
     $http({
       url: __ruleEditorSentenceAnalysisUrl,
@@ -222,7 +222,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     }
     var wrongSentence = this.exampleSentences[0].text;
     var correctedSentence = this.exampleSentences[1].text;
-    var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorTokenizeSentencesUrl, this.languageCode.code,
+    var incorrectTokensPromise = SentenceComparator.incorrectTokens(__ruleEditorTokenizeSentencesUrl, this.language.code,
         wrongSentence, correctedSentence);
     incorrectTokensPromise.then(
       function(result) {
@@ -351,7 +351,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   
   $scope.evaluateErrorPattern = function() {
     this.gui.patternEvaluationInProgress = true;
-    var data = "language=" + encodeURIComponent(this.languageCode.code) + "&checkMarker=false&xml=" + encodeURIComponent(this.buildXml());
+    var data = "language=" + encodeURIComponent(this.language.code) + "&checkMarker=false&xml=" + encodeURIComponent(this.buildXml());
     var ctrl = this;
     var url = __ruleEditorEvaluationUrl;  // GSP doesn't evaluate in JS, so we need this hack
     $http({
@@ -384,7 +384,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.getPosTagUrl = function() {
-    var langCode = this.languageCode.code;
+    var langCode = this.language.code;
     return __ruleEditorPosInfoUrl + "?lang=" + langCode;
   };
 

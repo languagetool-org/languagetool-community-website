@@ -50,7 +50,7 @@
           <tr>
               <td><label for="language">Language:</label></td>
               <td>
-                  <select name="language" id="language" ng-model="languageCode" ng-options="c.name for c in languageCodes"></select>
+                  <select name="language" id="language" ng-model="language" ng-options="c.name for c in languages"></select>
               </td>
           </tr>
 
