@@ -30,10 +30,8 @@
   <p id="introText">LanguageTool finds errors based on rules. This page will help you
   to create your own rules. As a result, you will have your rule in XML format, which you
   can <a href="https://languagetool.org/support/" target="_blank">send to the developers</a> for inclusion in LanguageTool
-  or add to your <tt>grammar.xml</tt> file for local use.</p>
+  or add to your <tt>grammar.xml</tt> file for local use. Need help? <a href="https://languagetool.org/forum/">Ask in our forum.</a></p>
 
-  <p class="warn" style="width:400px">Note: this version of the rule editor is an incomplete prototype</p>
-    
   <form>
 
       <noscript class="warn">Please turn on Javascript.</noscript>
@@ -239,6 +237,10 @@
           
           <table>
               <tr>
+                  <td><label for="ruleName">Rule Name:</label></td>
+                  <td><input type="text" id="ruleName" ng-model="ruleName" ng-enter="evaluateErrorPattern()" placeholder="Short rule description used for configuration"/></td>
+              </tr>
+              <tr>
                   <td style="width:120px"><label for="ruleMessage">Message:</label></td>
                   <td>
                       <textarea rows="3" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()"
@@ -274,10 +276,6 @@
                         <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This does not seem to be a valid HTTP or HTTPS URL
                       </div>
                   </td>
-              </tr>
-              <tr>
-                  <td><label for="ruleName">Rule Name:</label></td>
-                  <td><input type="text" id="ruleName" ng-model="ruleName" ng-enter="evaluateErrorPattern()" placeholder="Short rule description used for configuration"/></td>
               </tr>
               <tr>
                   <td></td>

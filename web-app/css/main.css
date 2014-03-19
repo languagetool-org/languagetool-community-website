@@ -81,7 +81,8 @@ textarea {
     background-color: #fcfcfc;
     border: 1px solid #ccc;
     font: 12px verdana, arial, helvetica, sans-serif;
-	vertical-align: top;
+    vertical-align: top;
+    padding: 2px 4px;
 }
 
 input:focus, select:focus, textarea:focus {
