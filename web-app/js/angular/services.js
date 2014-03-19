@@ -132,10 +132,18 @@ ruleEditorServices.factory('XmlBuilder',
         for (var i = 0; i < model.messageMatches.length; i++) {
           var messageMatch = model.messageMatches[i];
           var caseAttribute = "";
+          var regexMatchAttribute = "";
+          var regexReplaceAttribute = "";
           if (messageMatch.caseConversion != model.CaseConversion.PRESERVE) {
             caseAttribute = " case_conversion=\"" + messageMatch.caseConversion.replace(' ', '') + "\"";
           }
-          var replacement = "<match no=\"" + messageMatch.tokenNumber + "\"" + caseAttribute + "/>";
+          if (messageMatch.regexMatch) {
+            regexMatchAttribute = " regexp_match=\"" + messageMatch.regexMatch + "\"";
+          }
+          if (messageMatch.regexReplace) {
+            regexReplaceAttribute = " regexp_replace=\"" + messageMatch.regexReplace + "\"";
+          }
+          var replacement = "<match no=\"" + messageMatch.tokenNumber + "\"" + caseAttribute + regexMatchAttribute + regexReplaceAttribute + "/>";
           ruleMessageText = ruleMessageText.replace("\\" + messageMatch.tokenNumber, replacement);
         }
         ruleMessageText = ruleMessageText.replace(/'(.*?)'/g, "<suggestion>$1</suggestion>");

@@ -239,10 +239,14 @@
                         Use \1, \2 to refer to the first, second token etc. of the matched text.<br/>
                         Use 'single quotes' to mark words  that will be shown as suggestions to the user.
                       </span>
-                      <ul>
+                      <ul style="margin-bottom: 15px">
                         <li ng-repeat="messageMatch in messageMatches">
                             Token Match #{{messageMatch.tokenNumber}}:
                             Case conversion: <select ng-model="messageMatch.caseConversion" ng-options="value for (key, value) in CaseConversion"></select>
+                            <br/>
+                            Replace RegExp <input style="width:100px" type="text" ng-model="messageMatch.regexMatch"/> with 
+                                <input style="width:100px" type="text" ng-model="messageMatch.regexReplace"/>
+                                <span class="metaInfo">Use $1, $2 etc to refer to (...) in the RegExp</span>
                         </li>
                       </ul>
                   </td>

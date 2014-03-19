@@ -37,7 +37,7 @@
                     <span class="pos">
                         <g:each in="${token.getReadings()}" var="reading">
                             <g:if test="${reading.getPOSTag()}">
-                                ${reading.getPOSTag().encodeAsHTML()}
+                                ${reading.getPOSTag().encodeAsHTML()}<br/>
                             </g:if>
                             <g:else>
                                 -

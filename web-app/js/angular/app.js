@@ -153,7 +153,9 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.addMessageMatch = function(refNumber) {
     this.messageMatches.push({
       tokenNumber: refNumber,
-      caseConversion: CaseConversion.PRESERVE
+      caseConversion: CaseConversion.PRESERVE,
+      regexMatch: '',
+      regexReplace: ''
     });
   };
   
@@ -372,7 +374,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
 
   $scope.looksLikeRegex = function(str) {
-    return str && str.match(/[\[\]\|]/);
+    return str && (str.match(/[\[\]\|]/) || str.match(/\\[A-Za-z]/));
   };
 
   $scope.getPosTagUrl = function() {
