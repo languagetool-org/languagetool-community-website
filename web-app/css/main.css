@@ -72,7 +72,7 @@ input, select {
     border: 1px solid #ccc;
     font: 12px verdana, arial, helvetica, sans-serif;
     margin: 2px 0;
-    padding: 2px 4px;
+    padding: 2px 2px;
 }
 select {
    padding: 2px 2px 2px 0;
@@ -82,7 +82,7 @@ textarea {
     border: 1px solid #ccc;
     font: 12px verdana, arial, helvetica, sans-serif;
     vertical-align: top;
-    padding: 2px 4px;
+    padding: 2px 2px;
 }
 
 input:focus, select:focus, textarea:focus {

@@ -31,7 +31,10 @@
             </g:each>
         </tr>
         <tr>
-            <td style="font-weight: bold">POS</td>
+            <td style="font-weight: bold">
+                Part-of-Speech<br/>
+                <g:link target="_blank" controller="ruleEditor2" action="posTagInformation" params="${[lang:language.getShortName()]}">Help</g:link>
+            </td>
             <g:each in="${sentence.getTokensWithoutWhitespace()}" var="token" status="i">
                 <td>
                     <span class="pos">

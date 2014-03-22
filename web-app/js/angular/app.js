@@ -99,10 +99,9 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     {code: 'uk', name: 'Ukrainian'}
   ];
 
-  var self = this;
   $scope.language = $scope.languages[7];  // English
   $scope.languages.forEach(function($data) {
-    if($data.code == self.__ruleEditorLangCode) {
+    if($data.code == __ruleEditorLangCode) {
       $scope.language = $data;
     }
   });
@@ -315,6 +314,17 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     return -1;
   };
 
+  /** Get the element count, not counting markers. */
+  $scope.elementCount = function() {
+    var count = 0;
+    for (var i = 0; i < this.patternElements.length; i++) {
+      if (this.patternElements[i].tokenType != TokenTypes.MARKER) {
+        count++;
+      }
+    }
+    return count;
+  };
+
   $scope.addMarker = function() {
     this.patternElements.unshift({'tokenValue': __LT_MARKER_START, 'tokenType': TokenTypes.MARKER});
     this.patternElements.push({'tokenValue': __LT_MARKER_END, 'tokenType': TokenTypes.MARKER});
@@ -387,6 +397,43 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.getPosTagUrl = function() {
     var langCode = this.language.code;
     return __ruleEditorPosInfoUrl + "?lang=" + langCode;
+  };
+
+  $scope.showRegexHelp = function() {
+    var dialogElem = $("#regexHelp");
+    var html = '<table>' +
+      '<tr style="background-color: #eeeeee">' +
+      '  <td>foo</td>' +
+      '  <td>matches the word "foo"</td>' +
+      '</tr>' +
+      '<tr>' +
+      '  <td>M[ae]yer</td>' +
+      '  <td>matches the word "Mayer" or "Meyer"</td>' +
+      '</tr>' +
+      '<tr style="background-color: #eeeeee">' +
+      '  <td>foo|bar|blah</td>' +
+      '  <td>matches the word "foo", "bar", or "blah"</td>' +
+      '</tr>' +
+      '<tr>' +
+      '  <td>walks?</td>' +
+      '  <td>matches the word "walk" or "walks", i.e. the "s" is optional</td>' +
+      '</tr>' +
+      //'<tr style="background-color: #eeeeee">' +
+      //'  <td>(?-i)foo</td>' +
+      //'  <td>matches the word "foo", but not "FOO" or "Foo"</td>' +
+      //'</tr>' +
+      '</table>';
+
+    dialogElem.html(html);
+    dialogElem.dialog({
+      modal: false,
+      width: 600,
+      buttons: {
+        Ok: function() {
+          $(this).dialog("close");
+        }
+      }
+    });
   };
 
 });
