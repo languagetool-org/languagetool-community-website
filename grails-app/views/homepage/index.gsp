@@ -51,6 +51,12 @@
                             <g:message code="ltc.editor.explain"/>
                         </div>
 
+                        <h2><g:link controller="ruleEditor2" params="[lang: lang]">New Rule Editor (beta)</g:link></h2>
+
+                        <div class="mainPart">
+                            Try our new rule editor to create new error detection rules
+                        </div>
+
                     </td>
                     <td width="10%"></td>
                     <td width="45%">
