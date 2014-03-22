@@ -36,8 +36,8 @@ class RuleEditor2Controller extends BaseController {
         String langCode = params.lang ? params.lang : "en"
         Language language = Language.getLanguageForShortName(langCode)
         if (language.getTagger() && !(language.getTagger() instanceof DemoTagger)) {
-            redirect(url: "https://raw.githubusercontent.com/languagetool-org/languagetool/master/languagetool-language-modules/" +
-                    langCode + "/src/main/resources/org/languagetool/resource/" + langCode + "/tagset.txt")
+            redirect(url: "https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/" +
+                    "${langCode}/src/main/resources/org/languagetool/resource/${langCode}/tagset.txt")
         } else {
             [languages: Language.REAL_LANGUAGES, language: language]
         }
