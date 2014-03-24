@@ -149,10 +149,10 @@
                                       <a class="removeLink" href ng-show="elementCount() > 1" ng-click="removeElement(element)">Remove</a>
                                       <div style="margin-left: 15px">
 
-                                        <label><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD"/>&nbsp;Word</label>
-                                        <label><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.POS_TAG" />&nbsp;Part-of-speech</label>
-                                        <label><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD_AND_POS_TAG"/>&nbsp;Word + Part-of-speech</label>
-                                        <label><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.ANY"/>&nbsp;Any word</label>
+                                        <label title="match a word that is exactly the given word"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD"/>&nbsp;Word</label>
+                                        <label title="match a word that has the part-of-speech tag given here"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.POS_TAG" />&nbsp;Part-of-speech</label>
+                                        <label title="combine word and part-of-speech matching so that both must match"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD_AND_POS_TAG"/>&nbsp;Word + Part-of-speech</label>
+                                        <label title="match any word (e.g. to skip over one word)"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.ANY" ng-disabled="elementCount() <= 2"/>&nbsp;Any word</label>
                                           
                                         <table>
                                             <tr ng-show="element.tokenType == TokenTypes.WORD || element.tokenType == TokenTypes.WORD_AND_POS_TAG">
