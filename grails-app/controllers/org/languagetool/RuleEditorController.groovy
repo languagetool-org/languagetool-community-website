@@ -183,6 +183,7 @@ class RuleEditorController extends BaseController {
 
     private List<String> checkIncorrectExamples(List<IncorrectExample> incorrectExamples, JLanguageTool langTool, boolean checkMarker) {
         List problems = []
+        AnalysisController analysisController = new AnalysisController()
         for (incorrectExample in incorrectExamples) {
             String sentence = cleanMarkers(incorrectExample.getExample())
             AnalyzedSentence analyzedSentence = langTool.getAnalyzedSentence(sentence)
@@ -196,7 +197,11 @@ class RuleEditorController extends BaseController {
                     msg += "<br/>"
                     msg += message(code: 'ltc.editor.error.not.found.analysis')
                     msg += "<br/>"
-                    msg += analyzedSentence
+                    List<AnalyzedSentence> analyzedSentences = analysisController.getAnalyzedSentences(sentence, langTool.getLanguage())
+                    def analysisStr = g.render(template: '/analysis/analyzeTextForEmbedding', 
+                            model: [analyzedSentences: analyzedSentences, language: langTool.getLanguage(), languages: SortedLanguages.get(),
+                            textToCheck: sentence])
+                    msg += analysisStr
                     problems.add(msg)
                 }
             } else if (ruleMatches.size() == 1) {

@@ -15,7 +15,7 @@
                 </g:if>
                 <g:else>
                     <g:each in="${problems}" var="problem">
-                        <li>${problem.encodeAsHTML().replace("&lt;br/&gt;", "<br/>")}</li>
+                        <li>${problem}</li>
                     </g:each>
                     <li><g:message code="ltc.editor.rule.language.selection" args="${[params.language.encodeAsHTML()]}"/></li>
                 </g:else>

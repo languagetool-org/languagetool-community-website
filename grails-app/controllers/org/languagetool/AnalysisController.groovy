@@ -80,11 +80,13 @@ class AnalysisController extends BaseController {
     def analyzeTextForEmbedding = {
         Language langObject = Language.getLanguageForShortName(params.lang)
         List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
-        [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
-                textToCheck: params.text]
+        def analysisStr = g.render(template: 'analyzeTextForEmbedding',
+                model: [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
+                        textToCheck: params.text])
+        render analysisStr
     }
 
-    private List<AnalyzedSentence> getAnalyzedSentences(String text, Language lang) {
+    List<AnalyzedSentence> getAnalyzedSentences(String text, Language lang) {
         final int maxTextLen = grailsApplication.config.max.text.length
         if (text.size() > maxTextLen) {
             text = text.substring(0, maxTextLen)

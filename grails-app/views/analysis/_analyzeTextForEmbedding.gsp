@@ -1,6 +1,6 @@
 
 
-<div id="wrongSentenceEvaluation">
+<div id="wrongSentenceEvaluation" class="sentenceAnalysis">
 <g:each in="${analyzedSentences}" var="sentence">
     <table style="margin-top: 4px; margin-bottom: 15px; border-style: none">
         <tr>
