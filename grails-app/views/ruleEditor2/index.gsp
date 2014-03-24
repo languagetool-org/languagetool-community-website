@@ -14,7 +14,6 @@
         var __ruleEditorTokenizeSentencesUrl = '${resource(dir: 'analysis', file: 'tokenizeSentences')}';
         var __ruleEditorSentenceAnalysisUrl = '${resource(dir: 'analysis', file: 'analyzeTextForEmbedding')}';
         var __ruleEditorPosInfoUrl = '${resource(dir: 'ruleEditor2', file: 'posTagInformation')}';
-        var __ruleEditorLangCode = '${language.getShortName()}';
     </script>
     <script src="${resource(dir:'js/angular/lib', file:'angular.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-sanitize.min.js')}"></script>

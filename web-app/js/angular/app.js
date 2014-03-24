@@ -24,9 +24,12 @@ var ruleEditor = angular.module('ruleEditor', [
   'ui.sortable',
   'ruleEditor.directives',
   'ngSanitize'  // show non-escaped HTML
-]);
+  ],
+  function($locationProvider) {
+    $locationProvider.html5Mode(true);  // see http://stackoverflow.com/a/11069401/1582948
+  });
 
-ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceComparator, XmlBuilder) {
+ruleEditor.controller('RuleEditorCtrl', function ($location, $scope, $http, $q, SentenceComparator, XmlBuilder) {
 
   String.prototype.htmlEscape = function() {
     return $('<div/>').text(this.toString()).html();
@@ -100,9 +103,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   ];
 
   $scope.language = $scope.languages[7];  // English
-  $scope.languages.forEach(function($data) {
-    if($data.code == __ruleEditorLangCode) {
-      $scope.language = $data;
+  $scope.languages.forEach(function($lang) {
+    if($lang.code == ($location.search()).lang) {
+      console.log("Setting language to: " + ($location.search()).lang);
+      $scope.language = $lang;
     }
   });
   
