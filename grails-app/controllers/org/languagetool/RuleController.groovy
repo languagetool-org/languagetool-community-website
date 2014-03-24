@@ -144,7 +144,6 @@ class RuleController extends BaseController {
         String langCode = getLanguage()
         SelectedRule rule = getRuleById(params.id, params.subId, langCode)
         Rule selectedRule = rule.rule
-        boolean isUserRule = rule.isUserRule
         if (!selectedRule) {
             log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${langCode}")
             flash.message = "No rule with id ${params.id.encodeAsHTML()}, subId ${params.subId.encodeAsHTML()}"
@@ -213,7 +212,7 @@ class RuleController extends BaseController {
     }
 
     private Rule getSystemRuleById(String id, String subId, JLanguageTool lt) {
-        log.debug("Getting system rule with id $id")
+        log.debug("Getting system rule with id '$id'")
         Rule selectedRule = null
         List rules = lt.getAllRules()
         for (Rule rule in rules) {
