@@ -126,6 +126,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($location, $scope, $http, $q, 
   $scope.detailUrl = "";
 
   $scope.gui = {
+    expertMode: false,
     patternCreationInProgress: false,
     patternEvaluationInProgress: false,
     patternCreated: false,

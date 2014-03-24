@@ -1,3 +1,7 @@
+p {
+    margin-top: 8px;
+}
+
 h2 {
     color: #006dba;
 }
@@ -22,10 +26,10 @@ h2 {
 #xmlIntro {
     max-width: 600px;
     margin-left: 140px;
-    margin-bottom: 10px;
 }
 
 #ruleAsXml {
+    margin-top: 10px;
     color: #555555;
     margin-left: 140px
 }

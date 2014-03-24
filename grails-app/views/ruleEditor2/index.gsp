@@ -30,7 +30,7 @@
 
   <h1>LanguageTool Rule Editor</h1>
 
-  <div id="introText">
+  <div id="introText" ng-show="!gui.expertMode">
       <p>LanguageTool finds errors based on rules. Each rule has a pattern
       that describes an error. A simple pattern can just be a sequence of words,
       e.g. "bed" followed by "English", which is an error as it should probably
@@ -38,11 +38,16 @@
       LanguageTool is searched for this pattern, and if it is found, the text
       at that place is considered to have an error.</p>
     
-      <p style="margin-top: 8px">This page will help you to create new rules. 
+      <p>This page will help you to create new rules. 
       As a result, you will have your rule in XML format, which you
       can <a href="https://languagetool.org/support/" target="_blank">send to the developers</a> for inclusion in LanguageTool.
       Need help? <a target="_blank" href="https://languagetool.org/forum/">Ask in our forum.</a></p>
   </div>
+
+  <p>
+    <a href ng-click="gui.expertMode = true" ng-show="!gui.expertMode">Hide the help texts, I know what I'm doing</a>
+    <a href ng-click="gui.expertMode = false" ng-show="gui.expertMode">Show help texts</a>
+  </p>
 
   <form>
 
@@ -62,7 +67,7 @@
               <td><label ng-cloak>{{exampleSentence.type}} sentence:</label></td>
               <td>
                   <span ng-show="$index == 0">
-                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bed English." />
+                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bed English." autofocus />
                   </span>
                   <span ng-show="$index == 1">
                       <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bad English." />
@@ -80,6 +85,10 @@
                   </span>
                   <div ng-show="$index == 1 && exampleSentences[0].text && exampleSentences[0].text == exampleSentences[1].text" ng-cloak>
                       <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> Your example sentences are identical
+                  </div>
+                  <div class="sentenceAnalysis" ng-show="exampleSentence.analysis && !gui.expertMode" ng-cloak>
+                      Use this analysis to see what part-of-speech tags get assigned to the words of your sentence.<br/>
+                      You might want to use these part-of-speech tags in your error pattern in the next step.
                   </div>
                   <div class="sentenceAnalysis" ng-show="exampleSentence.analysis" ng-bind-html="exampleSentence.analysis" ng-cloak></div>
               </td>
@@ -112,7 +121,7 @@
 
           <div id="patternArea">
               
-              <p style="margin-bottom: 10px">Use this to specify the error pattern, i.e. the sequence of words that - if found
+              <p style="margin-bottom: 10px" ng-show="!gui.expertMode">Use this to specify the error pattern, i.e. the sequence of words that - if found
               in a text that is checked by LanguageTool - triggers an error message.
               <a href ng-click="addElement()">Add a token to the pattern</a> to add a word so your
               pattern gets longer and thus more specific.</p>
@@ -327,7 +336,7 @@
 
           <h2>Copy the Resulting XML</h2>
           
-          <div id="xmlIntro">
+          <div id="xmlIntro" ng-show="!gui.expertMode">
               <p>Thanks for using the online rule editor. Here's your rule in the format
               that the developers will use to integrate your rule. If you think your rule might be
               useful to other users of LanguageTool, and if all the checks under 'Evaluation Results'
