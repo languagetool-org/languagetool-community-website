@@ -227,5 +227,13 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml()).toMatch("<example type='correct'>example two</example>");
     }));
 
+    it('should optionally add marker', inject(function($controller) {
+      expect(scope.buildXml()).not.toMatch("<marker>");
+      expect(scope.buildXml(true)).not.toMatch("<marker>");
+      scope.wrongSentenceWithMarker = "This <marker>are</marker> wrong.";
+      expect(scope.buildXml()).not.toMatch("<marker>");
+      expect(scope.buildXml(true)).toMatch("<marker>are</marker>");
+    }));
+
   });
 });

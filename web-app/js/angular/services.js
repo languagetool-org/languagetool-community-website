@@ -93,7 +93,7 @@ ruleEditorServices.factory('XmlBuilder',
   function($http, $q, $filter) {
     return {
       
-      buildXml: function(model) {
+      buildXml: function(model, withMarker) {
         var date = new Date();
         var dateStr = $filter('date')(date, "yyyy-MM-dd");
         var xml = "<!-- " + model.language.name.htmlEscape() + " rule, " + dateStr + " -->\n";
@@ -117,7 +117,11 @@ ruleEditorServices.factory('XmlBuilder',
         for (var j = 0; j < model.exampleSentences.length; j++) {
           var sentence = model.exampleSentences[j];
           if (sentence.type == model.SentenceTypes.WRONG) {
-            xml += " <example type='incorrect'>" + sentence.text.htmlEscape() + "</example>\n";
+            if (withMarker && j == 0 && model.wrongSentenceWithMarker) {
+              xml += " <example type='incorrect'>" + model.wrongSentenceWithMarker + "</example>\n";
+            } else {
+              xml += " <example type='incorrect'>" + sentence.text.htmlEscape() + "</example>\n";
+            }
           } else {
             xml += " <example type='correct'>" + sentence.text.htmlEscape() + "</example>\n";
           }

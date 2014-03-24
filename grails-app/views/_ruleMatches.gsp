@@ -30,6 +30,14 @@
                   contextTools.setEscapeHtml(true);
                 %>
                 <span class="exampleSentence">${contextTools.getContext(matchInfo.getFromPos(), matchInfo.getToPos(), textToCheck)}</span>
+                <%
+                  // this is used by the rule editor to set the 'marker' element in the wrong example sentences: 
+                  contextTools.setContextSize(1000);
+                  contextTools.setErrorMarkerStart("<marker>");
+                  contextTools.setErrorMarkerEnd("</marker>");
+                  contextTools.setEscapeHtml(true);
+                %>
+                <span class="internalMarkerInfo" style="display: none">${contextTools.getContext(matchInfo.getFromPos(), matchInfo.getToPos(), textToCheck).replace('&nbsp;', ' ')}</span>
                 <br />
             </li>
 

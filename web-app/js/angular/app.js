@@ -367,7 +367,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($location, $scope, $http, $q, 
   
   $scope.evaluateErrorPattern = function() {
     this.gui.patternEvaluationInProgress = true;
-    var data = "language=" + encodeURIComponent(this.language.code) + "&checkMarker=false&xml=" + encodeURIComponent(this.buildXml());
+    var data = "language=" + encodeURIComponent(this.language.code) + "&checkMarker=false&xml=" + encodeURIComponent(this.buildXml(false));
     var ctrl = this;
     var url = __ruleEditorEvaluationUrl;  // GSP doesn't evaluate in JS, so we need this hack
     $http({
@@ -379,6 +379,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($location, $scope, $http, $q, 
     }).success(function(data) {
         // TODO: slooooow! see https://github.com/Pasvaz/bindonce
         //ctrl.gui.evaluationResult = data;
+        var markerMatch = data.match(/<span class="internalMarkerInfo".*?>(.*?)<\/span>/);
+        // TODO: all incorrect sentences need a marker:
+        if (markerMatch) {
+          ctrl.wrongSentenceWithMarker = markerMatch[1].trim();
+        }
         $('#evaluationResult').html(data);
         ctrl.gui.patternEvaluated = true;
         ctrl.gui.patternEvaluationInProgress = false;
@@ -391,8 +396,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($location, $scope, $http, $q, 
       });
   };
 
-  $scope.buildXml = function() {
-    return XmlBuilder.buildXml(this);
+  $scope.buildXml = function(withMarker) {
+    return XmlBuilder.buildXml(this, withMarker);
   };
 
   $scope.looksLikeRegex = function(str) {
