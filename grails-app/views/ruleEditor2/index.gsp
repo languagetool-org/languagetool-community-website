@@ -17,6 +17,7 @@
     </script>
     <script src="${resource(dir:'js/angular/lib', file:'angular.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-sanitize.min.js')}"></script>
+    <script src="${resource(dir:'js/angular/lib', file:'angular-animate.min.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'app.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'services.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'directives.js')}"></script>
@@ -76,7 +77,7 @@
                       <input type="text" ng-model="exampleSentence.text" />
                   </span>
                   <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1" ng-cloak>Remove</a>
-                  <a href ng-click="analyzeSentence(exampleSentence)" ng-show="!exampleSentence.analysis && exampleSentence.text" ng-cloak>
+                  <a href class="anim-show-hide" ng-click="analyzeSentence(exampleSentence)" ng-show="!exampleSentence.analysis && exampleSentence.text" ng-cloak>
                       <span ng-show="exampleSentences.indexOf(exampleSentence) > 1">&middot;</span> Show analysis</a>
                   <span ng-show="exampleSentence.analysis" ng-cloak>
                       <span ng-show="exampleSentences.indexOf(exampleSentence) > 1">&middot;</span>
@@ -97,7 +98,7 @@
           <tr>
               <td></td>
               <td>
-                  <div style="margin-top: 5px; margin-bottom: 5px" ng-show="exampleSentences[0].text && exampleSentences[1].text" ng-cloak>
+                  <div class="anim-show-hide" style="margin-top: 5px; margin-bottom: 5px" ng-show="exampleSentences[0].text && exampleSentences[1].text" ng-cloak>
                       <a href ng-click="addWrongExampleSentence()">Add another wrong example</a> &middot;
                       <a href ng-click="addCorrectedExampleSentence()">Add another correct example</a>
                   </div>

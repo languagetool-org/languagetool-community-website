@@ -23,7 +23,8 @@ var ruleEditor = angular.module('ruleEditor', [
   'ui.sortable',
   'ui.sortable',
   'ruleEditor.directives',
-  'ngSanitize'  // show non-escaped HTML
+  'ngSanitize',  // show non-escaped HTML
+  'ngAnimate'
   ],
   function($locationProvider) {
     $locationProvider.html5Mode(true);  // see http://stackoverflow.com/a/11069401/1582948
