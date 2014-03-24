@@ -73,7 +73,7 @@ class RuleEditorController extends BaseController {
                   searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT, timeOut: timeOut, patternRule: patternRule]
         } else {
             log.info("Checked rule: invalid - LANG: ${language.getShortNameWithCountryAndVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${problems.size()} problems")
-            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false])
+            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false, language: language])
         }
     }
 
@@ -138,7 +138,7 @@ class RuleEditorController extends BaseController {
             problems.addAll(checkExampleSentences(langTool, patternRule, params.checkMarker != 'false'))
             if (problems.size() > 0) {
                 render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                        expertMode: true, isOff: patternRule.isDefaultOff()])
+                        expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
                 return
             }
             String incorrectExamples = getIncorrectExamples(patternRule)
@@ -157,12 +157,12 @@ class RuleEditorController extends BaseController {
                     " for patterns with some regular expressions, for example if the pattern starts with .*." +
                     " These kinds of patterns are currently not supported by this tool.")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                    expertMode: true, isOff: patternRule.isDefaultOff()])
+                    expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
         } catch (Exception e) {
             log.error("Error checking XML in ${language}, pattern: ${patternRule}", e)
             problems.add("Sorry, an internal error occurred tryin to check your rule: ${e.getCause()}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                    expertMode: true, isOff: patternRule.isDefaultOff()])
+                    expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
         }
     }
 

@@ -17,7 +17,7 @@
                     <g:each in="${problems}" var="problem">
                         <li>${problem}</li>
                     </g:each>
-                    <li><g:message code="ltc.editor.rule.language.selection" args="${[params.language.encodeAsHTML()]}"/></li>
+                    <li><g:message code="ltc.editor.rule.language.selection" args="${[language.getName().encodeAsHTML()]}"/></li>
                 </g:else>
             </ul>
 
