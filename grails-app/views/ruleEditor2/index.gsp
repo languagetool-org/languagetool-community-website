@@ -62,13 +62,13 @@
               <td><label ng-cloak>{{exampleSentence.type}} sentence:</label></td>
               <td>
                   <span ng-show="$index == 0">
-                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bed English." ng-value="exampleSentence.text"/>
+                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bed English." />
                   </span>
                   <span ng-show="$index == 1">
-                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bad English." ng-value="exampleSentence.text"/>
+                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bad English." />
                   </span>
                   <span ng-show="$index > 1">
-                      <input type="text" ng-model="exampleSentence.text" ng-value="exampleSentence.text"/>
+                      <input type="text" ng-model="exampleSentence.text" />
                   </span>
                   <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1" ng-cloak>Remove</a>
                   <a href ng-click="analyzeSentence(exampleSentence)" ng-show="!exampleSentence.analysis && exampleSentence.text" ng-cloak>
