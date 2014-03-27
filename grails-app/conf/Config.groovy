@@ -102,3 +102,5 @@ grails.resources.modules = {
 // What URL patterns should be processed by the resources plugin:
 // Had to specify this to avoid the dreaded "Invocation of <r:resource> for a resource that apparently doesn't exist" error:
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*']
+// see http://www.gopivotal.com/security/cve-2014-0053:
+grails.resources.adhoc.excludes = ['**/WEB-INF/**','**/META-INF/**']
