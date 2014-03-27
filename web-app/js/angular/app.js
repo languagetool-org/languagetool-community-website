@@ -25,12 +25,9 @@ var ruleEditor = angular.module('ruleEditor', [
   'ruleEditor.directives',
   'ngSanitize',  // show non-escaped HTML
   'ngAnimate'
-  ],
-  function($locationProvider) {
-    $locationProvider.html5Mode(true);  // see http://stackoverflow.com/a/11069401/1582948
-  });
+  ]);
 
-ruleEditor.controller('RuleEditorCtrl', function ($location, $scope, $http, $q, SentenceComparator, XmlBuilder) {
+ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceComparator, XmlBuilder) {
 
   String.prototype.htmlEscape = function() {
     return $('<div/>').text(this.toString()).html();
@@ -103,10 +100,21 @@ ruleEditor.controller('RuleEditorCtrl', function ($location, $scope, $http, $q, 
     {code: 'uk', name: 'Ukrainian'}
   ];
 
+  // only works if 'lang' is the last param
+  function getParamLang() {
+    var href = window.location.href;
+    var startPos = href.indexOf("lang=");
+    if (startPos > -1) {
+      return href.substring(startPos + "lang=".length);
+    }
+    return null;
+  }
+  
+  var paramLang = getParamLang();
   $scope.language = $scope.languages[7];  // English
   $scope.languages.forEach(function($lang) {
-    if($lang.code == ($location.search()).lang) {
-      console.log("Setting language to: " + ($location.search()).lang);
+    if($lang.code == paramLang) {
+      console.log("Setting language to: " + paramLang);
       $scope.language = $lang;
     }
   });
