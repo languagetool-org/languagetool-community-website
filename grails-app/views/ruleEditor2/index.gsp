@@ -250,6 +250,20 @@
                                           
                                         <div>
                                             <a href ng-click="addException(element)" title="Add an exception for this element">Add exception</a>
+                                            &middot;
+                                            <span class="metaInfo">
+                                                <a href ng-click="addAttribute(element)" title="Add advanced attribute for this element">Add Advanced Attribute</a>
+                                            </span>
+                                            <table>
+                                                <tr ng-repeat="att in element.attributes">
+                                                    <td>
+                                                        <input style="width:100px" type="text" ng-model="att.attName"/>
+                                                        =
+                                                        <input style="width:200px" type="text" ng-model="att.attValue"/>
+                                                        <a href ng-click="removeAttribute(element, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove sentence"/></a>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                           
                                       </div>

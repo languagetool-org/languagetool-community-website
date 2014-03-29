@@ -257,6 +257,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     );
   };
 
+  //$scope.attributeCount = function(elem) {
+  //  return Object.keys(elem.attributes).length;
+  //};
+  
   $scope.addElement = function(tokenValue, properties) {
     var elem = {
       tokenValue: tokenValue,
@@ -269,7 +273,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       posTagNegation: false,
       exceptions: [],
       detailUrl: '',
-      attributes: {}
+      //attributes: [{attName:'myname', attValue: 'myval'}]  //for testing
+      attributes: []
     };
     if (properties) {
       elem = jQuery.extend({}, elem, properties);
@@ -455,6 +460,19 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
         }
       }
     });
+  };
+
+  $scope.addAttribute = function(element) {
+    element.attributes.push({});
+  };
+
+  $scope.removeAttribute = function(element, attr) {
+    var index = element.attributes.indexOf(attr);
+    if (index > -1) {
+      element.attributes.splice(index, 1);
+    } else {
+      console.warn("Attribute not found: " + attr);
+    }
   };
 
 });

@@ -235,5 +235,23 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml(true)).toMatch("<marker>are</marker>");
     }));
 
+    it('should consider attributes', inject(function($controller) {
+      var elem = scope.setElement("hallo");
+      elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
+      expect(scope.buildXml(true)).toMatch("<token myKey='myValue' myKey2='myValue2'>hallo</token>");
+
+      elem = scope.setElement(null, {tokenType: scope.TokenTypes.POS_TAG, posTag: 'POS'});
+      elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
+      expect(scope.buildXml(true)).toMatch("<token postag='POS' myKey='myValue' myKey2='myValue2'></token>");
+
+      elem = scope.setElement("hallo", {tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'POS'});
+      elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
+      expect(scope.buildXml(true)).toMatch("<token postag='POS' myKey='myValue' myKey2='myValue2'>hallo</token>");
+
+      elem = scope.setElement("hallo", {tokenType: scope.TokenTypes.ANY});
+      elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
+      expect(scope.buildXml(true)).toMatch("<token myKey='myValue' myKey2='myValue2'></token>");
+    }));
+
   });
 });

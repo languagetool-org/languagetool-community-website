@@ -104,19 +104,27 @@ xmlServices.factory('XmlBuilder',
         var posTagRegex = this.getPosTagRegexAttribute(elem);
         var posTagNegation = this.getPosTagNegationAttribute(elem);
         if (elem.tokenType == model.TokenTypes.WORD) {
-          xml += "  <token" + baseform + regex + negation + ">" + val;
+          xml += "  <token" + baseform + regex + negation;
+          xml += this.buildXmlForAttributes(elem.attributes, model);
+          xml += ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
         } else if (elem.tokenType == model.TokenTypes.POS_TAG) {
-          xml += "  <token postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">";
+          xml += "  <token postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += this.buildXmlForAttributes(elem.attributes, model);
+          xml += ">";
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
         } else if (elem.tokenType == model.TokenTypes.WORD_AND_POS_TAG) {
-          xml += "  <token" + baseform + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
+          xml += "  <token" + baseform + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += this.buildXmlForAttributes(elem.attributes, model);
+          xml += ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
         } else if (elem.tokenType == model.TokenTypes.ANY) {
-          xml += "  <token>";
+          xml += "  <token";
+          xml += this.buildXmlForAttributes(elem.attributes, model);
+          xml += ">";
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
         } else if (elem.tokenType == model.TokenTypes.MARKER && val == __LT_MARKER_START) {
@@ -176,6 +184,17 @@ xmlServices.factory('XmlBuilder',
           xml += "</exception>";
         } else {
           console.warn("Unknown exception  type '" + exception.tokenType + "'");
+        }
+        return xml;
+      },
+
+      buildXmlForAttributes: function(attributes, model) {
+        var xml = "";
+        for (var i = 0; i < attributes.length; i++) {
+          var att = attributes[i];
+          if (att.attName && att.attValue) {
+            xml += " " + att.attName + "='" + att.attValue.attributeEscape() + "'";
+          }
         }
         return xml;
       }
