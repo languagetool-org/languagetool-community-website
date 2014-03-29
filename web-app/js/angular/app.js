@@ -20,6 +20,7 @@
 
 var ruleEditor = angular.module('ruleEditor', [
   'ruleEditor.services',
+  'ruleEditor.xmlServices',
   'ui.sortable',
   'ui.sortable',
   'ruleEditor.directives',
@@ -267,7 +268,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       posTagRegex: false,
       posTagNegation: false,
       exceptions: [],
-      detailUrl: ''
+      detailUrl: '',
+      attributes: {}
     };
     if (properties) {
       elem = jQuery.extend({}, elem, properties);

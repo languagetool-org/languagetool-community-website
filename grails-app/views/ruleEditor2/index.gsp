@@ -20,6 +20,7 @@
     <script src="${resource(dir:'js/angular/lib', file:'angular-animate.min.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'app.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'services.js')}"></script>
+    <script src="${resource(dir:'js/angular', file:'xmlBuildServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'directives.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'sortable.js')}"></script>
 </head>
