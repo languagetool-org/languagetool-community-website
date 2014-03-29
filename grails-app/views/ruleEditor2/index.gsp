@@ -76,7 +76,8 @@
                   <span ng-show="$index > 1">
                       <input type="text" ng-model="exampleSentence.text" />
                   </span>
-                  <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1" ng-cloak>Remove</a>
+                  <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1" 
+                     ng-cloak><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove sentence"/></a>
                   <a href class="anim-show-hide" ng-click="analyzeSentence(exampleSentence)" ng-show="!exampleSentence.analysis && exampleSentence.text" ng-cloak>
                       <span ng-show="exampleSentences.indexOf(exampleSentence) > 1">&middot;</span> Show analysis</a>
                   <span ng-show="exampleSentence.analysis" ng-cloak>
@@ -142,11 +143,11 @@
                               <div ng-switch on="element.tokenType">
                                   <div ng-switch-when="marker">
                                       <span class="dragHandle">&#8691; {{element.tokenValue}}</span>
-                                      <a class="removeLink" href ng-click="removeElement(element)">Remove</a>
+                                        <a class="removeLink" href ng-click="removeElement(element)"><img src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove start and end marker"/></a>
                                   </div>
                                   <div ng-switch-default>
                                       <span class="dragHandle">&#8691; Token #{{elementPosition(element)}}</span>
-                                      <a class="removeLink" href ng-show="elementCount() > 1" ng-click="removeElement(element)">Remove</a>
+                                      <a class="removeLink" href ng-show="elementCount() > 1" ng-click="removeElement(element)"><img src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove token"/></a>
                                       <div style="margin-left: 15px">
 
                                         <label title="match a word that is exactly the given word"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD"/>&nbsp;Word</label>
@@ -198,7 +199,7 @@
                                           <li ng-repeat="exception in element.exceptions">
                                               and:
 
-                                              <a href ng-click="removeException(element, exception)" class="removeLink">Remove exception</a>
+                                              <a href ng-click="removeException(element, exception)" class="removeLink"><img src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove exception"/></a>
 
                                               <!-- copied from above, 'element' replaced with 'exception': -->
 
