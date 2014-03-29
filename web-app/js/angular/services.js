@@ -61,7 +61,7 @@ ruleEditorServices.factory('SentenceComparator',
 
       findFirstDifferentPosition: function(wrongSentenceTokens, correctedSentenceTokens) {
         for (var i = 0; i < Math.min(wrongSentenceTokens.length, correctedSentenceTokens.length); i++) {
-          if (wrongSentenceTokens[i] != correctedSentenceTokens[i]) {
+          if (wrongSentenceTokens[i] !== correctedSentenceTokens[i]) {
             return i;
           }
         }
@@ -73,7 +73,7 @@ ruleEditorServices.factory('SentenceComparator',
         var correctedSentencePos = correctedSentenceTokens.length;
         var startPos = Math.max(wrongSentenceTokens.length, correctedSentenceTokens.length);
         for (var i = startPos; i >=  0 && wrongSentencePos > 0 && correctedSentencePos > 0 ; i--) {
-          if (wrongSentenceTokens[wrongSentencePos] != correctedSentenceTokens[correctedSentencePos]) {
+          if (wrongSentenceTokens[wrongSentencePos] !== correctedSentenceTokens[correctedSentencePos]) {
             return i;
           }
           wrongSentencePos--;
