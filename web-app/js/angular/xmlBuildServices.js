@@ -174,13 +174,19 @@ xmlServices.factory('XmlBuilder',
         var posTagRegex = this.getPosTagRegexAttribute(exception);
         var posTagNegation = this.getPosTagNegationAttribute(exception);
         if (exception.tokenType == model.TokenTypes.WORD) {
-          xml += "<exception" + baseform + regex + negation + ">" + val;
+          xml += "<exception" + baseform + regex + negation;
+          xml += this.buildXmlForAttributes(exception.attributes, model);
+          xml += ">" + val;
           xml += "</exception>";
         } else if (exception.tokenType == model.TokenTypes.POS_TAG) {
-          xml += "<exception postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">";
+          xml += "<exception postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += this.buildXmlForAttributes(exception.attributes, model);
+          xml += ">";
           xml += "</exception>";
         } else if (exception.tokenType == model.TokenTypes.WORD_AND_POS_TAG) {
-          xml += "<exception" + baseform + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation + ">" + val;
+          xml += "<exception" + baseform + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += this.buildXmlForAttributes(exception.attributes, model);
+          xml += ">" + val;
           xml += "</exception>";
         } else {
           console.warn("Unknown exception  type '" + exception.tokenType + "'");

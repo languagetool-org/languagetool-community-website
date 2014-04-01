@@ -259,10 +259,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     );
   };
 
-  //$scope.attributeCount = function(elem) {
-  //  return Object.keys(elem.attributes).length;
-  //};
-  
   $scope.addElement = function(tokenValue, properties) {
     var elem = {
       tokenValue: tokenValue,
@@ -300,7 +296,9 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       negation: false,
       posTag: '',
       posTagRegex: false,
-      posTagNegation: false
+      posTagNegation: false,
+      attributes: [],
+      guiAttributeDialogShown: false
     };
     if (properties) {
       ex = jQuery.extend({}, ex, properties);
@@ -464,11 +462,11 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     });
   };
 
-  $scope.countAttributes = function(element) {
+  $scope.countAttributes = function(attributes) {
     var count = 0;
-    for (var key in element.attributes) {
-      if (element.attributes.hasOwnProperty(key)) {
-        var att = element.attributes[key];
+    for (var key in attributes) {
+      if (attributes.hasOwnProperty(key)) {
+        var att = attributes[key];
         if (att.attName && att.attValue) {  // don't count empty attributes
           count++;
         }
@@ -478,10 +476,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   };
   
   $scope.editAttributes = function(element) {
-    element.guiAttributeDialogShown = true;
     if (element.attributes.length == 0) {
       this.addAttribute(element);
     }
+    element.guiAttributeDialogShown = true;
   };
 
   $scope.addAttribute = function(element) {
@@ -495,6 +493,27 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       element.attributes.splice(index, 1);
     } else {
       console.warn("Attribute not found: " + attr);
+    }
+  };
+
+  $scope.editExceptionAttributes = function(exception) {
+    if (exception.attributes.length == 0) {
+      this.addExceptionAttribute(exception);
+    }
+    exception.guiAttributeDialogShown = true;
+  };
+
+  $scope.addExceptionAttribute = function(exception) {
+    exception.attributes.push({});
+    this.focusAttributeInput = true;
+  };
+
+  $scope.removeExceptionAttribute = function(exception, attr) {
+    var index = exception.attributes.indexOf(attr);
+    if (index > -1) {
+      exception.attributes.splice(index, 1);
+    } else {
+      console.warn("Exception attribute not found: " + exception + "," + attr);
     }
   };
 

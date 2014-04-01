@@ -253,5 +253,25 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml(true)).toMatch("<token myKey='myValue' myKey2='myValue2'></token>");
     }));
 
+    it('should consider attributes for exceptions', inject(function($controller) {
+      var elem = scope.setElement("hallo");
+      var attribute1 = {attName: 'myKey', attValue: 'myVal'};
+      var attribute2 = {attName: 'myKey2', attValue: 'myVal2'};
+      scope.addException(elem, {tokenValue: 'myException', attributes: [attribute1]});
+      expect(scope.buildXml(true)).toMatch("<token>hallo<exception myKey='myVal'>myException</exception></token>");
+
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', attributes: [attribute1, attribute2]});
+      expect(scope.buildXml(true)).toMatch("<token>hallo<exception myKey='myVal' myKey2='myVal2'>myException</exception></token>");
+
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenType: scope.TokenTypes.POS_TAG, posTag: 'XTAG', attributes: [attribute1]});
+      expect(scope.buildXml(true)).toMatch("<token>hallo<exception postag='XTAG' myKey='myVal'></exception></token>");
+
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'myException', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XTAG', attributes: [attribute1]});
+      expect(scope.buildXml(true)).toMatch("<token>hallo<exception postag='XTAG' myKey='myVal'>myException</exception></token>");
+    }));
+
   });
 });

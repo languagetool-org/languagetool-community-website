@@ -247,6 +247,38 @@
                                                   </tr>
                                               </table>
 
+                                              <div>
+                                                  <span class="metaInfo">
+                                                      <a href ng-click="editExceptionAttributes(exception)" title="Edit advanced attributes for this exception">Edit Advanced Attributes</a> ({{countAttributes(exception.attributes)}})
+                                                  </span>
+                                                  <modal-dialog show='exception.guiAttributeDialogShown' dialog-title='Advanced Exception Attributes'>
+                                                      <table>
+                                                          <tr ng-repeat="att in exception.attributes">
+                                                              <td>
+                                                                  <input style="width:100px" type="text" ng-model="att.attName" focus-me="focusAttributeInput"/>
+                                                                  =
+                                                                  <input style="width:200px" type="text" ng-model="att.attValue"/>
+                                                                  <a href ng-click="removeExceptionAttribute(exception, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove Attribute"/></a>
+                                                              </td>
+                                                          </tr>
+                                                          <tr>
+                                                              <td colspan="2">
+                                                                  <p>
+                                                                      <a href ng-click="addExceptionAttribute(exception)">Add another Attribute</a>
+                                                                  </p>
+                                                              </td>
+                                                          </tr>
+                                                          <tr>
+                                                              <td colspan="2">
+                                                                  <p>
+                                                                      <input type="button" ng-click="exception.guiAttributeDialogShown = false" value="OK"/>
+                                                                  </p>
+                                                              </td>
+                                                          </tr>
+                                                      </table>
+                                                  </modal-dialog>
+                                              </div>
+
                                           </li>
                                         </ul>
                                           
@@ -254,8 +286,7 @@
                                             <a href ng-click="addException(element)" title="Add an exception for this element">Add exception</a>
                                             &middot;
                                             <span class="metaInfo">
-                                                <a href ng-click="editAttributes(element)" title="Add advanced attribute for this element">Edit Advanced Attributes</a>
-                                                ({{countAttributes(element)}})
+                                                <a href ng-click="editAttributes(element)" title="Edit advanced attributes for this element">Edit Advanced Attributes</a> ({{countAttributes(element.attributes)}})
                                             </span>
                                             <modal-dialog show='element.guiAttributeDialogShown' dialog-title='Advanced Attributes'>
                                                 <table>
@@ -264,7 +295,7 @@
                                                             <input style="width:100px" type="text" ng-model="att.attName" focus-me="focusAttributeInput"/>
                                                             =
                                                             <input style="width:200px" type="text" ng-model="att.attValue"/>
-                                                            <a href ng-click="removeAttribute(element, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove sentence"/></a>
+                                                            <a href ng-click="removeAttribute(element, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove Attribute"/></a>
                                                         </td>
                                                     </tr>
                                                     <tr>
