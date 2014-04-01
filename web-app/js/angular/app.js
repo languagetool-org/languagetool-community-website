@@ -21,6 +21,7 @@
 var ruleEditor = angular.module('ruleEditor', [
   'ruleEditor.services',
   'ruleEditor.xmlServices',
+  'ruleEditor.xmlParseServices',
   'ui.sortable',
   'ui.sortable',
   'ruleEditor.directives',
@@ -29,7 +30,7 @@ var ruleEditor = angular.module('ruleEditor', [
   'ngModal'  // see https://github.com/adamalbrecht/ngModal
   ]);
 
-ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceComparator, XmlBuilder) {
+ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceComparator, XmlBuilder, XmlParser) {
 
   String.prototype.htmlEscape = function() {
     return $('<div/>').text(this.toString()).html();
@@ -121,6 +122,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     }
   });
   
+  $scope.existingXml = null;  // may be pasted by the user
   $scope.ruleName = "";
   $scope.caseSensitive = false;
   $scope.exampleSentences = [
@@ -135,7 +137,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.shortRuleMessage = "";
   $scope.patternElements = [];
   $scope.detailUrl = "";
-  $scope.guiAttributeDialogShown = false;
 
   $scope.gui = {
     expertMode: false,
@@ -143,7 +144,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     patternEvaluationInProgress: false,
     patternCreated: false,
     patternEvaluated: false,
-    knownMatchesHtml: null     // rule matches that LT already can find without this new rule
+    knownMatchesHtml: null,     // rule matches that LT already can find without this new rule
+    parseXmlDialogShown: false
     //evaluationResult: null  // HTML with rule matches in Wikipedia/Tatoeba
   };
 
@@ -163,6 +165,31 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     }
     // TODO? does it make sense to remove matches automatically if the ref has been deleted?
   });
+  
+  $scope.parseExistingXml = function() {
+    try {
+      var rule = XmlParser.parseXml(this.existingXml);
+      this.ruleName = rule.ruleName;
+      this.caseSensitive = rule.caseSensitive;
+      this.exampleSentences.length = 0;
+      for (var i = 0; i < rule.exampleSentences.length; i++) {
+        this.exampleSentences.push(rule.exampleSentences[i]);
+      }
+      this.ruleMessage = rule.ruleMessage;
+      this.messageMatches = rule.messageMatches; // TODO
+      this.shortRuleMessage = rule.shortRuleMessage;
+      this.patternElements.length = 0;
+      for (var j = 0; j < rule.patternElements.length; j++) {
+        this.patternElements.push(rule.patternElements[j]);
+      }
+      this.detailUrl = rule.detailUrl;
+      this.gui.patternCreated = true;
+      this.gui.parseXmlDialogShown = false;
+    } catch (e) {
+      console.error(e);
+      alert(e);
+    }
+  };
   
   $scope.findMessageMatchByNumber = function(refNumber) {
     for (var i = 0; i < this.messageMatches.length; i++) {

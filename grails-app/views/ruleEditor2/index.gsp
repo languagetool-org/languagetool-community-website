@@ -22,6 +22,7 @@
     <script src="${resource(dir:'js/angular', file:'app.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'services.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'xmlBuildServices.js')}"></script>
+    <script src="${resource(dir:'js/angular', file:'xmlParseServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'directives.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'sortable.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'ng-modal.min.js')}"></script>
@@ -31,6 +32,14 @@
 <div class="body ruleEditor">
 
   <span style="color: white;float:left">LanguageTool ${JLanguageTool.VERSION} (${JLanguageTool.BUILD_DATE})</span>
+  <p style="margin:15px;float:right"><a href ng-click="gui.parseXmlDialogShown = true">Parse existing XML</a></p>
+  <modal-dialog show='gui.parseXmlDialogShown' dialog-title='Parse Rule XML' ng-cloak>
+    <form>
+        Warning: this is still buggy!<br/>
+        <textarea placeholder="Paste your XML rule here" style="width:400px;height:300px" ng-model="existingXml"></textarea><br/>
+        <input type="button" ng-click="parseExistingXml()" value="Parse"/>
+    </form>
+  </modal-dialog>
 
   <h1>LanguageTool Rule Editor</h1>
 

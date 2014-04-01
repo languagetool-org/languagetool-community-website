@@ -161,7 +161,7 @@ xmlServices.factory('XmlParser',
       },
       
       evalXPath: function(doc, result, xpath, node, perNode) {
-        var xpathResult = doc.evaluate(xpath, node, null, XPathResult.ANY_TYPE);
+        var xpathResult = doc.evaluate(xpath, node, null, XPathResult.ANY_TYPE, null);
         var thisNode = xpathResult.iterateNext();
         while (thisNode) {
           perNode(thisNode, thisNode.attributes);
