@@ -270,7 +270,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       posTagRegex: false,
       posTagNegation: false,
       exceptions: [],
-      detailUrl: '',
       //attributes: [{attName:'myname', attValue: 'myval'}]  //for testing
       attributes: []
     };
