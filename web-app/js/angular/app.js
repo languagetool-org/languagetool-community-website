@@ -115,7 +115,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   var paramLang = getParamLang();
   $scope.language = $scope.languages[7];  // English
   $scope.languages.forEach(function($lang) {
-    if($lang.code == paramLang) {
+    if($lang.code === paramLang) {
       console.log("Setting language to: " + paramLang);
       $scope.language = $lang;
     }
@@ -166,7 +166,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   
   $scope.findMessageMatchByNumber = function(refNumber) {
     for (var i = 0; i < this.messageMatches.length; i++) {
-      if (this.messageMatches[i].tokenNumber == refNumber) {
+      if (this.messageMatches[i].tokenNumber === refNumber) {
         return true;
       }
     }
@@ -325,10 +325,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.elementPosition = function(elem) {
     var position = 0;
     for (var i = 0; i < this.patternElements.length; i++) {
-      if (this.patternElements[i].tokenType != TokenTypes.MARKER) {
+      if (this.patternElements[i].tokenType !== TokenTypes.MARKER) {
         position++;
       }
-      if (elem == this.patternElements[i]) {
+      if (elem === this.patternElements[i]) {
         return position;
       }
     }
@@ -339,7 +339,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.elementCount = function() {
     var count = 0;
     for (var i = 0; i < this.patternElements.length; i++) {
-      if (this.patternElements[i].tokenType != TokenTypes.MARKER) {
+      if (this.patternElements[i].tokenType !== TokenTypes.MARKER) {
         count++;
       }
     }
@@ -353,7 +353,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.hasNoMarker = function() {
     for (var i = 0; i < this.patternElements.length; i++) {
-      if (this.patternElements[i].tokenType == TokenTypes.MARKER) {
+      if (this.patternElements[i].tokenType === TokenTypes.MARKER) {
         return false;
       }
     }
@@ -362,7 +362,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.removeElement = function(element) {
     var index = this.patternElements.indexOf(element);
-    if (this.patternElements[index].tokenType == TokenTypes.MARKER) {
+    if (this.patternElements[index].tokenType === TokenTypes.MARKER) {
       this.removeMarkers();
     } else {
       if (index > -1) {
@@ -375,7 +375,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
 
   $scope.removeMarkers = function() {
     for (var i = this.patternElements.length - 1; i >= 0; i--) {
-      if (this.patternElements[i].tokenType == TokenTypes.MARKER) {
+      if (this.patternElements[i].tokenType === TokenTypes.MARKER) {
         this.patternElements.splice(i, 1);
       }
     }

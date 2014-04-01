@@ -53,8 +53,8 @@ xmlServices.factory('XmlBuilder',
         }
         for (var j = 0; j < model.exampleSentences.length; j++) {
           var sentence = model.exampleSentences[j];
-          if (sentence.type == model.SentenceTypes.WRONG) {
-            if (withMarker && j == 0 && model.wrongSentenceWithMarker) {
+          if (sentence.type === model.SentenceTypes.WRONG) {
+            if (withMarker && j === 0 && model.wrongSentenceWithMarker) {
               xml += " <example type='incorrect'>" + model.wrongSentenceWithMarker + "</example>\n";
             } else {
               xml += " <example type='incorrect'>" + sentence.text.htmlEscape() + "</example>\n";
@@ -75,7 +75,7 @@ xmlServices.factory('XmlBuilder',
           var caseAttribute = "";
           var regexMatchAttribute = "";
           var regexReplaceAttribute = "";
-          if (messageMatch.caseConversion != model.CaseConversion.PRESERVE) {
+          if (messageMatch.caseConversion !== model.CaseConversion.PRESERVE) {
             caseAttribute = " case_conversion=\"" + messageMatch.caseConversion.replace(' ', '') + "\"";
           }
           if (messageMatch.regexMatch) {
@@ -103,33 +103,33 @@ xmlServices.factory('XmlBuilder',
         var negation = this.getNegationAttribute(elem);
         var posTagRegex = this.getPosTagRegexAttribute(elem);
         var posTagNegation = this.getPosTagNegationAttribute(elem);
-        if (elem.tokenType == model.TokenTypes.WORD) {
+        if (elem.tokenType === model.TokenTypes.WORD) {
           xml += "  <token" + baseform + regex + negation;
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
-        } else if (elem.tokenType == model.TokenTypes.POS_TAG) {
+        } else if (elem.tokenType === model.TokenTypes.POS_TAG) {
           xml += "  <token postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">";
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
-        } else if (elem.tokenType == model.TokenTypes.WORD_AND_POS_TAG) {
+        } else if (elem.tokenType === model.TokenTypes.WORD_AND_POS_TAG) {
           xml += "  <token" + baseform + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
-        } else if (elem.tokenType == model.TokenTypes.ANY) {
+        } else if (elem.tokenType === model.TokenTypes.ANY) {
           xml += "  <token";
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">";
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
-        } else if (elem.tokenType == model.TokenTypes.MARKER && val == __LT_MARKER_START) {
+        } else if (elem.tokenType === model.TokenTypes.MARKER && val === __LT_MARKER_START) {
           xml += "  <marker>\n";
-        } else if (elem.tokenType == model.TokenTypes.MARKER && val == __LT_MARKER_END) {
+        } else if (elem.tokenType === model.TokenTypes.MARKER && val === __LT_MARKER_END) {
           xml += "  </marker>\n";
         } else {
           console.warn("Unknown token type '" + elem.tokenType + "'");
@@ -173,17 +173,17 @@ xmlServices.factory('XmlBuilder',
         var negation = this.getNegationAttribute(exception);
         var posTagRegex = this.getPosTagRegexAttribute(exception);
         var posTagNegation = this.getPosTagNegationAttribute(exception);
-        if (exception.tokenType == model.TokenTypes.WORD) {
+        if (exception.tokenType === model.TokenTypes.WORD) {
           xml += "<exception" + baseform + regex + negation;
           xml += this.buildXmlForAttributes(exception.attributes, model);
           xml += ">" + val;
           xml += "</exception>";
-        } else if (exception.tokenType == model.TokenTypes.POS_TAG) {
+        } else if (exception.tokenType === model.TokenTypes.POS_TAG) {
           xml += "<exception postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(exception.attributes, model);
           xml += ">";
           xml += "</exception>";
-        } else if (exception.tokenType == model.TokenTypes.WORD_AND_POS_TAG) {
+        } else if (exception.tokenType === model.TokenTypes.WORD_AND_POS_TAG) {
           xml += "<exception" + baseform + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(exception.attributes, model);
           xml += ">" + val;

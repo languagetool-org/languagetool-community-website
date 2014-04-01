@@ -18,7 +18,7 @@
                         <g:each in="${token.getReadings()}" var="reading">
                             <g:if test="${reading.getLemma() != prevLemma}">
                                 <g:if test="${reading.getLemma()}">
-                                    ${reading.getLemma().encodeAsHTML()}
+                                    ${reading.getLemma().encodeAsHTML()}<br/>
                                 </g:if>
                                 <g:else>
                                     -

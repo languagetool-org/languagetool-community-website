@@ -200,7 +200,7 @@
                                           
                                         <ul>
                                           <li ng-repeat="exception in element.exceptions">
-                                              and:
+                                              except:
 
                                               <a href ng-click="removeException(element, exception)" class="removeLink"><img src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove exception"/></a>
 
