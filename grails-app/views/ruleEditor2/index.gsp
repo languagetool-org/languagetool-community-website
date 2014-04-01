@@ -6,6 +6,7 @@
     <script type="text/javascript" src="${resource(dir:'js/jquery-ui', file:'jquery-ui-1.10.4.min.js')}"></script>
     <link rel="stylesheet" href="${resource(dir:'css/jquery-ui/themes/smoothness', file:'jquery-ui.css')}">
     <link rel="stylesheet" href="${resource(dir:'css', file:'ruleEditor.css')}">
+    <link rel="stylesheet" href="${resource(dir:'css/ng-modal', file:'ng-modal.css')}">
     <meta name="layout" content="angularRuleEditor" />
     <title><g:message code="ltc.editor.title"/></title>
     <script>
@@ -23,6 +24,7 @@
     <script src="${resource(dir:'js/angular', file:'xmlBuildServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'directives.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'sortable.js')}"></script>
+    <script src="${resource(dir:'js/angular/modules', file:'ng-modal.min.js')}"></script>
 </head>
 <body><!-- see layout for attributes -->
 
@@ -252,18 +254,35 @@
                                             <a href ng-click="addException(element)" title="Add an exception for this element">Add exception</a>
                                             &middot;
                                             <span class="metaInfo">
-                                                <a href ng-click="addAttribute(element)" title="Add advanced attribute for this element">Add Advanced Attribute</a>
+                                                <a href ng-click="editAttributes(element)" title="Add advanced attribute for this element">Edit Advanced Attributes</a>
+                                                ({{countAttributes(element)}})
                                             </span>
-                                            <table>
-                                                <tr ng-repeat="att in element.attributes">
-                                                    <td>
-                                                        <input style="width:100px" type="text" ng-model="att.attName"/>
-                                                        =
-                                                        <input style="width:200px" type="text" ng-model="att.attValue"/>
-                                                        <a href ng-click="removeAttribute(element, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove sentence"/></a>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                            <modal-dialog show='element.guiAttributeDialogShown' dialog-title='Advanced Attributes'>
+                                                <table>
+                                                    <tr ng-repeat="att in element.attributes">
+                                                        <td>
+                                                            <input style="width:100px" type="text" ng-model="att.attName" focus-me="focusAttributeInput"/>
+                                                            =
+                                                            <input style="width:200px" type="text" ng-model="att.attValue"/>
+                                                            <a href ng-click="removeAttribute(element, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove sentence"/></a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <p>
+                                                                <a href ng-click="addAttribute(element)">Add another Attribute</a>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <p>
+                                                                <input type="button" ng-click="element.guiAttributeDialogShown = false" value="OK"/>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </modal-dialog>
                                         </div>
                                           
                                       </div>

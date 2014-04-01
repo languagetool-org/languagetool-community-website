@@ -25,7 +25,8 @@ var ruleEditor = angular.module('ruleEditor', [
   'ui.sortable',
   'ruleEditor.directives',
   'ngSanitize',  // show non-escaped HTML
-  'ngAnimate'
+  'ngAnimate',
+  'ngModal'  // see https://github.com/adamalbrecht/ngModal
   ]);
 
 ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceComparator, XmlBuilder) {
@@ -134,6 +135,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.shortRuleMessage = "";
   $scope.patternElements = [];
   $scope.detailUrl = "";
+  $scope.guiAttributeDialogShown = false;
 
   $scope.gui = {
     expertMode: false,
@@ -462,8 +464,29 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
     });
   };
 
+  $scope.countAttributes = function(element) {
+    var count = 0;
+    for (var key in element.attributes) {
+      if (element.attributes.hasOwnProperty(key)) {
+        var att = element.attributes[key];
+        if (att.attName && att.attValue) {  // don't count empty attributes
+          count++;
+        }
+      }
+    }
+    return count;
+  };
+  
+  $scope.editAttributes = function(element) {
+    element.guiAttributeDialogShown = true;
+    if (element.attributes.length == 0) {
+      this.addAttribute(element);
+    }
+  };
+
   $scope.addAttribute = function(element) {
     element.attributes.push({});
+    this.focusAttributeInput = true;
   };
 
   $scope.removeAttribute = function(element, attr) {
