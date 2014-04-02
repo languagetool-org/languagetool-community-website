@@ -169,20 +169,23 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
   $scope.parseExistingXml = function() {
     try {
       var rule = XmlParser.parseXml(this.existingXml);
-      this.ruleName = rule.ruleName;
-      this.caseSensitive = rule.caseSensitive;
+      $scope.ruleName = rule.ruleName;
+      $scope.caseSensitive = rule.caseSensitive;
       this.exampleSentences.length = 0;
       for (var i = 0; i < rule.exampleSentences.length; i++) {
         this.exampleSentences.push(rule.exampleSentences[i]);
       }
-      this.ruleMessage = rule.ruleMessage;
-      this.messageMatches = rule.messageMatches; // TODO
-      this.shortRuleMessage = rule.shortRuleMessage;
+      $scope.shortRuleMessage = rule.shortRuleMessage;
       this.patternElements.length = 0;
       for (var j = 0; j < rule.patternElements.length; j++) {
         this.patternElements.push(rule.patternElements[j]);
       }
-      this.detailUrl = rule.detailUrl;
+      $scope.ruleMessage = rule.ruleMessage;
+      this.messageMatches.length = 0;
+      for (var k = 0; k < rule.messageMatches.length; k++) {
+        this.messageMatches.push(rule.messageMatches[k]);
+      }
+      $scope.detailUrl = rule.detailUrl;
       this.gui.patternCreated = true;
       this.gui.parseXmlDialogShown = false;
     } catch (e) {
