@@ -42,10 +42,10 @@ xmlServices.factory('XmlParser',
 
         var result = {};
         this.evalXPath(doc, result, "/rule", doc, function(thisNode, attr) {
-          result.ruleId = attr.getNamedItem('id') ? attr.getNamedItem('id').nodeValue : null;
+          result.ruleId = attr.getNamedItem('id') ? attr.getNamedItem('id').nodeValue : '';
         });
         this.evalXPath(doc, result, "/rule", doc, function(thisNode, attr) {
-          result.ruleName = attr.getNamedItem('name') ? attr.getNamedItem('name').nodeValue : null;
+          result.ruleName = attr.getNamedItem('name') ? attr.getNamedItem('name').nodeValue : '';
         });
 
         this.evalXPath(doc, result, "//pattern", doc, function(thisNode, attr) {
@@ -58,38 +58,22 @@ xmlServices.factory('XmlParser',
         var hasMarker = false;
         var hasEndMarker = false;
         this.evalXPath(doc, result, "//pattern//*", doc, function(thisNode, attr) {
-          var element;
-          var tokenType;
           var word = thisNode.childNodes[0].nodeValue;
           var pos = attr.getNamedItem('postag') ? attr.getNamedItem('postag').nodeValue : '';
-          if (thisNode.nodeName === 'marker') {
+          var tokenType = self.getTokenType(thisNode, word, pos);
+          var element;
+          if (tokenType === 'exception') {
+            // these are handled by getExceptions()
+            return;
+          } else if (tokenType === 'marker') {
             element = {
               tokenValue: __LT_MARKER_START,
               tokenType: 'marker'
             };
             hasMarker = true;
-          } else if (word && pos) {
-            tokenType = 'word_and_posTag';
-          } else if (word) {
-            tokenType = 'word';
-          } else if (pos) {
-            tokenType = 'posTag';
           } else {
-            throw "Unknown tokenType '" + thisNode.nodeName + "' - neither POS nor word?";
-          }
-          if (!element) {
-            element = {
-              tokenValue: word,
-              tokenType: tokenType,
-              inflected: self.attr(attr, 'inflected') === 'yes',
-              regex: self.attr(attr, 'regexp') === 'yes',
-              negation: self.attr(attr, 'negate') === 'yes',
-              posTag: pos,
-              posTagRegex: self.attr(attr, 'postag_regexp') === 'yes',
-              posTagNegation: self.attr(attr, 'postag_negate') === 'yes',
-              exceptions: [],  // TODO: implement
-              attributes: self.collectRemainingAttributes(attr, ['inflected', 'postag', 'regexp', 'negate', 'postag_regexp', 'postag_negate'])
-            };
+            element = self.getElement(attr, word, tokenType, pos);
+            element.exceptions = self.getExceptions(thisNode.childNodes);
           }
           if (thisNode.nodeName === 'token' && thisNode.parentNode.nodeName === 'pattern' && hasMarker && !hasEndMarker) {
             result.patternElements.push({
@@ -196,6 +180,64 @@ xmlServices.factory('XmlParser',
             throw "Unknown node name '" + nodeName + "' in message";
           }
         }
+      },
+
+      getTokenType: function (node, word, pos) {
+        var tokenType;
+        if (node.nodeName === 'marker') {
+          tokenType = 'marker';
+        } else if (node.nodeName === 'exception') {
+          tokenType = 'exception';
+        } else if (word && pos) {
+          tokenType = 'word_and_posTag';
+        } else if (word) {
+          tokenType = 'word';
+        } else if (pos) {
+          tokenType = 'posTag';
+        } else {
+          throw "Unknown tokenType '" + node.nodeName + "' - neither POS nor word?";
+        }
+        return tokenType;
+      },
+      
+      getExceptions: function (nodes) {
+        var exceptions = [];
+        for (var i = 0; i < nodes.length; i++) {
+          var node = nodes[i];
+          var nodeName = node.nodeName;
+          if (nodeName === 'exception') {
+            var word = node.childNodes[0].nodeValue;
+            var attr = node.attributes;
+            var pos = attr.getNamedItem('postag') ? attr.getNamedItem('postag').nodeValue : '';
+            var tokenType;
+            if (word && pos) {
+              tokenType = 'word_and_posTag';
+            } else if (word) {
+              tokenType = 'word';
+            } else if (pos) {
+              tokenType = 'posTag';
+            } else {
+              throw "Unknown tokenType in exception '" + nodeName + "' - neither POS nor word?";
+            }
+            var ex = this.getElement(attr, word, tokenType, pos);
+            exceptions.push(ex);
+          }
+        }
+        return exceptions;
+      },
+      
+      getElement: function (attr, word, tokenType, pos) {
+        return {
+          tokenValue: word,
+          tokenType: tokenType,
+          inflected: this.attr(attr, 'inflected') === 'yes',
+          regex: this.attr(attr, 'regexp') === 'yes',
+          negation: this.attr(attr, 'negate') === 'yes',
+          posTag: pos,
+          posTagRegex: this.attr(attr, 'postag_regexp') === 'yes',
+          posTagNegation: this.attr(attr, 'postag_negate') === 'yes',
+          attributes: this.collectRemainingAttributes(attr, ['inflected', 'postag', 'regexp', 'negate', 'postag_regexp', 'postag_negate'])
+        };
       },
       
       collectRemainingAttributes: function (attr, knownAttributes) {

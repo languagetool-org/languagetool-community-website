@@ -166,7 +166,22 @@ describe('RuleEditor services', function() {
       expect(result.messageMatches[1].tokenNumber).toEqual('2');
     }));
     
-    // TODO: exceptions
-
+    it('should parse rule with exceptions', inject(function(XmlParser) {
+      var result = XmlParser.parseXml(
+        "<rule>" +
+        "<pattern><token>A<exception>XXX</exception><exception postag='TAG' postag_regexp='yes'>YYY</exception></token></pattern>" +
+        "<message>my message</message>" +
+        "</rule>");
+      expect(result.patternElements[0].exceptions.length).toEqual(2);
+      var exception1 = result.patternElements[0].exceptions[0];
+      expect(exception1.tokenValue).toEqual('XXX');
+      expect(exception1.tokenType).toEqual('word');
+      var exception2 = result.patternElements[0].exceptions[1];
+      expect(exception2.tokenValue).toEqual('YYY');
+      expect(exception2.tokenType).toEqual('word_and_posTag');
+      expect(exception2.posTag).toEqual('TAG');
+      expect(exception2.posTagRegex).toEqual(true);
+    }));
+    
   });
 });
