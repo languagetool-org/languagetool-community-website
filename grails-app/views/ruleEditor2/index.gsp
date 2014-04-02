@@ -389,7 +389,7 @@
                   <td></td>
                   <td>
                       <input ng-show="gui.patternCreated" type="submit" ng-click="evaluateErrorPattern()" 
-                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0 || !ruleMessage || !ruleName || gui.patternEvaluationInProgress">
+                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0 || !ruleMessage || gui.patternEvaluationInProgress">
                       <img ng-show="gui.patternEvaluationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                   </td>
               </tr>

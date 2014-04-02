@@ -195,6 +195,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
       $scope.detailUrl = rule.detailUrl;
       this.gui.patternCreated = true;
       this.gui.parseXmlDialogShown = false;
+      this.evaluateErrorPattern();
     } catch (e) {
       console.error(e);
       alert(e);

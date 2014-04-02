@@ -29,14 +29,15 @@ var __LT_MARKER_END = 'Marker end';
 xmlServices.factory('XmlParser',
   function() {
     return {
-      
+
+      // try to be fail-safe and stop on any XML element not listed here:
+      supportedNodes: ['rule', 'pattern', 'message', 'marker', 'example', 'match', 'suggestion',
+                       'exception', 'token', 'url', 'short'],
+
       parseXml: function(xml) {
         var parser = new DOMParser();
         var doc = parser.parseFromString(xml, "text/xml");
-
-        if (doc.childNodes[0].nodeName !== 'rule') {
-          throw "Cannot parse document, it needs to start with a 'rule' element";
-        }
+        this.validateSupportForDoc(doc, xml);
 
         var self = this;
 
@@ -58,7 +59,7 @@ xmlServices.factory('XmlParser',
         var hasMarker = false;
         var hasEndMarker = false;
         this.evalXPath(doc, result, "//pattern//*", doc, function(thisNode, attr) {
-          var word = thisNode.childNodes[0].nodeValue;
+          var word = thisNode.childNodes[0] ? thisNode.childNodes[0].nodeValue : '';
           var pos = attr.getNamedItem('postag') ? attr.getNamedItem('postag').nodeValue : '';
           var tokenType = self.getTokenType(thisNode, word, pos);
           var element;
@@ -136,6 +137,24 @@ xmlServices.factory('XmlParser',
         return result;
       },
 
+      validateSupportForDoc: function (doc, xml) {
+        var xpathResult = doc.evaluate("//*", doc, null, XPathResult.ANY_TYPE, null);
+        var node = xpathResult.iterateNext();
+        var foundRuleElement = false;
+        while (node) {
+          if (this.supportedNodes.indexOf(node.nodeName) === -1) {
+            throw "Sorry, nodes of type '" + node.nodeName + "' are not yet supported by this parser";
+          }
+          if (node.nodeName === 'rule') {
+            foundRuleElement = true;
+          }
+          node = xpathResult.iterateNext();
+        }
+        if (!foundRuleElement) {
+          throw "Cannot parse document, no 'rule' element found: " + xml;
+        }
+      },
+
       handleMessageNodes: function (nodes, result) {
         for (var i = 0; i < nodes.length; i++) {
           var nodeName = nodes[i].nodeName;
@@ -195,7 +214,7 @@ xmlServices.factory('XmlParser',
         } else if (pos) {
           tokenType = 'posTag';
         } else {
-          throw "Unknown tokenType '" + node.nodeName + "' - neither POS nor word?";
+          tokenType = 'any';
         }
         return tokenType;
       },
@@ -206,7 +225,7 @@ xmlServices.factory('XmlParser',
           var node = nodes[i];
           var nodeName = node.nodeName;
           if (nodeName === 'exception') {
-            var word = node.childNodes[0].nodeValue;
+            var word = node.childNodes[0] ? node.childNodes[0].nodeValue : '';
             var attr = node.attributes;
             var pos = attr.getNamedItem('postag') ? attr.getNamedItem('postag').nodeValue : '';
             var tokenType;
