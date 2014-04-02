@@ -142,8 +142,7 @@ class RuleController extends BaseController {
 
     def show = {
         String langCode = getLanguage()
-        SelectedRule rule = getRuleById(params.id, params.subId, langCode)
-        Rule selectedRule = rule.rule
+        Rule selectedRule = getRuleById(params.id, params.subId, langCode)
         if (!selectedRule) {
             log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${langCode}")
             flash.message = "No rule with id ${params.id.encodeAsHTML()}, subId ${params.subId.encodeAsHTML()}"
@@ -192,23 +191,20 @@ class RuleController extends BaseController {
         return lang
     }
 
-    private SelectedRule getRuleById(String id, String subId, String lang) {
+    private Rule getRuleById(String id, String subId, String lang) {
         Rule selectedRule
-        boolean isUserRule
         try {
             int userRuleId = Integer.parseInt(id)
             log.info("getting user rule with id $userRuleId")
             UserRule selectedUserRule = UserRule.get(userRuleId)
             // build a temporary rule:
             selectedRule = selectedUserRule.toPatternRule(true)
-            isUserRule = true
         } catch (NumberFormatException ignored) {
             JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
             lt.activateDefaultPatternRules()
             selectedRule = getSystemRuleById(id, subId, lt)
-            isUserRule = false
         }
-        return new SelectedRule(isUserRule: isUserRule, rule: selectedRule)
+        return selectedRule
     }
 
     private Rule getSystemRuleById(String id, String subId, JLanguageTool lt) {
@@ -230,9 +226,3 @@ class RuleController extends BaseController {
     }
 
 }
-
-class SelectedRule {
-    Rule rule
-    boolean isUserRule
-}
- 
