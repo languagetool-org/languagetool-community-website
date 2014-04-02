@@ -30,7 +30,7 @@ var ruleEditor = angular.module('ruleEditor', [
   'ngModal'  // see https://github.com/adamalbrecht/ngModal
   ]);
 
-ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceComparator, XmlBuilder, XmlParser) {
+ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, SentenceComparator, XmlBuilder, XmlParser) {
 
   String.prototype.htmlEscape = function() {
     return $('<div/>').text(this.toString()).html();
@@ -164,6 +164,13 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, SentenceCom
       }
     }
     // TODO? does it make sense to remove matches automatically if the ref has been deleted?
+  });
+  
+  angular.element($window).on('keydown', function(e) {
+    if ($scope.gui.parseXmlDialogShown && e.keyCode === 27) {
+      $scope.gui.parseXmlDialogShown = false;
+      $scope.$apply();
+    }
   });
   
   $scope.parseExistingXml = function() {
