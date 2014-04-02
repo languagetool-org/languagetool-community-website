@@ -32,16 +32,16 @@
 <div class="body ruleEditor">
 
   <span style="color: white;float:left">LanguageTool ${JLanguageTool.VERSION} (${JLanguageTool.BUILD_DATE})</span>
-  <p style="margin:15px;float:right"><a href ng-click="gui.parseXmlDialogShown = true">Parse existing XML</a></p>
+  <p style="margin:15px;float:right;width:700px"><a href ng-click="gui.parseXmlDialogShown = true">Parse existing XML</a></p>
   <modal-dialog show='gui.parseXmlDialogShown' dialog-title='Parse Rule XML' ng-cloak>
     <form>
-        Warning: this is still buggy!<br/>
+        <b>Warning:</b> this is still buggy!<br/>
         <textarea placeholder="Paste your XML rule here" style="width:600px;height:300px" ng-model="existingXml"></textarea><br/>
         <input type="button" ng-click="parseExistingXml()" value="Parse"/>
     </form>
   </modal-dialog>
 
-  <h1>LanguageTool Rule Editor</h1>
+  <h1 ng-show="!gui.expertMode">LanguageTool Rule Editor</h1>
 
   <div id="introText" ng-show="!gui.expertMode">
       <p>LanguageTool finds errors based on rules. Each rule has a pattern
@@ -58,8 +58,8 @@
   </div>
 
   <p>
-    <a href ng-click="gui.expertMode = true" ng-show="!gui.expertMode">Hide the help texts, I know what I'm doing</a>
-    <a href ng-click="gui.expertMode = false" ng-show="gui.expertMode">Show help texts</a>
+    <a href ng-click="enterExpertMode()" ng-show="!gui.expertMode">Hide the help texts, I know what I'm doing</a>
+    <a href ng-click="leaveExpertMode()" ng-show="gui.expertMode">Show help texts</a>
   </p>
 
   <form>
@@ -80,13 +80,13 @@
               <td><label ng-cloak>{{exampleSentence.type}} sentence:</label></td>
               <td>
                   <span ng-show="$index == 0">
-                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bed English." autofocus />
+                      <input ng-class="exampleSentence.type" type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bed English." autofocus />
                   </span>
                   <span ng-show="$index == 1">
-                      <input type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bad English." />
+                      <input ng-class="exampleSentence.type" type="text" ng-model="exampleSentence.text" placeholder="Sorry for my bad English." />
                   </span>
                   <span ng-show="$index > 1">
-                      <input type="text" ng-model="exampleSentence.text" />
+                      <input ng-class="exampleSentence.type" type="text" ng-model="exampleSentence.text" />
                   </span>
                   <a href ng-click="removeExampleSentence(exampleSentence)" ng-show="exampleSentences.indexOf(exampleSentence) > 1" 
                      ng-cloak><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove sentence"/></a>
@@ -389,7 +389,7 @@
                   <td></td>
                   <td>
                       <input ng-show="gui.patternCreated" type="submit" ng-click="evaluateErrorPattern()" 
-                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0 || !ruleMessage || gui.patternEvaluationInProgress">
+                             value="Evaluate error pattern" ng-disabled="patternElements.length == 0 || gui.patternEvaluationInProgress">
                       <img ng-show="gui.patternEvaluationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                   </td>
               </tr>

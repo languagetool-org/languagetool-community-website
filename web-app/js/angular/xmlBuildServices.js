@@ -94,10 +94,7 @@ xmlServices.factory('XmlBuilder',
       
       buildXmlForElement: function(elem, model) {
         var xml = "";
-        var val = elem.tokenValue;
-        if (!val) {
-          val = "";
-        }
+        var val = elem.tokenValue ? elem.tokenValue.htmlEscape() : '';
         var baseform = this.getBaseformAttribute(elem);
         var regex = this.getRegexAttribute(elem);
         var negation = this.getNegationAttribute(elem);
@@ -164,10 +161,7 @@ xmlServices.factory('XmlBuilder',
 
       buildXmlForException: function(exception, model) {
         var xml = "";
-        var val = exception.tokenValue;
-        if (!val) {
-          val = "";
-        }
+        var val = exception.tokenValue ? exception.tokenValue.htmlEscape() : '';
         var baseform = this.getBaseformAttribute(exception);
         var regex = this.getRegexAttribute(exception);
         var negation = this.getNegationAttribute(exception);

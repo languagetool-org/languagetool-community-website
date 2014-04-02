@@ -82,6 +82,12 @@ h2 {
 .exampleSentenceField {
     width: 300px;
 }
+.wrong {
+    background-color: #ffe2e2;
+}
+.corrected {
+    background-color: #e0ffdc;
+}
 .removeLink {
     float: right;
     margin-right: 5px;

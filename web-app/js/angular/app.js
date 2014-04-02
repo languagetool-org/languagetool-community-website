@@ -173,6 +173,16 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     }
   });
   
+  $scope.enterExpertMode = function() {
+    this.gui.expertMode = true;
+    $('.header').hide();
+  };
+
+  $scope.leaveExpertMode = function() {
+    this.gui.expertMode = false;
+    $('.header').show();
+  };
+
   $scope.parseExistingXml = function() {
     try {
       var rule = XmlParser.parseXml(this.existingXml);
