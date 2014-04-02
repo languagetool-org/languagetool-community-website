@@ -1,7 +1,7 @@
 
 <div class="ruleXmlArea">
 
-    <div class='ruleXml'>${ruleAsXml.encodeAsHTML().replaceAll("&lt;(.*?)&gt;", "<span class='xmlTag'>&lt;\$1&gt;</span>")}</div>
+    <pre class='ruleXml'>${ruleAsXml.encodeAsHTML().replaceAll("&lt;(.*?)&gt;", "<span class='xmlTag'>&lt;\$1&gt;</span>")}</pre>
 
     <g:form style="margin-top: 8px" controller="ruleEditor" action="expert" method="post">
         <input name="xml" type="hidden" value="${ruleAsXml.encodeAsHTML()}"/>
