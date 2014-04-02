@@ -30,13 +30,15 @@ describe('RuleEditor services', function() {
     }));
 
     it('should parse simple rule', inject(function(XmlParser) {
-      expect(XmlParser.parseXml(
+      var result = XmlParser.parseXml(
         "<rule id='myid' name='foo'>" +
-        "<pattern><token>A</token></pattern>" +
-        "<message>my message</message>" +
-        "<example type='correct'>correct example</example>" +
-        "<example type='incorrect'>incorrect example</example>" +
-        "</rule>")).toEqual(
+          "<pattern><token>A</token></pattern>" +
+          "<message>my message</message>" +
+          "<example type='correct'><marker>correct</marker> example</example>" +
+          "<example type='incorrect'><marker>incorrect</marker> example</example>" +
+          "</rule>");
+      //expect(result.foo).toEqual("bar");
+      expect(result).toEqual(
           {
             ruleId: 'myid',
             ruleName: 'foo',

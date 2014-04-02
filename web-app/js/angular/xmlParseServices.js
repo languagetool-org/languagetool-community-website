@@ -117,7 +117,20 @@ xmlServices.factory('XmlParser',
           } else {
             throw "Unknown attribute value '" + attValue + "'";
           }
-          result.exampleSentences.push({text: thisNode.childNodes[0].nodeValue, type: type});
+          var sentence = "";
+          for (var i = 0; i < thisNode.childNodes.length; i++) {
+            var nodeName = thisNode.childNodes[i].nodeName;
+            if (nodeName == 'marker') {
+              // Note: we currently lose the markers, as the user isn't supposed
+              // to add them in interactive mode either:
+              sentence += thisNode.childNodes[i].childNodes[0].nodeValue;
+            } else if (nodeName == '#text') {
+              sentence += thisNode.childNodes[i].nodeValue;
+            } else {
+              throw "Unsupported node '" + nodeName + "' in example"
+            }
+          }
+          result.exampleSentences.push({text: sentence, type: type});
         });
 
         this.evalXPath(doc, result, "//message", doc, function(thisNode, attr) {
