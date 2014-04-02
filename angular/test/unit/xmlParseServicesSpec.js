@@ -59,153 +59,99 @@ describe('RuleEditor services', function() {
                 {text: 'correct example', type: 'corrected'},
                 {text: 'incorrect example', type: 'wrong'}
               ],
-            ruleMessage: "my message"
+            ruleMessage: "my message",
+            messageMatches: []
           });
     }));
     
     it('should parse simple rule with marker around A', inject(function(XmlParser) {
-      expect(XmlParser.parseXml(
+      var result = XmlParser.parseXml(
         "<rule>" +
         "<pattern><marker><token>A</token></marker><token>B</token></pattern>" +
         "<message>my message</message>" +
-        "<example type='correct'>correct example</example>" +
-        "<example type='incorrect'>incorrect example</example>" +
-        "</rule>")).toEqual(
-          {
-            ruleId: null,
-            ruleName: null,
-            caseSensitive: false,
-            patternElements: [
-              { tokenValue: 'Marker start', tokenType: 'marker' },
-              {
-                tokenValue: 'A',
-                tokenType: 'word',
-                inflected: false,
-                regex: false,
-                negation: false,
-                posTag: '',
-                posTagRegex: false,
-                posTagNegation: false,
-                exceptions: [],
-                attributes: []
-              },
-              { tokenValue: 'Marker end', tokenType: 'marker' },
-              {
-                tokenValue: 'B',
-                tokenType: 'word',
-                inflected: false,
-                regex: false,
-                negation: false,
-                posTag: '',
-                posTagRegex: false,
-                posTagNegation: false,
-                exceptions: [],
-                attributes: []
-              }
-            ],
-            exampleSentences:
-              [
-                {text: 'correct example', type: 'corrected'},
-                {text: 'incorrect example', type: 'wrong'}
-              ],
-            ruleMessage: "my message"
-          });
+        "</rule>");
+      expect(result.patternElements.length).toEqual(4);
+      expect(result.patternElements[0].tokenValue).toEqual('Marker start');
+      expect(result.patternElements[1].tokenValue).toEqual('A');
+      expect(result.patternElements[2].tokenValue).toEqual('Marker end');
+      expect(result.patternElements[3].tokenValue).toEqual('B');
     }));
     
     it('should parse simple rule with marker around B', inject(function(XmlParser) {
-      expect(XmlParser.parseXml(
+      var result = XmlParser.parseXml(
         "<rule>" +
         "<pattern><token>A</token><marker><token>B</token></marker></pattern>" +
         "<message>my message</message>" +
-        "<example type='correct'>correct example</example>" +
-        "<example type='incorrect'>incorrect example</example>" +
-        "</rule>")).toEqual(
-          {
-            ruleId: null,
-            ruleName: null,
-            caseSensitive: false,
-            patternElements: [
-              {
-                tokenValue: 'A',
-                tokenType: 'word',
-                inflected: false,
-                regex: false,
-                negation: false,
-                posTag: '',
-                posTagRegex: false,
-                posTagNegation: false,
-                exceptions: [],
-                attributes: []
-              },
-              { tokenValue: 'Marker start', tokenType: 'marker' },
-              {
-                tokenValue: 'B',
-                tokenType: 'word',
-                inflected: false,
-                regex: false,
-                negation: false,
-                posTag: '',
-                posTagRegex: false,
-                posTagNegation: false,
-                exceptions: [],
-                attributes: []
-              },
-              { tokenValue: 'Marker end', tokenType: 'marker' }
-            ],
-            exampleSentences:
-              [
-                {text: 'correct example', type: 'corrected'},
-                {text: 'incorrect example', type: 'wrong'}
-              ],
-            ruleMessage: "my message"
-          });
+        "</rule>");
+      expect(result.patternElements.length).toEqual(4);
+      expect(result.patternElements[0].tokenValue).toEqual('A');
+      expect(result.patternElements[1].tokenValue).toEqual('Marker start');
+      expect(result.patternElements[2].tokenValue).toEqual('B');
+      expect(result.patternElements[3].tokenValue).toEqual('Marker end');
     }));
     
    it('should parse token attributes', inject(function(XmlParser) {
-      expect(XmlParser.parseXml(
-        "<rule name='myname'>" +
-        "<pattern case_sensitive='yes'>" +
-        "  <token postag='X' postag_regexp='yes' postag_negate='yes' regexp='yes' negate='yes' inflected='yes'>A</token>" +
-        "</pattern>" +
-        "<message>my message</message>" +
-        "<example type='correct'>correct example</example>" +
-        "<example type='incorrect'>incorrect example</example>" +
-        "</rule>")).toEqual(
-          {
-            ruleId: null,
-            ruleName: 'myname',
-            caseSensitive: true,
-            patternElements: [
-              {
-                tokenValue: 'A',
-                tokenType: 'word_and_posTag',
-                inflected: true,
-                regex: true,
-                negation: true,
-                posTag: 'X',
-                posTagRegex: true,
-                posTagNegation: true,
-                exceptions: [],
-                attributes: []
-              }],
-            exampleSentences:
-              [
-                {text: 'correct example', type: 'corrected'},
-                {text: 'incorrect example', type: 'wrong'}
-              ],
-            ruleMessage: "my message"
-          });
+     var result = XmlParser.parseXml(
+       "<rule name='myname'>" +
+       "<pattern case_sensitive='yes'>" +
+       "<token postag='X' postag_regexp='yes' postag_negate='yes' regexp='yes' negate='yes' inflected='yes'>A</token>" +
+       "</pattern>" +
+       "<message>my message</message>" +
+       "</rule>");
+      expect(result.ruleName).toEqual('myname');
+      expect(result.caseSensitive).toEqual(true);
+      var element = result.patternElements[0];
+      expect(element.tokenValue).toEqual('A');
+      expect(element.tokenType).toEqual('word_and_posTag');
+      expect(element.inflected).toEqual(true);
+      expect(element.regex).toEqual(true);
+      expect(element.negation).toEqual(true);
+      expect(element.posTag).toEqual('X');
+      expect(element.posTagRegex).toEqual(true);
+      expect(element.posTagNegation).toEqual(true);
+      expect(element.exceptions).toEqual([]);
+      expect(element.attributes).toEqual([]);
     }));
 
     it('should parse and keep unknown attributes', inject(function(XmlParser) {
-      expect(XmlParser.parseXml(
+      var result = XmlParser.parseXml(
         "<rule>" +
         "<pattern><token someNewAttribute='myVal'>A</token></pattern>" +
         "<message>my message</message>" +
-        "<example type='correct'>correct example</example>" +
-        "<example type='incorrect'>incorrect example</example>" +
-        "</rule>").patternElements[0].attributes).toEqual([{attName: 'someNewAttribute', attValue: 'myVal'}]);
+        "</rule>");
+      expect(result.patternElements[0].attributes).toEqual([{attName: 'someNewAttribute', attValue: 'myVal'}]);
     }));
+
+    it('should parse message with match elements', inject(function(XmlParser) {
+      var result = XmlParser.parseXml(
+        "<rule>" +
+        "<pattern><token someNewAttribute='myVal'>A</token></pattern>" +
+        "<message>Use \\1, \\2 or <match no='3' case_conversion='allupper' regexp_match='re' regexp_replace='repl' /> instead, or \\4.</message>" +
+        "</rule>");
+      expect(result.ruleMessage).toEqual("Use \\1, \\2 or \\3 instead, or \\4.");
+      expect(result.messageMatches.length).toEqual(4);
+      expect(result.messageMatches[0].tokenNumber).toEqual('1');
+      expect(result.messageMatches[1].tokenNumber).toEqual('2');
+      expect(result.messageMatches[2].tokenNumber).toEqual('3');
+      expect(result.messageMatches[2].caseConversion).toEqual('all upper');
+      expect(result.messageMatches[2].regexMatch).toEqual('re');
+      expect(result.messageMatches[2].regexReplace).toEqual('repl');
+      expect(result.messageMatches[3].tokenNumber).toEqual('4');
+    }));
+    
+    it('should parse message with suggestion and match elements', inject(function(XmlParser) {
+      var result = XmlParser.parseXml(
+        "<rule>" +
+        "<pattern><token someNewAttribute='myVal'>A</token></pattern>" +
+        "<message>Use <suggestion>foo \\1</suggestion> or <suggestion>bar \\2</suggestion>.</message>" +
+        "</rule>");
+      expect(result.ruleMessage).toEqual("Use 'foo \\1' or 'bar \\2'.");
+      expect(result.messageMatches.length).toEqual(2);
+      expect(result.messageMatches[0].tokenNumber).toEqual('1');
+      expect(result.messageMatches[1].tokenNumber).toEqual('2');
+    }));
+    
+    // TODO: exceptions
 
   });
 });

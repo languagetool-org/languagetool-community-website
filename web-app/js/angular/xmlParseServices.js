@@ -48,15 +48,13 @@ xmlServices.factory('XmlParser',
           result.ruleName = attr.getNamedItem('name') ? attr.getNamedItem('name').nodeValue : null;
         });
 
-        result.patternElements = [];
-        result.exampleSentences = [];
-        
         this.evalXPath(doc, result, "//pattern", doc, function(thisNode, attr) {
           result.caseSensitive = self.attr(attr, 'case_sensitive') == 'yes';
         });
 
-        //var foo = doc.evaluate("//pattern//token | //pattern/marker", doc, null, XPathResult.ANY_TYPE);
-
+        result.patternElements = [];
+        result.exampleSentences = [];
+        
         var hasMarker = false;
         var hasEndMarker = false;
         this.evalXPath(doc, result, "//pattern//*", doc, function(thisNode, attr) {
@@ -79,7 +77,6 @@ xmlServices.factory('XmlParser',
           } else {
             throw "Unknown tokenType '" + thisNode.nodeName + "' - neither POS nor word?";
           }
-          
           if (!element) {
             element = {
               tokenValue: word,
@@ -94,8 +91,6 @@ xmlServices.factory('XmlParser',
               attributes: self.collectRemainingAttributes(attr, ['inflected', 'postag', 'regexp', 'negate', 'postag_regexp', 'postag_negate'])
             };
           }
-          
-          //console.log("++++++++"+thisNode.nodeName + " " + thisNode.parentNode.nodeName);
           if (thisNode.nodeName == 'token' && thisNode.parentNode.nodeName == 'pattern' && hasMarker && !hasEndMarker) {
             result.patternElements.push({
               tokenValue: __LT_MARKER_END,
@@ -103,7 +98,6 @@ xmlServices.factory('XmlParser',
             });
             hasEndMarker = true;
           }
-          //console.log(element);
           result.patternElements.push(element);
         });
         if (hasMarker && !hasEndMarker) {
@@ -126,8 +120,10 @@ xmlServices.factory('XmlParser',
           result.exampleSentences.push({text: thisNode.childNodes[0].nodeValue, type: type});
         });
 
-        this.evalXPath(doc, result, "//message", doc, function(thisNode) {
-          result.ruleMessage = thisNode.childNodes[0].nodeValue;
+        this.evalXPath(doc, result, "//message", doc, function(thisNode, attr) {
+          result.ruleMessage = "";
+          result.messageMatches = [];
+          self.handleMessageNodes(thisNode.childNodes, result);
         });
 
         this.evalXPath(doc, result, "//short", doc, function(thisNode) {
@@ -143,6 +139,52 @@ xmlServices.factory('XmlParser',
         return result;
       },
 
+      handleMessageNodes: function (nodes, result) {
+        for (var i = 0; i < nodes.length; i++) {
+          var nodeName = nodes[i].nodeName;
+          if (nodeName === '#text') {
+            var text = nodes[i].nodeValue;
+            result.ruleMessage += text;
+            var regex = /\\(\d+)/g;
+            var matches;
+            while (matches = regex.exec(text)) {
+              result.messageMatches.push({
+                tokenNumber: matches[1], caseConversion: 'preserve', regexMatch: '', regexReplace: ''
+              });
+            }
+          } else if (nodeName === 'suggestion') {
+            result.ruleMessage += "'";
+            this.handleMessageNodes(nodes[i].childNodes, result);
+            result.ruleMessage += "'";
+          } else if (nodeName === 'match') {
+            var childAttr = nodes[i].attributes;
+            var number = this.attr(childAttr, 'no');
+            result.ruleMessage += "\\" + number;
+            var caseConversionAttr = this.attr(childAttr, 'case_conversion');
+            var caseConversion;
+            switch (caseConversionAttr) {
+              //TODO: use constants
+              case 'startlower': caseConversion = 'start lower'; break;
+              case 'startupper': caseConversion = 'start upper'; break;
+              case 'alllower': caseConversion = 'all lower'; break;
+              case 'allupper': caseConversion = 'all upper'; break;
+              case 'preserve': caseConversion = 'preserve'; break;
+              case null: caseConversion = 'preserve'; break;
+              default: throw "Unknown value for case_conversion: '" + caseConversionAttr + "'"
+            }
+            result.messageMatches.push({
+              tokenNumber: number,
+              caseConversion: caseConversion,
+              regexMatch: this.attr(childAttr, 'regexp_match'),
+              regexReplace: this.attr(childAttr, 'regexp_replace')
+              // TODO: more attributes are possible here
+            });
+          } else {
+            throw "Unknown node name '" + nodeName + "' in message";
+          }
+        }
+      },
+      
       collectRemainingAttributes: function (attr, knownAttributes) {
         var result = [];
         for (var i = 0; i < attr.length; i++) {
