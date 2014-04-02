@@ -264,7 +264,10 @@
                                                       <table>
                                                           <tr ng-repeat="att in exception.attributes">
                                                               <td>
-                                                                  <input style="width:100px" type="text" ng-model="att.attName" focus-me="focusAttributeInput"/>
+                                                                  <input list="exceptionAttributes" style="width:100px" type="text" ng-model="att.attName" focus-me="focusAttributeInput"/>
+                                                                  <datalist id="exceptionAttributes">
+                                                                      <option value="scope"/>
+                                                                  </datalist>
                                                                   =
                                                                   <input style="width:200px" type="text" ng-model="att.attValue"/>
                                                                   <a href ng-click="removeExceptionAttribute(exception, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove Attribute"/></a>
@@ -301,7 +304,14 @@
                                                 <table>
                                                     <tr ng-repeat="att in element.attributes">
                                                         <td>
-                                                            <input style="width:100px" type="text" ng-model="att.attName" focus-me="focusAttributeInput"/>
+                                                            <input list="tokenAttributes" style="width:100px" type="text" ng-model="att.attName" focus-me="focusAttributeInput"/>
+                                                            <datalist id="tokenAttributes">
+                                                                <option value="skip"/>
+                                                                <option value="chunk"/>
+                                                                <option value="spacebefore"/>
+                                                                <option value="min"/>
+                                                                <option value="max"/>
+                                                            </datalist>
                                                             =
                                                             <input style="width:200px" type="text" ng-model="att.attValue"/>
                                                             <a href ng-click="removeAttribute(element, att)"><img style="vertical-align: middle" src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove Attribute"/></a>
