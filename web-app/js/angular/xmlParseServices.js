@@ -49,7 +49,7 @@ xmlServices.factory('XmlParser',
         });
 
         this.evalXPath(doc, result, "//pattern", doc, function(thisNode, attr) {
-          result.caseSensitive = self.attr(attr, 'case_sensitive') == 'yes';
+          result.caseSensitive = self.attr(attr, 'case_sensitive') === 'yes';
         });
 
         result.patternElements = [];
@@ -62,18 +62,18 @@ xmlServices.factory('XmlParser',
           var tokenType;
           var word = thisNode.childNodes[0].nodeValue;
           var pos = attr.getNamedItem('postag') ? attr.getNamedItem('postag').nodeValue : '';
-          if (word && pos) {
-            tokenType = 'word_and_posTag';
-          } else if (word) {
-            tokenType = 'word';
-          } else if (pos) {
-            tokenType = 'posTag';
-          } else if (thisNode.nodeName == 'marker') {
+          if (thisNode.nodeName === 'marker') {
             element = {
               tokenValue: __LT_MARKER_START,
               tokenType: 'marker'
             };
             hasMarker = true;
+          } else if (word && pos) {
+            tokenType = 'word_and_posTag';
+          } else if (word) {
+            tokenType = 'word';
+          } else if (pos) {
+            tokenType = 'posTag';
           } else {
             throw "Unknown tokenType '" + thisNode.nodeName + "' - neither POS nor word?";
           }
@@ -81,17 +81,17 @@ xmlServices.factory('XmlParser',
             element = {
               tokenValue: word,
               tokenType: tokenType,
-              inflected: self.attr(attr, 'inflected') == 'yes',
-              regex: self.attr(attr, 'regexp') == 'yes',
-              negation: self.attr(attr, 'negate') == 'yes',
+              inflected: self.attr(attr, 'inflected') === 'yes',
+              regex: self.attr(attr, 'regexp') === 'yes',
+              negation: self.attr(attr, 'negate') === 'yes',
               posTag: pos,
-              posTagRegex: self.attr(attr, 'postag_regexp') == 'yes',
-              posTagNegation: self.attr(attr, 'postag_negate') == 'yes',
+              posTagRegex: self.attr(attr, 'postag_regexp') === 'yes',
+              posTagNegation: self.attr(attr, 'postag_negate') === 'yes',
               exceptions: [],  // TODO: implement
               attributes: self.collectRemainingAttributes(attr, ['inflected', 'postag', 'regexp', 'negate', 'postag_regexp', 'postag_negate'])
             };
           }
-          if (thisNode.nodeName == 'token' && thisNode.parentNode.nodeName == 'pattern' && hasMarker && !hasEndMarker) {
+          if (thisNode.nodeName === 'token' && thisNode.parentNode.nodeName === 'pattern' && hasMarker && !hasEndMarker) {
             result.patternElements.push({
               tokenValue: __LT_MARKER_END,
               tokenType: 'marker'
@@ -188,7 +188,7 @@ xmlServices.factory('XmlParser',
       collectRemainingAttributes: function (attr, knownAttributes) {
         var result = [];
         for (var i = 0; i < attr.length; i++) {
-          if (knownAttributes.indexOf(attr[i].name) == -1) {
+          if (knownAttributes.indexOf(attr[i].name) === -1) {
             result.push({attName: attr[i].name, attValue: attr[i].value});
           }
         }

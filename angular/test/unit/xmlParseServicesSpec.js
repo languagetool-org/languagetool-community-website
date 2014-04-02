@@ -77,6 +77,19 @@ describe('RuleEditor services', function() {
       expect(result.patternElements[3].tokenValue).toEqual('B');
     }));
     
+    it('should parse simple rule with marker around A (plus whitespace)', inject(function(XmlParser) {
+      var result = XmlParser.parseXml(
+        "<rule>" +
+        "<pattern>  <marker>  <token>A</token>  </marker>  <token>B</token></pattern>" +
+        "<message>my message</message>" +
+        "</rule>");
+      expect(result.patternElements.length).toEqual(4);
+      expect(result.patternElements[0].tokenValue).toEqual('Marker start');
+      expect(result.patternElements[1].tokenValue).toEqual('A');
+      expect(result.patternElements[2].tokenValue).toEqual('Marker end');
+      expect(result.patternElements[3].tokenValue).toEqual('B');
+    }));
+    
     it('should parse simple rule with marker around B', inject(function(XmlParser) {
       var result = XmlParser.parseXml(
         "<rule>" +
