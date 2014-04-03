@@ -193,7 +193,7 @@ class WikiCheckController extends BaseController {
         } else {
             pageUrl = "http://" + langCode + ".wikipedia.org/wiki/" + params.url.replace(' ', '_')
         }
-        return pageUrl
+        return pageUrl.replaceAll("#.*", "") // ignore page anchors
     }
 
     private String download(URL url) throws IOException {
