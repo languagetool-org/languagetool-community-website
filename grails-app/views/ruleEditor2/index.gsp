@@ -390,7 +390,7 @@
                   <td>
                       <input type="text" id="detailUrl" ng-model="detailUrl" ng-enter="evaluateErrorPattern()" 
                              placeholder="URL with more information about the error"/>&nbsp;<span class="metaInfo">optional</span>
-                      <div ng-show="detailUrl && !(detailUrl.startsWith('http://') || detailUrl.startsWith('https://'))">
+                      <div ng-show="detailUrl && detailUrl.indexOf('http://') !== 0 && detailUrl.indexOf('https://') !== 0">
                         <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This does not seem to be a valid HTTP or HTTPS URL
                       </div>
                   </td>
