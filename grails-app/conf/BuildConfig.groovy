@@ -33,8 +33,8 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        runtime 'org.languagetool:language-all:2.5-SNAPSHOT'
-        runtime 'org.languagetool:languagetool-wikipedia:2.5-SNAPSHOT'
+        runtime 'org.languagetool:language-all:2.6-SNAPSHOT'
+        runtime 'org.languagetool:languagetool-wikipedia:2.6-SNAPSHOT'
 
         runtime 'mysql:mysql-connector-java:5.1.16'
         runtime 'com.sun.mail:javax.mail:1.5.1'
