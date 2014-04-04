@@ -165,6 +165,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     }
     // TODO? does it make sense to remove matches automatically if the ref has been deleted?
   });
+
+  $scope.$watch('exampleSentences[0]', function(data) {
+    $scope.wrongSentenceWithMarker = null;
+  }, true);
   
   angular.element($window).on('keydown', function(e) {
     if ($scope.gui.parseXmlDialogShown && e.keyCode === 27) {
