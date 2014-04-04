@@ -125,7 +125,7 @@ describe('RuleEditor controllers', function() {
       scope.setElement("hallo", {regex: true, negation: true});
       expect(scope.buildXml()).toContain("<token regexp='yes' negate='yes'>hallo</token>");
 
-      scope.setElement("hallo", {regex: true, negation: true, baseform: true});
+      scope.setElement("hallo", {regex: true, negation: true, inflected: true});
       expect(scope.buildXml()).toContain("<token inflected='yes' regexp='yes' negate='yes'>hallo</token>");
 
 
@@ -188,7 +188,7 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
-      scope.addException(elem, {tokenValue: 'myException', baseform: true});
+      scope.addException(elem, {tokenValue: 'myException', inflected: true});
       expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception inflected='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");

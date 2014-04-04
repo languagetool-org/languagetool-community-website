@@ -95,13 +95,13 @@ xmlServices.factory('XmlBuilder',
       buildXmlForElement: function(elem, model) {
         var xml = "";
         var val = elem.tokenValue ? elem.tokenValue.htmlEscape() : '';
-        var baseform = this.getBaseformAttribute(elem);
+        var inflected = this.getInflectedAttribute(elem);
         var regex = this.getRegexAttribute(elem);
         var negation = this.getNegationAttribute(elem);
         var posTagRegex = this.getPosTagRegexAttribute(elem);
         var posTagNegation = this.getPosTagNegationAttribute(elem);
         if (elem.tokenType === model.TokenTypes.WORD) {
-          xml += "  <token" + baseform + regex + negation;
+          xml += "  <token" + inflected + regex + negation;
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions, model);
@@ -113,7 +113,7 @@ xmlServices.factory('XmlBuilder',
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
         } else if (elem.tokenType === model.TokenTypes.WORD_AND_POS_TAG) {
-          xml += "  <token" + baseform + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += "  <token" + inflected + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions, model);
@@ -134,8 +134,8 @@ xmlServices.factory('XmlBuilder',
         return xml;
       },
 
-      getBaseformAttribute: function(elem) {
-        return elem.baseform ? " inflected='yes'" : "";
+      getInflectedAttribute: function(elem) {
+        return elem.inflected ? " inflected='yes'" : "";
       },
       getRegexAttribute: function(elem) {
         return elem.regex ? " regexp='yes'" : "";
@@ -162,13 +162,13 @@ xmlServices.factory('XmlBuilder',
       buildXmlForException: function(exception, model) {
         var xml = "";
         var val = exception.tokenValue ? exception.tokenValue.htmlEscape() : '';
-        var baseform = this.getBaseformAttribute(exception);
+        var inflected = this.getInflectedAttribute(exception);
         var regex = this.getRegexAttribute(exception);
         var negation = this.getNegationAttribute(exception);
         var posTagRegex = this.getPosTagRegexAttribute(exception);
         var posTagNegation = this.getPosTagNegationAttribute(exception);
         if (exception.tokenType === model.TokenTypes.WORD) {
-          xml += "<exception" + baseform + regex + negation;
+          xml += "<exception" + inflected + regex + negation;
           xml += this.buildXmlForAttributes(exception.attributes, model);
           xml += ">" + val;
           xml += "</exception>";
@@ -178,7 +178,7 @@ xmlServices.factory('XmlBuilder',
           xml += ">";
           xml += "</exception>";
         } else if (exception.tokenType === model.TokenTypes.WORD_AND_POS_TAG) {
-          xml += "<exception" + baseform + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += "<exception" + inflected + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(exception.attributes, model);
           xml += ">" + val;
           xml += "</exception>";
