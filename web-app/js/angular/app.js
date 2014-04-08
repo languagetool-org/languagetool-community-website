@@ -122,7 +122,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     }
   });
   
-  $scope.existingXml = null;  // may be pasted by the user
+  $scope.existingXml = __ruleEditorXml ? __ruleEditorXml.replace(/__NL__/g, "\n").replace(/&apos;/g, "'") : null;  // may be pasted by the user or injected by server
   $scope.ruleName = "";
   $scope.caseSensitive = false;
   $scope.exampleSentences = [
@@ -573,5 +573,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
       console.warn("Exception attribute not found: " + exception + "," + attr);
     }
   };
+
+  if ($scope.existingXml) {
+    // the server has injected a rule XML, so show it:
+    $scope.parseExistingXml();
+  }
 
 });

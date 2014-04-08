@@ -18,18 +18,26 @@
  */
 package org.languagetool
 
+import org.languagetool.rules.patterns.PatternRuleId
+import org.languagetool.rules.patterns.PatternRuleXmlCreator
 import org.languagetool.tagging.xx.DemoTagger
 
 /**
- * Editor that helps with creating the XML for simple rules.
- * Supposed to replace RuleEditor2Controller when it's ready.
+ * Editor that helps with creating the XML for rules.
+ * Supposed to replace RuleEditorController when it's ready.
  */
 class RuleEditor2Controller extends BaseController {
 
     def index() {
         String langCode = params.lang ? params.lang : "en"
         Language language = Language.getLanguageForShortName(langCode)
-        [languages: Language.REAL_LANGUAGES, language: language]
+        String ruleXml = ''
+        if (params.id) {
+            PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
+            PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
+            ruleXml = ruleXmlCreator.toXML(id, language).replace("\n", "__NL__")
+        }
+        [languages: Language.REAL_LANGUAGES, language: language, ruleXml: ruleXml]
     }
 
     def posTagInformation() {
