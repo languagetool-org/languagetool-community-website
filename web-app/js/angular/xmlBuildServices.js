@@ -80,8 +80,6 @@ xmlServices.factory('XmlBuilder',
           }
           if (messageMatch.regexMatch) {
             regexMatchAttribute = " regexp_match=\"" + messageMatch.regexMatch + "\"";
-          }
-          if (messageMatch.regexReplace) {
             regexReplaceAttribute = " regexp_replace=\"" + messageMatch.regexReplace + "\"";
           }
           var replacement = "<match no=\"" + messageMatch.tokenNumber + "\"" + caseAttribute + regexMatchAttribute + regexReplaceAttribute + "/>";
