@@ -35,7 +35,7 @@ class RuleEditor2Controller extends BaseController {
         if (params.id) {
             PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
             PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
-            ruleXml = ruleXmlCreator.toXML(id, language).replace("\n", "__NL__")
+            ruleXml = ruleXmlCreator.toXML(id, language).replace("\n", "__NL__").replace("\\", "\\\\")
         }
         [languages: Language.REAL_LANGUAGES, language: language, ruleXml: ruleXml]
     }
