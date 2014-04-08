@@ -21,7 +21,7 @@
                 </g:if>
 
                <br/>
-               <g:set var="css" value="${matchInfo.getRule().isSpellingRule() ? 'spellingError' : 'error'}"/>
+               <g:set var="css" value="${matchInfo.getRule().isDictionaryBasedSpellingRule() ? 'spellingError' : 'error'}"/>
                 <%
                   ContextTools contextTools =  new ContextTools();
                   contextTools.setContextSize(100);
