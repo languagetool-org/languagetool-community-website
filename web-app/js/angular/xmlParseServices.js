@@ -141,8 +141,13 @@ xmlServices.factory('XmlParser',
         var xpathResult = doc.evaluate("//*", doc, null, XPathResult.ANY_TYPE, null);
         var node = xpathResult.iterateNext();
         var foundRuleElement = false;
+        var xmlError = "";
         while (node) {
-          if (this.supportedNodes.indexOf(node.nodeName) === -1) {
+          if (node.nodeName === 'parsererror') {
+            xmlError += "Error:\n" + node.childNodes[0].nodeValue;
+          } else if (node.nodeName === 'sourcetext') {
+            xmlError += "\nXML:\n" + node.childNodes[0].nodeValue;
+          } else if (this.supportedNodes.indexOf(node.nodeName) === -1) {
             throw "Sorry, nodes of type '" + node.nodeName + "' are not yet supported by this parser";
           }
           if (node.nodeName === 'rule') {
@@ -150,7 +155,9 @@ xmlServices.factory('XmlParser',
           }
           node = xpathResult.iterateNext();
         }
-        if (!foundRuleElement) {
+        if (xmlError) {
+          throw xmlError;
+        } else if (!foundRuleElement) {
           throw "Cannot parse document, no 'rule' element found: " + xml;
         }
       },
