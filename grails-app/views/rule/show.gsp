@@ -113,8 +113,13 @@
                 <tr>
                     <td><g:message code="ltc.rule.show.pattern" /></td>
                     <td>
+                        <g:set var="langCode" value="${params.lang}"/>
+                        <g:if test="${params.lang.contains('-')}">
+                            <g:set var="langCode" value="${params.lang.substring(0, params.lang.indexOf('-'))}"/>
+                        </g:if>
                         <g:if test="${rule instanceof PatternRule}">
-                            <a href="#" onclick="showRuleXml('${params.lang}', '${params.id}', '${params.subId}');return false;"><g:message code="ltc.rule.show.as.xml" /></a>
+                            <a href="#" onclick="showRuleXml('${params.lang}', '${params.id}', '${params.subId}');return false;"><g:message code="ltc.rule.show.as.xml" /></a> &middot;
+                            <g:link controller="ruleEditor2" params="${[id: params.id, subId: params.subId, lang: langCode]}"><g:message code='ltc.rule.show.editor.link'/> (beta)</g:link>
                             <div id="localSpinner" style="display:none;">
                                 <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner" />
                             </div>
@@ -122,10 +127,6 @@
                         </g:if>
                         <g:else>
                             <span class="javaRule"><g:message code="ltc.rule.show.java.rule" /></span>
-                            <g:set var="langCode" value="${params.lang}"/>
-                            <g:if test="${params.lang.contains('-')}">
-                                <g:set var="langCode" value="${params.lang.substring(0, params.lang.indexOf('-'))}"/>
-                            </g:if>
                             <g:if test="${rule.class.getName().contains('.' + langCode  + '.')}">
                             <%-- language-specific rule --%>
                                 <a href="https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/${langCode.encodeAsHTML()}/src/main/java/${rule.class.getName().replace(".", "/")}.java">Sourcecode</a>
