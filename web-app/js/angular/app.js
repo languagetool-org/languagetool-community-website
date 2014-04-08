@@ -153,17 +153,23 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
   $scope.$watch('ruleMessage', function(data) {
     var references = data.match(/\\(\d+)/g);
     var largestNumber = -1;
+    var refNumbers = [];
     if (references) {
       for (var i = 0; i < references.length; i++) {
         var refNumber = references[i].substring(1);
+        refNumbers.push(refNumber);
         var matchExists = $scope.findMessageMatchByNumber(refNumber);
         if (!matchExists) {
           $scope.addMessageMatch(refNumber);
-          $scope.$apply();
         }
       }
     }
-    // TODO? does it make sense to remove matches automatically if the ref has been deleted?
+    // remove refs not in message anymore:
+    for (var j = $scope.messageMatches.length - 1; j >= 0; j--) {
+      if (refNumbers.indexOf($scope.messageMatches[j].tokenNumber) === -1) {
+        $scope.messageMatches.splice(j, 1);
+      }
+    }
   });
 
   $scope.$watch('exampleSentences[0]', function(data) {
