@@ -24,7 +24,7 @@
         <div class="textAnalysis">
 
             <div style="margin-bottom: 8px" class="metaInfo">
-                LanguageTool version: ${JLanguageTool.VERSION} (${(new JLanguageTool(Language.DEMO)).BUILD_DATE})
+                LanguageTool version: ${JLanguageTool.VERSION} (${JLanguageTool.BUILD_DATE})
             </div>
         
             <p style="margin-bottom: 8px"><a href="https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/${language.shortName}/src/main/resources/org/languagetool/resource/${language.shortName}/tagset.txt">What do the tags mean?</a></p>

@@ -189,7 +189,7 @@
                 <tr class="additional">
                     <td><g:message code="ltc.rule.show.languagetool.version" /></td>
                     <td>
-                        ${JLanguageTool.VERSION} (${(new JLanguageTool(Language.DEMO)).getBuildDate()})
+                        ${JLanguageTool.VERSION} (${JLanguageTool.BUILD_DATE})
                     </td>
                 </tr>
 
