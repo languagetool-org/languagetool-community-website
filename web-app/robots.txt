@@ -1,3 +1,4 @@
 # requires too much CPU:
 User-agent: *
 Disallow: /wikiCheck/pageCheck
+Disallow: /ruleEditor2/index/
