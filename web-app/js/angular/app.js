@@ -103,17 +103,20 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     {code: 'uk', name: 'Ukrainian'}
   ];
 
-  // only works if 'lang' is the last param
-  function getParamLang() {
-    var href = window.location.href;
-    var startPos = href.indexOf("lang=");
+  $scope.getParamLang = function(url) {
+    var startPos = url.indexOf("lang=");
     if (startPos > -1) {
-      return href.substring(startPos + "lang=".length);
+      var endPos = url.indexOf("&", startPos);
+      if (endPos > -1) {
+        return url.substring(startPos + "lang=".length, endPos);
+      } else {
+        return url.substring(startPos + "lang=".length);
+      }
     }
     return null;
   }
   
-  var paramLang = getParamLang();
+  var paramLang = $scope.getParamLang(window.location.href);
   $scope.language = $scope.languages[7];  // English
   $scope.languages.forEach(function($lang) {
     if($lang.code === paramLang) {
