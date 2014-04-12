@@ -18,6 +18,8 @@
  */
 'use strict';
 
+var __ruleEditorXml;
+
 describe('RuleEditor controllers', function() {
   
   describe('RuleEditorCtrl', function() {
