@@ -43,7 +43,7 @@ public class RuleComparator implements Comparator<Rule> {
   
   @Override
   public int compare(Rule r1, Rule r2) {
-    int val = 0;
+    int val;
     if (sortField == SortField.description) {
       val = r2.getDescription().compareToIgnoreCase(r1.getDescription());
     } else if (sortField == SortField.category) {

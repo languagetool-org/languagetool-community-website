@@ -70,11 +70,11 @@ public class StringTools {
     if (searchString == null) {
       return StringEscapeUtils.escapeHtml(text);
     }
-    text = text.replaceAll("(?i)(" + Pattern.quote(searchString) + ")", "<span class='filterMatch'>$1</span>");
-    text = StringEscapeUtils.escapeHtml(text);
-    text = text.replaceAll("&lt;span class='filterMatch'&gt;", "<span class='filterMatch'>");
-    text = text.replaceAll("&lt;/span&gt;", "</span>");
-    return text;
+    String newText = text.replaceAll("(?i)(" + Pattern.quote(searchString) + ")", "<span class='filterMatch'>$1</span>");
+    newText = StringEscapeUtils.escapeHtml(newText);
+    newText = newText.replaceAll("&lt;span class='filterMatch'&gt;", "<span class='filterMatch'>");
+    newText = newText.replaceAll("&lt;/span&gt;", "</span>");
+    return newText;
   }
 
 }

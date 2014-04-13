@@ -70,16 +70,13 @@ public class PasswordTools {
    * @return true if the password matches the hashed password
    */
   public static boolean checkPassword(String userPassword, String hashPassword) {
-    String parts[] = hashPassword.split(SALT_DELIMITER);
+    String[] parts = hashPassword.split(SALT_DELIMITER);
     if (parts.length != 2) {
       throw new IllegalArgumentException("Invalid password format, missing salt delimiter: " + userPassword);
     }
     String salt = parts[0];
     String encPassword = hash(userPassword, salt);
-    if (hashPassword.equals(encPassword)) {
-      return true;
-    }
-    return false;
+    return hashPassword.equals(encPassword);
   }
   
   /**
@@ -98,9 +95,9 @@ public class PasswordTools {
    * Returns a hex representation of the given binary input.
    */
   private static String binaryToHex(byte[] array) {
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < array.length; ++i) {
-        sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+    StringBuilder sb = new StringBuilder();
+    for (byte anArray : array) {
+      sb.append(Integer.toHexString((anArray & 0xFF) | 0x100).substring(1, 3));
     }
     return sb.toString();
   }  
