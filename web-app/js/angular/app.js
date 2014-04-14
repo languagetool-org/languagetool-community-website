@@ -103,20 +103,21 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     {code: 'uk', name: 'Ukrainian'}
   ];
 
-  $scope.getParamLang = function(url) {
-    var startPos = url.indexOf("lang=");
+  $scope.getParam = function(param, url) {
+    var paramStr = param + "=";
+    var startPos = url.indexOf(paramStr);
     if (startPos > -1) {
       var endPos = url.indexOf("&", startPos);
       if (endPos > -1) {
-        return url.substring(startPos + "lang=".length, endPos);
+        return url.substring(startPos + paramStr.length, endPos);
       } else {
-        return url.substring(startPos + "lang=".length);
+        return url.substring(startPos + paramStr.length);
       }
     }
     return null;
-  }
+  };
   
-  var paramLang = $scope.getParamLang(window.location.href);
+  var paramLang = $scope.getParam("lang", window.location.href);
   $scope.language = $scope.languages[7];  // English
   $scope.languages.forEach(function($lang) {
     if($lang.code === paramLang) {
@@ -128,12 +129,14 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
   $scope.existingXml = __ruleEditorXml ? __ruleEditorXml.replace(/__NL__/g, "\n").replace(/&apos;/g, "'") : null;  // may be pasted by the user or injected by server
   $scope.ruleName = "";
   $scope.caseSensitive = false;
+  var defaultWrongSentence = decodeURIComponent($scope.getParam("wrong", window.location.href) || '');
+  var defaultCorrectedSentence = decodeURIComponent($scope.getParam("corrected", window.location.href) || '');
   $scope.exampleSentences = [
     //for easier/faster testing:
     //{text: 'Sorry for my bed English.', type: SentenceTypes.WRONG, analysis: null},
     //{text: 'Sorry for my bad English.', type: SentenceTypes.CORRECTED, analysis: null}
-    {text: '', type: SentenceTypes.WRONG, analysis: null},
-    {text: '', type: SentenceTypes.CORRECTED, analysis: null}
+    {text: defaultWrongSentence, type: SentenceTypes.WRONG, analysis: null},
+    {text: defaultCorrectedSentence, type: SentenceTypes.CORRECTED, analysis: null}
   ];
   $scope.ruleMessage = "";
   $scope.messageMatches = [];

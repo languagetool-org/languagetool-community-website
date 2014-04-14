@@ -35,10 +35,10 @@ describe('RuleEditor controllers', function() {
     }));
     
     it('should extract language from url', inject(function($controller) {
-      expect(scope.getParamLang("http://foo.de?lang=xx")).toBe("xx");
-      expect(scope.getParamLang("http://foo.de?lang=xx&wrong=an+wrong+sentence")).toBe("xx");
-      expect(scope.getParamLang("http://foo.de?wrong=an+wrong+sentence&foo=bar&lang=yy")).toBe("yy");
-      expect(scope.getParamLang("http://foo.de/bla")).toBe(null);
+      expect(scope.getParam("lang", "http://foo.de?lang=xx")).toBe("xx");
+      expect(scope.getParam("lang", "http://foo.de?lang=xx&wrong=an+wrong+sentence")).toBe("xx");
+      expect(scope.getParam("lang", "http://foo.de?wrong=an+wrong+sentence&foo=bar&lang=yy")).toBe("yy");
+      expect(scope.getParam("lang", "http://foo.de/bla")).toBe(null);
     }));
       
     it('should provide some basic elements manipulations', inject(function($controller) {
