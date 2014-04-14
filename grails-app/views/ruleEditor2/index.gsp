@@ -77,6 +77,13 @@
               </td>
           </tr>
 
+          <tr ng-cloak ng-show="language.code === 'en' || language.code === 'de'">
+              <td></td>
+              <td>
+                  <a ng-href="examples?lang={{language.code}}">Need a starting point? Click here to see some incorrect sentences</a> 
+              </td>
+          </tr>
+
           <tr ng-repeat="exampleSentence in exampleSentences">
               <td><label ng-cloak>{{exampleSentence.type}} sentence:</label></td>
               <td>

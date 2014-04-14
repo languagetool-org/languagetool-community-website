@@ -18,6 +18,7 @@
  */
 package org.languagetool
 
+import org.apache.commons.io.IOUtils
 import org.languagetool.rules.patterns.PatternRuleId
 import org.languagetool.rules.patterns.PatternRuleXmlCreator
 import org.languagetool.tagging.xx.DemoTagger
@@ -29,8 +30,7 @@ import org.languagetool.tagging.xx.DemoTagger
 class RuleEditor2Controller extends BaseController {
 
     def index() {
-        String langCode = params.lang ? params.lang : "en"
-        Language language = Language.getLanguageForShortName(langCode)
+        Language language = Language.getLanguageForShortName(params.lang ? params.lang : "en")
         String ruleXml = ''
         if (params.id) {
             PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
@@ -49,5 +49,19 @@ class RuleEditor2Controller extends BaseController {
         } else {
             [languages: Language.REAL_LANGUAGES, language: language]
         }
+    }
+    
+    def examples() {
+        Language language = Language.getLanguageForShortName(params.lang ? params.lang : "en")
+        def path = "/examples/" + language.getShortName() + ".txt"
+        InputStream stream = RuleEditor2Controller.class.getResourceAsStream(path)
+        List examples = []
+        if (stream) {
+            examples = IOUtils.readLines(stream)
+            examples = examples.findAll { e -> !e.startsWith("#") && !e.trim().isEmpty() }
+        } else {
+            log.info("No example file found: ${path}")
+        }
+        [examples: examples, language: language, languages: SortedLanguages.get()]
     }
 }

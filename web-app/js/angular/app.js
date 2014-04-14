@@ -129,8 +129,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
   $scope.existingXml = __ruleEditorXml ? __ruleEditorXml.replace(/__NL__/g, "\n").replace(/&apos;/g, "'") : null;  // may be pasted by the user or injected by server
   $scope.ruleName = "";
   $scope.caseSensitive = false;
-  var defaultWrongSentence = decodeURIComponent($scope.getParam("wrong", window.location.href) || '');
-  var defaultCorrectedSentence = decodeURIComponent($scope.getParam("corrected", window.location.href) || '');
+  var defaultWrongSentence = decodeURIComponent($scope.getParam("wrong", window.location.href) || '').replace(/\+/g, " ");
+  var defaultCorrectedSentence = decodeURIComponent($scope.getParam("corrected", window.location.href) || '').replace(/\+/g, " ");
   $scope.exampleSentences = [
     //for easier/faster testing:
     //{text: 'Sorry for my bed English.', type: SentenceTypes.WRONG, analysis: null},
