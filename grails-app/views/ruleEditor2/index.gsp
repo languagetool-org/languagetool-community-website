@@ -2,7 +2,7 @@
 <!doctype html>
 <html><!-- see layout for attributes -->
 <head>
-    <script type="text/javascript" src="${resource(dir:'js/jquery', file:'jquery-1.7.1.js')}"></script>
+    <script type="text/javascript" src="${resource(dir:'js/jquery', file:'jquery-1.7.1.min.js')}"></script>
     <script type="text/javascript" src="${resource(dir:'js/jquery-ui', file:'jquery-ui-1.10.4.min.js')}"></script>
     <link rel="stylesheet" href="${resource(dir:'css/jquery-ui/themes/smoothness', file:'jquery-ui.css')}">
     <link rel="stylesheet" href="${resource(dir:'css', file:'ruleEditor.css')}">
@@ -17,7 +17,7 @@
         var __ruleEditorPosInfoUrl = '${resource(dir: 'ruleEditor2', file: 'posTagInformation')}';
         var __ruleEditorXml = '${ruleXml.replace("'", "&apos;")}';
     </script>
-    <script src="${resource(dir:'js/angular/lib', file:'angular.js')}"></script>
+    <script src="${resource(dir:'js/angular/lib', file:'angular.min.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-sanitize.min.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-animate.min.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'app.js')}"></script>
