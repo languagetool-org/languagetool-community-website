@@ -27,10 +27,23 @@
     <script src="${resource(dir:'js/angular', file:'directives.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'sortable.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'ng-modal.min.js')}"></script>
+    <script src="${resource(dir:'js', file:'rule-editor-completion.js')}"></script>
 </head>
 <body><!-- see layout for attributes -->
 
 <div class="body ruleEditor">
+
+<!-- example for testing the completion:
+<div class="ui-widget">
+    <input onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)" class="posTagCompletion" id="tags" size="50" spellcheck='false'><br/>
+    <input onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)" class="posTagCompletion" size="50" spellcheck='false'>
+    <br/>
+    <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
+           placeholder="part-of-speech tag" focus-me="focusInput"
+           onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)"
+           class="posTagCompletion" spellcheck='false'>
+</div>
+-->
 
   <span style="color: white;float:left">LanguageTool ${JLanguageTool.VERSION} (${JLanguageTool.BUILD_DATE})</span>
   <p style="margin:15px;float:right;width:700px"><a href ng-click="gui.parseXmlDialogShown = true">Parse existing XML</a></p>
@@ -201,6 +214,13 @@
                                                 <td style="vertical-align: middle"><a ng-href="{{getPosTagUrl()}}" target="_blank">Part-of-speech:</a></td>
                                                 <td>
                                                     <div>
+                                                        <div class="ui-widget">
+                                                        <!-- TODO: does not work inside the <li ng-repeat...>:
+                                                        <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
+                                                               placeholder="part-of-speech tag" focus-me="focusInput" 
+                                                               onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)"
+                                                               class="posTagCompletion" spellcheck='false'>
+                                                        </div>-->
                                                         <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
                                                                                placeholder="part-of-speech tag" focus-me="focusInput" />
                                                         <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" 
