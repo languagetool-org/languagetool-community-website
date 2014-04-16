@@ -28,7 +28,8 @@
         }
         function copyText(errorId, targetId) {
             var errorDiv = $(errorId);
-            $(targetId).value = errorDiv.innerHTML;
+            $(targetId).value = errorDiv.innerHTML.replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+                    .replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&apos;/g, "'");
             return false;
         }
         function applyChangesToHiddenField() {
