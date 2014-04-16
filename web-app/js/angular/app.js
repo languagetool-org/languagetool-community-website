@@ -20,6 +20,7 @@
 
 var ruleEditor = angular.module('ruleEditor', [
   'ruleEditor.services',
+  'ruleEditor.autocompleterServices',
   'ruleEditor.xmlServices',
   'ruleEditor.xmlParseServices',
   'ui.sortable',
@@ -481,6 +482,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
 
   $scope.looksLikeRegex = function(str) {
     return str && (str.match(/[\[\]\|]/) || str.match(/\\[A-Za-z]/) || str.match(/\.[*+]/));
+  };
+
+  $scope.looksLikePosTagRegex = function(str) {
+    return this.looksLikeRegex(str) && str.indexOf("=") === -1;
   };
 
   $scope.getPosTagUrl = function() {

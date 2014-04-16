@@ -22,28 +22,16 @@
     <script src="${resource(dir:'js/angular/lib', file:'angular-animate.min.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'app.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'services.js')}"></script>
+    <script src="${resource(dir:'js/angular', file:'autocompleterServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'xmlBuildServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'xmlParseServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'directives.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'sortable.js')}"></script>
     <script src="${resource(dir:'js/angular/modules', file:'ng-modal.min.js')}"></script>
-    <script src="${resource(dir:'js', file:'rule-editor-completion.js')}"></script>
 </head>
 <body><!-- see layout for attributes -->
 
 <div class="body ruleEditor">
-
-<!-- example for testing the completion:
-<div class="ui-widget">
-    <input onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)" class="posTagCompletion" id="tags" size="50" spellcheck='false'><br/>
-    <input onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)" class="posTagCompletion" size="50" spellcheck='false'>
-    <br/>
-    <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
-           placeholder="part-of-speech tag" focus-me="focusInput"
-           onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)"
-           class="posTagCompletion" spellcheck='false'>
-</div>
--->
 
   <span style="color: white;float:left">LanguageTool ${JLanguageTool.VERSION} (${JLanguageTool.BUILD_DATE})</span>
   <p style="margin:15px;float:right;width:700px"><a href ng-click="gui.parseXmlDialogShown = true">Parse existing XML</a></p>
@@ -214,20 +202,14 @@
                                                 <td style="vertical-align: middle"><a ng-href="{{getPosTagUrl()}}" target="_blank">Part-of-speech:</a></td>
                                                 <td>
                                                     <div>
-                                                        <div class="ui-widget">
-                                                        <!-- TODO: does not work inside the <li ng-repeat...>:
-                                                        <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
-                                                               placeholder="part-of-speech tag" focus-me="focusInput" 
-                                                               onfocus="ltRuleEditorEnterTextField(this)" onblur="ltRuleEditorLeaveTextField(this)"
-                                                               class="posTagCompletion" spellcheck='false'>
-                                                        </div>-->
+                                                        <!-- TODO: add 'autocomplete' attribute once ready -->
                                                         <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
                                                                                placeholder="part-of-speech tag" focus-me="focusInput" />
                                                         <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" 
                                                                ng-model="element.posTagRegex" value="true" ng-disabled="element.tokenType == TokenTypes.ANY"/>&nbsp;RegExp <a href ng-click="showRegexHelp()">[?]</a></label>
                                                         <label title="Matches anything but the given part-of-speech tag"><input type="checkbox" ng-model="element.posTagNegation" value="false" />&nbsp;Negate</label>
                                                         <br/>
-                                                        <div ng-show="looksLikeRegex(element.posTag) && !element.posTagRegex">
+                                                        <div ng-show="looksLikePosTagRegex(element.posTag) && !element.posTagRegex">
                                                             <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This looks like a regular expression, but the "RegExp" checkbox is not checked
                                                         </div>
                                                     </div>
@@ -271,12 +253,13 @@
                                                       <td style="vertical-align: middle"><a ng-href="{{getPosTagUrl()}}" target="_blank">Part-of-speech:</a></td>
                                                       <td>
                                                           <div>
+                                                              <!-- TODO: add 'autocomplete' attribute once ready -->
                                                               <input type="text" ng-model="exception.posTag" ng-enter="evaluateErrorPattern()"
                                                                      placeholder="part-of-speech tag" focus-me="focusExceptionInput" />
                                                               <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" ng-model="exception.posTagRegex" value="true" ng-disabled="exception.tokenType == TokenTypes.ANY"/>&nbsp;RegExp</label>
                                                               <label title="Matches anything but the given part-of-speech tag"><input type="checkbox" ng-model="exception.posTagNegation" value="false" />&nbsp;Negate</label>
                                                               <br/>
-                                                              <div ng-show="looksLikeRegex(exception.posTag) && !exception.posTagRegex">
+                                                              <div ng-show="looksLikePosTagRegex(exception.posTag) && !exception.posTagRegex">
                                                                   <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> This looks like a regular expression, but the "RegExp" checkbox is not checked
                                                               </div>
                                                           </div>

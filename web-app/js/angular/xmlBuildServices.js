@@ -105,13 +105,13 @@ xmlServices.factory('XmlBuilder',
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
         } else if (elem.tokenType === model.TokenTypes.POS_TAG) {
-          xml += "  <token postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += "  <token " + this.getPosTagsAttributes(elem.posTag) + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">";
           xml += this.buildXmlForExceptions(elem.exceptions, model);
           xml += "</token>\n";
         } else if (elem.tokenType === model.TokenTypes.WORD_AND_POS_TAG) {
-          xml += "  <token" + inflected + regex + negation + " postag='" + elem.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += "  <token" + inflected + regex + negation + " " + this.getPosTagsAttributes(elem.posTag) + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(elem.attributes, model);
           xml += ">" + val;
           xml += this.buildXmlForExceptions(elem.exceptions, model);
@@ -130,6 +130,28 @@ xmlServices.factory('XmlBuilder',
           console.warn("Unknown token type '" + elem.tokenType + "'");
         }
         return xml;
+      },
+
+      // input may be mix of structured an regex-based tag, e.g. "pos=noun number=singular NN[AB]"
+      getPosTagsAttributes: function(posTagStr) {
+        var posTags = "";
+        var parts = posTagStr.split(/ /);
+        for (var i = 0; i < parts.length; i++) {
+          var part = parts[i];
+          if (part.trim().length === 0) {
+            continue;
+          }
+          if (part.indexOf("=") !== -1) {
+            var tokenParts = part.split(/=/);
+            if (tokenParts.length !== 2) {
+              throw "Expected POS tag part to have two parts delimited by '=': " + tokenParts;
+            }
+            posTags += " " + tokenParts[0] + "='" + tokenParts[1].htmlEscape() + "'";
+          } else {
+            posTags += " postag='" + part.htmlEscape() + "'";
+          }
+        }
+        return posTags.trim();
       },
 
       getInflectedAttribute: function(elem) {
@@ -171,12 +193,12 @@ xmlServices.factory('XmlBuilder',
           xml += ">" + val;
           xml += "</exception>";
         } else if (exception.tokenType === model.TokenTypes.POS_TAG) {
-          xml += "<exception postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += "<exception " + this.getPosTagsAttributes(exception.posTag) + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(exception.attributes, model);
           xml += ">";
           xml += "</exception>";
         } else if (exception.tokenType === model.TokenTypes.WORD_AND_POS_TAG) {
-          xml += "<exception" + inflected + regex + negation + " postag='" + exception.posTag.htmlEscape() + "'" + posTagRegex + posTagNegation;
+          xml += "<exception" + inflected + regex + negation + " " + this.getPosTagsAttributes(exception.posTag) + posTagRegex + posTagNegation;
           xml += this.buildXmlForAttributes(exception.attributes, model);
           xml += ">" + val;
           xml += "</exception>";

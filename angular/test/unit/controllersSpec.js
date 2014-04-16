@@ -282,5 +282,26 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml(true)).toMatch("<token>hallo<exception postag='XTAG' myKey='myVal'>myException</exception></token>");
     }));
 
+    it('should support old regex-based POS tags as well as structured POS tags', inject(function($controller) {
+      scope.setElement(null, {posTag: 'NN pos=noun', tokenType: scope.TokenTypes.POS_TAG, posTagRegex: false, regex: false});
+      expect(scope.buildXml(true)).toMatch("<token postag='NN' pos='noun'></token>");
+
+      scope.setElement("hallo", {posTag: 'NN pos=noun number=singular', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: false, regex: false});
+      expect(scope.buildXml(true)).toMatch("<token postag='NN' pos='noun' number='singular'>hallo</token>");
+
+      scope.setElement("hallo", {posTag: 'pos=noun number=singular N[xy]', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: false, regex: false});
+      expect(scope.buildXml(true)).toContain("<token pos='noun' number='singular' postag='N[xy]'>hallo</token>");
+    }));
+
+    it('should support old regex-based POS tags as well as structured POS tags for exceptions', inject(function($controller) {
+      var elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: null, tokenType: scope.TokenTypes.POS_TAG, posTag: 'XX person=1|2'});
+      expect(scope.buildXml(true)).toContain("<token>hallo<exception postag='XX' person='1|2'></exception></token>");
+
+      elem = scope.setElement("hallo");
+      scope.addException(elem, {tokenValue: 'ex', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XX person=1|2'});
+      expect(scope.buildXml(true)).toContain("<token>hallo<exception postag='XX' person='1|2'>ex</exception></token>");
+    }));
+
   });
 });
