@@ -146,7 +146,7 @@ xmlServices.factory('XmlBuilder',
             if (tokenParts.length !== 2) {
               throw "Expected POS tag part to have two parts delimited by '=': " + tokenParts;
             }
-            posTags += " " + tokenParts[0] + "='" + tokenParts[1].htmlEscape() + "'";
+            posTags += " " + tokenParts[0] + "='" + tokenParts[1].htmlEscape().replace(/\|/g, " ") + "'";
           } else {
             posTags += " postag='" + part.htmlEscape() + "'";
           }
