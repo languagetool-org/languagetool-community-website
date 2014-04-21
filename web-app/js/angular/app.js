@@ -158,15 +158,18 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
 
   /** update this.messageMatches depending on "\1" etc. in the rule message. */
   $scope.$watch('ruleMessage', function(data) {
-    var references = data.match(/\\(\d+)/g);
+    $scope.extractMessageMatches(data);
+  });
+
+  $scope.extractMessageMatches = function(message) {
+    var references = message.match(/\\(\d+)/g);
     var largestNumber = -1;
     var refNumbers = [];
     if (references) {
       for (var i = 0; i < references.length; i++) {
         var refNumber = references[i].substring(1);
         refNumbers.push(refNumber);
-        var matchExists = $scope.findMessageMatchByNumber(refNumber);
-        if (!matchExists) {
+        if (i >= $scope.messageMatches.length) {
           $scope.addMessageMatch(refNumber);
         }
       }
@@ -177,8 +180,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
         $scope.messageMatches.splice(j, 1);
       }
     }
-  });
-
+  };
+  
   $scope.$watch('exampleSentences[0]', function(data) {
     $scope.wrongSentenceWithMarker = null;
   }, true);
@@ -229,15 +232,6 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     }
   };
   
-  $scope.findMessageMatchByNumber = function(refNumber) {
-    for (var i = 0; i < this.messageMatches.length; i++) {
-      if (this.messageMatches[i].tokenNumber === refNumber) {
-        return true;
-      }
-    }
-    return false;
-  };
-
   $scope.addMessageMatch = function(refNumber) {
     this.messageMatches.push({
       tokenNumber: refNumber,
@@ -245,6 +239,17 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
       regexMatch: '',
       regexReplace: ''
     });
+  };
+  
+  $scope.getMaxTokenNumber = function() {
+    var max = 0;
+    for (var i = 0; i < this.messageMatches.length; i++) {
+      var number = this.messageMatches[i].tokenNumber;
+      if (number > max) {
+        max = number;
+      }
+    }
+    return max;
   };
   
   $scope.addWrongExampleSentence = function() {

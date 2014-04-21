@@ -375,8 +375,8 @@
                       <textarea rows="3" id="ruleMessage" ng-model="ruleMessage" ng-enter="evaluateErrorPattern()"
                                 placeholder="Error message shown to the user if error pattern matches"></textarea>
                       <br/>
-                      <div ng-show="messageMatches.length > patternElements.length" ng-cloak>
-                          <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> You have more <tt>\x</tt> references than there are tokens
+                      <div ng-show="getMaxTokenNumber() > patternElements.length" ng-cloak>
+                          <img src="${resource(dir:'images', file:'warn_sign.png')}" alt="warning sign"/> You have a <tt>\x</tt> reference that's larger than the number of tokens
                       </div>
                       <span class="metaInfo">
                         Use \1, \2 to refer to the first, second token etc. of the matched text.<br/>

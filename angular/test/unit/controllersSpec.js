@@ -310,5 +310,40 @@ describe('RuleEditor controllers', function() {
       expect(scope.buildXml(true)).toContain("<token>hallo<exception person='1 2'>ex</exception></token>");
     }));
 
+    it('should extract message matches from message', inject(function($controller) {
+      scope.extractMessageMatches("foo");
+      expect(scope.messageMatches.length).toBe(0);
+      scope.messageMatches = [];
+
+      scope.setElement("hallo");
+
+      scope.ruleMessage = "foo \\1";
+      scope.extractMessageMatches(scope.ruleMessage);
+      expect(scope.messageMatches.length).toBe(1);
+      expect(scope.messageMatches[0].tokenNumber).toBe("1");
+      expect(scope.buildXml(true)).toContain('<message>foo <match no="1"/></message>');
+      scope.messageMatches = [];
+
+      scope.ruleMessage = "Did you mean \\1 or '\\1 blah'?";
+      scope.extractMessageMatches(scope.ruleMessage);
+      expect(scope.messageMatches.length).toBe(2);
+      expect(scope.messageMatches[0].tokenNumber).toBe("1");
+      expect(scope.messageMatches[1].tokenNumber).toBe("1");
+      expect(scope.buildXml(true)).toContain('<message>Did you mean <match no="1"/> or <suggestion><match no="1"/> blah</suggestion>?</message>');
+      scope.messageMatches = [];
+
+      scope.ruleMessage = "Did you mean \\1 or '\\1 blah' or '\\2 foo'?";
+      scope.extractMessageMatches(scope.ruleMessage);
+      expect(scope.messageMatches.length).toBe(3);
+      expect(scope.messageMatches[0].tokenNumber).toBe("1");
+      expect(scope.messageMatches[1].tokenNumber).toBe("1");
+      expect(scope.messageMatches[2].tokenNumber).toBe("2");
+      expect(scope.buildXml(true)).toContain('<message>Did you mean <match no="1"/> or <suggestion><match no="1"/> blah</suggestion> or <suggestion><match no="2"/> foo</suggestion>?</message>');
+
+      scope.messageMatches[0].caseConversion = scope.CaseConversion.ALL_LOWER;
+      scope.messageMatches[1].caseConversion = scope.CaseConversion.ALL_UPPER;
+      expect(scope.buildXml(true)).toContain('<message>Did you mean <match no="1" case_conversion="alllower"/> or <suggestion><match no="1" case_conversion="allupper"/> blah</suggestion> or <suggestion><match no="2"/> foo</suggestion>?</message>');
+    }));
+
   });
 });
