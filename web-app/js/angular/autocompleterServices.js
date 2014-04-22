@@ -91,9 +91,9 @@ autocompleterService.factory('Autocompleter',
           newValue = val.trim();
           setTimeout(function() {elem.autocomplete("search")}, 10);
         } else {
-          terms = fieldValue.split("=");
+          terms = fieldValue.split(/([=\|])/);
           terms.pop();
-          newValue = terms.join("=") + "=" + selectedTerm + " ";
+          newValue = terms.join("") + selectedTerm + " ";
         }
         field.value = newValue;
         return newValue;
@@ -104,7 +104,7 @@ autocompleterService.factory('Autocompleter',
       },
   
       extractLast: function(term) {
-        return term.split(/[\s=]/).pop();
+        return term.split(/[\s\|=]/).pop();
       },
 
       getCompletionStatus: function(term, position) {
