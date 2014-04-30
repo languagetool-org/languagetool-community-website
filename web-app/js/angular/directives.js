@@ -31,31 +31,37 @@ angular.module('ruleEditor.directives', [])
   })
 
   .directive('postagHelp', ['$parse', 'PostagHelper', function($parse, postagHelper) {
+    var updateHelpView =  function(scope, value) {
+      var languageConfig = postagHelper.tagMapping[scope.language.code];
+      var map = languageConfig.tags;
+      var matcher = new RegExp("[^" + languageConfig.posTagChars + "]+", "g");
+      var highlightTags = value.split(matcher);
+      var result = [];
+      for (var idx in map) {
+        if (map.hasOwnProperty(idx)) {
+          var title = map[idx].replace(/.*\((.*)\)/, "$1");
+          result.push(
+            {
+              tag: idx,
+              name: map[idx].replace(/\(.*\)/, ""),
+              title: title ? title : null,
+              highlight: highlightTags.indexOf(idx) !== -1
+            });
+        }
+      }
+      var changed = !angular.equals(result, scope.gui.posTagHelp);
+      if (changed) {  // needed optimization so typing doesn't slow down
+        scope.gui.posTagHelp = result;
+      }
+    };
     return {
       link: function(scope, element, attrs) {
         var model = $parse(attrs.postagHelp);
         scope.$watch(model, function(value) {
-          var languageConfig = postagHelper.tagMapping[scope.language.code];
-          var map = languageConfig.tags;
-          var matcher = new RegExp("[^" + languageConfig.posTagChars + "]+", "g");
-          var highlightTags = value.split(matcher);
-          var result = [];
-          for (var idx in map) {
-            if (map.hasOwnProperty(idx)) {
-              var title = map[idx].replace(/.*\((.*)\)/, "$1");
-              result.push(
-                {
-                  tag: idx,
-                  name: map[idx].replace(/\(.*\)/, ""),
-                  title: title ? title : null,
-                  highlight: highlightTags.indexOf(idx) !== -1
-                });
-            }
-          }
-          var changed = !angular.equals(result, scope.gui.posTagHelp);
-          if (changed) {  // needed optimization so typing doesn't slow down
-            scope.gui.posTagHelp = result;
-          }
+          updateHelpView(scope, value);
+        });
+        element.bind('focus', function(event) {  // also update view when switching between different POS tag fields
+          updateHelpView(scope, event.target.value);
         });
       }
     }
