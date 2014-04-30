@@ -22,7 +22,7 @@
     <script src="${resource(dir:'js/angular/lib', file:'angular-animate.min.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'app.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'services.js')}"></script>
-    <script src="${resource(dir:'js/angular', file:'autocompleterServices.js')}"></script>
+    <script src="${resource(dir:'js/angular', file:'posTagHelperServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'xmlBuildServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'xmlParseServices.js')}"></script>
     <script src="${resource(dir:'js/angular', file:'directives.js')}"></script>
@@ -202,9 +202,9 @@
                                                 <td style="vertical-align: middle"><a ng-href="{{getPosTagUrl()}}" target="_blank">Part-of-speech:</a></td>
                                                 <td>
                                                     <div>
-                                                        <!-- TODO: add 'autocomplete' attribute once ready -->
                                                         <input type="text" ng-model="element.posTag" ng-enter="evaluateErrorPattern()"
-                                                                               placeholder="part-of-speech tag" focus-me="focusInput" />
+                                                               ng-focus="gui.needPosTagHelp = true" ng-blur="gui.needPosTagHelp = false"
+                                                               placeholder="part-of-speech tag" focus-me="focusInput" postag-help="element.posTag" />
                                                         <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" 
                                                                ng-model="element.posTagRegex" value="true" ng-disabled="element.tokenType == TokenTypes.ANY"/>&nbsp;RegExp <a href ng-click="showRegexHelp()">[?]</a></label>
                                                         <label title="Matches anything but the given part-of-speech tag"><input type="checkbox" ng-model="element.posTagNegation" value="false" />&nbsp;Negate</label>
@@ -253,7 +253,6 @@
                                                       <td style="vertical-align: middle"><a ng-href="{{getPosTagUrl()}}" target="_blank">Part-of-speech:</a></td>
                                                       <td>
                                                           <div>
-                                                              <!-- TODO: add 'autocomplete' attribute once ready -->
                                                               <input type="text" ng-model="exception.posTag" ng-enter="evaluateErrorPattern()"
                                                                      placeholder="part-of-speech tag" focus-me="focusExceptionInput" />
                                                               <label title="Interpret the given part-of-speech tag as a regular expression"><input type="checkbox" ng-model="exception.posTagRegex" value="true" ng-disabled="exception.tokenType == TokenTypes.ANY"/>&nbsp;RegExp</label>
@@ -453,6 +452,16 @@
 
   </form>
 
+</div>
+
+<div style="background-color: #e4c4ff; width:100%; height: 150px; position: fixed; bottom: 0; padding:  8px" ng-show="gui.needPosTagHelp" ng-cloak>
+    <h2>Part-of-speech help</h2>
+    <div style="width: 95%">
+        <span title="{{tag.title}}" ng-repeat="tag in gui.posTagHelp" ng-class="{activePosTag: gui.activePosTags.indexOf(tag.tag) !== -1}">
+            {{tag.tag}}:&nbsp;{{tag.name}}
+            <span ng-show="!$last">&middot;</span>
+        </span>
+    </div>
 </div>
 
 </body>

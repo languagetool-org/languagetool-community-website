@@ -20,7 +20,7 @@
 
 var ruleEditor = angular.module('ruleEditor', [
   'ruleEditor.services',
-  'ruleEditor.autocompleterServices',
+  'ruleEditor.postagHelperServices',
   'ruleEditor.xmlServices',
   'ruleEditor.xmlParseServices',
   'ui.sortable',
@@ -152,7 +152,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     patternCreated: false,
     patternEvaluated: false,
     knownMatchesHtml: null,     // rule matches that LT already can find without this new rule
-    parseXmlDialogShown: false
+    parseXmlDialogShown: false,
+    needPosTagHelp: false,
+    posTagHelp: [],
+    activePosTags: []
     //evaluationResult: null  // HTML with rule matches in Wikipedia/Tatoeba
   };
 

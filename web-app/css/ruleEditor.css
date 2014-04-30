@@ -132,3 +132,7 @@ input[type='text'] {
 .anim-show-hide.ng-hide-remove.ng-hide-remove-active {
     opacity:1;
 }
+
+.activePosTag {
+    font-weight: bold;
+}

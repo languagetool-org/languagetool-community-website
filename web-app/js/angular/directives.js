@@ -3,6 +3,7 @@
 /* Directives */
 
 angular.module('ruleEditor.directives', [])
+  
   .directive('ngEnter', function () {
     return function (scope, element, attrs) {
       element.bind("keydown keypress", function (event) {
@@ -15,6 +16,7 @@ angular.module('ruleEditor.directives', [])
       });
     };
   })
+  
   .directive('focusMe', function() {
     return {
       link: function(scope, element, attrs) {
@@ -27,6 +29,34 @@ angular.module('ruleEditor.directives', [])
       }
     };
   })
+
+  .directive('postagHelp', ['$parse', 'PostagHelper', function($parse, postagHelper) {
+    return {
+      link: function(scope, element, attrs) {
+        var model = $parse(attrs.postagHelp);
+        scope.$watch(model, function(value) {
+          var languageConfig = postagHelper.tagMapping[scope.language.code];
+          var map = languageConfig.tags;
+          var posTagChars = languageConfig.posTagChars;
+          var matcher = new RegExp("[^" + posTagChars + "]+", "g");
+          scope.gui.activePosTags = value.split(matcher);
+          scope.gui.posTagHelp.length = 0;
+          for (var idx in map) {
+            if (map.hasOwnProperty(idx)) {
+              var title = map[idx].replace(/.*\((.*)\)/, "$1");
+              scope.gui.posTagHelp.push(
+                {
+                  tag: idx,
+                  name: map[idx].replace(/\(.*\)/, ""),
+                  title: title ? title : null
+                });
+            }
+          }
+        });
+      }
+    }
+  }])
+
   .directive('autocomplete', ['Autocompleter', function (autocompleter) {
     
     // See http://stackoverflow.com/questions/12959516/problems-with-jquery-autocomplete-angularjs?rq=1
@@ -78,4 +108,6 @@ angular.module('ruleEditor.directives', [])
         });
       }
     };
-  }]);
+  }
+  
+]);
