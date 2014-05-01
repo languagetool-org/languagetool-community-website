@@ -154,7 +154,8 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     knownMatchesHtml: null,     // rule matches that LT already can find without this new rule
     parseXmlDialogShown: false,
     needPosTagHelp: false,
-    posTagHelp: []
+    posTagHelp: [],
+    posTagHelpText: null
     //evaluationResult: null  // HTML with rule matches in Wikipedia/Tatoeba
   };
 

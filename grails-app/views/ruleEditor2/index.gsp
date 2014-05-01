@@ -454,14 +454,14 @@
 
 </div>
 
-<div style="background-color: #e4c4ff; width:100%; height: 150px; position: fixed; bottom: 0; padding:  8px" 
-     ng-show="gui.needPosTagHelp && gui.posTagHelp.length > 0" ng-cloak>
-    <h2 style="margin-top: 2px">Part-of-speech help</h2>
+<div class="posTagHelp" ng-show="gui.needPosTagHelp && gui.posTagHelp.length > 0" ng-cloak>
+    <h2 style="margin-top: 2px">Part-of-Speech Help</h2>
     <div style="width: 95%">
         <span title="{{tag.title}}" ng-repeat="tag in gui.posTagHelp" ng-class="{activePosTag: tag.highlight}">
             {{tag.tag}}:&nbsp;{{tag.name}}
             <span ng-show="!$last">&middot;</span>
         </span>
+        <p ng-bind-html="gui.posTagHelpText"></p>
     </div>
 </div>
 

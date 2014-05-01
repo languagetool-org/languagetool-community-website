@@ -29,6 +29,7 @@ postagHelperService.factory('PostagHelper',
       tagMapping: {
         en: {
           posTagChars: 'A-Z:$',  // characters used in the POS tags, will be used to form a regex
+          //text: 'some short additional help text',
           tags:
           {
             CC: 'Coordinating conjunction (and, or, either, if, as, since, once, neither, less)',
@@ -72,11 +73,12 @@ postagHelperService.factory('PostagHelper',
         
         de: {
           posTagChars: 'A-Z0-9/Ä',  // characters used in the POS tags
+          text: 'Beispiele: <tt>SUB:AKK:SIN:MAS</tt> (Nomen Akkusativ Singular Maskulinum), <tt>SUB:(.+):PLU:.+</tt> (Nomen Plural), <tt>VER:.+</tt> (Verb)',
           tags:
           {
             // source: de/tagset.txt
             // POS tags that do not seem to be useful are commented out
-            SUB: 'Substantiv',
+            SUB: 'Substantiv/Nomen',
             EIG: 'Eigenname',
             VER: 'Verb',
             ADJ: 'Adjektiv',

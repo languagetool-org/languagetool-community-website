@@ -52,6 +52,7 @@ angular.module('ruleEditor.directives', [])
       var changed = !angular.equals(result, scope.gui.posTagHelp);
       if (changed) {  // needed optimization so typing doesn't slow down
         scope.gui.posTagHelp = result;
+        scope.gui.posTagHelpText = languageConfig.text;
       }
     };
     return {

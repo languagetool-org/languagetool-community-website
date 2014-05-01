@@ -136,3 +136,16 @@ input[type='text'] {
 .activePosTag {
     font-weight: bold;
 }
+
+.posTagHelp {
+    position: fixed;
+    width: 100%;
+    height: 190px;
+    bottom: 0;
+    padding:  8px;
+    background-color: #e4c4ff;
+}
+
+.posTagHelp tt {
+    background-color: #e4d8ff;
+}
