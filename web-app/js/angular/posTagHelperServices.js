@@ -170,7 +170,7 @@ postagHelperService.factory('PostagHelper',
           text: 'I tag sono composti da specifiche parti derivazionali e inflessionali',  
           tags:
           {
-            ABL: 'Abbreviazioni ("a.C.", "ecc.", "i.e."),
+            ABL: 'Abbreviazioni ("a.C.", "ecc.", "i.e.")',
             ADJ: 'Aggettivi con le seguenti inflessionali: pos (positivo); comp (comparativo); sup (sueprlativo); f/m (femminile/maschile); s/p (singolare/plurale)',
             ADV: 'Avverbi',
             ART: 'Articoli con derivazionali F/M (femminile/maschile) e inflessionali s/p (singolare/plurale)',
