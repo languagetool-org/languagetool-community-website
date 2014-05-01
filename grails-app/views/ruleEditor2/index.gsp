@@ -130,7 +130,7 @@
           <tr>
               <td></td>
               <td>
-                  <input type="submit" ng-click="createErrorPattern()" value="Create error pattern"
+                  <input type="submit" ng-click="createErrorPattern()" value="Create initial error pattern"
                          ng-disabled="!(exampleSentences[0].text && exampleSentences[1].text) || gui.patternCreationInProgress"/>
                   <img ng-show="gui.patternCreationInProgress" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol" ng-cloak/>
               </td>
