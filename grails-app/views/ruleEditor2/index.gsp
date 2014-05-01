@@ -456,7 +456,7 @@
 
 <div style="background-color: #e4c4ff; width:100%; height: 150px; position: fixed; bottom: 0; padding:  8px" 
      ng-show="gui.needPosTagHelp && gui.posTagHelp.length > 0" ng-cloak>
-    <h2>Part-of-speech help</h2>
+    <h2 style="margin-top: 2px">Part-of-speech help</h2>
     <div style="width: 95%">
         <span title="{{tag.title}}" ng-repeat="tag in gui.posTagHelp" ng-class="{activePosTag: tag.highlight}">
             {{tag.tag}}:&nbsp;{{tag.name}}

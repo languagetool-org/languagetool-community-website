@@ -28,7 +28,7 @@ postagHelperService.factory('PostagHelper',
 
       tagMapping: {
         en: {
-          posTagChars: 'A-Z:$',  // characters used in the POS tags
+          posTagChars: 'A-Z:$',  // characters used in the POS tags, will be used to form a regex
           tags:
           {
             CC: 'Coordinating conjunction (and, or, either, if, as, since, once, neither, less)',
@@ -66,7 +66,100 @@ postagHelperService.factory('PostagHelper',
             WDT: 'wh-determiner (that, whatever, what, whichever, which)',
             WP: 'wh-pronoun (that, whatever, what, whatsoever, whosoever, who, whom, whoever, which)',
             'WP$': 'Possessive wh-pronoun (whose)',
-            WRB: 'wh-adverb (however, how, whereever, where, when, why)'
+            WRB: 'wh-adverb (however, how, wherever, where, when, why)'
+          }
+        },
+        
+        de: {
+          posTagChars: 'A-Z0-9/Ä',  // characters used in the POS tags
+          tags:
+          {
+            // source: de/tagset.txt
+            // POS tags that do not seem to be useful are commented out
+            SUB: 'Substantiv',
+            EIG: 'Eigenname',
+            VER: 'Verb',
+            ADJ: 'Adjektiv',
+            ART: 'Artikel',
+            PRO: 'Pronomen',
+            ADV: 'Adverb',
+            PRP: 'Präposition',
+            NEG: 'Negationspartikel',
+            ABK: 'Abkürzung',
+
+            AKK: 'Akkusativ',
+            //ATT: 'attributiv(*)',
+            AUX: 'Hilfsverb',
+            BEG: 'begleitend',
+            'B/S': 'begleitend oder stellvertretend',
+            CAU: 'kausal',
+            //COU: 'Land',
+            DAT: 'Dativ',
+            DEF: 'bestimmt',
+            DEM: 'Demonstrativpronomen',
+            EIZ: 'erweiterter Infinitiv mit zu',
+            FEM: 'femininum',
+            //GEB: 'Gebiet (z.B. Westdeutschland, Württemberg)',
+            GEN: 'Genitiv',
+            //GEO: 'geographischer Eigenname',
+            GRU: 'Grundform',
+            IND: 'unbestimmt',
+            INF: 'Infinitiv',
+            //INJ: 'Interjektion (z.B. aha, bumm)',
+            IMP: 'Imperativ',
+            INR: 'Interrogativpronomen',
+            KJ1: 'Konjunktiv: 1',
+            KJ2: 'Konjunktiv: 2',
+            //KMP: 'Kompositum(*)',
+            KOM: 'Komparativ',
+            KON: 'Konjunktion',
+            LOK: 'lokal (z.B. vorn, zwischen)',
+            MAS: 'maskulinum',
+            MOD: 'modal',
+            //MOU: 'Gebirge',
+            //NAC: 'Nachname',
+            NEB: 'nebenordnend',
+            NEU: 'neutrum',
+            //NIL: 'Wortform nicht gefunden(*)',
+            NOA: 'ohne Artikel (nur bei EIG)',
+            NOG: 'ohne Genus',
+            NOM: 'Nominativ',
+            NON: 'nicht-schwach',
+            PA1: 'Partizip 1',
+            PA2: 'Partizip 2',
+            PER: 'personal',
+            PLU: 'Plural',
+            POS: 'possessiv',
+            PRÄ: 'Präsens',
+            PRD: 'prädikativ',
+            PRI: 'proportional (desto, je, so, um)',
+            PRT: 'Präteritum, Imperfekt',
+            REF: 'reflexiv',
+            //REL: 'relativ(*)',
+            RIN: 'relativ oder interrogativ',
+            SFT: 'schwach',
+            SIN: 'Singular',
+            SOL: 'alleinstehend',
+            //STD: 'Stadt',
+            STV: 'stellvertretend',
+            SUP: 'Superlativ',
+            //SZ: 'Satzzeichen(*)',
+            //SZE: 'Satzendezeichen(*)',
+            //SZK: 'Komma(*)',
+            //SZT: 'Satztrennzeichen(*)',
+            TMP: 'temporal',
+            UNT: 'unterordnend',
+            VGL: 'vergleichend (als, am, denn, wie)',
+            //VOR: 'Vorname',
+            //WAT: 'Gewässer',
+            ZAL: 'Zahlwort',
+            //ZAN: 'Zahl bzw. Ziffernfolge(*)',
+            ZUS: 'Verbzusatz',
+            1: '1. Person',
+            2: '2. Person',
+            3: '3. Person'
+            //A: 'höflich',
+            //B: 'vertraut'
           }
         }
       }
