@@ -105,8 +105,8 @@
                     <g:hiddenField name="oldId" value="0"/>
                     <g:hiddenField name="format" value="text/x-wiki"/>
                     <g:hiddenField name="model" value="wikitext"/>
-                    <g:if test="${grailsApplication.config.wikipedia.summary.link}.contains(lang.shortName)">
-                        <g:set var="wikipediaLink" value="${grailsApplication.config.wikipedia.summary.link[lang.shortName]}:"/>
+                    <g:if test="${grailsApplication.config.wikipedia.summary.link.containsKey(lang)}">
+                        <g:set var="wikipediaLink" value="${grailsApplication.config.wikipedia.summary.link[lang]}:"/>
                     </g:if>
                     <g:else>
                         <g:set var="wikipediaLink" value="LanguageTool:"/>
