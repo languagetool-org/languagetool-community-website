@@ -105,7 +105,13 @@
                     <g:hiddenField name="oldId" value="0"/>
                     <g:hiddenField name="format" value="text/x-wiki"/>
                     <g:hiddenField name="model" value="wikitext"/>
-                    <g:hiddenField name="wpSummary" value="LanguageTool: ${message(code: 'ltc.wikicheck.summary.preset')}"/>
+                    <g:if test="${grailsApplication.config.wikipedia.summary.link}.contains(lang.shortName)">
+                        <g:set var="wikipediaLink" value="${grailsApplication.config.wikipedia.summary.link[lang.shortName]}:"/>
+                    </g:if>
+                    <g:else>
+                        <g:set var="wikipediaLink" value="LanguageTool:"/>
+                    </g:else>
+                    <g:hiddenField name="wpSummary" value="${wikipediaLink} ${message(code: 'ltc.wikicheck.summary.preset')}"/>
                     <g:hiddenField name="wpDiff" value="yes"/>
                     <g:hiddenField name="wpMinoredit" value="1"/>
                     <!-- this will be modified at submit: -->
