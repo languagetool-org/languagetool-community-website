@@ -119,7 +119,7 @@
                         </g:if>
                         <g:if test="${rule instanceof PatternRule}">
                             <a href="#" onclick="showRuleXml('${params.lang}', '${params.id}', '${params.subId}');return false;"><g:message code="ltc.rule.show.as.xml" /></a> &middot;
-                            <g:link controller="ruleEditor2" params="${[id: params.id, subId: params.subId, lang: langCode]}"><g:message code='ltc.rule.show.editor.link'/> (beta)</g:link>
+                            <g:link controller="ruleEditor2" params="${[id: params.id, subId: params.subId, lang: langCode]}"><g:message code='ltc.rule.show.editor.link'/></g:link>
                             <div id="localSpinner" style="display:none;">
                                 <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner" />
                             </div>

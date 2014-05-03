@@ -37,7 +37,7 @@
   <p style="margin:15px;float:right;width:700px"><a href ng-click="gui.parseXmlDialogShown = true">Parse existing XML</a></p>
   <modal-dialog show='gui.parseXmlDialogShown' dialog-title='Parse Rule XML' ng-cloak>
     <form>
-        <b>Warning:</b> this is still buggy!<br/>
+        <b>Note:</b> this feature is still a bit incomplete<br/>
         <textarea placeholder="Paste your XML rule here" style="width:600px;height:300px" ng-model="existingXml"></textarea><br/>
         <input type="button" ng-click="parseExistingXml()" value="Parse"/>
     </form>

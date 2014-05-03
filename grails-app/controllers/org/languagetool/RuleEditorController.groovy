@@ -32,10 +32,8 @@ import org.languagetool.dev.index.Searcher
  */
 class RuleEditorController extends BaseController {
 
-    def patternStringConverterService
     def searchService
 
-    int CORPUS_MATCH_LIMIT = 20
     int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
 
     def index = {
@@ -52,29 +50,6 @@ class RuleEditorController extends BaseController {
         languages.each { languageNames.add(it.getName()) }
         languageNames.sort()
         return languageNames
-    }
-
-    def checkRule = {
-        Language language = getLanguage()
-        PatternRule patternRule = createPatternRule(language)
-        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        List problems = checkExampleSentences(langTool, patternRule, false)
-        if (problems.size() == 0) {
-          SearcherResult searcherResult = null
-          boolean timeOut = false
-          try {
-              searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, CORPUS_MATCH_LIMIT)
-          } catch (SearchTimeoutException e) {
-              log.info("Timeout exception: " + e + " - LANG: ${language.getShortNameWithCountryAndVariant()} - PATTERN: ${params.pattern}")
-              timeOut = true
-          }
-          log.info("Checked rule: valid - LANG: ${language.getShortNameWithCountryAndVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1}")
-          [messagePreset: params.messageBackup, namePreset: params.nameBackup,
-                  searcherResult: searcherResult, limit: CORPUS_MATCH_LIMIT, timeOut: timeOut, patternRule: patternRule]
-        } else {
-            log.info("Checked rule: invalid - LANG: ${language.getShortNameWithCountryAndVariant()} - PATTERN: ${params.pattern} - BAD: ${params.incorrectExample1} - GOOD: ${params.correctExample1} - ${problems.size()} problems")
-            render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule), expertMode: false, language: language])
-        }
     }
 
     def indexOverview = {
@@ -289,80 +264,4 @@ class RuleEditorController extends BaseController {
         lang
     }
 
-    private PatternRule createPatternRule(Language lang) {
-        PatternRule patternRule = patternStringConverterService.convertToPatternRule(params.pattern, lang)
-        patternRule.setCorrectExamples(Collections.<String>singletonList(params.correctExample1))
-        def incorrectExample = new IncorrectExample(params.incorrectExample1)
-        patternRule.setIncorrectExamples(Collections.singletonList(incorrectExample))
-        return patternRule
-    }
-
-    def createXml = {
-        if (!params.message || params.message.trim().isEmpty()) {
-            log.info("Create rule XML: missing message parameter")
-            [error: "Please fill out the 'Error Message' field"]
-        } else {
-            log.info("Create rule XML: okay")
-            String message = getMessageParameter()
-            String correctSentence = encodeXml(params.correctExample1)
-            Language language = getLanguage()
-            String incorrectSentence = getIncorrectSentenceWithMarker(language)
-            String name = params.name ? params.name : "Name of rule"
-            String xml = createRuleXml(name, message, incorrectSentence, correctSentence)
-            [xml: xml, language: language]
-        }
-    }
-
-    private String getIncorrectSentenceWithMarker(Language language) {
-        PatternRule patternRule = createPatternRule(language)
-        JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-        String incorrectSentence = params.incorrectExample1
-        List expectedRuleMatches = langTool.check(params.incorrectExample1)
-        if (expectedRuleMatches.size() == 1) {
-            StringBuilder sb = new StringBuilder(incorrectSentence)
-            sb.insert(expectedRuleMatches.get(0).toPos, "</marker>")
-            sb.insert(expectedRuleMatches.get(0).fromPos, "<marker>")
-            incorrectSentence = encodeXml(sb.toString()).replace("&lt;marker&gt;", "<marker>").replace("&lt;/marker&gt;", "</marker>")
-        } else {
-            throw new Exception("Sorry, got ${expectedRuleMatches.size()} rule matches for the example sentence, " +
-                    "expected exactly one. Sentence: '${incorrectSentence}', Rule matches: ${expectedRuleMatches}")
-        }
-        return incorrectSentence
-    }
-
-    private encodeXml(String s) {
-        return s.replace("<string>", "").replace("</string>", "")
-    }
-
-    private String createRuleXml(String name, String message, String incorrectSentence, String correctSentence) {
-        Language lang = getLanguage()
-        PatternRule patternRule = createPatternRule(lang)
-        String ruleId = createRuleIdFromName(name)
-        String xml = """<rule id="${encodeXml(ruleId)}" name="${encodeXml(name)}">
-    <pattern>\n"""
-        for (element in patternRule.getElements()) {
-            if (element.isRegularExpression()) {
-                xml += "        <token regexp=\"yes\">${element.getString()}</token>\n"
-            } else {
-                xml += "        <token>${element.getString()}</token>\n"
-            }
-        }
-        xml += """    </pattern>
-    <message>${message}</message>
-    <example type="incorrect">${incorrectSentence}</example>
-    <example type="correct">${correctSentence}</example>
-</rule>"""
-        xml
-    }
-
-    String createRuleIdFromName(String name) {
-        return name.toUpperCase().replaceAll("[\\s/]+", "_").replaceAll("[^A-Z_]", "")
-    }
-
-    private String getMessageParameter() {
-        String message = encodeXml(params.message)
-        message = message.replaceAll("\"(.*?)\"", "<suggestion>\$1</suggestion>")
-        message = message.replaceAll("&quot;(.*?)&quot;", "<suggestion>\$1</suggestion>")
-        return message
-    }
 }

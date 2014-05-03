@@ -51,9 +51,7 @@
 
             <g:form name="ruleForm" method="post" action="checkRule">
 
-                <p style="width:550px;margin:10px;text-align: right"><g:link action="index"><g:message code="ltc.editor.simple.mode"/></g:link></p>
-
-                <p class="warn"><g:message code="ltc.editor.expert.beta.warning"/></p>
+                <p class="warn">Please consider <g:link controller="ruleEditor2">using the new rule editor</g:link> instead</p>
                 
                 <p><g:message code="ltc.editor.expert.intro" args="${['http://www.languagetool.org/development/']}"/></p>
 
