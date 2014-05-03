@@ -455,6 +455,8 @@
 </div>
 
 <div class="posTagHelp" ng-show="gui.needPosTagHelp && gui.posTagHelp.length > 0" ng-cloak>
+    <!-- will close anyway when the POS field loses focus, show a fake button anyway: -->
+    <a href="#"><img style="float:right; margin-right: 20px" src="${resource(dir:'images', file:'remove_button.png')}" title="Close Help"/></a>
     <h2 style="margin-top: 2px">Part-of-Speech Help</h2>
     <div style="width: 95%">
         <span title="{{tag.title}}" ng-repeat="tag in gui.posTagHelp" ng-class="{activePosTag: tag.highlight}">
