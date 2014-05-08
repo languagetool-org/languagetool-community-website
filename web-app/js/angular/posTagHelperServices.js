@@ -205,7 +205,59 @@ postagHelperService.factory('PostagHelper',
             WH: 'Elementi interrogativi ("come", "qualora", "quando"...)',
             'WH-CHE': 'Che come elemento interrogativo'
           }
-        }
+        },
+        
+       tagMapping: {
+        pl: {
+          posTagChars: 'a-z:\.1-3',  // characters used in the POS tags, will be used to form a regex
+          text: 'Przykład: subst:sg:nom:f',
+          tags:
+          {
+            subst:'rzeczownik',
+            adj:'przymiotnik',
+            verb:'czasownik',
+            adv:'przysłówek',
+            qub:'kublik',
+            sg:'liczba pojedyncza',
+            pl:'liczba mnoga',
+            f:'rodzaj żeński',
+            m1:'rodzaj męski osobowy',
+            m2:'rodzaj męski żywotny',
+            m3:'rodzaj męski nieżywotny',
+            n1:'rodzaj nijaki żywotny',
+            n2:'rodzaj nijaki nieżywotny',
+            praet:'czas przeszły',
+            ger:'rzeczownik odsłowny',
+            prep:'przyimek',
+            nom:'mianownik',
+            acc:'biernik',
+            gen:'dopełniacz',
+            dat:'celownik',
+            loc:'miejscownik',
+            voc:'wołacz',
+            pri:'pierwsza osoba',
+            sec:'druga osoba',
+            ter:'trzecia osoba',
+            ppas:'imiesłów bierny',
+            pact:'imiesłów czynny',
+            pant:'imiesłów -wszy, -łszy',
+            pot:'tryb przypuszczający',
+            siebie:'forma zaimka siebie',
+            ppron12:'zaimek osobowy pierwszej lub drugiej osoby',
+            ppron3:'zaimek osobowy on, ona',
+            fin:'forma finitywna (czas teraźniejszy lub przyszły)',
+            refl:'forma zwrotna',
+            nonrefl:'forma niezwrotna',
+            imperf:'forma niedokonana',
+            perf:'forma dokonana',
+            interj:'wykrzyknienie',
+            interp:'interpunkcja',
+            conj:'spójnik współrzędny',
+            comp:'spójnik wprowadzający zdanie podrzędne',
+            num:'liczebnik'
+            
+          }
+      
       }
 
   };
