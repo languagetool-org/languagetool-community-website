@@ -45,6 +45,15 @@
 
   <h1 ng-show="!gui.expertMode">LanguageTool Rule Editor</h1>
 
+  <div style="clear: both"></div>
+
+  <div style="float: right;margin-left: 15px;margin-right: 100px" ng-show="!gui.expertMode">
+    <a href="https://www.youtube.com/watch?v=Ah9uWhAfT9Y" target="_blank">
+      <img src="${resource(dir:'images', file:'rule_editor_video_button.png')}" width="180"/><br/>
+      Watch intro video
+    </a>
+  </div>
+
   <div id="introText" ng-show="!gui.expertMode">
       <p>LanguageTool finds errors based on rules. Each rule has a pattern
       that describes an error. A simple pattern can just be a sequence of words,
