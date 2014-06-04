@@ -207,9 +207,8 @@ postagHelperService.factory('PostagHelper',
           }
         },
         
-       tagMapping: {
         pl: {
-          posTagChars: 'a-z:\.1-3',  // characters used in the POS tags, will be used to form a regex
+          posTagChars: 'a-z1-3',  // characters used in the POS tags, will be used to form a regex
           text: 'Przykład: subst:sg:nom:f',
           tags:
           {
@@ -255,10 +254,9 @@ postagHelperService.factory('PostagHelper',
             conj:'spójnik współrzędny',
             comp:'spójnik wprowadzający zdanie podrzędne',
             num:'liczebnik'
-            
           }
-      
       }
+    }
 
   };
 });
