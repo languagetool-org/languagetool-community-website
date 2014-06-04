@@ -29,9 +29,12 @@ h2 {
 }
 
 #ruleAsXml {
-    margin-top: 10px;
+    font-family: monospace;
     color: #555555;
-    margin-left: 140px
+    margin-top: 10px;
+    margin-left: 140px;
+    max-width: 800px;
+    white-space: pre-wrap;
 }
 
 #ruleMessage {

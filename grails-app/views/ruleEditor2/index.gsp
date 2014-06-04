@@ -455,7 +455,7 @@
               LanguageTool installation and restart LanguageTool.</p>
           </div>
 
-          <pre id="ruleAsXml" ng-cloak>{{buildXml(true)}}</pre>
+          <div id="ruleAsXml" ng-cloak>{{buildXml(true)}}</div>
 
       </div>
 
