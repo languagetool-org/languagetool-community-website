@@ -2,7 +2,7 @@
 
 <div style="margin-top:10px;margin-bottom:10px;">
     <g:form action="pageCheck" method="get">
-        <g:message code="ltc.wikicheck.url"/> <input style="width:350px" name="url" value="${url?.encodeAsHTML()}" placeholder="${message(code:'ltc.wikicheck.placeholder')}"/>
+        <g:message code="ltc.wikicheck.url"/> <input autofocus style="width:350px" name="url" value="${url?.encodeAsHTML()}" placeholder="${message(code:'ltc.wikicheck.placeholder')}"/>
         <input type="hidden" name="lang" value="${langCode}"/>
         <input type="submit" value="${message(code:'ltc.wikicheck.check.page')}"/>
     </g:form>
