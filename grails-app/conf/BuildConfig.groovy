@@ -35,6 +35,7 @@ grails.project.dependency.resolution = {
 
         runtime 'org.languagetool:language-all:2.6-SNAPSHOT'
         runtime 'org.languagetool:languagetool-wikipedia:2.6-SNAPSHOT'
+        // TODO: how to add dependency to languagetool-core with type 'test-jar'?
 
         runtime 'mysql:mysql-connector-java:5.1.16'
         runtime 'com.sun.mail:javax.mail:1.5.1'
