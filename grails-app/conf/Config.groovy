@@ -54,11 +54,11 @@ hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "km", "en-GB", "en-
 expose.languages = ["en", "fr", "de", "es", "pl", "ca", "br", "nl", "pt", "es", "eo"]
 maxPatternElements = 5
 // disable some rules for WikiCheck to avoid too many false alarms:
-disabledRulesPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules.properties"
-disabledRulesForFeedPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules_for_feed.properties"
+disabledRulesPropFile="/data/project/languagetool/ltcommunity/corpus/wikicheck/disabled_rules.properties"
+disabledRulesForFeedPropFile="/data/project/languagetool/ltcommunity/corpus/wikicheck/disabled_rules_for_feed.properties"
 
 // Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
-fastSearchIndex = "/home/languagetool/corpus/LANG"
+fastSearchIndex = "/data/project/languagetool/corpus/LANG"
 fastSearchTimeoutMillis = 15000
 
 // log4j configuration
