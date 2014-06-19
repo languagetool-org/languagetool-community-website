@@ -19,8 +19,8 @@ environments {
 		    driverClassName = "com.mysql.jdbc.Driver"
 			dbCreate = "update" // one of 'create', 'create-drop','update'
 			url = "jdbc:mysql://localhost/ltcommunity?useUnicode=true&characterEncoding=UTF-8"
-		    username = "root"
-		    password = ""
+			username = "root"
+			password = ""
 		}
 	}
 	test {
@@ -31,11 +31,11 @@ environments {
 	}
 	production {
 		dataSource {
-		  driverClassName = "com.mysql.jdbc.Driver"
-		  dbCreate = "update" // one of 'create', 'create-drop','update'
-          url = "jdbc:mysql://localhost/ltcommunity?useUnicode=true&characterEncoding=UTF-8"
-          username = ""
-          password = ""
+			driverClassName = "com.mysql.jdbc.Driver"
+			dbCreate = "update" // one of 'create', 'create-drop','update'
+			url = "jdbc:mysql://tools-db/s52131__ltcommunity?useUnicode=true&characterEncoding=UTF-8"
+			username = "s52131"
+			password = ""
 		}
 	}
 }
