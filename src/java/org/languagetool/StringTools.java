@@ -20,19 +20,12 @@ package org.languagetool;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 public class StringTools {
   
   private StringTools() {
     // static methods only, no public constructor
-  }
-  
-  public static String formatDate(Date date) {
-    final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    return sdf.format(date);
   }
   
   /**
@@ -55,11 +48,6 @@ public class StringTools {
       replaceAll("&lt;/suggestion&gt;", "</span>").
       replaceAll("&lt;err&gt;", "<span class=\"error\">").
       replaceAll("&lt;/err&gt;", "</span>");
-  }
-
-  /** Remove the "<err>" markup */
-  public static String cleanError(String s) {
-    return s.replaceAll("<err>", "").replaceAll("</err>", "");
   }
 
   /**
