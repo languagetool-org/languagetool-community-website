@@ -19,9 +19,6 @@
 
 package org.languagetool
 
-import java.util.HashSet
-import java.util.Set
-
 /**
  * The disabled rules of a language.
  */
