@@ -140,6 +140,7 @@
                     </td>
                 </tr>
 
+                <!--
                 <tr>
                     <td><g:message code="ltc.rule.show.wikipedia" /></td>
                     <td>
@@ -151,6 +152,7 @@
                         </g:else>
                     </td>
                 </tr>
+                -->
 
                 <tr>
                     <td>

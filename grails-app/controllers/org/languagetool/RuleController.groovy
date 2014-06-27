@@ -132,11 +132,9 @@ class RuleController extends BaseController {
             text = text.substring(0, maxTextLen)
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
-        int corpusMatchCount = countCorpusMatches(langCode, selectedRule.id)
         List ruleMatches = lt.check(text)
         render(view:'show', model: [ hideRuleLink: true, rule: selectedRule,
-                textToCheck: params.text, matches: ruleMatches, ruleId: params.id,
-                corpusMatchCount: corpusMatchCount],
+                textToCheck: params.text, matches: ruleMatches, ruleId: params.id],
                 contentType: "text/html", encoding: "utf-8")
     }
 
@@ -157,9 +155,8 @@ class RuleController extends BaseController {
         if (selectedRule instanceof PatternRule) {
             ruleSubId = ((PatternRule)selectedRule).getSubId()
         }
-        int corpusMatchCount = countCorpusMatches(langCode, selectedRule.id)
         render(view:'show', model: [rule: selectedRule, ruleSubId: ruleSubId,
-                ruleId: params.id, textToCheck: textToCheck, corpusMatchCount: corpusMatchCount],
+                ruleId: params.id, textToCheck: textToCheck],
                 contentType: "text/html", encoding: "utf-8")
     }
 
@@ -170,16 +167,6 @@ class RuleController extends BaseController {
         PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
         String ruleAsXml = ruleXmlCreator.toXML(id, language)
         render(template: 'xml', model: [ruleAsXml: ruleAsXml, language: language])
-    }
-
-    private int countCorpusMatches(String langCode, String ruleId) {
-        def matchCriteria = CorpusMatch.createCriteria()
-        def corpusMatchCount = matchCriteria.count {
-            eq('ruleID', ruleId)
-            eq('languageCode', langCode)
-            eq('isVisible', true)
-        }
-        return corpusMatchCount
     }
 
     private String getLanguage() {
