@@ -19,8 +19,6 @@
 
 package org.languagetool
 
-import javax.mail.*
-import javax.mail.internet.*
 import javax.servlet.http.Cookie
 
 /**
@@ -40,8 +38,10 @@ class UserController extends BaseController {
     def static allowedMethods = [delete:'POST', save:'POST', update:'POST',
             doRegister:'POST', settings:['POST', 'GET']]
 
+    /*
+    do not allow any new registrations - 2014-07-13
     def register = {
-    }
+    }*/
 
     /**
      * Export a user's personal rules as XML.
@@ -75,44 +75,6 @@ class UserController extends BaseController {
         render(text:sb.toString(), contentType: "text/xml")
     }
 
-    def doRegister = {
-        String toAddress = params.email
-        if (!toAddress) {
-            flash.message = "No email address set"
-            render(view:'register',model:[params:params])
-            return
-        }
-        String passwordErrorMsg = checkNewPassword()
-        if (passwordErrorMsg) {
-            flash.message = passwordErrorMsg
-            render(view:'register', model:[params:params])
-            return
-        }
-        if (User.findByUsername(toAddress)) {
-            // TODO: show as a real error message
-            flash.message = "That email address is already in use"
-            render(view:'register', model:[params:params])
-            return
-        }
-        User newUser = new User(toAddress, PasswordTools.hash(params.password1))
-        newUser.isAdmin = false
-        // Note: user is not activated until we set registerDate
-        boolean saved = newUser.save()
-        if (!saved) {
-            throw new Exception("Could not save user: ${user.errors}")
-        }
-        String secret = grailsApplication.config.registration.ticket.secret
-        assert(secret && secret != "" && secret != "{}")
-        RegistrationTicket ticket = new RegistrationTicket(newUser, secret)
-        saved = ticket.save()
-        if (!saved) {
-            throw new Exception("Could not generate registration ticket: ${ticker.errors}")
-        }
-        log.info("Created user: ${newUser.username}, id=${newUser.id}")
-        sendRegistrationMail(toAddress, ticket)
-        flash.message = ""
-    }
-
     private String checkNewPassword() {
         if (!params.password1 || !params.password2) {
             return "No password set"
@@ -125,54 +87,6 @@ class UserController extends BaseController {
                     "${grailsApplication.config.registration.min.password.length}"
         }
         return null
-    }
-
-    private void sendRegistrationMail(String toAddress, RegistrationTicket ticket) {
-        Properties props = new Properties()
-        log.info("Preparing registration mail to $toAddress")
-        String smtpHost = grailsApplication.config.smtp.host
-        String smtpUsername = grailsApplication.config.smtp.user
-        String smtpPassword = grailsApplication.config.smtp.password
-        String fromAddress = grailsApplication.config.registration.mail.from
-        props.put("mail.from", fromAddress)
-        props.put("mail.smtp.auth", true)
-        Session session = Session.getInstance(props, null)
-        MimeMessage msg = new MimeMessage(session)
-        msg.setFrom()
-        msg.setRecipients(Message.RecipientType.TO, toAddress)
-        msg.setSubject(grailsApplication.config.registration.mail.subject)
-        msg.setSentDate(new Date())
-        msg.setText(grailsApplication.config.registration.mail.text.
-                replaceAll("#CODE#", ticket.getTicketCode()).
-                replaceAll("#USERID#", ticket.user.id + ""))
-        msg.saveChanges()
-        Transport tr = session.getTransport("smtp")
-        try {
-            tr.connect(smtpHost, smtpUsername, smtpPassword);
-            tr.sendMessage(msg, msg.getAllRecipients())
-            log.info("Mail sent to $toAddress via SMTP host $smtpHost, SMTP user $smtpUsername, From: $fromAddress")
-        } finally {
-            tr.close()
-        }
-    }
-
-    /**
-     * This is the controller that the registration email points to
-     */
-    def completeRegistration = {
-        if (!params.code || !params.id) {
-            throw new Exception("No ticket code and/or ID is specified")
-        }
-        User user = User.get(params.id)
-        if (!user) {
-            throw new Exception("Your user account could not be found: ${params.id.encodeAsHTML()}")
-        }
-        RegistrationTicket ticket = RegistrationTicket.findByTicketCodeAndUser(params.code, user)
-        // TODO: check for age of ticket!
-        if (!ticket) {
-            throw new Exception("Your registration ticket for id ${params.id.encodeAsHTML()} is not valid")
-        }
-        user.setRegisterDate(new Date())
     }
 
     def settings = {

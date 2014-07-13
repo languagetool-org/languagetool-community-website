@@ -33,11 +33,13 @@
                     <table>
                         <tbody>
 
+                            <!--
                             <tr class='prop'>
                                 <td valign='top' colspan="1" class='name'>
                                     <p><g:message code="ltc.login.no.account"/> <g:link action="register"><g:message code="ltc.login.register.here" /></g:link></p>
                                 </td>
                             </tr>
+                            -->
                                                     
                             <tr class='prop'>
                                 <td valign='top' class='name'>
