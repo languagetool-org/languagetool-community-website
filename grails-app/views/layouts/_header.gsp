@@ -28,7 +28,7 @@
                 </g:if>
                 <g:else>
                     <div class="login">
-                        <g:link controller="user" action="login"><g:message code="ltc.login"/></g:link>
+                        <!--login should not be needed anymore... -->
                     </div>
                 </g:else>
                 <div class="imprint">
