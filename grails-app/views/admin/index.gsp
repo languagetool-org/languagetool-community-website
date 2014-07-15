@@ -41,23 +41,6 @@
     </table>
     <g:link params="${[maxUsers: -1]}">Show all users</g:link>
 
-    <h3 style="margin-top: 15px">User Actions</h3>
-    
-    <table>
-        <tr>
-            <td>Feed Matches marked as false alarms / fixed</td>
-            <td style="text-align: right">${markedFeedMatches}</td>
-        </tr>
-        <tr>
-            <td>Corpus matches marked as false alarms / fixed (since last dump check)</td>
-            <td style="text-align: right">${recentHiddenCorpusMatches}</td>
-        </tr>
-        <tr>
-            <td>Corpus matches marked as false alarms / fixed (all-time)</td>
-            <td style="text-align: right">${hiddenCorpusMatches}</td>
-        </tr>
-    </table>
-    
 </div>
 
 </body>

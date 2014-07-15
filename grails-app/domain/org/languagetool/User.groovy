@@ -19,8 +19,6 @@
 
 package org.languagetool
 
-import java.util.Date
-
 /**
  * A User of the community website.
  */
@@ -36,6 +34,7 @@ class User {
     static fetchMode = [languagesConfigurations:"eager"]    // avoid the "lazy" exception
 
     static constraints = {
+        username(unique: true)
         lastLoginDate(nullable: true)
         registerDate(nullable: true)
     }
