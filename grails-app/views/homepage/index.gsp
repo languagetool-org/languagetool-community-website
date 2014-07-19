@@ -27,16 +27,10 @@
                 <tr>
                     <td width="45%">
 
-                        <h2 class="firstHeadline"><g:link controller="homepage" action="simpleCheck" params="[lang: lang]"><g:message code="ltc.home.check.fallback.short.title"/></g:link></h2>
+                        <h2 class="firstHeadline"><g:link controller="ruleEditor2" params="[lang: lang]">Rule Editor</g:link></h2>
 
                         <div class="mainPart">
-                            <g:message code="ltc.home.check.text.explain"/>
-                        </div>
-
-                        <h2><g:link controller="analysis" params="[lang: lang]"><g:message code="ltc.home.analysis.title"/></g:link></h2>
-
-                        <div class="mainPart">
-                            <g:message code="ltc.home.analysis.explain"/>
+                            Try our new rule editor to create new error detection rules
                         </div>
 
                         <h2><g:link controller="rule" action="list" params="[lang: lang]"><g:message code="ltc.browse.rules"/></g:link></h2>
@@ -45,10 +39,16 @@
                             <g:message code="ltc.browse.explain"/>
                         </div>
 
-                        <h2><g:link controller="ruleEditor2" params="[lang: lang]">Rule Editor</g:link></h2>
+                        <h2><g:link controller="analysis" params="[lang: lang]"><g:message code="ltc.home.analysis.title"/></g:link></h2>
 
                         <div class="mainPart">
-                            Try our new rule editor to create new error detection rules
+                            <g:message code="ltc.home.analysis.explain"/>
+                        </div>
+
+                        <h2><g:link controller="homepage" action="simpleCheck" params="[lang: lang]"><g:message code="ltc.home.check.fallback.short.title"/></g:link></h2>
+
+                        <div class="mainPart">
+                            <g:message code="ltc.home.check.text.explain"/>
                         </div>
 
                     </td>
