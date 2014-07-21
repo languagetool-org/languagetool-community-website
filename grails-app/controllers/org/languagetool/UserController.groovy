@@ -133,6 +133,10 @@ class UserController extends BaseController {
                     loginFailed("login failed for '${params.email}' (${request.getRemoteAddr()}): account not activated")
                     return
                 }
+                if (!user.isAdmin) {
+                    loginFailed("Login to this website is not possible anymore. If there's any reason you need to log in, contact naber .at. danielnaber.de")
+                    return
+                }
                 log.info("login successful for user ${user} (${request.getRemoteAddr()})")
                 if (params.logincookie) {
                     addDurationSession(session, response, user)
