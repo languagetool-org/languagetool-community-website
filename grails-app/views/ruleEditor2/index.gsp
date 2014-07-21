@@ -195,7 +195,7 @@
                                                         <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="element.regex" 
                                                                value="true" ng-disabled="element.tokenType == TokenTypes.ANY"/>&nbsp;RegExp <a href ng-click="showRegexHelp()">[?]</a></label>
                                                         <div id="regexHelp" style="display: none" title="Regular Expression Quick Help"></div>
-                                                        <label title="Matches the base form (e.g. the singular for nouns) of the given word"><input type="checkbox" ng-model="element.inflected" value="false" />&nbsp;Base&nbsp;form</label>
+                                                        <label title="Check this and specify the base form to make all forms match (e.g. plural)"><input type="checkbox" ng-model="element.inflected" value="false" />&nbsp;Base&nbsp;form</label>
                                                         <label title="Matches anything but the given word"><input type="checkbox" ng-model="element.negation" value="false" />&nbsp;Negate</label>
                                                         <br/>
                                                         <div ng-show="element.tokenValue.contains(' ')">
