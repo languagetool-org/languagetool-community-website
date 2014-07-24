@@ -101,6 +101,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     {code: 'es', name: 'Spanish'},
     {code: 'sv', name: 'Swedish'},
     {code: 'tl', name: 'Tagalog'},
+    {code: 'ta', name: 'Tamil'},
     {code: 'uk', name: 'Ukrainian'}
   ];
 
