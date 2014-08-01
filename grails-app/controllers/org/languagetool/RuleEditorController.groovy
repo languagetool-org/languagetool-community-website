@@ -108,6 +108,8 @@ class RuleEditorController extends BaseController {
         }
         PatternRule patternRule = rules.get(0)
         List problems = []
+        long startTime = System.currentTimeMillis()
+        int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
         try {
             JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
             problems.addAll(checkExampleSentences(langTool, patternRule, params.checkMarker != 'false'))
@@ -118,8 +120,7 @@ class RuleEditorController extends BaseController {
             }
             String incorrectExamples = getIncorrectExamples(patternRule)
             List<RuleMatch> incorrectExamplesMatches = langTool.check(incorrectExamples)
-            int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
-            long startTime = System.currentTimeMillis()
+            startTime = System.currentTimeMillis()
             SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, EXPERT_MODE_CORPUS_MATCH_LIMIT)
             long searchTime = System.currentTimeMillis() - startTime
             log.info("Checked XML in ${language}, timeout (${timeoutMillis}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
