@@ -21,13 +21,7 @@
         These links will get you there. (June 2014)</p>
 
         <!--old links for testing: <g:link action="pageCheck" params="[lang: lang.getShortName()]"><g:message code="ltc.wiki.check"/></g:link>, <g:link controller="feedMatches" action="list" params="[lang: lang.getShortName()]"><g:message code="ltc.feed.matches.title"/></g:link>-->
-    
-        <h2 class="firstHeadline"><a href="http://tools.wmflabs.org/languagetool/pageCheck/index?lang=${lang.getShortName()}"><g:message code="ltc.wiki.check"/></a></h2>
-    
-        <div class="mainPart">
-            <p><g:message code="ltc.wiki.check.explain"/></p>
-        </div>
-    
+
         <h2><a href="http://tools.wmflabs.org/languagetool/feedMatches/list?lang=${lang.getShortName()}"><g:message code="ltc.feed.matches.title"/></a></h2>
     
         <div class="mainPart">
@@ -37,6 +31,12 @@
             </p>
         </div>
 
+        <h2 class="firstHeadline"><a href="http://tools.wmflabs.org/languagetool/pageCheck/index?lang=${lang.getShortName()}"><g:message code="ltc.wiki.check"/></a></h2>
+    
+        <div class="mainPart">
+            <p><g:message code="ltc.wiki.check.explain"/></p>
+        </div>
+    
         <!--
         <h2><g:link controller="corpusMatch" action="list" params="[lang: lang.getShortName()]"><g:message code="ltc.check.results"/></g:link></h2>
     
