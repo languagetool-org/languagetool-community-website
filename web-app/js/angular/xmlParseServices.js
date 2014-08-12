@@ -35,6 +35,7 @@ xmlServices.factory('XmlParser',
                        'exception', 'token', 'url', 'short'],
 
       parseXml: function(xml) {
+        xml = xml.replace(/<!--.*?-->/g, "");
         var parser = new DOMParser();
         var doc = parser.parseFromString(xml, "text/xml");
         this.validateSupportForDoc(doc, xml);
