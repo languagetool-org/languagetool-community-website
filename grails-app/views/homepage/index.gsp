@@ -27,10 +27,10 @@
                 <tr>
                     <td width="45%">
 
-                        <h2 class="firstHeadline"><g:link controller="ruleEditor2" params="[lang: lang]">Rule Editor</g:link></h2>
+                        <h2 class="firstHeadline"><g:link controller="ruleEditor2" params="[lang: lang]"><g:message code="ltc.home.rule.editor.title"/></g:link></h2>
 
                         <div class="mainPart">
-                            Try our new rule editor to create new error detection rules
+                            <g:message code="ltc.home.rule.editor.description"/>
                         </div>
 
                         <h2><g:link controller="rule" action="list" params="[lang: lang]"><g:message code="ltc.browse.rules"/></g:link></h2>
