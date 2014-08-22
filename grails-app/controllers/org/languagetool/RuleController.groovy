@@ -35,7 +35,7 @@ class RuleController extends BaseController {
         if (!params.lang) params.lang = "en"
         if (params.offset) offset = Integer.parseInt(params.offset)
         if (params.max) max = Integer.parseInt(params.max)
-        String langCode = getLanguage()
+        String langCode = getLanguageCode()
         Language langObj = Language.getLanguageForShortName(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
         lt.activateDefaultPatternRules()
@@ -92,7 +92,8 @@ class RuleController extends BaseController {
         // get all information needed to display "show" page:
         String langCode = "en"
         if (params.lang) langCode = params.lang
-        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(langCode))
+        Language langObj = Language.getLanguageForShortName(langCode)
+        JLanguageTool lt = new JLanguageTool(langObj)
         lt.activateDefaultPatternRules()
         Rule selectedRule
         boolean isUserRule = false
@@ -134,12 +135,12 @@ class RuleController extends BaseController {
         }
         List ruleMatches = lt.check(text)
         render(view:'show', model: [ hideRuleLink: true, rule: selectedRule,
-                textToCheck: params.text, matches: ruleMatches, ruleId: params.id],
+                textToCheck: params.text, matches: ruleMatches, ruleId: params.id, language: langObj],
                 contentType: "text/html", encoding: "utf-8")
     }
 
     def show = {
-        String langCode = getLanguage()
+        String langCode = getLanguageCode()
         Language langObj = Language.getLanguageForShortName(langCode)
         Rule selectedRule = getRuleById(params.id, params.subId, langCode)
         if (!selectedRule) {
@@ -162,7 +163,7 @@ class RuleController extends BaseController {
     }
 
     def showRuleXml = {
-        String langCode = getLanguage()
+        String langCode = getLanguageCode()
         Language language = Language.getLanguageForShortName(langCode)
         PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
         PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
@@ -170,7 +171,7 @@ class RuleController extends BaseController {
         render(template: 'xml', model: [ruleAsXml: ruleAsXml, language: language])
     }
 
-    private String getLanguage() {
+    private String getLanguageCode() {
         String lang = "en"
         if (params.lang) {
             lang = params.lang

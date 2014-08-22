@@ -24,7 +24,8 @@ class WikiCheckController extends BaseController {
     def index = {
         String langCode = params.lang ? params.lang : "en"
         Language langObject = Language.getLanguageForShortName(langCode)
-        [languages: SortedLanguages.get(), lang: langObject]
+        Language langObj = Language.getLanguageForShortName(langCode)
+        [languages: SortedLanguages.get(), lang: langObject, language: langObj]
     }
 
     def pageCheck = {

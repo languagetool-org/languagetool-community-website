@@ -42,10 +42,13 @@ class HomepageController extends BaseController {
      */
     def simpleCheck = {
         List languages = SortedLanguages.get()
-        String defaultLang = "en-US"
-        params.language = defaultLang
-        params.lang = defaultLang
-        Language language = Language.getLanguageForShortName(defaultLang)
+        String langCode = "en-US"
+        if (params.lang) {
+            langCode = params.lang
+        }
+        params.language = langCode
+        params.lang = langCode
+        Language language = Language.getLanguageForShortName(langCode)
         render(view: 'checkText', model:[languages: languages, language: language])
     }
     
