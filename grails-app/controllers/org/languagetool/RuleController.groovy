@@ -140,6 +140,7 @@ class RuleController extends BaseController {
 
     def show = {
         String langCode = getLanguage()
+        Language langObj = Language.getLanguageForShortName(langCode)
         Rule selectedRule = getRuleById(params.id, params.subId, langCode)
         if (!selectedRule) {
             log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${langCode}")
@@ -156,7 +157,7 @@ class RuleController extends BaseController {
             ruleSubId = ((PatternRule)selectedRule).getSubId()
         }
         render(view:'show', model: [rule: selectedRule, ruleSubId: ruleSubId,
-                ruleId: params.id, textToCheck: textToCheck],
+                ruleId: params.id, textToCheck: textToCheck, language: langObj],
                 contentType: "text/html", encoding: "utf-8")
     }
 
