@@ -74,6 +74,10 @@ class RuleEditorController extends BaseController {
     }
 
     def checkXml = {
+        if (params.xml.toUpperCase().contains("!ENTITY")) {
+            // just an additional protection against XML external entity attacks
+            throw new Exception("Invalid XML input, ENTITY is not allowed")
+        }
         Language language
         try {
             language = getLanguage()
