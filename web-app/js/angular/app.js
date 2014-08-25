@@ -92,6 +92,7 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     {code: 'km', name: 'Khmer'},
     {code: 'lt', name: 'Lithuanian'},
     {code: 'ml', name: 'Malayalam'},
+    {code: 'fa', name: 'Persian'},
     {code: 'pl', name: 'Polish'},
     {code: 'pt', name: 'Portuguese'},
     {code: 'ro', name: 'Romanian'},
