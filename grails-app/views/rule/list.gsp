@@ -93,20 +93,20 @@
                 <g:paginate total="${ruleCount}" params="${params}"/>
             </div>
 
-	        <g:if test="${session.user}">
-	        	<br />
-	        	<g:link controller="user" action="exportRules">Export the rules you added</g:link>
-	        </g:if>
+            <g:if test="${session.user}">
+                <br />
+                <g:link controller="user" action="exportRules">Export the rules you added</g:link>
+            </g:if>
 
             <g:render template="/languageToolVersion"/>
 
         </div>
-        
-		<script type="text/javascript">
-		<!--
-		    document.filterform.filter.focus();
-		// -->
-		</script>
+
+    <script type="text/javascript">
+        <!--
+        document.filterform.filter.focus();
+        // -->
+    </script>
         
     </body>
 </html>

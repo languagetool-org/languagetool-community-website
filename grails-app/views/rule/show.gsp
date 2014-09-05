@@ -73,21 +73,21 @@
                 <tr>
                     <td><g:message code="ltc.rule.show.incorrect.sentences" /></td>
                     <td>
-			            <ul>
-			            <g:each var="example" in="${rule.getIncorrectExamples()}">
-			                <li>${example.getExample().encodeAsHTML().
-			                    replace("&lt;marker&gt;", '<span class="error">').
-			                    replace("&lt;/marker&gt;", '</span>')
-			                    }
-			                    <g:if test="${example.getCorrections()}">
-    			                    <div style="margin-top: 2px">
-                                        <g:message code="ltc.rule.show.corrections" />
-			                            <span class="correction">${StringTools.listToString(example.getCorrections(), ", ")}</span>
-                                    </div>
-			                    </g:if>
-			                </li>
-			            </g:each>
-			            </ul>
+                        <ul>
+                            <g:each var="example" in="${rule.getIncorrectExamples()}">
+                                <li>${example.getExample().encodeAsHTML().
+                                        replace("&lt;marker&gt;", '<span class="error">').
+                                        replace("&lt;/marker&gt;", '</span>')
+                                }
+                                    <g:if test="${example.getCorrections()}">
+                                        <div style="margin-top: 2px">
+                                            <g:message code="ltc.rule.show.corrections" />
+                                            <span class="correction">${StringTools.listToString(example.getCorrections(), ", ")}</span>
+                                        </div>
+                                    </g:if>
+                                </li>
+                            </g:each>
+                        </ul>
                         <g:if test="${rule.getIncorrectExamples() == null}">
                              <span class="additional"><g:message code="ltc.rule.show.no.examples" /></span>
                         </g:if>
@@ -97,13 +97,13 @@
                 <tr>
                     <td><g:message code="ltc.rule.show.correct.sentences" /></td>
                     <td>
-			            <ul>
-			            <g:each var="example" in="${rule.getCorrectExamples()}">
-			                <li>${example.encodeAsHTML().
-			                     replace("&lt;marker&gt;", '<b>').
-			                     replace("&lt;/marker&gt;", '</b>')}</li>
-			            </g:each>
-			            </ul>
+                        <ul>
+                            <g:each var="example" in="${rule.getCorrectExamples()}">
+                                <li>${example.encodeAsHTML().
+                                        replace("&lt;marker&gt;", '<b>').
+                                        replace("&lt;/marker&gt;", '</b>')}</li>
+                            </g:each>
+                        </ul>
                         <g:if test="${rule.getCorrectExamples().size() == 0}">
                              <span class="additional"><g:message code="ltc.rule.show.no.examples" /></span>
                         </g:if>
