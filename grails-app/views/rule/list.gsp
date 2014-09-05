@@ -98,11 +98,6 @@
                 <g:paginate total="${ruleCount}" params="${params}"/>
             </div>
 
-            <g:if test="${session.user}">
-                <br />
-                <g:link controller="user" action="exportRules">Export the rules you added</g:link>
-            </g:if>
-
             <g:render template="/languageToolVersion"/>
 
         </div>
