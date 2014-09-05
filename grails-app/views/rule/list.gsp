@@ -24,8 +24,9 @@
                 <input type="hidden" name="max" value="10"/>
                 <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
                 <g:textField name="filter" value="${params.filter}" placeholder="${message(code:'ltc.rule.browse.filter.placeholder')}"/>
+                <g:select value="${categoryFilter}" noSelection="['': message(code:'ltc.rule.browse.select.category')]" from="${categories}" name="categoryFilter"/>
                 <g:actionSubmit action="list" value="${message(code:'ltc.filter')}"/>
-                <g:if test="${params.filter}">
+                <g:if test="${params.filter || params.categoryFilter}">
                     &nbsp;<g:link params="[lang : params.lang]">Clear Filter</g:link>
                 </g:if>
             </g:form>

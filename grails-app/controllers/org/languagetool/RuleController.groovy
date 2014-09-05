@@ -39,9 +39,10 @@ class RuleController extends BaseController {
         Language langObj = Language.getLanguageForShortName(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
         lt.activateDefaultPatternRules()
-        List rules = lt.getAllRules()
-        if (params.filter) {
-            rules = filterRules(rules, params.filter)
+        List<Rule> rules = lt.getAllRules()
+        List<String> categories = getCategories(rules)
+        if (params.filter || params.categoryFilter) {
+            rules = filterRules(rules, params.filter, params.categoryFilter)
         }
         if (params.sort) {
             def sortF = SortField.pattern
@@ -56,13 +57,28 @@ class RuleController extends BaseController {
         } else {
             rules = rules[offset..Math.min(rules.size()-1, offset+max-1)]
         }
-        [ruleList: rules, ruleCount: ruleCount, languages: SortedLanguages.get(), language: langObj]
+        [ruleList: rules, ruleCount: ruleCount, languages: SortedLanguages.get(), language: langObj,
+                categories: categories, categoryFilter: params.categoryFilter]
     }
 
-    private filterRules(List rules, String filter) {
+    private List<String> getCategories(List<Rule> rules) {
+        Set<String> categorySet = new HashSet()
+        for (rule in rules) {
+            categorySet.add(rule.getCategory().getName())
+        }
+        List<String> categories = new ArrayList(categorySet)
+        Collections.sort(categories)
+        return categories
+    }
+
+    private filterRules(List rules, String filter, String categoryFilter) {
         filter = filter.toLowerCase()
         List filtered = []
         for (rule in rules) {
+            String catName = rule.category.name.toLowerCase()
+            if (categoryFilter && !catName.equalsIgnoreCase(categoryFilter)) {
+                continue
+            }
             // match pattern:
             if (rule instanceof PatternRule) {
                 PatternRule pRule = (PatternRule)rule
@@ -77,7 +93,6 @@ class RuleController extends BaseController {
                 continue
             }
             // match category:
-            String catName = rule.category.name.toLowerCase()
             if (catName.contains(filter)) {
                 filtered.add(rule)
             }
