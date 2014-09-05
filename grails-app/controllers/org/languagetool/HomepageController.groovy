@@ -67,14 +67,14 @@ class HomepageController extends BaseController {
                 try {
                     detectedLang = Language.getLanguageForShortName(detectedLangCode)
                 } catch (IllegalArgumentException e) {
-                    render(view:"checkText", model:[matches: [], lang: "auto", disabledRules: null, languages: languages,
+                    render(view:"checkText", model:[matches: [], lang: "auto", languages: languages,
                             autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null,
                             textToCheck: params.text])
                     return
                 }
             }
             if (detectedLang == null || params.text.trim().length() == 0) {
-                render(view:"checkText", model:[matches: [], lang: "auto", disabledRules: null, languages: languages,
+                render(view:"checkText", model:[matches: [], lang: "auto", languages: languages,
                         autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null,
                         textToCheck: params.text])
                 return

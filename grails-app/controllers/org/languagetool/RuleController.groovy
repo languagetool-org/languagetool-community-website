@@ -110,17 +110,7 @@ class RuleController extends BaseController {
         Language langObj = Language.getLanguageForShortName(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
         lt.activateDefaultPatternRules()
-        Rule selectedRule
-        boolean isUserRule = false
-        try {
-            // user rules have an internal (integer) id:
-            int ruleId = Integer.parseInt(params.id)
-            UserRule userRule = UserRule.get(ruleId)
-            selectedRule = userRule.toPatternRule(true)
-            isUserRule = true
-        } catch (NumberFormatException ignored) {
-            selectedRule = getSystemRuleById(params.id, params.subId, lt)
-        }
+        Rule selectedRule = getSystemRuleById(params.id, params.subId, lt)
         if (!selectedRule) {
             flash.message = "No rule with id ${params.id.encodeAsHTML()}"
             redirect(action:list)
@@ -137,9 +127,6 @@ class RuleController extends BaseController {
             } else {
                 lt.disableRule(rule.id)
             }
-        }
-        if (isUserRule) {
-            lt.addRule(selectedRule)
         }
         // now actually check the text:
         String text = params.text
@@ -196,19 +183,9 @@ class RuleController extends BaseController {
     }
 
     private Rule getRuleById(String id, String subId, String lang) {
-        Rule selectedRule
-        try {
-            int userRuleId = Integer.parseInt(id)
-            log.info("getting user rule with id $userRuleId")
-            UserRule selectedUserRule = UserRule.get(userRuleId)
-            // build a temporary rule:
-            selectedRule = selectedUserRule.toPatternRule(true)
-        } catch (NumberFormatException ignored) {
-            JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
-            lt.activateDefaultPatternRules()
-            selectedRule = getSystemRuleById(id, subId, lt)
-        }
-        return selectedRule
+        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
+        lt.activateDefaultPatternRules()
+        return getSystemRuleById(id, subId, lt)
     }
 
     private Rule getSystemRuleById(String id, String subId, JLanguageTool lt) {
