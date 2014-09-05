@@ -27,7 +27,7 @@
                 <g:select value="${categoryFilter}" noSelection="['': message(code:'ltc.rule.browse.select.category')]" from="${categories}" name="categoryFilter"/>
                 <g:actionSubmit action="list" value="${message(code:'ltc.filter')}"/>
                 <g:if test="${params.filter || params.categoryFilter}">
-                    &nbsp;<g:link params="[lang : params.lang]">Clear Filter</g:link>
+                    &nbsp;<g:link params="[lang : params.lang]">${message(code:'ltc.clear.filter')}</g:link>
                 </g:if>
             </g:form>
                 
@@ -88,7 +88,7 @@
                     </g:each>
                     <g:if test="${ruleList.size() == 0}">
                         <tr>
-                            <td>No match. <g:link params="[lang : params.lang]">Clear Filter</g:link></td>
+                            <td>${message(code:'ltc.filter.no.match')} <g:link params="[lang : params.lang]">${message(code:'ltc.clear.filter')}</g:link></td>
                         </tr>
                     </g:if>
                     </tbody>
