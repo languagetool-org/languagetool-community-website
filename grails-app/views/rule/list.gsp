@@ -38,7 +38,7 @@
 
                             <g:sortableColumn property="description" title="${message(code:'ltc.rule.browse.description')}" />
 
-                            <g:sortableColumn property="pattern" title="${message(code:'ltc.rule.browse.pattern')}" />
+                            <g:sortableColumn property="pattern" title="${message(code:'ltc.rule.browse.example')}" />
                             
                             <g:sortableColumn property="category" title="${message(code:'ltc.rule.browse.category')}" />
                             
@@ -48,7 +48,7 @@
                     <g:each in="${ruleList}" status="i" var="rule">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 
-                            <td>
+                            <td width="200">
                                 <g:if test="${rule instanceof PatternRule}">
                                     <%
                                     PatternRule pRule = (PatternRule) rule;
@@ -63,19 +63,12 @@
                                 </g:else>
                             </td>
 
-                            <g:if test="${rule instanceof PatternRule}">
-                                <%
-                                PatternRule pRule = (PatternRule) rule;
-                                String patternDisplay = pRule.toPatternString();
-                                patternDisplay = StringTools.shorten(patternDisplay, 80, "...");
-                                patternDisplay = patternDisplay.replace(", ", " ");  // commas don't help the user to understand the pattern, remove them
-                                patternDisplay = StringTools.escapeHtmlAndHighlightMatches(patternDisplay, params.filter);
-                                %>
-                                <td class="metaInfo">${patternDisplay}</td>
-                            </g:if>
-                            <g:else>
-                                <td><g:message code="ltc.rule.browse.java.rule" /></td>
-                            </g:else>
+                            <td>
+                                <g:if test="${rule.getIncorrectExamples()?.size() > 0}">
+                                    ${rule.getIncorrectExamples().get(0).example.encodeAsHTML()
+                                            .replace("&lt;marker&gt;", "<span class='errorlight'>").replace("&lt;/marker&gt;", "</span>")}
+                                </g:if>
+                            </td>
 
                             <td>
                                 <%

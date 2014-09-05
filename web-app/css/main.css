@@ -288,6 +288,14 @@ th.desc a {
     background-repeat: repeat-x;
     background-position: left bottom;
 }
+.errorlight {
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    background-image: url("../images/squiggle.png");
+    background-repeat: repeat-x;
+    background-position: left bottom;
+}
 .spellingError {
     font-weight: bold;
     padding-left: 2px;
