@@ -86,6 +86,11 @@
                         
                         </tr>
                     </g:each>
+                    <g:if test="${ruleList.size() == 0}">
+                        <tr>
+                            <td>No match. <g:link params="[lang : params.lang]">Clear Filter</g:link></td>
+                        </tr>
+                    </g:if>
                     </tbody>
                 </table>
             </div>
