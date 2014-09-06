@@ -97,7 +97,12 @@
 
     <script type="text/javascript">
         <!--
-        document.filterform.filter.focus();
+        var filter = document.filterform.filter;
+        filter.focus();
+        if (filter.setSelectionRange) {
+            var length = filter.value.length;
+            filter.setSelectionRange(length, length);  // place cursor at end
+        }
         // -->
     </script>
         
