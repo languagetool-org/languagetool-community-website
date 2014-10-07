@@ -27,10 +27,10 @@
                 </tr>
                 <tr>
                     <td><g:message code="ltc.suggestion.word"/></td>
-                    <td>${params.word?.encodeAsHTML()}</td>
+                    <td><span style="font-family: monospace; font-size: x-large">${params.word?.encodeAsHTML()}</span></td>
                 </tr>
                 <tr>
-                    <td><g:message code="ltc.suggestion.email"/></td>
+                    <td style="padding-top: 8px"><g:message code="ltc.suggestion.email"/></td>
                     <td>
                         <g:textField size="50" autofocus="autofocus" name="email"/><br/>
                         <span class="metaInfo"><g:message code="ltc.suggestion.email.hint"/></span>
