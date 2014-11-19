@@ -51,7 +51,8 @@
                                             pos += token.getToken().length();
                                         %>
                                     </g:each>
-                                    <span class="metaInfo">(${matchingSentence.getSource()})</span>
+                                    <span class="metaInfo">${matchingSentence.getSource()}, <g:link controller="analysis"
+                                          action="analyzeText" params="${[text: matchingSentence.sentence]}" target="ltAnalysis">Analyse</g:link></span>
                                 </li>
                             </g:each>
                         </g:each>
