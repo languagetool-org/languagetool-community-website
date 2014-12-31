@@ -19,8 +19,6 @@
 
 package org.languagetool
 
-import org.apache.tika.language.LanguageIdentifier
-
 /**
  * The main page of the website.
  */
@@ -56,34 +54,9 @@ class HomepageController extends BaseController {
      * Run the grammar checker on the given text.
      */
     def checkText = {
-        String langStr = "en"
-        boolean autoLangDetectionWarning = false
         List languages = SortedLanguages.get()
-        Language detectedLang = null
-        if (params.lang == "auto" || params.language == "auto") {
-            LanguageIdentifier identifier = new LanguageIdentifier(params.text)
-            String detectedLangCode = identifier.getLanguage()
-            if (detectedLangCode != 'unknown') {
-                try {
-                    detectedLang = Language.getLanguageForShortName(detectedLangCode)
-                } catch (IllegalArgumentException e) {
-                    render(view:"checkText", model:[matches: [], lang: "auto", languages: languages,
-                            autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null,
-                            textToCheck: params.text])
-                    return
-                }
-            }
-            if (detectedLang == null || params.text.trim().length() == 0) {
-                render(view:"checkText", model:[matches: [], lang: "auto", languages: languages,
-                        autoLangDetectionWarning: false, autoLangDetectionFailure: true, detectedLang: null,
-                        textToCheck: params.text])
-                return
-            }
-            langStr = detectedLang.getShortName()
-            params.lang = langStr
-            // TODO: use identifier.isReasonablyCertain() - but make sure it works!
-            autoLangDetectionWarning = params.text?.length() < 60
-        } else if (params.language) {
+        String langStr = "en"
+        if (params.language) {
             langStr = params.language
         } else if (params.lang) {
             langStr = params.lang
@@ -102,8 +75,7 @@ class HomepageController extends BaseController {
         }
         List ruleMatches = lt.check(text)
         [matches: ruleMatches, lang: langStr, language: lang, languages: languages,
-                textToCheck: params.text,
-                autoLangDetectionWarning: autoLangDetectionWarning, detectedLang: detectedLang]
+                textToCheck: params.text]
     }
 
 }

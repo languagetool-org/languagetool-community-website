@@ -28,13 +28,6 @@
                 <g:message code="ltc.home.check.text.intro" args="${['http://languagetool.org']}" />
             </g:if>
         
-            <g:if test="${autoLangDetectionWarning}">
-              <div class="warn"><g:message code="ltc.home.check.detection.warning" args="${[detectedLang]}"/></div>
-            </g:if>
-            <g:if test="${autoLangDetectionFailure}">
-              <div class="warn"><g:message code="ltc.home.check.detection.failure" args="${[languages.join(', ')]}"/></div>
-            </g:if>
-
             <g:render template="/ruleMatches"/>
             
             <br />

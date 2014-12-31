@@ -49,10 +49,10 @@
             <%-- nothing --%>
         </g:else>
     </g:each>
-    <g:if test="${matches != null && matches.size() == 0 && params.lang && params.lang != 'auto'}">
+    <g:if test="${matches != null && matches.size() == 0 && params.lang}">
        <li><g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.lang)]}"/></li>
     </g:if>
-    <g:elseif test="${matches != null && matches.size() == 0 && params.language && params.language != 'auto'}">
+    <g:elseif test="${matches != null && matches.size() == 0 && params.language}">
        <li><g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.language)]}"/></li>
     </g:elseif>
 </ul>
