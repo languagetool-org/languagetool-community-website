@@ -94,14 +94,20 @@ xmlServices.factory('XmlParser',
         }
         
         this.evalXPath(doc, result, "//example", doc, function(thisNode) {
-          var attValue = thisNode.attributes.getNamedItem('type').nodeValue;
+          var attributes = thisNode.attributes;
+          var attValue = attributes.getNamedItem('type');
+          if (attValue) {
+            attValue = attValue.nodeValue;
+          }
           var type;
           if (attValue === 'incorrect') {
             type = 'wrong';
           } else if (attValue === 'correct') {
             type = 'corrected';
+          } else if (attributes.getNamedItem('correction')) {
+            type = 'wrong';
           } else {
-            throw "Unknown attribute value '" + attValue + "'";
+            throw "Unknown attribute value '" + attValue + "' for attribute 'type'";
           }
           var sentence = "";
           for (var i = 0; i < thisNode.childNodes.length; i++) {

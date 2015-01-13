@@ -148,9 +148,6 @@ class RuleEditorController extends BaseController {
 
     private List<String> checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, boolean checkMarker) {
         List<String> correctExamples = patternRule.getCorrectExamples()
-        if (correctExamples.size() == 0) {
-            throw new Exception("No correct example sentences found")
-        }
         List<IncorrectExample> incorrectExamples = patternRule.getIncorrectExamples()
         if (incorrectExamples.size() == 0) {
             throw new Exception("No incorrect example sentences found")
