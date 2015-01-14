@@ -52,7 +52,7 @@
                                         %>
                                     </g:each>
                                     <span class="metaInfo">${matchingSentence.getSource()}, <g:link controller="analysis"
-                                          action="analyzeText" params="${[text: matchingSentence.sentence]}" target="ltAnalysis">Analyse</g:link></span>
+                                          action="analyzeText" params="${[text: matchingSentence.sentence, lang: params.language]}" target="ltAnalysis">Analyse</g:link></span>
                                 </li>
                             </g:each>
                         </g:each>
