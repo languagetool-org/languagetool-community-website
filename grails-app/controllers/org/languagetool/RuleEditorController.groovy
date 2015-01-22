@@ -203,7 +203,7 @@ class RuleEditorController extends BaseController {
                     }
                 }
                 def foundReplacements = ruleMatches.get(0).getSuggestedReplacements().sort()
-                if (expectedReplacements.size() > 0 && expectedReplacements != foundReplacements) {
+                if (expectedReplacements.size() > 0 && !expectedReplacements.get(0).isEmpty() && expectedReplacements != foundReplacements) {
                     problems.add(message(code: 'ltc.editor.error.wrong.correction', args: [sentence, foundReplacements, expectedReplacements]))
                 }
             } else {
