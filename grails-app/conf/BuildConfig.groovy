@@ -37,7 +37,6 @@ grails.project.dependency.resolution = {
             exclude "slf4j-nop"
         }
         runtime 'org.languagetool:languagetool-wikipedia:2.9-SNAPSHOT'
-        // TODO: how to add dependency to languagetool-core with type 'test-jar'?
 
         runtime 'mysql:mysql-connector-java:5.1.16'
         runtime 'com.sun.mail:javax.mail:1.5.1'
