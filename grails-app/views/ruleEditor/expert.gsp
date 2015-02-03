@@ -51,9 +51,9 @@
 
             <g:form name="ruleForm" method="post" action="checkRule">
 
-                <p class="warn">Please consider <g:link controller="ruleEditor2">using the new rule editor</g:link> instead</p>
+                <p style="margin-top: 8px;">You're in expert mode. Don't know what to do here? <g:link controller="ruleEditor2">Try the simple mode instead.</g:link></p>
                 
-                <p><g:message code="ltc.editor.expert.intro" args="${['http://www.languagetool.org/development/']}"/></p>
+                <p><g:message code="ltc.editor.expert.intro" args="${['http://wiki.languagetool.org/development-overview']}"/></p>
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="${params.language ? params.language : 'English'}"/><br/>
 
@@ -67,9 +67,9 @@
         &lt;token&gt;bed&lt;/token&gt;
         &lt;token&gt;English&lt;/token&gt;
     &lt;/pattern&gt;
-    &lt;message&gt;Did you mean &lt;suggestion&gt;bad&lt;/suggestion&gt;?&lt;/message&gt;
-    &lt;example type="incorrect"&gt;Sorry for my &lt;marker&gt;bed English&lt;/marker&gt;.&lt;/example&gt;
-    &lt;example type="correct"&gt;Sorry for my bad English.&lt;/example&gt;
+    &lt;message&gt;Did you mean &lt;suggestion&gt;bad English&lt;/suggestion&gt;?&lt;/message&gt;
+    &lt;example correction="bad English"&gt;Sorry for my &lt;marker&gt;bed English&lt;/marker&gt;.&lt;/example&gt;
+    &lt;example&gt;Sorry for my bad English.&lt;/example&gt;
 &lt;/rule&gt;
 </div>
                 </g:else>
@@ -123,7 +123,7 @@
                     attrCompletions['match'] = getCompletions("regexp_match postag_regexp setpos suppress_misspelled regexp_replace postag_replace postag no include_skipped");
                     attrCompletions['suggestion'] = getCompletions("suppress_misspelled");
                     attrCompletions['phraseref'] = getCompletions("idref");
-                    attrCompletions['example'] = getCompletions("type correction");
+                    attrCompletions['example'] = getCompletions("correction");
                     
                     ace.require("ace/ext/language_tools");
                     var editor = ace.edit("editor");

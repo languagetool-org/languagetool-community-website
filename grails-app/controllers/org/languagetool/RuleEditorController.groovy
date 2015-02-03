@@ -140,7 +140,7 @@ class RuleEditorController extends BaseController {
                     expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
         } catch (Exception e) {
             log.error("Error checking XML in ${language}, pattern: ${patternRule}, XML input: ${xml}", e)
-            problems.add("Sorry, an internal error occurred tryin to check your rule: ${e.getCause()}")
+            problems.add("Sorry, an error occurred trying to check your rule: ${e.getMessage()}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
         }
