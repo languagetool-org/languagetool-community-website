@@ -62,7 +62,12 @@ class SuggestionController {
             title = "LanguageTool Word Suggestions"
             description = "Words that should be added to LanguageTool's spell dictionary, as suggested by users"
             link = createLink(controller: 'suggestion', action: 'feed', absolute: true)
-            List suggestions = Suggestion.findAll([max: 100, sort:'date', order:'desc'])
+            List suggestions
+            if (params.lang) {
+                suggestions = Suggestion.findAllByLanguageCode(params.lang, [max: 100, sort:'date', order:'desc'])
+            } else {
+                suggestions = Suggestion.findAll([max: 100, sort:'date', order:'desc'])
+            }
             suggestions.each { suggestion ->
                 entry("${suggestion.word} - language: ${suggestion.languageCode}, email: ${suggestion.email}") {
                     publishedDate = suggestion.date
