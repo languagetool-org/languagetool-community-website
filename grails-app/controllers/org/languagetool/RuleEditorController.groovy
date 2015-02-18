@@ -183,7 +183,9 @@ class RuleEditorController extends BaseController {
                 }
             } else if (ruleMatches.size() == 1) {
                 def ruleMatch = ruleMatches.get(0)
-                def expectedReplacements = incorrectExample.corrections.sort()
+                def expectedReplacements = []
+                expectedReplacements.addAll(incorrectExample.corrections)
+                expectedReplacements.sort()
                 if (checkMarker) {
                     int expectedMatchStart = incorrectExample.getExample().indexOf("<marker>")
                     int expectedMatchEnd = incorrectExample.getExample().indexOf("</marker>") - "<marker>".length()
