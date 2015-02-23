@@ -245,7 +245,9 @@ class RuleEditorController extends BaseController {
     private JLanguageTool getLanguageToolWithOneRule(Language lang, PatternRule patternRule) {
         JLanguageTool langTool = new JLanguageTool(lang)
         for (rule in langTool.getAllActiveRules()) {
-            langTool.disableRule(rule.getId())
+            if (!patternRule.getId().equals(rule.getId())) {
+                langTool.disableRule(rule.getId())
+            }
         }
         langTool.addRule(patternRule)
         return langTool
