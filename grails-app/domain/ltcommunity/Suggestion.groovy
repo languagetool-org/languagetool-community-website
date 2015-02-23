@@ -18,6 +18,9 @@
  */
 package ltcommunity
 
+/**
+ * A word suggestion for the spell checker.
+ */
 class Suggestion {
 
     static constraints = {
