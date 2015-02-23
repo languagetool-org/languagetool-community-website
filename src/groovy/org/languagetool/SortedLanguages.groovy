@@ -21,7 +21,7 @@ package org.languagetool
 class SortedLanguages {
 
     public static List get() {
-        List languages = Language.REAL_LANGUAGES
+        List languages = new ArrayList(Languages.get())
         languages.sort{it.getName()}
         return languages
     }

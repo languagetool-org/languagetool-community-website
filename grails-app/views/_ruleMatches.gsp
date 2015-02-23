@@ -1,4 +1,4 @@
-<%@page import="org.languagetool.tools.ContextTools; org.languagetool.rules.patterns.PatternRule; org.languagetool.Language" %>
+<%@page import="org.languagetool.tools.ContextTools; org.languagetool.rules.patterns.PatternRule; org.languagetool.Language; org.languagetool.Languages" %>
 
 <ul>
     <g:set var="maxMatches" value="${100}"/>
@@ -50,9 +50,9 @@
         </g:else>
     </g:each>
     <g:if test="${matches != null && matches.size() == 0 && params.lang}">
-       <li><g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.lang)]}"/></li>
+       <li><g:message code="ltc.no.rule.matches" args="${[Languages.getLanguageForShortName(params.lang)]}"/></li>
     </g:if>
     <g:elseif test="${matches != null && matches.size() == 0 && params.language}">
-       <li><g:message code="ltc.no.rule.matches" args="${[Language.getLanguageForShortName(params.language)]}"/></li>
+       <li><g:message code="ltc.no.rule.matches" args="${[Languages.getLanguageForShortName(params.language)]}"/></li>
     </g:elseif>
 </ul>

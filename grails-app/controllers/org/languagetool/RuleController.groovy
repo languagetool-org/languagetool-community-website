@@ -36,9 +36,8 @@ class RuleController extends BaseController {
         if (params.offset) offset = Integer.parseInt(params.offset)
         if (params.max) max = Integer.parseInt(params.max)
         String langCode = getLanguageCode()
-        Language langObj = Language.getLanguageForShortName(langCode)
+        Language langObj = Languages.getLanguageForShortName(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
-        lt.activateDefaultPatternRules()
         List<Rule> rules = lt.getAllRules()
         List<String> categories = getCategories(rules)
         if (params.filter || params.categoryFilter) {
@@ -107,9 +106,8 @@ class RuleController extends BaseController {
         // get all information needed to display "show" page:
         String langCode = "en"
         if (params.lang) langCode = params.lang
-        Language langObj = Language.getLanguageForShortName(langCode)
+        Language langObj = Languages.getLanguageForShortName(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
-        lt.activateDefaultPatternRules()
         Rule selectedRule = getSystemRuleById(params.id, params.subId, lt)
         if (!selectedRule) {
             flash.message = "No rule with id ${params.id.encodeAsHTML()}"
@@ -143,7 +141,7 @@ class RuleController extends BaseController {
 
     def show = {
         String langCode = getLanguageCode()
-        Language langObj = Language.getLanguageForShortName(langCode)
+        Language langObj = Languages.getLanguageForShortName(langCode)
         Rule selectedRule = getRuleById(params.id, params.subId, langCode)
         if (!selectedRule) {
             log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${langCode}")
@@ -166,7 +164,7 @@ class RuleController extends BaseController {
 
     def showRuleXml = {
         String langCode = getLanguageCode()
-        Language language = Language.getLanguageForShortName(langCode)
+        Language language = Languages.getLanguageForShortName(langCode)
         PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
         PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
         String ruleAsXml = ruleXmlCreator.toXML(id, language)
@@ -183,8 +181,7 @@ class RuleController extends BaseController {
     }
 
     private Rule getRuleById(String id, String subId, String lang) {
-        JLanguageTool lt = new JLanguageTool(Language.getLanguageForShortName(lang))
-        lt.activateDefaultPatternRules()
+        JLanguageTool lt = new JLanguageTool(Languages.getLanguageForShortName(lang))
         return getSystemRuleById(id, subId, lt)
     }
 

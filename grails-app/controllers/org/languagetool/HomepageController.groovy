@@ -29,7 +29,7 @@ class HomepageController extends BaseController {
      */
     def index = {
         String langCode = params.lang ? params.lang : "en"
-        Language langObject = Language.getLanguageForShortName(langCode)
+        Language langObject = Languages.getLanguageForShortName(langCode)
         render(view:'index',model:[langCode: langCode,
                 lang: langCode,		// used in _corpusMatches.gsp
                 languages: SortedLanguages.get(), language: langObject])
@@ -46,7 +46,7 @@ class HomepageController extends BaseController {
         }
         params.language = langCode
         params.lang = langCode
-        Language language = Language.getLanguageForShortName(langCode)
+        Language language = Languages.getLanguageForShortName(langCode)
         render(view: 'checkText', model:[languages: languages, language: language])
     }
     
@@ -61,12 +61,11 @@ class HomepageController extends BaseController {
         } else if (params.lang) {
             langStr = params.lang
         }
-        Language lang = Language.getLanguageForShortName(langStr)
+        Language lang = Languages.getLanguageForShortName(langStr)
         if (lang.hasVariant()) {
             lang = lang.getDefaultLanguageVariant()   // we need to select a variant because we want spell checking
         }
         JLanguageTool lt = new JLanguageTool(lang)
-        lt.activateDefaultPatternRules()
         final int maxTextLen = grailsApplication.config.max.text.length
         final String text = params.text
         if (text.size() > maxTextLen) {

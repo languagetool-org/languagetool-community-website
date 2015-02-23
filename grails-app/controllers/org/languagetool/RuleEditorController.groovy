@@ -37,15 +37,15 @@ class RuleEditorController extends BaseController {
     int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
 
     def index = {
-        [languages: Language.REAL_LANGUAGES, languageNames: getSortedLanguageNames()]
+        [languages: Languages.get(), languageNames: getSortedLanguageNames()]
     }
 
     def expert = {
-        [languages: Language.REAL_LANGUAGES, languageNames: getSortedLanguageNames()]
+        [languages: Languages.get(), languageNames: getSortedLanguageNames()]
     }
 
     private List getSortedLanguageNames() {
-        List languages = Language.REAL_LANGUAGES
+        List languages = Languages.get()
         List languageNames = []
         languages.each { languageNames.add(it.getName()) }
         languageNames.sort()
@@ -53,7 +53,7 @@ class RuleEditorController extends BaseController {
     }
 
     def indexOverview = {
-        for (lang in Language.REAL_LANGUAGES) {
+        for (lang in Languages.get()) {
           if (lang.isVariant()) {
             continue
           }
@@ -83,7 +83,7 @@ class RuleEditorController extends BaseController {
             language = getLanguage()
         } catch (Exception e) {
             // maybe it's a language code:
-            language = Language.getLanguageForShortName(params.language)
+            language = Languages.getLanguageForShortName(params.language)
         }
         PatternRuleLoader loader = new PatternRuleLoader()
         loader.setRelaxedMode(true)
@@ -261,7 +261,7 @@ class RuleEditorController extends BaseController {
     }
 
     private Language getLanguage() {
-        Language lang = Language.getLanguageForName(params.language)
+        Language lang = Languages.getLanguageForName(params.language)
         if (!lang) {
             throw new Exception("No language '${params.language}' found")
         }

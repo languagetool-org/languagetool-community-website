@@ -30,29 +30,29 @@ import org.languagetool.tagging.xx.DemoTagger
 class RuleEditor2Controller extends BaseController {
 
     def index() {
-        Language language = Language.getLanguageForShortName(params.lang ? params.lang : "en")
+        Language language = Languages.getLanguageForShortName(params.lang ? params.lang : "en")
         String ruleXml = ''
         if (params.id) {
             PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
             PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
             ruleXml = ruleXmlCreator.toXML(id, language).replace("\n", "__NL__").replace("\\", "\\\\")
         }
-        [languages: Language.REAL_LANGUAGES, language: language, ruleXml: ruleXml]
+        [languages: Languages.get(), language: language, ruleXml: ruleXml]
     }
 
     def posTagInformation() {
         String langCode = params.lang ? params.lang : "en"
-        Language language = Language.getLanguageForShortName(langCode)
+        Language language = Languages.getLanguageForShortName(langCode)
         if (language.getTagger() && !(language.getTagger() instanceof DemoTagger)) {
             redirect(url: "https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/" +
                     "${langCode}/src/main/resources/org/languagetool/resource/${langCode}/tagset.txt")
         } else {
-            [languages: Language.REAL_LANGUAGES, language: language]
+            [languages: Languages.get(), language: language]
         }
     }
     
     def examples() {
-        Language language = Language.getLanguageForShortName(params.lang ? params.lang : "en")
+        Language language = Languages.getLanguageForShortName(params.lang ? params.lang : "en")
         def path = "/examples/" + language.getShortName() + ".txt"
         InputStream stream = RuleEditor2Controller.class.getResourceAsStream(path)
         List examples = []

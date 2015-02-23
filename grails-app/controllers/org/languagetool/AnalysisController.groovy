@@ -25,7 +25,7 @@ class AnalysisController extends BaseController {
 
     def index = {
         String langCode = params.lang ? params.lang : "en"
-        Language langObject = Language.getLanguageForShortName(langCode)
+        Language langObject = Languages.getLanguageForShortName(langCode)
         [language: langObject, languages: SortedLanguages.get()]
     }
 
@@ -34,7 +34,7 @@ class AnalysisController extends BaseController {
      */
     def analyzeText = {
         String langCode = params.lang ? params.lang : "en"
-        Language langObject = Language.getLanguageForShortName(langCode)
+        Language langObject = Languages.getLanguageForShortName(langCode)
         List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
         [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
                 textToCheck: params.text]
@@ -44,9 +44,8 @@ class AnalysisController extends BaseController {
      * Tokenize two example sentences for the rule editor and check the first (incorrect) sentence.
      */
     def tokenizeSentences = {
-        Language lang = Language.getLanguageForShortName(params.lang)
+        Language lang = Languages.getLanguageForShortName(params.lang)
         JLanguageTool lt = new JLanguageTool(lang)
-        lt.activateDefaultPatternRules()
         List<String> tokens1 = getTokens(params.sentence1, lt)
         def ruleMatches = lt.check((String)params.sentence1)
         String ruleMatchesHtml
@@ -78,7 +77,7 @@ class AnalysisController extends BaseController {
      * Show POS tagging etc, for embedding as a debugging help in rule editor.
      */
     def analyzeTextForEmbedding = {
-        Language langObject = Language.getLanguageForShortName(params.lang)
+        Language langObject = Languages.getLanguageForShortName(params.lang)
         List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
         def analysisStr = g.render(template: 'analyzeTextForEmbedding',
                 model: [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
@@ -94,7 +93,6 @@ class AnalysisController extends BaseController {
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
         JLanguageTool lt = new JLanguageTool(lang)
-        lt.activateDefaultPatternRules()
         List<AnalyzedSentence> analyzedSentences = lt.analyzeText(text)
         return analyzedSentences
     }
