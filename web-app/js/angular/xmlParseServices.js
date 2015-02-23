@@ -107,7 +107,7 @@ xmlServices.factory('XmlParser',
           } else if (attributes.getNamedItem('correction')) {
             type = 'wrong';
           } else {
-            throw "Unknown attribute value '" + attValue + "' for attribute 'type'";
+            type = 'corrected';  // no correction implies the sentence is correct
           }
           var sentence = "";
           for (var i = 0; i < thisNode.childNodes.length; i++) {
