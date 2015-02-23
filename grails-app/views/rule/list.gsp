@@ -1,5 +1,4 @@
 
-<%@ page import="org.languagetool.User" %>
 <%@ page import="org.languagetool.StringTools" %>
 <%@ page import="org.languagetool.rules.patterns.PatternRule" %>
 <html>
