@@ -44,15 +44,15 @@ grails.project.dependency.resolution = {
 
     plugins {
         compile ":feeds:1.6"
-        runtime ":hibernate:$grailsVersion"
+        runtime ":hibernate:3.6.10.16"
         runtime ":jquery:1.7.1"
-        runtime ":resources:1.2.7"
+        runtime ":resources:1.2.8"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
 
-        build ":tomcat:$grailsVersion"
+        build ":tomcat:7.0.54"
     }
 }
