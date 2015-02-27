@@ -33,6 +33,10 @@ describe('RuleEditor controllers', function() {
         $scope: scope
       });
     }));
+
+    function clean(s) {
+        return s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ");
+    }
     
     it('should extract language from url', inject(function($controller) {
       expect(scope.getParam("lang", "http://foo.de?lang=xx")).toBe("xx");
@@ -120,146 +124,146 @@ describe('RuleEditor controllers', function() {
     
     // testing XML here as it depends on the controller:
     it('should build XML', inject(function($controller) {
-      expect(scope.buildXml()).toContain("<pattern>");
+      expect(clean(scope.buildXml())).toContain("<pattern>");
       
       scope.setElement("hallo");
-      expect(scope.buildXml()).toContain("<token>hallo</token>");
+      expect(clean(scope.buildXml())).toContain("<token>hallo</token>");
 
       scope.setElement("hallo", {regex: true});
-      expect(scope.buildXml()).toContain("<token regexp='yes'>hallo</token>");
+      expect(clean(scope.buildXml())).toContain("<token regexp='yes'>hallo</token>");
 
       scope.setElement("hallo", {negation: true});
-      expect(scope.buildXml()).toContain("<token negate='yes'>hallo</token>");
+      expect(clean(scope.buildXml())).toContain("<token negate='yes'>hallo</token>");
 
       scope.setElement("hallo", {regex: true, negation: true});
-      expect(scope.buildXml()).toContain("<token regexp='yes' negate='yes'>hallo</token>");
+      expect(clean(scope.buildXml())).toContain("<token regexp='yes' negate='yes'>hallo</token>");
 
       scope.setElement("hallo", {regex: true, negation: true, inflected: true});
-      expect(scope.buildXml()).toContain("<token inflected='yes' regexp='yes' negate='yes'>hallo</token>");
+      expect(clean(scope.buildXml())).toContain("<token inflected='yes' regexp='yes' negate='yes'>hallo</token>");
 
 
       scope.setElement("", {posTag: 'NN', tokenType: scope.TokenTypes.POS_TAG});
-      expect(scope.buildXml()).toContain("<token postag='NN'></token>");
+      expect(clean(scope.buildXml())).toContain("<token postag='NN'></token>");
 
       scope.setElement("", {posTag: 'NN', posTagNegation: true, tokenType: scope.TokenTypes.POS_TAG});
-      expect(scope.buildXml()).toContain("<token postag='NN' negate_pos='yes'></token>");
+      expect(clean(scope.buildXml())).toContain("<token postag='NN' negate_pos='yes'></token>");
 
       scope.setElement("", {posTag: 'NN', posTagRegex: true, tokenType: scope.TokenTypes.POS_TAG});
-      expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes'></token>");
+      expect(clean(scope.buildXml())).toContain("<token postag='NN' postag_regexp='yes'></token>");
 
       scope.setElement("", {posTag: 'NN', posTagRegex: true, posTagNegation: true, tokenType: scope.TokenTypes.POS_TAG});
-      expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes' negate_pos='yes'></token>");
+      expect(clean(scope.buildXml())).toContain("<token postag='NN' postag_regexp='yes' negate_pos='yes'></token>");
 
 
       scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG});
-      expect(scope.buildXml()).toContain("<token postag='NN'>hallo</token>");
-      
+      expect(clean(scope.buildXml())).toContain("<token postag='NN'>hallo</token>");
+
       scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true});
-      expect(scope.buildXml()).toContain("<token postag='NN' postag_regexp='yes'>hallo</token>");
-      
+      expect(clean(scope.buildXml())).toContain("<token postag='NN' postag_regexp='yes'>hallo</token>");
+
       scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true, regex: true});
-      expect(scope.buildXml()).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
-      
+      expect(clean(scope.buildXml())).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
+
       scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true, regex: true});
-      expect(scope.buildXml()).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
+      expect(clean(scope.buildXml())).toContain("<token regexp='yes' postag='NN' postag_regexp='yes'>hallo</token>");
 
       scope.setElement("hallo", {posTag: 'NN', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: true, regex: true, negation: true, posTagNegation: true});
-      expect(scope.buildXml()).toContain("<token regexp='yes' negate='yes' postag='NN' postag_regexp='yes' negate_pos='yes'>hallo</token>");
+      expect(clean(scope.buildXml())).toContain("<token regexp='yes' negate='yes' postag='NN' postag_regexp='yes' negate_pos='yes'>hallo</token>");
 
 
       scope.setElement("", {tokenType: scope.TokenTypes.ANY});
-      expect(scope.buildXml()).toContain("<token></token>");
+      expect(clean(scope.buildXml())).toContain("<token></token>");
 
       scope.addMarker();
-      expect(scope.buildXml()).toContain("<marker>");
-      expect(scope.buildXml()).toContain("</marker>");
+      expect(clean(scope.buildXml())).toContain("<marker>");
+      expect(clean(scope.buildXml())).toContain("</marker>");
 
-      expect(scope.buildXml()).toContain("<pattern>");
+      expect(clean(scope.buildXml())).toContain("<pattern>");
       scope.caseSensitive = true;
-      expect(scope.buildXml()).toContain("<pattern case_sensitive='yes'>");
+      expect(clean(scope.buildXml())).toContain("<pattern case_sensitive='yes'>");
     }));
 
     it('should build XML with exception elements', inject(function($controller) {
       var elem = scope.setElement("hallo");
       scope.addException(elem);
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception></exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception></exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem);
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception></exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception></exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException'});
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception>myException</exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', regex: true});
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', inflected: true});
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception inflected='yes'>myException</exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception inflected='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', regex: true});
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception regexp='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', regex: true, negation:true});
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception regexp='yes' negate='yes'>myException</exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception regexp='yes' negate='yes'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("");
       scope.addException(elem, {tokenType: scope.TokenTypes.POS_TAG, posTag: 'XTAG'});
-      expect(scope.buildXml()).toMatch("<token>\\s*<exception postag='XTAG'></exception>");
+      expect(clean(scope.buildXml())).toMatch("<token>\\s*<exception postag='XTAG'></exception>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XTAG'});
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception postag='XTAG'>myException</exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception postag='XTAG'>myException</exception>\\s*</token>");
       
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XTAG', posTagRegex: true, posTagNegation: true});
-      expect(scope.buildXml()).toMatch("<token>hallo\\s*<exception postag='XTAG' postag_regexp='yes' negate_pos='yes'>myException</exception>\\s*</token>");
+      expect(clean(scope.buildXml())).toMatch("<token>hallo\\s*<exception postag='XTAG' postag_regexp='yes' negate_pos='yes'>myException</exception>\\s*</token>");
     }));
 
     it('should build XML with more examples', inject(function($controller) {
       // the default examples:
-      expect(scope.buildXml()).toContain("<example type='correct'>");
-      expect(scope.buildXml()).toContain("<example type='incorrect'>");
+      expect(clean(scope.buildXml())).toContain("<example type='correct'>");
+      expect(clean(scope.buildXml())).toContain("<example type='incorrect'>");
       
       var example = scope.addWrongExampleSentence();
       example.text = "example one";
-      expect(scope.buildXml()).toContain("<example type='incorrect'>example one</example>");
+      expect(clean(scope.buildXml())).toContain("<example type='incorrect'>example one</example>");
 
       example = scope.addCorrectedExampleSentence();
       example.text = "example two";
-      expect(scope.buildXml()).toContain("<example type='incorrect'>example one</example>");
-      expect(scope.buildXml()).toContain("<example type='correct'>example two</example>");
+      expect(clean(scope.buildXml())).toContain("<example type='incorrect'>example one</example>");
+      expect(clean(scope.buildXml())).toContain("<example type='correct'>example two</example>");
     }));
 
     it('should optionally add marker', inject(function($controller) {
-      expect(scope.buildXml()).not.toContain("<marker>");
-      expect(scope.buildXml(true)).not.toContain("<marker>");
+      expect(clean(scope.buildXml())).not.toContain("<marker>");
+      expect(clean(scope.buildXml(true))).not.toContain("<marker>");
       scope.wrongSentenceWithMarker = "This <marker>are</marker> wrong.";
-      expect(scope.buildXml()).not.toContain("<marker>");
-      expect(scope.buildXml(true)).toContain("<marker>are</marker>");
+      expect(clean(scope.buildXml())).not.toContain("<marker>");
+      expect(clean(scope.buildXml(true))).toContain("<marker>are</marker>");
     }));
 
     it('should consider attributes', inject(function($controller) {
       var elem = scope.setElement("hallo");
       elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
-      expect(scope.buildXml(true)).toContain("<token myKey='myValue' myKey2='myValue2'>hallo</token>");
+      expect(clean(scope.buildXml(true))).toContain("<token myKey='myValue' myKey2='myValue2'>hallo</token>");
 
       elem = scope.setElement(null, {tokenType: scope.TokenTypes.POS_TAG, posTag: 'POS'});
       elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
-      expect(scope.buildXml(true)).toContain("<token postag='POS' myKey='myValue' myKey2='myValue2'></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token postag='POS' myKey='myValue' myKey2='myValue2'></token>");
 
       elem = scope.setElement("hallo", {tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'POS'});
       elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
-      expect(scope.buildXml(true)).toContain("<token postag='POS' myKey='myValue' myKey2='myValue2'>hallo</token>");
+      expect(clean(scope.buildXml(true))).toContain("<token postag='POS' myKey='myValue' myKey2='myValue2'>hallo</token>");
 
       elem = scope.setElement("hallo", {tokenType: scope.TokenTypes.ANY});
       elem.attributes = [{attName: 'myKey', attValue: 'myValue'}, {attName: 'myKey2', attValue: 'myValue2'}];
-      expect(scope.buildXml(true)).toContain("<token myKey='myValue' myKey2='myValue2'></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token myKey='myValue' myKey2='myValue2'></token>");
     }));
 
     it('should consider attributes for exceptions', inject(function($controller) {
@@ -267,47 +271,47 @@ describe('RuleEditor controllers', function() {
       var attribute1 = {attName: 'myKey', attValue: 'myVal'};
       var attribute2 = {attName: 'myKey2', attValue: 'myVal2'};
       scope.addException(elem, {tokenValue: 'myException', attributes: [attribute1]});
-      expect(scope.buildXml(true)).toContain("<token>hallo<exception myKey='myVal'>myException</exception></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token>hallo<exception myKey='myVal'>myException</exception></token>");
 
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', attributes: [attribute1, attribute2]});
-      expect(scope.buildXml(true)).toContain("<token>hallo<exception myKey='myVal' myKey2='myVal2'>myException</exception></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token>hallo<exception myKey='myVal' myKey2='myVal2'>myException</exception></token>");
 
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenType: scope.TokenTypes.POS_TAG, posTag: 'XTAG', attributes: [attribute1]});
-      expect(scope.buildXml(true)).toContain("<token>hallo<exception postag='XTAG' myKey='myVal'></exception></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token>hallo<exception postag='XTAG' myKey='myVal'></exception></token>");
 
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'myException', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XTAG', attributes: [attribute1]});
-      expect(scope.buildXml(true)).toContain("<token>hallo<exception postag='XTAG' myKey='myVal'>myException</exception></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token>hallo<exception postag='XTAG' myKey='myVal'>myException</exception></token>");
     }));
 
     it('should support old regex-based POS tags as well as structured POS tags', inject(function($controller) {
       scope.setElement(null, {posTag: 'NN pos=noun', tokenType: scope.TokenTypes.POS_TAG, posTagRegex: false, regex: false});
-      expect(scope.buildXml(true)).toContain("<token postag='NN' pos='noun'></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token postag='NN' pos='noun'></token>");
 
       scope.setElement("hallo", {posTag: 'NN pos=noun number=singular', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: false, regex: false});
-      expect(scope.buildXml(true)).toContain("<token postag='NN' pos='noun' number='singular'>hallo</token>");
+      expect(clean(scope.buildXml(true))).toContain("<token postag='NN' pos='noun' number='singular'>hallo</token>");
 
       scope.setElement("hallo", {posTag: 'pos=noun number=singular N[xy]', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: false, regex: false});
-      expect(scope.buildXml(true)).toContain("<token pos='noun' number='singular' postag='N[xy]'>hallo</token>");
+      expect(clean(scope.buildXml(true))).toContain("<token pos='noun' number='singular' postag='N[xy]'>hallo</token>");
 
       scope.setElement("hallo", {posTag: 'pos=noun|verb number=singular', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTagRegex: false, regex: false});
-      expect(scope.buildXml(true)).toContain("<token pos='noun verb' number='singular'>hallo</token>");
+      expect(clean(scope.buildXml(true))).toContain("<token pos='noun verb' number='singular'>hallo</token>");
     }));
 
     it('should support old regex-based POS tags as well as structured POS tags for exceptions', inject(function($controller) {
       var elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: null, tokenType: scope.TokenTypes.POS_TAG, posTag: 'XX person=1|2'});
-      expect(scope.buildXml(true)).toContain("<token>hallo<exception postag='XX' person='1 2'></exception></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token>hallo<exception postag='XX' person='1 2'></exception></token>");
 
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'ex', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'XX person=1|2'});
-      expect(scope.buildXml(true)).toContain("<token>hallo<exception postag='XX' person='1 2'>ex</exception></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token>hallo<exception postag='XX' person='1 2'>ex</exception></token>");
 
       elem = scope.setElement("hallo");
       scope.addException(elem, {tokenValue: 'ex', tokenType: scope.TokenTypes.WORD_AND_POS_TAG, posTag: 'person=1|2'});
-      expect(scope.buildXml(true)).toContain("<token>hallo<exception person='1 2'>ex</exception></token>");
+      expect(clean(scope.buildXml(true))).toContain("<token>hallo<exception person='1 2'>ex</exception></token>");
     }));
 
     it('should extract message matches from message', inject(function($controller) {
@@ -321,7 +325,7 @@ describe('RuleEditor controllers', function() {
       scope.extractMessageMatches(scope.ruleMessage);
       expect(scope.messageMatches.length).toBe(1);
       expect(scope.messageMatches[0].tokenNumber).toBe("1");
-      expect(scope.buildXml(true)).toContain('<message>foo <match no="1"/></message>');
+      expect(clean(scope.buildXml(true))).toContain('<message>foo <match no="1"/></message>');
       scope.messageMatches = [];
 
       scope.ruleMessage = "Did you mean \\1 or '\\1 blah'?";
@@ -329,7 +333,7 @@ describe('RuleEditor controllers', function() {
       expect(scope.messageMatches.length).toBe(2);
       expect(scope.messageMatches[0].tokenNumber).toBe("1");
       expect(scope.messageMatches[1].tokenNumber).toBe("1");
-      expect(scope.buildXml(true)).toContain('<message>Did you mean <match no="1"/> or <suggestion><match no="1"/> blah</suggestion>?</message>');
+      expect(clean(scope.buildXml(true))).toContain('<message>Did you mean <match no="1"/> or <suggestion><match no="1"/> blah</suggestion>?</message>');
       scope.messageMatches = [];
 
       scope.ruleMessage = "Did you mean \\1 or '\\1 blah' or '\\2 foo'?";
@@ -338,11 +342,11 @@ describe('RuleEditor controllers', function() {
       expect(scope.messageMatches[0].tokenNumber).toBe("1");
       expect(scope.messageMatches[1].tokenNumber).toBe("1");
       expect(scope.messageMatches[2].tokenNumber).toBe("2");
-      expect(scope.buildXml(true)).toContain('<message>Did you mean <match no="1"/> or <suggestion><match no="1"/> blah</suggestion> or <suggestion><match no="2"/> foo</suggestion>?</message>');
+      expect(clean(scope.buildXml(true))).toContain('<message>Did you mean <match no="1"/> or <suggestion><match no="1"/> blah</suggestion> or <suggestion><match no="2"/> foo</suggestion>?</message>');
 
       scope.messageMatches[0].caseConversion = scope.CaseConversion.ALL_LOWER;
       scope.messageMatches[1].caseConversion = scope.CaseConversion.ALL_UPPER;
-      expect(scope.buildXml(true)).toContain('<message>Did you mean <match no="1" case_conversion="alllower"/> or <suggestion><match no="1" case_conversion="allupper"/> blah</suggestion> or <suggestion><match no="2"/> foo</suggestion>?</message>');
+      expect(clean(scope.buildXml(true))).toContain('<message>Did you mean <match no="1" case_conversion="alllower"/> or <suggestion><match no="1" case_conversion="allupper"/> blah</suggestion> or <suggestion><match no="2"/> foo</suggestion>?</message>');
     }));
 
   });

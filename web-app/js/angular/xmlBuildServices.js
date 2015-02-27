@@ -64,7 +64,7 @@ xmlServices.factory('XmlBuilder',
           }
         }
         xml += "</rule>\n";
-        return xml;
+        return xml.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/ /g, "&nbsp;").replace(/\n/g, "<br/>");
       },
 
       buildXmlForMessage: function(ruleMessage, model) {
