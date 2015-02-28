@@ -490,6 +490,10 @@ ruleEditor.controller('RuleEditorCtrl', function ($scope, $http, $q, $window, Se
     return XmlBuilder.buildXml(this, withMarker);
   };
 
+  $scope.buildEscapedXml = function(withMarker) {
+    return XmlBuilder.buildEscapedXml(this, withMarker);
+  };
+
   $scope.looksLikeRegex = function(str) {
     return str && (str.match(/[\[\]\|]/) || str.match(/\\[A-Za-z]/) || str.match(/\.[*+]/));
   };

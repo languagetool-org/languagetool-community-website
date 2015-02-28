@@ -35,7 +35,7 @@ describe('RuleEditor controllers', function() {
     }));
 
     function clean(s) {
-        return s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ");
+        return s;
     }
     
     it('should extract language from url', inject(function($controller) {
