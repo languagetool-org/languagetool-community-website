@@ -363,7 +363,7 @@
                   </div>
               </div>
 
-              &nbsp;<a href ng-click="addElement()">Add token to pattern</a>
+              &nbsp;<a href ng-click="addElement()"><img style="vertical-align: middle;" src="${resource(dir:'images', file:'add.png')}"/>&nbsp;Add token to pattern</a>
               <span ng-show="hasNoMarker()">
               &middot;
                   <a href ng-click="addMarker()" title="The error marker specifies what part of the pattern will be underlined as incorrect">Add error marker to pattern</a>
