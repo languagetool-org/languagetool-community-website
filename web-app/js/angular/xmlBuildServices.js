@@ -55,12 +55,12 @@ xmlServices.factory('XmlBuilder',
           var sentence = model.exampleSentences[j];
           if (sentence.type === model.SentenceTypes.WRONG) {
             if (withMarker && j === 0 && model.wrongSentenceWithMarker) {
-              xml += " <example type='incorrect'>" + model.wrongSentenceWithMarker + "</example>\n";
+              xml += " <example correction=''>" + model.wrongSentenceWithMarker + "</example>\n";
             } else {
-              xml += " <example type='incorrect'>" + sentence.text.htmlEscape() + "</example>\n";
+              xml += " <example correction=''>" + sentence.text.htmlEscape() + "</example>\n";
             }
           } else {
-            xml += " <example type='correct'>" + sentence.text.htmlEscape() + "</example>\n";
+            xml += " <example>" + sentence.text.htmlEscape() + "</example>\n";
           }
         }
         xml += "</rule>\n";

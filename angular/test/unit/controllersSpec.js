@@ -227,17 +227,17 @@ describe('RuleEditor controllers', function() {
 
     it('should build XML with more examples', inject(function($controller) {
       // the default examples:
-      expect(clean(scope.buildXml())).toContain("<example type='correct'>");
-      expect(clean(scope.buildXml())).toContain("<example type='incorrect'>");
+      expect(clean(scope.buildXml())).toContain("<example>");
+      expect(clean(scope.buildXml())).toContain("<example correction=''>");
       
       var example = scope.addWrongExampleSentence();
       example.text = "example one";
-      expect(clean(scope.buildXml())).toContain("<example type='incorrect'>example one</example>");
+      expect(clean(scope.buildXml())).toContain("<example correction=''>example one</example>");
 
       example = scope.addCorrectedExampleSentence();
       example.text = "example two";
-      expect(clean(scope.buildXml())).toContain("<example type='incorrect'>example one</example>");
-      expect(clean(scope.buildXml())).toContain("<example type='correct'>example two</example>");
+      expect(clean(scope.buildXml())).toContain("<example correction=''>example one</example>");
+      expect(clean(scope.buildXml())).toContain("<example>example two</example>");
     }));
 
     it('should optionally add marker', inject(function($controller) {
