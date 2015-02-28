@@ -49,7 +49,7 @@
   <div style="clear: both"></div>
 
   <div style="float: right;margin-left: 15px;margin-right: 100px" ng-show="!gui.expertMode">
-    <a href="https://www.youtube.com/watch?v=Ah9uWhAfT9Y" target="_blank">
+    <a href="https://www.youtube.com/watch?v=KnQCHo14gOU" target="_blank">
       <img src="${resource(dir:'images', file:'rule_editor_video_button.png')}" width="180"/><br/>
       Watch intro video
     </a>
