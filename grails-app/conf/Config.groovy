@@ -34,24 +34,13 @@ grails.views.gsp.encoding="UTF-8"
 // enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
 
-// for sending user registration mails:
-smtp.host = "smtprelaypool.ispgateway.de"
-smtp.user = "register@languagetool.org"
-smtp.password = ""
-registration.mail.from = "register@languagetool.org"
-registration.mail.subject = "LanguageTool Community Registration"
-registration.mail.text =  "Please follow this link to complete your registration at languagetool.org:\n"+
-  "http://community.languagetool.org/user/completeRegistration?code="+
-  "#CODE#&id=#USERID#"
-registration.ticket.secret = "foo"      // change this to a random value
-registration.min.password.length = 4
 max.text.length = 10000     // maximum length of texts to check
 // languages not visible in the user interface (e.g. because they are
 // not properly supported yet):
 hide.languages = ["cs", "ml", "be", "da", "sk", "zh", "ast", "km", "en-GB", "en-US", "en-CA", "en-ZA", "en-NZ", "en-AU",
         "de-DE", "de-AT", "de-CH", "pt-BR", "pt-PT", "ca-ES-valencia", "ca-ES", "de-DE-x-simple-language"]
 // show these languages directly in the navigation bar (not in the drop down):
-expose.languages = ["en", "fr", "de", "es", "pl", "ca", "br", "nl", "pt", "es", "eo"]
+expose.languages = ["en", "fr", "de", "es", "pl", "ca", "br", "nl", "pt", "es", "eo", "ru"]
 maxPatternElements = 5
 // disable some rules for WikiCheck to avoid too many false alarms:
 disabledRulesPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules.properties"
@@ -110,3 +99,27 @@ grails.resources.modules = {
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*']
 // see http://www.gopivotal.com/security/cve-2014-0053:
 grails.resources.adhoc.excludes = ['**/WEB-INF/**','**/META-INF/**']
+
+// Uncomment and edit the following lines to start using Grails encoding & escaping improvements
+
+/* remove this line 
+// GSP settings
+grails {
+    views {
+        gsp {
+            encoding = 'UTF-8'
+            htmlcodec = 'xml' // use xml escaping instead of HTML4 escaping
+            codecs {
+                expression = 'html' // escapes values inside null
+                scriptlet = 'none' // escapes output from scriptlets in GSPs
+                taglib = 'none' // escapes output from taglibs
+                staticparts = 'none' // escapes output from static template parts
+            }
+        }
+        // escapes all not-encoded output at final stage of outputting
+        filteringCodecForContentType {
+            //'text/html' = 'html'
+        }
+    }
+}
+remove this line */
