@@ -18,7 +18,7 @@
 
         <g:if test="${params.languageCode?.startsWith("de")}">
             <p>Hier ist die Liste
-                <a href="https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/de/src/main/resources/org/languagetool/resource/de/hunspell/ignore.txt">aller bisher hinzugefügten Wörter</a>.
+                <a href="https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/de/src/main/resources/org/languagetool/resource/de/hunspell/spelling.txt">aller bisher hinzugefügten Wörter</a>.
             </p>
         </g:if>
 
