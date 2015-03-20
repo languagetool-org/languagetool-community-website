@@ -254,8 +254,8 @@ class RuleEditorController extends BaseController {
     }
 
     private boolean hasRegex(PatternRule patternRule) {
-        for (element in patternRule.getElements()) {
-            if (element.isRegularExpression()) {
+        for (pToken in patternRule.getPatternTokens()) {
+            if (pToken.isRegularExpression()) {
                 return true
             }
         }

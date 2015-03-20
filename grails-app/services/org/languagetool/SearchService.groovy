@@ -30,7 +30,7 @@ class SearchService {
 
     SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
         int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
-        log.info("Checking rule against ${language} corpus: ${patternRule.getElements()}, timeout: ${timeoutMillis}ms")
+        log.info("Checking rule against ${language} corpus: ${patternRule.getPatternTokens()}, timeout: ${timeoutMillis}ms")
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
         if (indexDir.isDirectory()) {
