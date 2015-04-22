@@ -204,7 +204,8 @@ class RuleEditorController extends BaseController {
                         }
                     }
                 }
-                def foundReplacements = ruleMatches.get(0).getSuggestedReplacements().sort()
+                def foundReplacements = new ArrayList<>(ruleMatches.get(0).getSuggestedReplacements())
+                foundReplacements.sort()
                 if (expectedReplacements.size() > 0 && !expectedReplacements.get(0).isEmpty() && expectedReplacements != foundReplacements) {
                     problems.add(message(code: 'ltc.editor.error.wrong.correction', args: [sentence, foundReplacements, expectedReplacements]))
                 }
