@@ -68,7 +68,6 @@
     &lt;/pattern&gt;
     &lt;message&gt;Did you mean &lt;suggestion&gt;bad English&lt;/suggestion&gt;?&lt;/message&gt;
     &lt;example correction="bad English"&gt;Sorry for my &lt;marker&gt;bed English&lt;/marker&gt;.&lt;/example&gt;
-    &lt;example&gt;Sorry for my bad English.&lt;/example&gt;
 &lt;/rule&gt;
 </div>
                 </g:else>
