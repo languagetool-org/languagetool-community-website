@@ -117,7 +117,7 @@
                     attrCompletions['feature'] = getCompletions("id");
                     attrCompletions['type'] = getCompletions("id");
                     attrCompletions['exception'] = getCompletions("postag_regexp negate_pos postag spacebefore inflected scope regexp negate");
-                    attrCompletions['token'] = getCompletions("postag postag_regexp negate min max negate_pos regexp chunk inflected spacebefore skip");
+                    attrCompletions['token'] = getCompletions("postag postag_regexp negate min max negate_pos regexp chunk inflected spacebefore skip case_sensitive");
                     attrCompletions['match'] = getCompletions("regexp_match postag_regexp setpos suppress_misspelled regexp_replace postag_replace postag no include_skipped");
                     attrCompletions['suggestion'] = getCompletions("suppress_misspelled");
                     attrCompletions['phraseref'] = getCompletions("idref");
