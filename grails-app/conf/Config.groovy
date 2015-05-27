@@ -34,6 +34,9 @@ grails.views.gsp.encoding="UTF-8"
 // enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
 
+// Google ngram data for confusion probability rule:
+ngramindex = "/home/languagetool/ngram-data"
+
 max.text.length = 10000     // maximum length of texts to check
 // languages not visible in the user interface (e.g. because they are
 // not properly supported yet):
