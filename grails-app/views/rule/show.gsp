@@ -194,16 +194,6 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td></td>
-                    <td>
-                        <p style="margin-top:20px">
-                            <a href="http://www.languagetool.org"><img style="margin-right:7px;" src="${resource(dir:'images',file:'lt-logo.png')}" alt="LanguageTool logo" align="left"/></a>
-                            <g:message code="ltc.languagetool.link" />
-                        </p>
-                    </td>
-                </tr>
-
             </table>
 
         </div>
