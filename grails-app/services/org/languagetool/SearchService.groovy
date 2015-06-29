@@ -36,7 +36,7 @@ class SearchService {
         if (indexDir.isDirectory()) {
             // NIOFSDirectory and MMapDirectory (as returned by FSDirectory.open()) don't play together 
             // with using Thread.interrupt(), so use SimpleFSDirectory:
-            def directory = SimpleFSDirectory.open(indexDir)
+            def directory = SimpleFSDirectory.open(indexDir.toPath())
             Searcher searcher = new Searcher(directory)
             searcher.setMaxHits(maxHits)
             searcher.setMaxSearchTimeMillis(timeoutMillis)
