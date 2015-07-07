@@ -41,7 +41,7 @@ class RuleEditorController extends BaseController {
     }
 
     def expert = {
-        [languages: Languages.get(), languageNames: getSortedLanguageNames()]
+        [languages: SortedLanguages.get(), languageNames: getSortedLanguageNames()]
     }
 
     private List getSortedLanguageNames() {

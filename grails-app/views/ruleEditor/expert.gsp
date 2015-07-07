@@ -54,7 +54,7 @@
                 
                 <p><g:message code="ltc.editor.expert.intro" args="${['http://wiki.languagetool.org/development-overview']}"/></p>
 
-                <g:select style="margin-bottom: 5px" name="language" from="${languageNames}" value="${params.language ? params.language : 'English'}"/><br/>
+                <g:select style="margin-bottom: 5px" name="language" from="${languages}" optionKey="shortNameWithCountryAndVariant" value="${params.language ? params.language : 'en'}"/><br/>
 
                 <g:if test="${params.xml}">
                     <div id="editor">${params.xml.encodeAsHTML()}</div>
