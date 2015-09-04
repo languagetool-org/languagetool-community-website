@@ -17,7 +17,9 @@
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
             </g:if>
-        
+
+            <p style="margin-top: 10px; margin-bottom: 10px"><g:message code="ltc.rule.browse.intro" args="${['https://languagetool.org', 'https://languagetool.org']}"/></p>
+            
             <g:form action="list" method="get" name="filterform">
                 <input type="hidden" name="offset" value="0"/>
                 <input type="hidden" name="max" value="10"/>

@@ -46,6 +46,8 @@
             <g:if test="${flash.message}">
                 <div class="message">${flash.message}</div>
             </g:if>
+
+            <p style="margin-top: 10px; margin-bottom: 10px"><g:message code="ltc.rule.show.intro" args="${['https://languagetool.org', 'https://languagetool.org']}"/></p>
             
             <table style="border-style: none">
                 <tr>
