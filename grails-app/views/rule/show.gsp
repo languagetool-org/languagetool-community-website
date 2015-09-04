@@ -92,22 +92,22 @@
                         </g:if>
                     </td>
                 </tr>
-                
-                <tr>
-                    <td><g:message code="ltc.rule.show.correct.sentences" /></td>
-                    <td>
-                        <ul>
-                            <g:each var="example" in="${rule.getCorrectExamples()}">
-                                <li>${example.encodeAsHTML().
-                                        replace("&lt;marker&gt;", '<b>').
-                                        replace("&lt;/marker&gt;", '</b>')}</li>
-                            </g:each>
-                        </ul>
-                        <g:if test="${rule.getCorrectExamples().size() == 0}">
-                             <span class="additional"><g:message code="ltc.rule.show.no.examples" /></span>
-                        </g:if>
-                    </td>
-                </tr>
+
+                <g:if test="${rule.getCorrectExamples().size() > 0}">
+                    <tr>
+                        <td><g:message code="ltc.rule.show.correct.sentences" /></td>
+                        <td>
+                            <ul>
+                                <g:each var="example" in="${rule.getCorrectExamples()}">
+                                    <li>${example.encodeAsHTML().
+                                            replace("&lt;marker&gt;", '<b>').
+                                            replace("&lt;/marker&gt;", '</b>')}</li>
+                                </g:each>
+                            </ul>
+                                 <span class="additional"><g:message code="ltc.rule.show.no.examples" /></span>
+                        </td>
+                    </tr>
+                </g:if>
 
                 <tr>
                     <td><g:message code="ltc.rule.show.pattern" /></td>
@@ -164,7 +164,7 @@
                             <input type="hidden" name="id" value="${ruleId}"/>
                             <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
 
-                            <g:textArea name="text" value="${textToCheck}" rows="3" cols="50" />
+                            <g:textArea maxlength="25000" name="text" value="${textToCheck}" rows="3" cols="50" />
                             <br />
                             <g:actionSubmit action="checkTextWithRule" value="${message(code:'ltc.check.button')}"/>
 
