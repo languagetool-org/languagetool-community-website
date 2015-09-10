@@ -182,7 +182,7 @@ class RuleController extends BaseController {
 
     private Rule getRuleById(String id, String subId, String lang) {
         JLanguageTool lt = new JLanguageTool(Languages.getLanguageForShortName(lang))
-        String ngramDir = grailsApplication.config.ngramindex  // TODO: make language-specific
+        String ngramDir = grailsApplication.config.ngramindex
         if (ngramDir) {
             lt.activateLanguageModelRules(new File(ngramDir))
         }
