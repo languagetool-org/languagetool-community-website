@@ -106,7 +106,6 @@
                                             replace("&lt;/marker&gt;", '</b>')}</li>
                                 </g:each>
                             </ul>
-                                 <span class="additional"><g:message code="ltc.rule.show.no.examples" /></span>
                         </td>
                     </tr>
                 </g:if>
