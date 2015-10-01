@@ -22,10 +22,10 @@ package org.languagetool
 class FeedMatchesController extends BaseController {
 
     def index = {
-        redirect(url: "http://tools.wmflabs.org/languagetool/feedMatches/list")
+        redirect(url: "http://community.languagetool.org/wikiCheck/feedMatches/list")
     }
 
     def list = {
-        redirect(url: "http://tools.wmflabs.org/languagetool/feedMatches/list")
+        redirect(url: "http://community.languagetool.org/wikiCheck/feedMatches/list")
     }
 }
