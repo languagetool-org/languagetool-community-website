@@ -52,7 +52,10 @@
 
                 <p style="margin-top: 8px;">You're in expert mode. Don't know what to do here? <g:link controller="ruleEditor2">Try the simple mode instead.</g:link></p>
                 
-                <p><g:message code="ltc.editor.expert.intro" args="${['http://wiki.languagetool.org/development-overview']}"/></p>
+                <p>
+                    <g:message code="ltc.editor.expert.intro" args="${['http://wiki.languagetool.org/development-overview']}"/>
+                    <g:message code="ltc.editor.expert.intro.completion"/>
+                </p>
 
                 <g:select style="margin-bottom: 5px" name="language" from="${languages}" optionKey="shortNameWithCountryAndVariant" value="${params.language ? params.language : 'en'}"/><br/>
 
