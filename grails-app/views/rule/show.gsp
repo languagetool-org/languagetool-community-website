@@ -79,8 +79,8 @@
                                 <li>${example.getExample().encodeAsHTML().
                                         replace("&lt;marker&gt;", '<span class="error">').
                                         replace("&lt;/marker&gt;", '</span>')
-                                }
-                                    <g:if test="${example.getCorrections()}">
+                                    }
+                                    <g:if test="${example.getCorrections().size() > 0 && !example.getCorrections().get(0).isEmpty()}">
                                         <div style="margin-top: 2px">
                                             <g:message code="ltc.rule.show.corrections" />
                                             <span class="correction">${String.join(", ", example.getCorrections())}</span>
