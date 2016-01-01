@@ -83,7 +83,7 @@
                                     <g:if test="${example.getCorrections()}">
                                         <div style="margin-top: 2px">
                                             <g:message code="ltc.rule.show.corrections" />
-                                            <span class="correction">${StringTools.listToString(example.getCorrections(), ", ")}</span>
+                                            <span class="correction">${String.join(", ", example.getCorrections())}</span>
                                         </div>
                                     </g:if>
                                 </li>
