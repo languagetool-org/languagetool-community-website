@@ -34,7 +34,7 @@ xmlServices.factory('XmlBuilder',
         var date = new Date();
         var dateStr = $filter('date')(date, "yyyy-MM-dd");
         var xml = "<!-- " + model.language.name.htmlEscape() + " rule, " + dateStr + " -->\n";
-        xml += "<rule id=\"ID\" name=\"" + model.ruleName.attributeEscape() + "\">\n";
+        xml += "<rule id=\"" + this.buildId(model.ruleName).attributeEscape() + "\" name=\"" + model.ruleName.attributeEscape() + "\">\n";
         if (model.caseSensitive) {
           xml += " <pattern case_sensitive='yes'>\n";
         } else {
@@ -69,6 +69,10 @@ xmlServices.factory('XmlBuilder',
 
       buildEscapedXml: function(model, withMarker) {
         return this.buildXml(model, withMarker).replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/ /g, "&nbsp;").replace(/\n/g, "<br/>");
+      },
+
+      buildId: function(ruleName) {
+        return ruleName.replace(/[^a-zA-Z_ ]/g, "").replace(/ +/g, "_").toUpperCase();
       },
 
       buildXmlForMessage: function(ruleMessage, model) {
