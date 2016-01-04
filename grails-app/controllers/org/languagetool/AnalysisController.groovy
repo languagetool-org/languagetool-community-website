@@ -35,9 +35,13 @@ class AnalysisController extends BaseController {
     def analyzeText = {
         String langCode = params.lang ? params.lang : "en"
         Language langObject = Languages.getLanguageForShortName(langCode)
-        List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
-        [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
-                textToCheck: params.text]
+        if (params.text) {
+            List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
+            [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
+             textToCheck: params.text]
+        } else {
+            [language: langObject, languages: SortedLanguages.get()]
+        }
     }
 
     /**
