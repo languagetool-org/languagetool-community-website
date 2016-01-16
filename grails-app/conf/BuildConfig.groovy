@@ -44,7 +44,7 @@ grails.project.dependency.resolution = {
 
         runtime 'mysql:mysql-connector-java:5.1.16'
         runtime 'com.sun.mail:javax.mail:1.5.1'
-        runtime 'org.springframework:spring-expression:4.0.5.RELEASE'
+        runtime 'org.springframework:spring-expression:4.2.0.RELEASE'
     }
 
     plugins {
