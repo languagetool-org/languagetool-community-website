@@ -62,7 +62,12 @@
                 </g:if>
                 <tr>
                     <td><g:message code="ltc.rule.show.category" /></td>
-                    <td>${rule.category.name.encodeAsHTML()}</td>
+                    <td>
+                        ${rule.category.name.encodeAsHTML()}
+                        <g:if test="${rule.category && rule.category.id}">
+                            <span class="metaInfo">(ID: ${rule.category.id.encodeAsHTML()})</span>
+                        </g:if>
+                    </td>
                 </tr>
                 <g:if test="${rule.url}">
                     <tr>
