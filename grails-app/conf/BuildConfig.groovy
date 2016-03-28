@@ -40,7 +40,6 @@ grails.project.dependency.resolution = {
             exclude "slf4j-nop"
         }
         runtime 'org.languagetool:languagetool-wikipedia:3.4-SNAPSHOT'
-        //TODO: languagetool-core-tests.jar is missing
 
         runtime 'mysql:mysql-connector-java:5.1.16'
         runtime 'com.sun.mail:javax.mail:1.5.1'
