@@ -36,10 +36,10 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        runtime('org.languagetool:language-all:3.3-SNAPSHOT') {
+        runtime('org.languagetool:language-all:3.4-SNAPSHOT') {
             exclude "slf4j-nop"
         }
-        runtime 'org.languagetool:languagetool-wikipedia:3.3-SNAPSHOT'
+        runtime 'org.languagetool:languagetool-wikipedia:3.4-SNAPSHOT'
         //TODO: languagetool-core-tests.jar is missing
 
         runtime 'mysql:mysql-connector-java:5.1.16'
