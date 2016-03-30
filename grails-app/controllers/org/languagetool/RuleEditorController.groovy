@@ -87,7 +87,7 @@ class RuleEditorController extends BaseController {
         }
         PatternRuleLoader loader = new PatternRuleLoader()
         loader.setRelaxedMode(true)
-        String xml = "<rules lang=\"" + language.getShortName() + "\"><category name=\"fakeCategory\">" + params.xml + "</category></rules>"
+        String xml = "<rules lang=\"" + language.getShortName() + "\"><category id=\"fakeId\" name=\"fakeCategory\">" + params.xml + "</category></rules>"
         if (params.xml.trim().isEmpty()) {
             render(template: 'checkXmlProblem', model: [error: "No XML found"])
             return
