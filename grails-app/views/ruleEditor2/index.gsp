@@ -376,7 +376,7 @@
           <table>
               <tr>
                   <td><label for="ruleName">Rule Name:</label></td>
-                  <td><input type="text" id="ruleName" ng-model="ruleName" ng-enter="evaluateErrorPattern()" placeholder="Short rule description used for configuration"/></td>
+                  <td><input required type="text" id="ruleName" ng-model="ruleName" ng-enter="evaluateErrorPattern()" placeholder="Short rule description used for configuration"/></td>
               </tr>
               <tr>
                   <td style="width:120px"><label for="ruleMessage">Message:</label></td>
