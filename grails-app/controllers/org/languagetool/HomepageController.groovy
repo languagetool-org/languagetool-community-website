@@ -19,6 +19,9 @@
 
 package org.languagetool
 
+import org.languagetool.remote.RemoteLanguageTool
+import org.languagetool.remote.RemoteResult
+
 /**
  * The main page of the website.
  */
@@ -65,15 +68,15 @@ class HomepageController extends BaseController {
         if (lang.hasVariant()) {
             lang = lang.getDefaultLanguageVariant()   // we need to select a variant because we want spell checking
         }
-        JLanguageTool lt = new JLanguageTool(lang)
-        final int maxTextLen = grailsApplication.config.max.text.length
-        final String text = params.text
+        RemoteLanguageTool lt = new RemoteLanguageTool(new URL("https://languagetool.org:8081"))
+        int maxTextLen = grailsApplication.config.max.text.length
+        String text = params.text
         if (text.size() > maxTextLen) {
             text = text.substring(0, maxTextLen)
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
-        List ruleMatches = lt.check(text)
-        [matches: ruleMatches, lang: langStr, language: lang, languages: languages,
+        RemoteResult result = lt.check(text, lang.getShortNameWithCountryAndVariant())
+        [matches: result.getMatches(), lang: langStr, language: lang, languages: languages,
                 textToCheck: params.text]
     }
 

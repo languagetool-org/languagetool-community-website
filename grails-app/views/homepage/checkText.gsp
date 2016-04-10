@@ -28,7 +28,7 @@
                 <g:message code="ltc.home.check.text.intro" args="${['http://languagetool.org']}" />
             </g:if>
         
-            <g:render template="/ruleMatches"/>
+            <g:render template="/remoteRuleMatches"/>
             
             <br />
         
