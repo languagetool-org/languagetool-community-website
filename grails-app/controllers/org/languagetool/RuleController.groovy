@@ -19,6 +19,10 @@
 
 package org.languagetool
 
+import org.languagetool.remote.CheckConfiguration
+import org.languagetool.remote.CheckConfigurationBuilder
+import org.languagetool.remote.RemoteLanguageTool
+import org.languagetool.remote.RemoteResult
 import org.languagetool.rules.*
 import org.languagetool.rules.patterns.*
 
@@ -113,30 +117,18 @@ class RuleController extends BaseController {
             flash.message = "No rule with id ${params.id.encodeAsHTML()}"
             redirect(action:list)
         }
-        // disable all rules except one:
-        List rules = lt.getAllRules()
-        for (Rule rule in rules) {
-            if (rule.id == params.id) {
-                if (rule.isDefaultOff()) {
-                    lt.enableDefaultOffRule(rule.id)
-                } else {
-                    lt.enableRule(rule.id)
-                }
-            } else {
-                lt.disableRule(rule.id)
-            }
-        }
-        // now actually check the text:
+        // now actually check the text using remote server (to save memory in this process):
         String text = params.text
         int maxTextLen = grailsApplication.config.max.text.length
         if (text.size() > maxTextLen) {
             text = text.substring(0, maxTextLen)
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
-        System.out.println("****!")
-        List ruleMatches = lt.check(text)
+        CheckConfiguration config = new CheckConfigurationBuilder(langCode).enabledRuleIds(params.id).enabledOnly().build()
+        RemoteLanguageTool remoteLt = new RemoteLanguageTool(new URL(grailsApplication.config.api.server.url))
+        RemoteResult result = remoteLt.check(text, config)
         render(view:'show', model: [ hideRuleLink: true, rule: selectedRule,
-                textToCheck: params.text, matches: ruleMatches, ruleId: params.id, language: langObj],
+                textToCheck: params.text, matches: result.getMatches(), ruleId: params.id, language: langObj],
                 contentType: "text/html", encoding: "utf-8")
     }
 

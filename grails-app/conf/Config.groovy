@@ -35,7 +35,10 @@ grails.views.gsp.encoding="UTF-8"
 grails.enable.native2ascii = true
 
 // Google ngram data for confusion probability rule:
-ngramindex = "/home/languagetool/ngram-data"
+//ngramindex = "/home/languagetool/ngram-data"
+
+// Our API server for text checking:
+api.server.url = "https://languagetool.org:8081"
 
 max.text.length = 10000     // maximum length of texts to check
 // languages not visible in the user interface (e.g. because they are

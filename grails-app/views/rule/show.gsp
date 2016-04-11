@@ -86,7 +86,7 @@
                                         replace("&lt;/marker&gt;", '</span>')
                                     }
                                     <g:if test="${example.getCorrections().size() > 0 && !example.getCorrections().get(0).isEmpty()}">
-                                        <div style="margin-top: 2px">
+                                        <div style="margin-top: 5px">
                                             <g:message code="ltc.rule.show.corrections" />
                                             <span class="correction">${String.join(", ", example.getCorrections())}</span>
                                         </div>
@@ -177,7 +177,7 @@
                         </g:form>
 
                         <g:if test="${matches != null}">
-                            <g:render template="/ruleMatches"/>
+                            <g:render template="/remoteRuleMatches"/>
                         </g:if>
                     </td>
                 </tr>
