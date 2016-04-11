@@ -133,6 +133,7 @@ class RuleController extends BaseController {
             text = text.substring(0, maxTextLen)
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
+        System.out.println("****!")
         List ruleMatches = lt.check(text)
         render(view:'show', model: [ hideRuleLink: true, rule: selectedRule,
                 textToCheck: params.text, matches: ruleMatches, ruleId: params.id, language: langObj],
@@ -182,10 +183,11 @@ class RuleController extends BaseController {
 
     private Rule getRuleById(String id, String subId, String lang) {
         JLanguageTool lt = new JLanguageTool(Languages.getLanguageForShortName(lang))
-        String ngramDir = grailsApplication.config.ngramindex
+        // ngram rule is not listed anyway, so we don't need to get it here either (and save quite some memory):
+        /*String ngramDir = grailsApplication.config.ngramindex
         if (ngramDir) {
             lt.activateLanguageModelRules(new File(ngramDir))
-        }
+        }*/
         return getSystemRuleById(id, subId, lt)
     }
 
