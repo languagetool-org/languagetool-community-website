@@ -45,11 +45,12 @@
                             <g:message code="ltc.home.analysis.explain"/>
                         </div>
 
+                        <!-- not maintained anymore:
                         <h2><g:link controller="homepage" action="simpleCheck" params="[lang: lang]"><g:message code="ltc.home.check.fallback.short.title"/></g:link></h2>
-
                         <div class="mainPart">
                             <g:message code="ltc.home.check.text.explain"/>
                         </div>
+                        -->
 
                     </td>
                     <td width="10%"></td>
