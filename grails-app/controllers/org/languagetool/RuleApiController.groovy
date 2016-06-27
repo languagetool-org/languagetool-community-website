@@ -54,10 +54,10 @@ class RuleApiController extends BaseController {
         List<Map> result = []
         result.add([warning: '*** This is not a public API - it may change anytime ***'])
         for (Rule foundRule : foundRules) {
-            for (String example : foundRule.getCorrectExamples()) {
+            for (CorrectExample example : foundRule.getCorrectExamples()) {
                 Map<String,String> subMap = new HashMap<>()
                 subMap.put("status", "correct")
-                subMap.put("sentence", example)
+                subMap.put("sentence", example.getExample())
                 result.add(subMap)
             }
             for (IncorrectExample example : foundRule.getIncorrectExamples()) {

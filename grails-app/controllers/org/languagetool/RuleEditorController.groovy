@@ -20,6 +20,7 @@ package org.languagetool
 
 import org.apache.lucene.store.SimpleFSDirectory
 import org.languagetool.rules.RuleMatch
+import org.languagetool.rules.CorrectExample
 import org.languagetool.rules.patterns.PatternRule
 import org.languagetool.dev.index.SearcherResult
 import org.languagetool.rules.patterns.PatternRuleLoader
@@ -147,7 +148,7 @@ class RuleEditorController extends BaseController {
     }
 
     private List<String> checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, boolean checkMarker) {
-        List<String> correctExamples = patternRule.getCorrectExamples()
+        List<CorrectExample> correctExamples = patternRule.getCorrectExamples()
         List<IncorrectExample> incorrectExamples = patternRule.getIncorrectExamples()
         if (incorrectExamples.size() == 0) {
             throw new Exception("No incorrect example sentences found")
