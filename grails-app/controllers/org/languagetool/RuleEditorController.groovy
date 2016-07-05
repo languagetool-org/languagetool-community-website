@@ -217,10 +217,10 @@ class RuleEditorController extends BaseController {
         return problems
     }
 
-    private List<String> checkCorrectExamples(List<String> correctExamples, JLanguageTool langTool) {
+    private List<String> checkCorrectExamples(List<CorrectExample> correctExamples, JLanguageTool langTool) {
         List problems = []
         for (correctExample in correctExamples) {
-            String sentence = cleanMarkers(correctExample)
+            String sentence = cleanMarkers(correctExample.getExample())
             List unexpectedRuleMatches = langTool.check(sentence)
             if (unexpectedRuleMatches.size() > 0) {
                 problems.add(message(code: 'ltc.editor.error.unexpected', args: [sentence]))
