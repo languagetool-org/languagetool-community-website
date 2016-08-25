@@ -108,7 +108,8 @@ class RuleEditorController extends BaseController {
             render(template: 'checkXmlProblem', model: [error: "No rule found in XML"])
             return
         } else if (rules.size() > 1) {
-            render(template: 'checkXmlProblem', model: [error: "Found ${rules.size()} rules in XML - please specify only one rule in your XML"])
+            render(template: 'checkXmlProblem', model: [error: "Found ${rules.size()} rules in XML - please specify only one rule in your XML. " +
+                   "Note that '<or>...</or>' internally get expanded into more than one rule."])
             return
         }
         PatternRule patternRule = rules.get(0)
