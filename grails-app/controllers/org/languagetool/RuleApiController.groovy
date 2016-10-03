@@ -19,6 +19,7 @@
 package org.languagetool
 
 import org.languagetool.rules.*
+import org.languagetool.rules.ngrams.ConfusionProbabilityRule
 
 /**
  * Get information about error rules as JSON.
@@ -39,6 +40,11 @@ class RuleApiController extends BaseController {
         }
         Language lang = Languages.getLanguageForShortName(params.lang)
         JLanguageTool lt = new JLanguageTool(lang)
+        String ngramDir = grailsApplication.config.ngramindex
+        // save quite some memory if confusion rule is not needed:
+        if (ngramDir && params.ruleId == ConfusionProbabilityRule.RULE_ID) {
+            lt.activateLanguageModelRules(new File(ngramDir))
+        }
         List<Rule> rules = lt.getAllRules()
         List<Rule> foundRules = []
         for (Rule rule : rules) {
@@ -48,7 +54,7 @@ class RuleApiController extends BaseController {
         }
         if (foundRules.size() == 0) {
             throw new RuntimeException("Rule '" + params.ruleId + "' not found for language " + lang +
-                    " (LanguageTool version/date: " + JLanguageTool.VERSION + "/" + JLanguageTool.BUILD_DATE + ")")
+                    " (LanguageTool version/date: " + JLanguageTool.VERSION + "/" + JLanguageTool.BUILD_DATE + ", total rules of language: " + rules.size() + ")")
         }
 
         List<Map> result = []
