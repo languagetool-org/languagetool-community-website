@@ -56,11 +56,13 @@
                     <td width="10%"></td>
                     <td width="45%">
 
+                        <!--
                         <h2 class="firstHeadline"><g:link controller="wikiCheck" params="[lang: lang]"><g:message code="ltc.wiki.check.homepage"/></g:link></h2>
 
                         <div class="mainPart">
                             <p><g:message code="ltc.wiki.check.explain.homepage"/></p>
                         </div>
+                        -->
 
                     </td>
                 </tr>
