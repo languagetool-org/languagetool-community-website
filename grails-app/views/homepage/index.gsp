@@ -22,7 +22,7 @@
                 <tr>
                     <td><h1>LanguageTool</h1></td>
                     <td></td>
-                    <td><h1>Wikipedia</h1></td>
+                    <td><!--<h1>Wikipedia</h1>--></td>
                 </tr>
                 <tr>
                     <td width="45%">
