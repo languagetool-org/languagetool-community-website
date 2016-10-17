@@ -129,6 +129,9 @@ class SuggestionController {
                 if (params[id + "_A"]) {
                     suffixes.add("A")
                 }
+                if (params[id + "_E"]) {
+                    suffixes.add("E")
+                }
                 if (suffixes.isEmpty()) {
                     result += s.word + "\n"
                 } else {

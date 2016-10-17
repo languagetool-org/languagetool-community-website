@@ -37,13 +37,14 @@
                             <label><input type="checkbox" name="${suggestion.id}_N" />/N</label>
                             <label><input type="checkbox" name="${suggestion.id}_S" />/S</label>
                             <label><input type="checkbox" name="${suggestion.id}_A" />/A</label>
+                            <label><input type="checkbox" name="${suggestion.id}_E" />/E</label>
                         </td>
                         <td style="color:#999">${suggestion.email.encodeAsHTML()}</td>
                         <td style="color:#999"><g:formatDate date="${suggestion.date}" format="yyyy-MM-dd HH:mm"/></td>
                     </tr>
                 </g:each>
             </table>
-            <input type="submit" value="Continue"> &nbsp; all the items with "use" checked will be shown (and you need to add them
+            <input type="submit" value="Continue"><br>all the items with "use" checked will be shown (and you need to add them
             to <tt>spelling.txt</tt>), all the others will be removed
             
         </g:form>
