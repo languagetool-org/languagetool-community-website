@@ -19,9 +19,6 @@
 
 package org.languagetool
 
-/**
- * Helper methods to protect pages by login. 
- */
 abstract class BaseController {
 
 }
