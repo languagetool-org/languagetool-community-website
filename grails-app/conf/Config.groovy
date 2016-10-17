@@ -38,7 +38,7 @@ grails.enable.native2ascii = true
 //ngramindex = "/home/languagetool/ngram-data"
 
 // Our API server for text checking:
-api.server.url = "https://languagetool.org:8081"
+api.server.url = "https://languagetool.org/api"
 
 max.text.length = 10000     // maximum length of texts to check
 // languages not visible in the user interface (e.g. because they are

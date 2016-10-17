@@ -68,7 +68,7 @@ class HomepageController extends BaseController {
         if (lang.hasVariant()) {
             lang = lang.getDefaultLanguageVariant()   // we need to select a variant because we want spell checking
         }
-        RemoteLanguageTool lt = new RemoteLanguageTool(new URL("https://languagetool.org:8081"))
+        RemoteLanguageTool lt = new RemoteLanguageTool(new URL(grailsApplication.config.api.server.url))
         int maxTextLen = grailsApplication.config.max.text.length
         String text = params.text
         if (text.size() > maxTextLen) {
