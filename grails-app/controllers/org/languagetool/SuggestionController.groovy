@@ -112,12 +112,12 @@ class SuggestionController {
         validatePassword()
         String result = ""
         List ids = params.ids.split(",")
+        int count = 0
         for (String id : ids ) {
             Suggestion s = Suggestion.get(id)
-            if (!params[id + "_use"]) {
-                s.ignoreWord = true
-                s.save(failOnError: true)
-            } else {
+            s.ignoreWord = true
+            s.save(failOnError: true)
+            if (params[id + "_use"]) {
                 List suffixes = []
                 // this is currently specific to German:
                 if (params[id + "_N"]) {
@@ -134,8 +134,10 @@ class SuggestionController {
                 } else {
                     result += s.word + "/" + suffixes.join('') + "\n"
                 }
+                count++
             }
         }
+        log.info("Showing ${count} selected spell suggestions")
         [result: result]
     }
 

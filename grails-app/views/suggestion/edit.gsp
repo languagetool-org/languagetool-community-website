@@ -43,7 +43,8 @@
                     </tr>
                 </g:each>
             </table>
-            <input type="submit" value="Continue">
+            <input type="submit" value="Continue"> &nbsp; all the items with "use" checked will be shown (and you need to add them
+            to <tt>spelling.txt</tt>), all the others will be removed
             
         </g:form>
 
