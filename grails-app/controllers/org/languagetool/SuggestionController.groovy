@@ -20,6 +20,7 @@
 package org.languagetool
 
 import ltcommunity.Suggestion
+import org.languagetool.languagemodel.LuceneLanguageModel
 
 /**
  * Get user suggestion for words that might be added to the dictionary.
@@ -89,11 +90,22 @@ class SuggestionController {
         if (!params.lang) {
             throw new Exception("Param 'lang' not set")
         }
+        if (!params.lang.matches("..")) {
+            throw new Exception("Param valid 'lang' parameter: ${params.lang}")
+        }
         validatePassword()
         List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [max: 20, sort:'date', order:'desc'])
         List suggestionIds = []
         suggestions.each { suggestionIds.add(it.id) }
-        [suggestions: suggestions, suggestionIds: suggestionIds]
+        File ngramDir = new File(grailsApplication.config.ngramindex, params.lang)
+        Map<String, Long> suggestionCounts = new HashMap()
+        if (ngramDir.exists()) {
+            LuceneLanguageModel lm = new LuceneLanguageModel(ngramDir)
+            for (Suggestion s : suggestions) {
+                suggestionCounts.put(s.word, lm.getCount(s.word))
+            }
+        }
+        [suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts]
     }
 
     def editDone() {

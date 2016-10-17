@@ -23,6 +23,7 @@
                 <tr>
                     <th>Use</th>
                     <th>Word</th>
+                    <th>#</th>
                     <th>Suffixes</th>
                     <th>E-Mail</th>
                     <th>Date</th>
@@ -31,6 +32,7 @@
                     <tr style="${i % 2 == 0 ? '' : 'background-color: #eee'}">
                         <td><label><input type="checkbox" name="${suggestion.id}_use" checked="checked" /></label></td>
                         <td><a target="_blank" href='https://www.google.de/search?q="${suggestion.word}"'>${suggestion.word.encodeAsHTML()}</a></td>
+                        <td style="text-align: right">${suggestionCounts.get(suggestion.word)}</td>
                         <td>
                             <label><input type="checkbox" name="${suggestion.id}_N" />/N</label>
                             <label><input type="checkbox" name="${suggestion.id}_S" />/S</label>
