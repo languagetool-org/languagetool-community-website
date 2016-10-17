@@ -115,6 +115,10 @@ class RuleEditorController extends BaseController {
                    "Note that '<or>...</or>' internally get expanded into more than one rule."])
             return
         }
+        if (!(rules.get(0) instanceof PatternRule)) {
+            render(template: 'checkXmlProblem', model: [error: "Sorry, only '<pattern>' rules are supported for now by the online rule editor, not <regexp> rules."])
+            return
+        }
         PatternRule patternRule = rules.get(0)
         List problems = []
         long startTime = System.currentTimeMillis()
