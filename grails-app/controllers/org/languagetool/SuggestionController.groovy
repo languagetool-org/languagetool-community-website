@@ -47,6 +47,7 @@ class SuggestionController {
         s.word = params.word
         s.languageCode = params.languageCode
         s.email = params.email
+        s.ignoreWord = false
         s.save(failOnError: true)
         []
     }
