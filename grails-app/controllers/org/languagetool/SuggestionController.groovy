@@ -51,13 +51,7 @@ class SuggestionController {
     }
     
     def feed() {
-        String password = grailsApplication.config.suggestion.password
-        if (!password || password.trim().isEmpty()) {
-            throw new Exception("'suggestion.password' needs to be set in Config.groovy")
-        }
-        if (params.password != password) {
-            throw new Exception("Invalid password")
-        }
+        validatePassword()
         render(feedType:"rss", feedVersion:"2.0") {
             title = "LanguageTool Word Suggestions"
             description = "Words that should be added to LanguageTool's spell dictionary, as suggested by users"
@@ -88,6 +82,58 @@ class SuggestionController {
                         "Date: ${suggestions.date}\n"
                 }
             }
+        }
+    }
+    
+    def edit() {
+        if (!params.lang) {
+            throw new Exception("Param 'lang' not set")
+        }
+        validatePassword()
+        List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [max: 20, sort:'date', order:'desc'])
+        List suggestionIds = []
+        suggestions.each { suggestionIds.add(it.id) }
+        [suggestions: suggestions, suggestionIds: suggestionIds]
+    }
+
+    def editDone() {
+        validatePassword()
+        String result = ""
+        List ids = params.ids.split(",")
+        for (String id : ids ) {
+            Suggestion s = Suggestion.get(id)
+            if (!params[id + "_use"]) {
+                s.ignoreWord = true
+                s.save(failOnError: true)
+            } else {
+                List suffixes = []
+                // this is currently specific to German:
+                if (params[id + "_N"]) {
+                    suffixes.add("N")
+                }
+                if (params[id + "_S"]) {
+                    suffixes.add("S")
+                }
+                if (params[id + "_A"]) {
+                    suffixes.add("A")
+                }
+                if (suffixes.isEmpty()) {
+                    result += s.word + "\n"
+                } else {
+                    result += s.word + "/" + suffixes.join('') + "\n"
+                }
+            }
+        }
+        [result: result]
+    }
+
+    private void validatePassword() {
+        String password = grailsApplication.config.suggestion.password
+        if (!password || password.trim().isEmpty()) {
+            throw new Exception("'suggestion.password' needs to be set in Config.groovy")
+        }
+        if (params.password != password) {
+            throw new Exception("Invalid password")
         }
     }
 }

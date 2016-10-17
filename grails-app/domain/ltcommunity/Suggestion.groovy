@@ -27,10 +27,12 @@ class Suggestion {
         word(size: 1..100)
         languageCode(size: 2..20)
         email(nullable: true, size: 3..100)
+        ignoreWord(nullable: true)
     }
-    
+
     Date date
     String word
     String languageCode
     String email
+    Boolean ignoreWord
 }
