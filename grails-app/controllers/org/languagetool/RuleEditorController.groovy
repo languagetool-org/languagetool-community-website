@@ -159,7 +159,7 @@ class RuleEditorController extends BaseController {
         List<CorrectExample> correctExamples = patternRule.getCorrectExamples()
         List<IncorrectExample> incorrectExamples = patternRule.getIncorrectExamples()
         if (incorrectExamples.size() == 0) {
-            throw new Exception("No incorrect example sentences found")
+            throw new Exception("No incorrect example sentences found. Use <tt>&lt;example correction='...'&gt;...&lt;/example&gt;</tt>")
         }
         List problems = []
         problems.addAll(checkIncorrectExamples(incorrectExamples, langTool, checkMarker))
@@ -204,11 +204,11 @@ class RuleEditorController extends BaseController {
                     }
                     if (!ruleMatch.getRule().isWithComplexPhrase()) {
                         if (ruleMatch.getFromPos() != expectedMatchStart) {
-                            problems.add(message(code: 'ltc.editor.error.marker.start', args: [ruleMatch.getFromPos(), expectedMatchStart]))
+                            problems.add(message(code: 'ltc.editor.error.marker.start', args: [incorrectExample.getExample(), expectedMatchStart, ruleMatch.getFromPos()]))
                             break
                         }
                         if (ruleMatch.getToPos() != expectedMatchEnd) {
-                            problems.add(message(code: 'ltc.editor.error.marker.end', args: [ruleMatch.getToPos(), expectedMatchEnd]))
+                            problems.add(message(code: 'ltc.editor.error.marker.end', args: [incorrectExample.getExample(), expectedMatchEnd, ruleMatch.getToPos()]))
                             break
                         }
                     }
