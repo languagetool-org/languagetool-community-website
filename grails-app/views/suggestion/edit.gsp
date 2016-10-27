@@ -12,7 +12,7 @@
 
     <div class="dialog">
 
-        <h1>Admin: Users' spelling suggestions</h1>
+        <h1>Admin: Users' spelling suggestions (max. 20)</h1>
 
         <g:form action="editDone" method="post">
             <g:hiddenField name="password" value="${params.password.encodeAsHTML()}"/>
