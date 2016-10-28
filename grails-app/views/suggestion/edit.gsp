@@ -23,7 +23,7 @@
                 <tr>
                     <th>Use</th>
                     <th>Word</th>
-                    <th>#</th>
+                    <th title="number of occurrences in the Google ngram corpus">#</th>
                     <th>Suffixes</th>
                     <th>E-Mail</th>
                     <th>Date</th>
@@ -34,6 +34,7 @@
                         <td><a target="_blank" href='https://www.google.de/search?q="${suggestion.word}"'>${suggestion.word.encodeAsHTML()}</a></td>
                         <td style="text-align: right">${suggestionCounts.get(suggestion.word)}</td>
                         <td>
+                            <input type="text" name="${suggestion.id}_word" value="${suggestion.word.encodeAsHTML()}" /><br>
                             <label><input type="checkbox" name="${suggestion.id}_N" />/N</label>
                             <label><input type="checkbox" name="${suggestion.id}_S" />/S</label>
                             <label><input type="checkbox" name="${suggestion.id}_A" />/A</label>

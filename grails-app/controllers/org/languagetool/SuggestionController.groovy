@@ -134,9 +134,9 @@ class SuggestionController {
                     suffixes.add("E")
                 }
                 if (suffixes.isEmpty()) {
-                    result += s.word + "\n"
+                    result += params[id + "_word"] + "\n"
                 } else {
-                    result += s.word + "/" + suffixes.join('') + "\n"
+                    result += params[id + "_word"] + "/" + suffixes.join('') + "\n"
                 }
                 count++
             }
