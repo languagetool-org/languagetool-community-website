@@ -75,7 +75,7 @@ class HomepageController extends BaseController {
             text = text.substring(0, maxTextLen)
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
-        RemoteResult result = lt.check(text, lang.getShortNameWithCountryAndVariant())
+        RemoteResult result = lt.check(text, lang.getShortCodeWithCountryAndVariant())
         [matches: result.getMatches(), lang: langStr, language: lang, languages: languages,
                 textToCheck: params.text]
     }

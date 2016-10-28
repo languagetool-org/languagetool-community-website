@@ -19,7 +19,7 @@
           
             <h1>${title}</h1>
 
-            <g:if test="${language?.hasVariant() && !language?.getShortNameWithCountryAndVariant().contains("-")}">
+            <g:if test="${language?.hasVariant() && !language?.getShortCodeWithCountryAndVariant().contains("-")}">
                 <p class="warn"><b>Hint:</b> Note that spell checking will only work when you select a language
                     plus its variant,<br/>e.g. "English (US)" instead of just "English".</p>
             </g:if>
@@ -40,7 +40,7 @@
                 <select name="language">
                     <g:each in="${languages}" var="lang">
                         <g:set var="codeWithCountry" value="${lang.countries?.size() == 1 && lang.countries[0] != 'ANY' ? lang.shortName + '-' + lang.countries[0] : lang.shortName}"/>
-                        <g:set var="iteratedLangName" value="${language?.getShortNameWithCountryAndVariant()}"/>
+                        <g:set var="iteratedLangName" value="${language?.getShortCodeWithCountryAndVariant()}"/>
                         <g:if test="${iteratedLangName == 'eo-ANY'}">
                             <g:set var="iteratedLangName" value="eo"/>
                         </g:if>
