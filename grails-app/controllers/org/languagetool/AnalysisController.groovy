@@ -25,7 +25,7 @@ class AnalysisController extends BaseController {
 
     def index = {
         String langCode = params.lang ? params.lang : "en"
-        Language langObject = Languages.getLanguageForShortName(langCode)
+        Language langObject = Languages.getLanguageForShortCode(langCode)
         [language: langObject, languages: SortedLanguages.get()]
     }
 
@@ -34,7 +34,7 @@ class AnalysisController extends BaseController {
      */
     def analyzeText = {
         String langCode = params.lang ? params.lang : "en"
-        Language langObject = Languages.getLanguageForShortName(langCode)
+        Language langObject = Languages.getLanguageForShortCode(langCode)
         if (params.text) {
             List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
             [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),
@@ -48,7 +48,7 @@ class AnalysisController extends BaseController {
      * Tokenize two example sentences for the rule editor and check the first (incorrect) sentence.
      */
     def tokenizeSentences = {
-        Language lang = Languages.getLanguageForShortName(params.lang)
+        Language lang = Languages.getLanguageForShortCode(params.lang)
         JLanguageTool lt = new JLanguageTool(lang)
         List<String> tokens1 = getTokens(params.sentence1, lt)
         def ruleMatches = lt.check((String)params.sentence1)
@@ -81,7 +81,7 @@ class AnalysisController extends BaseController {
      * Show POS tagging etc, for embedding as a debugging help in rule editor.
      */
     def analyzeTextForEmbedding = {
-        Language langObject = Languages.getLanguageForShortName(params.lang)
+        Language langObject = Languages.getLanguageForShortCode(params.lang)
         List<AnalyzedSentence> analyzedSentences = getAnalyzedSentences(params.text, langObject)
         def analysisStr = g.render(template: 'analyzeTextForEmbedding',
                 model: [analyzedSentences: analyzedSentences, language: langObject, languages: SortedLanguages.get(),

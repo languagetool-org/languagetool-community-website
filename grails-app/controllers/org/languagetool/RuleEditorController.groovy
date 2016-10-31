@@ -84,7 +84,7 @@ class RuleEditorController extends BaseController {
             language = getLanguage()
         } catch (Exception e) {
             // maybe it's a language code:
-            language = Languages.getLanguageForShortName(params.language)
+            language = Languages.getLanguageForShortCode(params.language)
         }
         PatternRuleLoader loader = new PatternRuleLoader()
         loader.setRelaxedMode(true)

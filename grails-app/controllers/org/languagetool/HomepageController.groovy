@@ -32,7 +32,7 @@ class HomepageController extends BaseController {
      */
     def index = {
         String langCode = params.lang ? params.lang : "en"
-        Language langObject = Languages.getLanguageForShortName(langCode)
+        Language langObject = Languages.getLanguageForShortCode(langCode)
         render(view:'index',model:[langCode: langCode,
                 lang: langCode,		// used in _corpusMatches.gsp
                 languages: SortedLanguages.get(), language: langObject])
@@ -49,7 +49,7 @@ class HomepageController extends BaseController {
         }
         params.language = langCode
         params.lang = langCode
-        Language language = Languages.getLanguageForShortName(langCode)
+        Language language = Languages.getLanguageForShortCode(langCode)
         render(view: 'checkText', model:[languages: languages, language: language])
     }
     
@@ -64,7 +64,7 @@ class HomepageController extends BaseController {
         } else if (params.lang) {
             langStr = params.lang
         }
-        Language lang = Languages.getLanguageForShortName(langStr)
+        Language lang = Languages.getLanguageForShortCode(langStr)
         if (lang.hasVariant()) {
             lang = lang.getDefaultLanguageVariant()   // we need to select a variant because we want spell checking
         }

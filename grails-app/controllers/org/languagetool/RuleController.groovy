@@ -40,7 +40,7 @@ class RuleController extends BaseController {
         if (params.offset) offset = Integer.parseInt(params.offset)
         if (params.max) max = Integer.parseInt(params.max)
         String langCode = getLanguageCode()
-        Language langObj = Languages.getLanguageForShortName(langCode)
+        Language langObj = Languages.getLanguageForShortCode(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
         List<Rule> rules = lt.getAllRules()
         List<String> categories = getCategories(rules)
@@ -110,7 +110,7 @@ class RuleController extends BaseController {
         // get all information needed to display "show" page:
         String langCode = "en"
         if (params.lang) langCode = params.lang
-        Language langObj = Languages.getLanguageForShortName(langCode)
+        Language langObj = Languages.getLanguageForShortCode(langCode)
         JLanguageTool lt = new JLanguageTool(langObj)
         Rule selectedRule = getSystemRuleById(params.id, params.subId, lt)
         if (!selectedRule) {
@@ -134,7 +134,7 @@ class RuleController extends BaseController {
 
     def show = {
         String langCode = getLanguageCode()
-        Language langObj = Languages.getLanguageForShortName(langCode)
+        Language langObj = Languages.getLanguageForShortCode(langCode)
         Rule selectedRule = getRuleById(params.id, params.subId, langCode)
         if (!selectedRule) {
             log.warn("No rule with id ${params.id}, subId ${params.subId} and language ${langCode}")
@@ -157,7 +157,7 @@ class RuleController extends BaseController {
 
     def showRuleXml = {
         String langCode = getLanguageCode()
-        Language language = Languages.getLanguageForShortName(langCode)
+        Language language = Languages.getLanguageForShortCode(langCode)
         PatternRuleId id = params.subId ? new PatternRuleId(params.id, params.subId) : new PatternRuleId(params.id)
         PatternRuleXmlCreator ruleXmlCreator = new PatternRuleXmlCreator()
         String ruleAsXml = ruleXmlCreator.toXML(id, language)
@@ -174,7 +174,7 @@ class RuleController extends BaseController {
     }
 
     private Rule getRuleById(String id, String subId, String lang) {
-        JLanguageTool lt = new JLanguageTool(Languages.getLanguageForShortName(lang))
+        JLanguageTool lt = new JLanguageTool(Languages.getLanguageForShortCode(lang))
         // ngram rule is not listed anyway, so we don't need to get it here either (and save quite some memory):
         /*String ngramDir = grailsApplication.config.ngramindex
         if (ngramDir) {

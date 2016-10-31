@@ -34,7 +34,7 @@ class SuggestionController {
         if (!params.word) {
             throw new Exception("Parameter 'word' needs to be set")
         }
-        Language lang = Languages.getLanguageForShortName(params.lang)
+        Language lang = Languages.getLanguageForShortCode(params.lang)
         def bundle = JLanguageTool.getMessageBundle(lang)
         String i18nLanguage = bundle.getString(lang.getShortName())
         [language: lang, i18nLanguage: i18nLanguage]

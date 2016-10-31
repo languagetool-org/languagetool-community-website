@@ -38,7 +38,7 @@ class RuleApiController extends BaseController {
         if (!params.ruleId) {
             throw new RuntimeException("'ruleId' parameter missing")
         }
-        Language lang = Languages.getLanguageForShortName(params.lang)
+        Language lang = Languages.getLanguageForShortCode(params.lang)
         JLanguageTool lt = new JLanguageTool(lang)
         String ngramDir = grailsApplication.config.ngramindex
         // save quite some memory if confusion rule is not needed:

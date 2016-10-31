@@ -49,9 +49,9 @@
         </g:else>
     </g:each>
     <g:if test="${matches != null && matches.size() == 0 && params.lang}">
-       <li><g:message code="ltc.no.rule.matches" args="${[Languages.getLanguageForShortName(params.lang)]}"/></li>
+       <li><g:message code="ltc.no.rule.matches" args="${[Languages.getLanguageForShortCode(params.lang)]}"/></li>
     </g:if>
     <g:elseif test="${matches != null && matches.size() == 0 && params.language}">
-       <li><g:message code="ltc.no.rule.matches" args="${[Languages.getLanguageForShortName(params.language)]}"/></li>
+       <li><g:message code="ltc.no.rule.matches" args="${[Languages.getLanguageForShortCode(params.language)]}"/></li>
     </g:elseif>
 </ul>
