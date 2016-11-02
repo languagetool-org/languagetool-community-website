@@ -20,6 +20,7 @@ package org.languagetool
 
 import org.apache.lucene.store.SimpleFSDirectory
 import org.languagetool.dev.index.SearcherResult
+import org.languagetool.dev.index.UnsupportedPatternRuleException
 import org.languagetool.rules.patterns.PatternRule
 import org.languagetool.dev.index.Searcher
 import org.apache.lucene.index.DirectoryReader
@@ -28,7 +29,7 @@ class SearchService {
 
     def grailsApplication
 
-    SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) {
+    SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int maxHits) throws UnsupportedPatternRuleException {
         int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
         log.info("Checking rule against ${language} corpus: ${patternRule.getPatternTokens()}, timeout: ${timeoutMillis}ms")
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
