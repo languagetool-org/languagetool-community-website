@@ -194,9 +194,6 @@ class RuleEditorController extends BaseController {
                 def ruleMatch = ruleMatches.get(0)
                 def expectedReplacements = []
                 expectedReplacements.addAll(incorrectExample.corrections)
-                if (expectedReplacements.size() == 1 && expectedReplacements.get(0).isEmpty()) {
-                    expectedReplacements = []
-                }
                 expectedReplacements.sort()
                 if (checkMarker) {
                     int expectedMatchStart = incorrectExample.getExample().indexOf("<marker>")
@@ -219,8 +216,6 @@ class RuleEditorController extends BaseController {
                 def foundReplacements = new ArrayList<>(ruleMatches.get(0).getSuggestedReplacements())
                 foundReplacements.sort()
                 if (expectedReplacements.size() > 0 && !expectedReplacements.get(0).isEmpty() && expectedReplacements != foundReplacements) {
-                    problems.add(message(code: 'ltc.editor.error.wrong.correction', args: [sentence, foundReplacements, expectedReplacements]))
-                } else if (expectedReplacements.size() == 0 && expectedReplacements != foundReplacements) {
                     problems.add(message(code: 'ltc.editor.error.wrong.correction', args: [sentence, foundReplacements, expectedReplacements]))
                 }
             } else {
