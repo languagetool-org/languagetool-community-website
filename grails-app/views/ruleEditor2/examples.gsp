@@ -18,7 +18,7 @@
 
         <ul style="margin-top: 10px">
             <g:each in="${examples}" var="example">
-                <li><g:link action="index" params="${[wrong: example, lang: language.getShortName()]}">${example.encodeAsHTML()}</g:link></li>
+                <li><g:link action="index" params="${[wrong: example, lang: language.getShortCode()]}">${example.encodeAsHTML()}</g:link></li>
             </g:each>
         </ul>
     </g:else>

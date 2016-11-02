@@ -9,7 +9,7 @@
                 ${matchInfo.getMessage().replaceAll("<suggestion>", "<span class='correction'>").replaceAll("</suggestion>", "</span>")}
 
                 <g:if test="${!hideRuleLink}">
-                    <g:set var="langParam" value="${language?.getShortNameWithCountryAndVariant() ? language.getShortNameWithCountryAndVariant() : lang}"/>
+                    <g:set var="langParam" value="${language?.getShortCodeWithCountryAndVariant() ? language.getShortCodeWithCountryAndVariant() : lang}"/>
                     <g:if test="${matchInfo.getRuleSubId().isPresent()}">
                         <g:link controller="rule" action="show" id="${matchInfo.getRuleId()}"
                         params="${[lang: langParam, subId: matchInfo.getRuleSubId()]}"><span class="additional"><g:message code="ltc.check.visit.rule"/></span></g:link>

@@ -32,7 +32,7 @@ class SearchService {
         int timeoutMillis = grailsApplication.config.fastSearchTimeoutMillis
         log.info("Checking rule against ${language} corpus: ${patternRule.getPatternTokens()}, timeout: ${timeoutMillis}ms")
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
-        File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortName()))
+        File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortCode()))
         if (indexDir.isDirectory()) {
             // NIOFSDirectory and MMapDirectory (as returned by FSDirectory.open()) don't play together 
             // with using Thread.interrupt(), so use SimpleFSDirectory:

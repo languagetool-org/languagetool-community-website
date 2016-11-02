@@ -36,7 +36,7 @@ class SuggestionController {
         }
         Language lang = Languages.getLanguageForShortCode(params.lang)
         def bundle = JLanguageTool.getMessageBundle(lang)
-        String i18nLanguage = bundle.getString(lang.getShortName())
+        String i18nLanguage = bundle.getString(lang.getShortCode())
         [language: lang, i18nLanguage: i18nLanguage]
     }
 

@@ -33,7 +33,7 @@
         <tr>
             <td style="font-weight: bold">
                 Part-of-Speech<br/>
-                <g:link target="_blank" controller="ruleEditor2" action="posTagInformation" params="${[lang:language.getShortName()]}">Help</g:link>
+                <g:link target="_blank" controller="ruleEditor2" action="posTagInformation" params="${[lang:language.getShortCode()]}">Help</g:link>
             </td>
             <g:each in="${sentence.getTokensWithoutWhitespace()}" var="token" status="i">
                 <td>

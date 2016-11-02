@@ -53,7 +53,7 @@ class RuleEditor2Controller extends BaseController {
     
     def examples() {
         Language language = Languages.getLanguageForShortCode(params.lang ? params.lang : "en")
-        def path = "/examples/" + language.getShortName() + ".txt"
+        def path = "/examples/" + language.getShortCode() + ".txt"
         InputStream stream = RuleEditor2Controller.class.getResourceAsStream(path)
         List examples = []
         if (stream) {

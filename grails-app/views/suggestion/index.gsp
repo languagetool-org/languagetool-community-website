@@ -18,7 +18,7 @@
     
         <g:form action="suggestWord" method="post">
             <g:hiddenField name="word" value="${params.word.encodeAsHTML()}"/>
-            <g:hiddenField name="languageCode" value="${language.getShortName().encodeAsHTML()}"/>
+            <g:hiddenField name="languageCode" value="${language.getShortCode().encodeAsHTML()}"/>
             
             <table>
                 <tr>

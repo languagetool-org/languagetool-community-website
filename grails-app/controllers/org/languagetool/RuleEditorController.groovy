@@ -59,7 +59,7 @@ class RuleEditorController extends BaseController {
             continue
           }
           String indexDirTemplate = grailsApplication.config.fastSearchIndex
-          File indexDir = new File(indexDirTemplate.replace("LANG", lang.getShortName()))
+          File indexDir = new File(indexDirTemplate.replace("LANG", lang.getShortCode()))
           if (indexDir.isDirectory()) {
             def directory = SimpleFSDirectory.open(indexDir)
             try {
@@ -91,7 +91,7 @@ class RuleEditorController extends BaseController {
         String userXml = params.xml
         String fakeId = "_some_string_not_in_any_other_rule_1234"
         userXml = userXml.replaceFirst("<rule(.*?)id=['\"](.*?)['\"](.*?)>", "<rule\$1id='\$2${fakeId}'\$3>")  // https://github.com/languagetool-org/languagetool/issues/496
-        String xml = "<rules lang=\"" + language.getShortName() + "\"><category id=\"fakeId\" name=\"fakeCategory\">" + userXml + "</category></rules>"
+        String xml = "<rules lang=\"" + language.getShortCode() + "\"><category id=\"fakeId\" name=\"fakeCategory\">" + userXml + "</category></rules>"
         if (params.xml.trim().isEmpty()) {
             render(template: 'checkXmlProblem', model: [error: "No XML found"])
             return
