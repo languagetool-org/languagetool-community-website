@@ -95,6 +95,7 @@ class SuggestionController {
             throw new Exception("Param valid 'lang' parameter: ${params.lang}")
         }
         validatePassword()
+        int allSuggestionCount = Suggestion.countByLanguageCodeAndIgnoreWord(params.lang, false)
         List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [max: 20, sort:'date', order:'desc'])
         List suggestionIds = []
         suggestions.each { suggestionIds.add(it.id) }
@@ -106,7 +107,7 @@ class SuggestionController {
                 suggestionCounts.put(s.word, lm.getCount(s.word))
             }
         }
-        [suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts]
+        [suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts, allSuggestionCount: allSuggestionCount]
     }
 
     def editDone() {
