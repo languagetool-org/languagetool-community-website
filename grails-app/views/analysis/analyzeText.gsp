@@ -30,7 +30,7 @@
                 Language: ${language.getName().encodeAsHTML()}
             </div>
         
-            <p style="margin-bottom: 8px"><a href="https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/${language.shortName}/src/main/resources/org/languagetool/resource/${language.shortName}/tagset.txt">What do the tags mean?</a></p>
+            <p style="margin-bottom: 8px"><a href="https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/${language.shortCode}/src/main/resources/org/languagetool/resource/${language.shortCode}/tagset.txt">What do the tags mean?</a></p>
         
             <g:each in="${analyzedSentences}" var="sentence">
                 <g:if test="${sentence.getAnnotations().trim() == 'Disambiguator log:'}">
