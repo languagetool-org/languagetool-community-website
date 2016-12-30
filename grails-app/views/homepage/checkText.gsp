@@ -39,7 +39,7 @@
                 &nbsp;&nbsp;&nbsp;Language:
                 <select name="language">
                     <g:each in="${languages}" var="lang">
-                        <g:set var="codeWithCountry" value="${lang.countries?.size() == 1 && lang.countries[0] != 'ANY' ? lang.shortName + '-' + lang.countries[0] : lang.shortName}"/>
+                        <g:set var="codeWithCountry" value="${lang.countries?.size() == 1 && lang.countries[0] != 'ANY' ? lang.shortCode + '-' + lang.countries[0] : lang.shortCode}"/>
                         <g:set var="iteratedLangName" value="${language?.getShortCodeWithCountryAndVariant()}"/>
                         <g:if test="${iteratedLangName == 'eo-ANY'}">
                             <g:set var="iteratedLangName" value="eo"/>

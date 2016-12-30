@@ -6,7 +6,7 @@
     
     <g:each var="lang" in="${languages}">
         <g:if test="${languagesToExpose.contains(lang.shortCode) && !languagesToHide.contains(lang.getShortCodeWithCountryAndVariant()) && !languagesToHide.contains(lang.shortCode)}">
-            <g:if test="${params.lang == lang.shortName}">
+            <g:if test="${params.lang == lang.shortCode}">
                 <span class="languageButton"><span class="activelang">${lang.getName()}</span></span>
             </g:if>
             <g:else>

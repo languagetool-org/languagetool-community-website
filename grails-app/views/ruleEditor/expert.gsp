@@ -57,7 +57,7 @@
                     <g:message code="ltc.editor.expert.intro.completion"/>
                 </p>
 
-                <g:select style="margin-bottom: 5px" name="language" from="${languages}" optionKey="shortNameWithCountryAndVariant" value="${params.language ? params.language : 'en'}"/><br/>
+                <g:select style="margin-bottom: 5px" name="language" from="${languages}" optionKey="shortCodeWithCountryAndVariant" value="${params.language ? params.language : 'en'}"/><br/>
 
                 <g:if test="${params.xml}">
                     <div id="editor">${params.xml.encodeAsHTML()}</div>
