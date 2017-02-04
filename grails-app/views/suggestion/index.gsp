@@ -22,20 +22,22 @@
             
             <table>
                 <tr>
-                    <td><g:message code="ltc.suggestion.language"/></td>
+                    <td style="width:80px"><g:message code="ltc.suggestion.language"/></td>
                     <td>${i18nLanguage.encodeAsHTML()}</td>
                 </tr>
                 <tr>
                     <td><g:message code="ltc.suggestion.word"/></td>
                     <td><span style="font-family: monospace; font-size: x-large">${params.word?.encodeAsHTML()}</span></td>
                 </tr>
-                <tr>
-                    <td style="padding-top: 8px"><g:message code="ltc.suggestion.email"/></td>
-                    <td>
-                        <g:textField size="50" autofocus="autofocus" name="email"/><br/>
-                        <span class="metaInfo"><g:message code="ltc.suggestion.email.hint"/></span>
-                    </td>
-                </tr>
+                <g:if test="${email}">
+                    <tr>
+                        <td style="padding-top: 8px"><g:message code="ltc.suggestion.email"/></td>
+                        <td>
+                            <g:textField size="50" autofocus="autofocus" name="email"/><br/>
+                            <span class="metaInfo"><g:message code="ltc.suggestion.email.hint"/></span>
+                        </td>
+                    </tr>
+                </g:if>
                 <tr>
                     <td></td>
                     <td><g:submitButton name="submit" value="${message(code:'ltc.suggestion.submit')}"/></td>
