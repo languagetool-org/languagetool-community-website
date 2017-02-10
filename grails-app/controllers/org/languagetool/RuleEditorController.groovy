@@ -173,7 +173,7 @@ class RuleEditorController extends BaseController {
         for (incorrectExample in incorrectExamples) {
             String sentence = cleanMarkers(incorrectExample.getExample())
             AnalyzedSentence analyzedSentence = langTool.getAnalyzedSentence(sentence)
-            List ruleMatches = langTool.checkAnalyzedSentence(JLanguageTool.ParagraphHandling.NORMAL, langTool.getAllActiveRules(), 0, 0, 0, sentence, analyzedSentence)
+            List ruleMatches = langTool.checkAnalyzedSentence(JLanguageTool.ParagraphHandling.NORMAL, langTool.getAllActiveRules(), analyzedSentence)
             if (ruleMatches.size() == 0) {
                 if (incorrectExample.getExample().isEmpty()) {
                     // we accept this (but later display a warning) because it's handy to try some patterns
