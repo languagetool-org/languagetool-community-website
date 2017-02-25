@@ -31,7 +31,13 @@
                 <g:each in="${suggestions}" var="suggestion" status="i">
                     <tr style="${i % 2 == 0 ? '' : 'background-color: #eee'}">
                         <td><label><input type="checkbox" name="${suggestion.id}_use" checked="checked" /></label></td>
-                        <td><a target="_blank" href='https://www.google.de/search?q="${suggestion.word}"'>${suggestion.word.encodeAsHTML()}</a></td>
+                        <td>
+                            <a target="_blank" href='https://www.google.de/search?q="${suggestion.word}"'>${suggestion.word.encodeAsHTML()}</a>
+                            <g:set var="pattern" value="^[a-zA-ZöäüÖÄÜß.-]+\$"/>
+                            <g:if test="${lang == de && !suggestion.word.matches(pattern)}">
+                                <br>Note: does not match ${pattern}
+                            </g:if>
+                        </td>
                         <td style="text-align: right">${suggestionCounts.get(suggestion.word)}</td>
                         <td>
                             <input type="text" name="${suggestion.id}_word" value="${suggestion.word.encodeAsHTML()}" /><br>
