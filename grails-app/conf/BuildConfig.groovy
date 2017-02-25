@@ -42,7 +42,7 @@ grails.project.dependency.resolution = {
         runtime 'org.languagetool:languagetool-wikipedia:3.7-SNAPSHOT'
         runtime('org.languagetool:languagetool-http-client:3.7-SNAPSHOT')
 
-        runtime 'mysql:mysql-connector-java:5.1.16'
+        runtime 'mysql:mysql-connector-java:6.0.5'
         runtime 'org.springframework:spring-expression:4.2.0.RELEASE'
     }
 
