@@ -33,7 +33,7 @@
                         <td><label><input type="checkbox" name="${suggestion.id}_use" checked="checked" /></label></td>
                         <td>
                             <a target="_blank" href='https://www.google.de/search?q="${suggestion.word}"'>${suggestion.word.encodeAsHTML()}</a>
-                            <g:set var="pattern" value="^[a-zA-ZöäüÖÄÜß.-]+\$"/>
+                            <g:set var="pattern" value="^[a-zA-ZöäüÖÄÜßéèÈÉ.-]+\$"/>
                             <g:if test="${lang == de && !suggestion.word.matches(pattern)}">
                                 <br>Note: does not match ${pattern}
                             </g:if>
