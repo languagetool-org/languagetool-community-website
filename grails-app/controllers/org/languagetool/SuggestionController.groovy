@@ -109,13 +109,20 @@ class SuggestionController {
         }
         [suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts, allSuggestionCount: allSuggestionCount]
     }
+    
+    def hide() {
+        Suggestion s = Suggestion.get(params.id)
+        s.ignoreWord = true
+        s.save(failOnError: true)
+        render "OK"
+    }
 
     def editDone() {
         validatePassword()
         String result = ""
         List ids = params.ids.split(",")
         int count = 0
-        for (String id : ids ) {
+        for (String id : ids) {
             Suggestion s = Suggestion.get(id)
             s.ignoreWord = true
             s.save(failOnError: true)

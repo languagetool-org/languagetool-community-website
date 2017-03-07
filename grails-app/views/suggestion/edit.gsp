@@ -5,6 +5,7 @@
 <head>
     <title>Admin: Users' spelling suggestions</title>
     <meta name="layout" content="main" />
+    <g:javascript library="jquery" />
 </head>
 <body>
 
@@ -24,6 +25,7 @@
                     <th>Use</th>
                     <th>Word</th>
                     <th title="number of occurrences in the Google ngram corpus">#</th>
+                    <th></th>
                     <th>Suffixes</th>
                     <th>E-Mail</th>
                     <th>Date</th>
@@ -39,6 +41,11 @@
                             </g:if>
                         </td>
                         <td style="text-align: right">${suggestionCounts.get(suggestion.word)}</td>
+                        <td>
+                            <g:remoteLink action="hide" id="${suggestion.id}" update="message${suggestion.id}">
+                                Hide
+                            </g:remoteLink>
+                            <div id="message${suggestion.id}"></div>
                         <td>
                             <input type="text" name="${suggestion.id}_word" value="${suggestion.word.encodeAsHTML()}" /><br>
                             <label><input type="checkbox" name="${suggestion.id}_N" />/N</label>
