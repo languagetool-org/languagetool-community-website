@@ -111,6 +111,7 @@ class SuggestionController {
     }
     
     def hide() {
+        validatePassword()
         Suggestion s = Suggestion.get(params.id)
         s.ignoreWord = true
         s.save(failOnError: true)
