@@ -42,8 +42,8 @@
                         </td>
                         <td style="text-align: right">${suggestionCounts.get(suggestion.word)}</td>
                         <td>
-                            <g:remoteLink action="hide" id="${suggestion.id}" update="message${suggestion.id}">
-                                Hide
+                            <g:remoteLink action="hide" id="${suggestion.id}" update="message${suggestion.id}" title="remove this item from this list (will not show up again after reload)">
+                                Remove
                             </g:remoteLink>
                             <div id="message${suggestion.id}"></div>
                         <td>
