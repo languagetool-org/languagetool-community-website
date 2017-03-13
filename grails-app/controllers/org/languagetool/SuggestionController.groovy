@@ -96,7 +96,8 @@ class SuggestionController {
         }
         validatePassword()
         int allSuggestionCount = Suggestion.countByLanguageCodeAndIgnoreWord(params.lang, false)
-        List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [max: 20, sort:'date', order:'desc'])
+        int max = params.max ? Integer.parseInt(params.max) : 20
+        List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [max: max, sort:'date', order:'desc'])
         List suggestionIds = []
         suggestions.each { suggestionIds.add(it.id) }
         File ngramDir = new File(grailsApplication.config.ngramindex, params.lang)
