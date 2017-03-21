@@ -49,7 +49,7 @@
                     <g:each in="${ruleList}" status="i" var="rule">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 
-                            <td width="200">
+                            <td>
                                 <g:if test="${rule instanceof PatternRule}">
                                     <%
                                     PatternRule pRule = (PatternRule) rule;

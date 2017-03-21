@@ -170,7 +170,7 @@
                             <input type="hidden" name="id" value="${ruleId}"/>
                             <input type="hidden" name="lang" value="${params.lang.encodeAsHTML()}"/>
 
-                            <g:textArea maxlength="25000" name="text" value="${textToCheck}" rows="3" cols="50" />
+                            <g:textArea style="min-width: 200px;max-width: 500px; width: 100%" maxlength="25000" name="text" value="${textToCheck}" rows="3" />
                             <br />
                             <g:actionSubmit action="checkTextWithRule" value="${message(code:'ltc.check.button')}"/>
 
