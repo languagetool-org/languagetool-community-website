@@ -60,8 +60,11 @@
                     </tr>
                 </g:each>
             </table>
-            <input type="submit" value="Continue"><br>all the items with "use" checked will be shown (and you need to add them
-            to <tt>spelling.txt</tt>), all the others will be removed
+            <input type="submit" value="Continue">
+            <ul>
+                <li>all the items with "use" checked will be shown (and you need to add them to <tt>spelling.txt</tt>), all the others will be removed</li>
+                <li>the count does not consider a trailing dot, if any</li>
+            </ul>
             
         </g:form>
 

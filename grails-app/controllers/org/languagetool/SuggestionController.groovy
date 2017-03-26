@@ -105,7 +105,7 @@ class SuggestionController {
         if (ngramDir.exists()) {
             LuceneLanguageModel lm = new LuceneLanguageModel(ngramDir)
             for (Suggestion s : suggestions) {
-                suggestionCounts.put(s.word, lm.getCount(s.word))
+                suggestionCounts.put(s.word, lm.getCount(s.word.replaceFirst("\\.\$", "")))
             }
         }
         [suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts, allSuggestionCount: allSuggestionCount]
