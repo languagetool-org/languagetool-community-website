@@ -18,7 +18,7 @@ environments {
 		dataSource {
 		    driverClassName = "com.mysql.jdbc.Driver"
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-			url = "jdbc:mysql://localhost/ltcommunity?useUnicode=true&characterEncoding=UTF-8"
+			url = "jdbc:mysql://localhost/ltcommunity?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin"
 		    username = "root"
 		    password = ""
 		}
@@ -33,7 +33,7 @@ environments {
 		dataSource {
 		  driverClassName = "com.mysql.jdbc.Driver"
 		  dbCreate = "update" // one of 'create', 'create-drop','update'
-          url = "jdbc:mysql://localhost/ltcommunity?useUnicode=true&characterEncoding=UTF-8"
+          url = "jdbc:mysql://localhost/ltcommunity?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin"
           username = ""
           password = ""
 		}
