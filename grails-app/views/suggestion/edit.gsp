@@ -24,6 +24,7 @@
                 <tr>
                     <th>Use</th>
                     <th>Word</th>
+                    <th>LT Suggestions</th>
                     <th title="number of occurrences in the Google ngram corpus">#</th>
                     <th></th>
                     <th>Suffixes</th>
@@ -40,6 +41,7 @@
                                 <br>Note: does not match ${pattern}
                             </g:if>
                         </td>
+                        <td>${ltSuggestions.get(suggestion.word) != null ? ltSuggestions.get(suggestion.word).join(", ") : "-"}</td>
                         <td style="text-align: right">${suggestionCounts.get(suggestion.word)}</td>
                         <td>
                             <g:remoteLink action="hide" id="${suggestion.id}" update="message${suggestion.id}"

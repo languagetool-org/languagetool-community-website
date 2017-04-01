@@ -21,6 +21,7 @@ package org.languagetool
 
 import ltcommunity.Suggestion
 import org.languagetool.languagemodel.LuceneLanguageModel
+import org.languagetool.rules.Rule
 
 /**
  * Get user suggestion for words that might be added to the dictionary.
@@ -108,7 +109,26 @@ class SuggestionController {
                 suggestionCounts.put(s.word, lm.getCount(s.word.replaceFirst("\\.\$", "")))
             }
         }
-        [suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts, allSuggestionCount: allSuggestionCount]
+        Map<String, List<String>> ltSuggestions = new HashMap()
+        String langCode = params.lang
+        if (langCode == "de") {
+            langCode = "de-DE"
+        } else if (langCode == "pt") {
+            langCode = "pt-PT"
+        }
+        def lt = new JLanguageTool(Languages.getLanguageForShortCode(langCode))
+        for (Rule rule : lt.getAllRules()) {
+            if (!rule.isDictionaryBasedSpellingRule()) {
+                lt.disableRule(rule.getId());
+            }
+        }
+        for (Suggestion s : suggestions) {
+            def matches = lt.check(s.word)
+            if (matches.size() > 0) {
+                ltSuggestions.put(s.word, matches.get(0).getSuggestedReplacements())
+            }
+        }
+        [ltSuggestions: ltSuggestions, suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts, allSuggestionCount: allSuggestionCount]
     }
     
     def hide() {
