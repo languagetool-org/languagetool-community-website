@@ -36,11 +36,11 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        runtime('org.languagetool:language-all:4.0-SNAPSHOT') {
+        runtime('org.languagetool:language-all:4.1-SNAPSHOT') {
             exclude "slf4j-nop"
         }
-        runtime 'org.languagetool:languagetool-wikipedia:4.0-SNAPSHOT'
-        runtime('org.languagetool:languagetool-http-client:4.0-SNAPSHOT')
+        runtime 'org.languagetool:languagetool-wikipedia:4.1-SNAPSHOT'
+        runtime('org.languagetool:languagetool-http-client:4.1-SNAPSHOT')
 
         runtime 'mysql:mysql-connector-java:6.0.5'
         runtime 'org.springframework:spring-expression:4.2.0.RELEASE'
