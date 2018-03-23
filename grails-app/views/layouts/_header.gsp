@@ -17,7 +17,8 @@
             </td>
             <td valign="top">
                 <div class="imprint">
-                    <a href="https://languagetool.org/legal/"><g:message code="ltc.imprint"/></a>
+                    <a href="https://languagetool.org/legal/"><g:message code="ltc.imprint"/></a> &middot;
+                    <a href="https://languagetool.org/privacy/"><g:message code="ltc.privacy"/></a>
                 </div>
             </td>
         </tr>
