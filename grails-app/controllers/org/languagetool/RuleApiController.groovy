@@ -75,6 +75,7 @@ class RuleApiController extends BaseController {
             }
         }
 
+        response.setHeader("Access-Control-Allow-Origin", "*")
         render(contentType: 'text/json') {
             results = result
         }
