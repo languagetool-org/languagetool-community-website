@@ -19,9 +19,6 @@
 
 package org.languagetool
 
-import org.languagetool.remote.RemoteLanguageTool
-import org.languagetool.remote.RemoteResult
-
 /**
  * The main page of the website.
  */
@@ -37,47 +34,5 @@ class HomepageController extends BaseController {
                 lang: langCode,		// used in _corpusMatches.gsp
                 languages: SortedLanguages.get(), language: langObject])
     }
-
-    /**
-     * Offer a simple form that works without JavaScript.
-     */
-    def simpleCheck = {
-        List languages = SortedLanguages.get()
-        String langCode = "en-US"
-        if (params.lang) {
-            langCode = params.lang
-        }
-        params.language = langCode
-        params.lang = langCode
-        Language language = Languages.getLanguageForShortCode(langCode)
-        render(view: 'checkText', model:[languages: languages, language: language])
-    }
     
-    /**
-     * Run the grammar checker on the given text.
-     */
-    def checkText = {
-        List languages = SortedLanguages.get()
-        String langStr = "en"
-        if (params.language) {
-            langStr = params.language
-        } else if (params.lang) {
-            langStr = params.lang
-        }
-        Language lang = Languages.getLanguageForShortCode(langStr)
-        if (lang.hasVariant()) {
-            lang = lang.getDefaultLanguageVariant()   // we need to select a variant because we want spell checking
-        }
-        RemoteLanguageTool lt = new RemoteLanguageTool(new URL(grailsApplication.config.api.server.url))
-        int maxTextLen = grailsApplication.config.max.text.length
-        String text = params.text
-        if (text.size() > maxTextLen) {
-            text = text.substring(0, maxTextLen)
-            flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
-        }
-        RemoteResult result = lt.check(text, lang.getShortCodeWithCountryAndVariant())
-        [matches: result.getMatches(), lang: langStr, language: lang, languages: languages,
-                textToCheck: params.text]
-    }
-
 }
