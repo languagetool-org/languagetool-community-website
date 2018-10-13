@@ -177,13 +177,13 @@
                                         <a class="removeLink" href ng-click="removeElement(element)"><img src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove start and end marker"/></a>
                                   </div>
                                   <div ng-switch-default>
-                                      <span class="dragHandle">&#8691; Token #{{elementPosition(element)}}</span>
+                                      <span class="dragHandle">&#8691; &nbsp; Token #{{elementPosition(element)}}</span>
                                       <a class="removeLink" href ng-show="elementCount() > 1" ng-click="removeElement(element)"><img src="${resource(dir:'images', file:'remove_button.png')}" alt="Remove" title="Remove token"/></a>
-                                      <div style="margin-left: 15px">
+                                      <div style="margin-left: 25px">
 
-                                        <label title="match a word that is exactly the given word"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD"/>&nbsp;Word</label>
-                                        <label title="match a word that has the part-of-speech tag given here"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.POS_TAG" />&nbsp;Part-of-speech</label>
-                                        <label title="combine word and part-of-speech matching so that both must match"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD_AND_POS_TAG"/>&nbsp;Word + Part-of-speech</label>
+                                        <label title="match a word that is exactly the given word"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD"/>&nbsp;Word</label>&nbsp;
+                                        <label title="match a word that has the part-of-speech tag given here"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.POS_TAG" />&nbsp;Part-of-speech</label>&nbsp;
+                                        <label title="combine word and part-of-speech matching so that both must match"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.WORD_AND_POS_TAG"/>&nbsp;Word + Part-of-speech</label>&nbsp;
                                         <label title="match any word (e.g. to skip over one word)"><input type="radio" ng-model="element.tokenType" ng-value="TokenTypes.ANY" ng-disabled="elementCount() <= 2"/>&nbsp;Any word</label>
                                           
                                         <table>
@@ -194,9 +194,9 @@
                                                         <input type="text" ng-model="element.tokenValue" ng-enter="evaluateErrorPattern()"
                                                                      placeholder="word" focus-me="focusInput" />
                                                         <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="element.regex" 
-                                                               value="true" ng-disabled="element.tokenType == TokenTypes.ANY"/>&nbsp;RegExp <a href ng-click="showRegexHelp()">[?]</a></label>
+                                                               value="true" ng-disabled="element.tokenType == TokenTypes.ANY"/>&nbsp;RegExp <a href ng-click="showRegexHelp()">[?]</a></label>&nbsp;
                                                         <div id="regexHelp" style="display: none" title="Regular Expression Quick Help"></div>
-                                                        <label title="Check this and specify the base form to make all forms match (e.g. plural)"><input type="checkbox" ng-model="element.inflected" value="false" />&nbsp;Base&nbsp;form</label>
+                                                        <label title="Check this and specify the base form to make all forms match (e.g. plural)"><input type="checkbox" ng-model="element.inflected" value="false" />&nbsp;Base&nbsp;form</label>&nbsp;
                                                         <label title="Matches anything but the given word"><input type="checkbox" ng-model="element.negation" value="false" />&nbsp;Negate</label>
                                                         <br/>
                                                         <div ng-show="element.tokenValue.contains(' ')">
@@ -235,8 +235,8 @@
 
                                               <!-- copied from above, 'element' replaced with 'exception': -->
 
-                                              <label><input type="radio" ng-model="exception.tokenType" ng-value="TokenTypes.WORD"/>&nbsp;Word</label>
-                                              <label><input type="radio" ng-model="exception.tokenType" ng-value="TokenTypes.POS_TAG"/>&nbsp;Part-of-speech</label>
+                                              <label><input type="radio" ng-model="exception.tokenType" ng-value="TokenTypes.WORD"/>&nbsp;Word</label>&nbsp;
+                                              <label><input type="radio" ng-model="exception.tokenType" ng-value="TokenTypes.POS_TAG"/>&nbsp;Part-of-speech</label>&nbsp;
                                               <label><input type="radio" ng-model="exception.tokenType" ng-value="TokenTypes.WORD_AND_POS_TAG"/>&nbsp;Word + Part-of-speech</label>
 
                                               <table>
@@ -246,8 +246,8 @@
                                                           <div>
                                                               <input type="text" ng-model="exception.tokenValue" ng-enter="evaluateErrorPattern()"
                                                                      placeholder="word" focus-me="focusExceptionInput" />
-                                                              <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="exception.regex" value="true" ng-disabled="exception.tokenType == TokenTypes.ANY"/>&nbsp;RegExp</label>
-                                                              <label title="Matches the base form (e.g. the singular for nouns) of the given word"><input type="checkbox" ng-model="exception.inflected" value="false" />&nbsp;Base&nbsp;form</label>
+                                                              <label title="Interpret the given word as a regular expression"><input type="checkbox" ng-model="exception.regex" value="true" ng-disabled="exception.tokenType == TokenTypes.ANY"/>&nbsp;RegExp</label>&nbsp;
+                                                              <label title="Matches the base form (e.g. the singular for nouns) of the given word"><input type="checkbox" ng-model="exception.inflected" value="false" />&nbsp;Base&nbsp;form</label>&nbsp;
                                                               <label title="Matches anything but the given word"><input type="checkbox" ng-model="exception.negation" value="false" />&nbsp;Negate</label>
                                                               <br/>
                                                               <div ng-show="exception.tokenValue.contains(' ')">
@@ -278,7 +278,7 @@
 
                                               <div>
                                                   <span class="metaInfo">
-                                                      <a href ng-click="editExceptionAttributes(exception)" title="Edit advanced attributes for this exception">Edit Advanced Attributes</a> ({{countAttributes(exception.attributes)}})
+                                                      <a style="font-weight: normal" href ng-click="editExceptionAttributes(exception)" title="Edit advanced attributes for this exception">Edit Advanced Attributes</a> ({{countAttributes(exception.attributes)}})
                                                   </span>
                                                   <modal-dialog show='exception.guiAttributeDialogShown' dialog-title='Advanced Exception Attributes'>
                                                       <table>
@@ -315,10 +315,10 @@
                                         </ul>
                                           
                                         <div>
-                                            <a href ng-click="addException(element)" title="Add an exception for this element">Add exception</a>
+                                            <a style="font-weight: normal" href ng-click="addException(element)" title="Add an exception for this element">Add exception</a>
                                             &middot;
                                             <span class="metaInfo">
-                                                <a href ng-click="editAttributes(element)" title="Edit advanced attributes for this element">Edit Advanced Attributes</a> ({{countAttributes(element.attributes)}})
+                                                <a style="font-weight: normal" href ng-click="editAttributes(element)" title="Edit advanced attributes for this element">Edit Advanced Attributes</a> ({{countAttributes(element.attributes)}})
                                             </span>
                                             <modal-dialog show='element.guiAttributeDialogShown' dialog-title='Advanced Attributes'>
                                                 <table>
