@@ -152,6 +152,7 @@
                 </script>
 
                 <input id="xml" type="hidden" name="xml" value=""/>
+                <input type="hidden" name="devMode" value="${params.devMode ? 'true' : ''}"/>
 
                 <table style="border:0">
                     <tr>
