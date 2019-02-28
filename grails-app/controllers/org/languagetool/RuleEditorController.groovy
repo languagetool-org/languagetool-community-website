@@ -126,7 +126,7 @@ class RuleEditorController extends BaseController {
         int corpusMatchLimit = EXPERT_MODE_CORPUS_MATCH_LIMIT
         if (params.devMode == "true") {
             // allow developers to check more sentences
-            timeoutMillis = timeoutMillis * 2
+            timeoutMillis = timeoutMillis * 3
             corpusMatchLimit = corpusMatchLimit * 3
         }
         try {
@@ -140,7 +140,7 @@ class RuleEditorController extends BaseController {
             String incorrectExamples = getIncorrectExamples(patternRule)
             List<RuleMatch> incorrectExamplesMatches = langTool.check(incorrectExamples)
             startTime = System.currentTimeMillis()
-            SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, corpusMatchLimit)
+            SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, corpusMatchLimit, timeoutMillis)
             long searchTime = System.currentTimeMillis() - startTime
             log.info("Checked XML in ${language}, timeout (${timeoutMillis}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
             render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: corpusMatchLimit,
