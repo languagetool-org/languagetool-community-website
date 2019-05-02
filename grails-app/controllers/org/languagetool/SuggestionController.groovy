@@ -97,8 +97,7 @@ class SuggestionController {
         }
         validatePassword()
         int allSuggestionCount = Suggestion.countByLanguageCodeAndIgnoreWord(params.lang, false)
-        int max = params.max ? Integer.parseInt(params.max) : 20
-        List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [max: max, sort:'date', order:'desc'])
+        List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [sort:'date', order:'desc'])
         List suggestionIds = []
         suggestions.each { suggestionIds.add(it.id) }
         File ngramDir = new File(grailsApplication.config.ngramindex, params.lang)
@@ -122,13 +121,30 @@ class SuggestionController {
                 lt.disableRule(rule.getId());
             }
         }
+        Map word2Count = new HashMap()
+        List filteredSuggestions = []
+        Set listedWords = new HashSet()
+        int minOcc = params.minOcc ? Integer.parseInt(params.minOcc) : 2
         for (Suggestion s : suggestions) {
+            int count = Suggestion.countByLanguageCodeAndWord(params.lang, s.word)
+            if (count < minOcc) {
+                continue
+            }
+            word2Count.put(s.word, count)
             def matches = lt.check(s.word)
             if (matches.size() > 0) {
                 ltSuggestions.put(s.word, matches.get(0).getSuggestedReplacements())
             }
+            if (!listedWords.contains(s.word)) {
+                filteredSuggestions.add(s)
+            }
+            listedWords.add(s.word)
+            if (filteredSuggestions.size() > 500) {
+                break
+            }
         }
-        [ltSuggestions: ltSuggestions, suggestions: suggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts, allSuggestionCount: allSuggestionCount]
+        [ltSuggestions: ltSuggestions, suggestions: filteredSuggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts,
+         allSuggestionCount: allSuggestionCount, word2Count: word2Count, minOcc: minOcc]
     }
     
     def hide() {

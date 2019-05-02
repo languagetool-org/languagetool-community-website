@@ -13,7 +13,20 @@
 
     <div class="dialog">
 
-        <h1>Admin: Users' spelling suggestions (max. 20 of ${allSuggestionCount})</h1>
+        <h1>Admin: Users' spelling suggestions (max. 500)</h1>
+        
+        Only showing words that have been suggested at least
+        <select id="minOcc" name="minOcc" onchange="window.location.href='./edit?password=${params.password}&lang=${params.lang}&max=${params.max}&minOcc=' + document.getElementById('minOcc').value">
+            <g:each in="${(1..5).toList()}" var="count" >
+                <g:if test="${minOcc == count}">
+                    <option selected>${count}</option>
+                </g:if>
+                <g:else>
+                    <option>${count}</option>
+                </g:else>
+            </g:each>
+        </select>
+        times.
 
         <g:form action="editDone" method="post">
             <g:hiddenField name="password" value="${params.password.encodeAsHTML()}"/>
@@ -23,6 +36,7 @@
             <table>
                 <tr>
                     <th>Use</th>
+                    <th>Count</th>
                     <th>Word</th>
                     <th>LT Suggestions</th>
                     <th title="number of occurrences in the Google ngram corpus">#</th>
@@ -34,6 +48,7 @@
                 <g:each in="${suggestions}" var="suggestion" status="i">
                     <tr style="${i % 2 == 0 ? '' : 'background-color: #eee'}">
                         <td><label><input type="checkbox" name="${suggestion.id}_use" checked="checked" /></label></td>
+                        <td>${word2Count.get(suggestion.word)}</td>
                         <td>
                             <a target="_blank" href='https://www.google.de/search?q="${suggestion.word}"'>${suggestion.word.encodeAsHTML()}</a>
                             <g:set var="pattern" value="^[a-zA-ZöäüÖÄÜßéèÈÉ.-]+\$"/>
