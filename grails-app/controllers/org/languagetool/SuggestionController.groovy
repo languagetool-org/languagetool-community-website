@@ -96,18 +96,26 @@ class SuggestionController {
             throw new Exception("Param valid 'lang' parameter: ${params.lang}")
         }
         validatePassword()
+
+        // potential speed up?
+        //def res = Suggestion.executeQuery("select word, count(word) as ct from ltcommunity.Suggestion where language_code = 'de' and ignore_word = false group by word order by ct desc")
+        //word: print res.get(0)[0]
+        //count: print res.get(0)[1]
+        
         int allSuggestionCount = Suggestion.countByLanguageCodeAndIgnoreWord(params.lang, false)
         List suggestions = Suggestion.findAllByLanguageCodeAndIgnoreWord(params.lang, false, [sort:'date', order:'desc'])
         List suggestionIds = []
         suggestions.each { suggestionIds.add(it.id) }
         File ngramDir = new File(grailsApplication.config.ngramindex, params.lang)
         Map<String, Long> suggestionCounts = new HashMap()
+        long t1 = System.currentTimeMillis()
         if (ngramDir.exists()) {
             LuceneLanguageModel lm = new LuceneLanguageModel(ngramDir)
             for (Suggestion s : suggestions) {
                 suggestionCounts.put(s.word, lm.getCount(s.word.replaceFirst("\\.\$", "")))
             }
         }
+        print "lm.getCount took " + (System.currentTimeMillis()-t1) + "ms"
         Map<String, List<String>> ltSuggestions = new HashMap()
         String langCode = params.lang
         if (langCode == "de") {
@@ -125,6 +133,7 @@ class SuggestionController {
         List filteredSuggestions = []
         Set listedWords = new HashSet()
         int minOcc = params.minOcc ? Integer.parseInt(params.minOcc) : 2
+        t1 = System.currentTimeMillis()
         for (Suggestion s : suggestions) {
             int count = Suggestion.countByLanguageCodeAndWord(params.lang, s.word)
             if (count < minOcc) {
@@ -143,6 +152,7 @@ class SuggestionController {
                 break
             }
         }
+        print "loop took " + (System.currentTimeMillis()-t1) + "ms"
         [ltSuggestions: ltSuggestions, suggestions: filteredSuggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts,
          allSuggestionCount: allSuggestionCount, word2Count: word2Count, minOcc: minOcc]
     }
