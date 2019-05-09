@@ -143,6 +143,9 @@ class SuggestionController {
             def matches = lt.check(s.word)
             if (matches.size() > 0) {
                 ltSuggestions.put(s.word, matches.get(0).getSuggestedReplacements())
+            } else {
+                // ignore - word probably already added (maybe suggested by user using an older version of LT)
+                continue
             }
             if (!listedWords.contains(s.word)) {
                 filteredSuggestions.add(s)
