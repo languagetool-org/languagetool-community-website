@@ -16,14 +16,15 @@
 
         <p><g:message code="ltc.suggestion.thanks.text"/></p>
 
-        <g:if test="${params.languageCode?.startsWith("de")}">
-            <p>Hier ist die Liste
-                <a href="https://github.com/languagetool-org/languagetool/blob/master/languagetool-language-modules/de/src/main/resources/org/languagetool/resource/de/hunspell/spelling.txt">aller bisher hinzugefügten Wörter</a>.
-            </p>
+        <br>
+        <g:if test="${request.getHeader('referer') != null && request.getHeader('referer').indexOf('languagetoolplus.com') != -1}">
+            <p><a href="https://languagetoolplus.com">${message(code:"ltc.suggestion.thanks.link").replace('languagetool.org', 'languagetoolplus.com')}</a></p>
         </g:if>
-
+        <g:else>
+            <p><a href="https://languagetool.org"><g:message code="ltc.suggestion.thanks.link"/></a></p>
+        </g:else>
+        
         <br/>
-        <p><a href="https://languagetool.org"><g:message code="ltc.suggestion.thanks.link"/></a></p>
     
     </div>
 
