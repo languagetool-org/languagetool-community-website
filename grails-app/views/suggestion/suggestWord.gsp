@@ -17,9 +17,12 @@
         <p><g:message code="ltc.suggestion.thanks.text"/></p>
 
         <br>
-        <g:if test="${request.getHeader('referer') != null && request.getHeader('referer').indexOf('languagetoolplus.com') != -1}">
-            <p><a href="https://languagetoolplus.com">${message(code:"ltc.suggestion.thanks.link").replace('languagetool.org', 'languagetoolplus.com')}</a></p>
+        <g:if test="${params.referer != null && params.referer.indexOf('rechtschreibpruefung24.de') != -1}">
+            <p><a href="https://languagetoolplus.com">${message(code:"ltc.suggestion.thanks.link").replace('languagetool.org', 'rechtschreibpruefung24.de')}</a></p>
         </g:if>
+        <g:elseif test="${params.referer != null && params.referer.indexOf('languagetoolplus.com') != -1}">
+            <p><a href="https://languagetoolplus.com">${message(code:"ltc.suggestion.thanks.link").replace('languagetool.org', 'languagetoolplus.com')}</a></p>
+        </g:elseif>
         <g:else>
             <p><a href="https://languagetool.org"><g:message code="ltc.suggestion.thanks.link"/></a></p>
         </g:else>

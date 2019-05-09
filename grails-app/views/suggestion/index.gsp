@@ -19,7 +19,10 @@
         <g:form action="suggestWord" method="post">
             <g:hiddenField name="word" value="${params.word.encodeAsHTML()}"/>
             <g:hiddenField name="languageCode" value="${language.getShortCode().encodeAsHTML()}"/>
-            
+            <g:if test="${request.getHeader('referer') != null}">
+                <g:hiddenField name="referer" value="${request.getHeader('referer')}"/>
+            </g:if>
+
             <table>
                 <tr>
                     <td style="width:80px"><g:message code="ltc.suggestion.language"/></td>
