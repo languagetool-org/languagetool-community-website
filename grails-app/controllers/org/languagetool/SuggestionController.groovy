@@ -135,7 +135,7 @@ class SuggestionController {
         int minOcc = params.minOcc ? Integer.parseInt(params.minOcc) : 2
         t1 = System.currentTimeMillis()
         for (Suggestion s : suggestions) {
-            int count = Suggestion.countByLanguageCodeAndWord(params.lang, s.word)
+            int count = Suggestion.countByLanguageCodeAndWordAndIgnoreWord(params.lang, s.word, false)
             if (count < minOcc) {
                 continue
             }
@@ -162,9 +162,14 @@ class SuggestionController {
     
     def hide() {
         validatePassword()
-        Suggestion s = Suggestion.get(params.id)
-        s.ignoreWord = true
-        s.save(failOnError: true)
+        int count = 0
+        def suggestions = Suggestion.findAllByWord(params.word)
+        for (Suggestion s  : suggestions) {
+            s.ignoreWord = true
+            s.save(failOnError: true)
+            count++
+        }
+        print "Ignored " + count + " suggestions of word " + params.word
         render "OK"
     }
 

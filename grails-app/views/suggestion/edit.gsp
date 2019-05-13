@@ -60,7 +60,7 @@
                         <td style="text-align: right">${suggestionCounts.get(suggestion.word)}</td>
                         <td>
                             <g:remoteLink action="hide" id="${suggestion.id}" update="message${suggestion.id}"
-                                          params="${[password: params.password]}"
+                                          params="${[password: params.password, word:suggestion.word]}"
                                           title="remove this item from this list (will not show up again after reload)">
                                 Remove
                             </g:remoteLink>
