@@ -122,6 +122,8 @@ class SuggestionController {
             langCode = "de-DE"
         } else if (langCode == "pt") {
             langCode = "pt-PT"
+        } else if (langCode == "en") {
+            langCode = "en-US"
         }
         def lt = new JLanguageTool(Languages.getLanguageForShortCode(langCode))
         for (Rule rule : lt.getAllRules()) {
