@@ -13,7 +13,7 @@
 
     <div class="dialog">
 
-        <h1>Admin: Users' spelling suggestions (max. 500)</h1>
+        <h1>Admin: Users' spelling suggestions (max. ${limit})</h1>
         
         Only showing words that have been suggested at least
         <select id="minOcc" name="minOcc" onchange="window.location.href='./edit?password=${params.password}&lang=${params.lang}&max=${params.max}&minOcc=' + document.getElementById('minOcc').value">

@@ -22,6 +22,7 @@ package org.languagetool
 import ltcommunity.Suggestion
 import org.languagetool.languagemodel.LuceneLanguageModel
 import org.languagetool.rules.Rule
+import org.languagetool.rules.spelling.SpellingCheckRule
 
 /**
  * Get user suggestion for words that might be added to the dictionary.
@@ -126,9 +127,13 @@ class SuggestionController {
             langCode = "en-US"
         }
         def lt = new JLanguageTool(Languages.getLanguageForShortCode(langCode))
+        def spellRule = null
         for (Rule rule : lt.getAllRules()) {
             if (!rule.isDictionaryBasedSpellingRule()) {
                 lt.disableRule(rule.getId());
+            }
+            if (rule instanceof SpellingCheckRule) {
+                spellRule = (SpellingCheckRule)rule
             }
         }
         Map word2Count = new HashMap()
@@ -136,6 +141,7 @@ class SuggestionController {
         Set listedWords = new HashSet()
         int minOcc = params.minOcc ? Integer.parseInt(params.minOcc) : 2
         t1 = System.currentTimeMillis()
+        int limit = 50
         for (Suggestion s : suggestions) {
             int count = Suggestion.countByLanguageCodeAndWordAndIgnoreWord(params.lang, s.word, false)
             if (count < minOcc) {
@@ -143,6 +149,7 @@ class SuggestionController {
             }
             word2Count.put(s.word, count)
             def matches = lt.check(s.word)
+            // spellRule.isMisspelled(s.word) <- would be faster, but we want the suggestions...
             if (matches.size() > 0) {
                 ltSuggestions.put(s.word, matches.get(0).getSuggestedReplacements())
             } else {
@@ -153,13 +160,13 @@ class SuggestionController {
                 filteredSuggestions.add(s)
             }
             listedWords.add(s.word)
-            if (filteredSuggestions.size() > 500) {
+            if (filteredSuggestions.size() > limit) {
                 break
             }
         }
-        print "loop took " + (System.currentTimeMillis()-t1) + "ms"
+        print "loop for " + suggestions.size() + " suggestions took " + (System.currentTimeMillis()-t1) + "ms"
         [ltSuggestions: ltSuggestions, suggestions: filteredSuggestions, suggestionIds: suggestionIds, suggestionCounts: suggestionCounts,
-         allSuggestionCount: allSuggestionCount, word2Count: word2Count, minOcc: minOcc]
+         allSuggestionCount: allSuggestionCount, word2Count: word2Count, minOcc: minOcc, limit: limit]
     }
     
     def hide() {
