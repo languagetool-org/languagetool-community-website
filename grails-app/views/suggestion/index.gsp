@@ -43,6 +43,10 @@
                 </g:if>
                 <tr>
                     <td></td>
+                    <td><a target="_blank" href="https://www.google.com/search?q=${URLEncoder.encode(params.word, 'UTF-8')}"><g:message code="ltc.suggestion.google"/></a></td>
+                </tr>
+                <tr>
+                    <td></td>
                     <td><g:submitButton name="submit" value="${message(code:'ltc.suggestion.submit')}"/></td>
                 </tr>
             </table>
