@@ -38,6 +38,7 @@
         </script>
         <style type="text/css" media="screen">
             #editor {
+                max-width: 1024px;
                 width: 95%;
                 height: 300px;
                 font-size: 14px;
