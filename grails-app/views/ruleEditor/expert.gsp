@@ -154,6 +154,13 @@
 
                 <input id="xml" type="hidden" name="xml" value=""/>
                 <input type="hidden" name="devMode" value="${params.devMode ? 'true' : ''}"/>
+                
+                <g:if test="${params.devMode == 'true'}">
+                    You're in developer mode.
+                    <g:if test="${params.factor}">
+                        Factor: ${Integer.parseInt(params.factor)}
+                    </g:if>
+                </g:if>
 
                 <table style="border:0">
                     <tr>

@@ -126,8 +126,13 @@ class RuleEditorController extends BaseController {
         int corpusMatchLimit = EXPERT_MODE_CORPUS_MATCH_LIMIT
         if (params.devMode == "true") {
             // allow developers to check more sentences
-            timeoutMillis = timeoutMillis * 3
-            corpusMatchLimit = corpusMatchLimit * 3
+            if (params.factor) {
+                timeoutMillis = timeoutMillis * Integer.parseInt(params.factor)
+                corpusMatchLimit = corpusMatchLimit * Integer.parseInt(params.factor)
+            } else {
+                timeoutMillis = timeoutMillis * 3
+                corpusMatchLimit = corpusMatchLimit * 3
+            }
         }
         try {
             JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
