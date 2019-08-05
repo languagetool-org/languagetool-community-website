@@ -31,7 +31,7 @@
                         </g:if>
                     </p>
 
-                    <ol style="margin-top: 8px; margin-bottom: 10px">
+                    <ul style="margin-top: 8px; margin-bottom: 10px">
                         <g:each in="${searcherResult.getMatchingSentences()}" var="matchingSentence">
                             <g:each in="${matchingSentence.getRuleMatches()}" var="match">
                                 <li>
@@ -60,7 +60,7 @@
                             <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/legalcode">CC BY-SA 3.0 Unported</a>
                             &amp; <a target="_blank" href="http://tatoeba.org/">Tatoeba</a>, <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by/2.0/legalcode">CC-BY 2.0</a>
                         </li>
-                    </ol>
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -80,6 +80,23 @@
         </table>
 
     </g:else>
+    
+    <div style="margin-left:150px">
+        <!-- TODO: "prev" button:
+        <g:submitToRemote name="checkXmlButton2"
+                          before="copyXml(${searcherResult.maxDocChecked})"
+                          onLoading="onLoadingResult()"
+                          onComplete="onResultComplete()"
+                          action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
+                          value="Previous..."/>-->
+        <g:submitToRemote name="checkXmlButton3"
+                          before="copyXml(${searcherResult.maxDocChecked})"
+                          onLoading="onLoadingResult()"
+                          onComplete="onResultComplete()"
+                          action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
+                          value="Search more..."/>
+    </div>
+
 
 </g:if>
 <g:else>

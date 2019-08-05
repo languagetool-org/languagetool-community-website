@@ -7,8 +7,9 @@
         <title><g:message code="ltc.editor.expert.title" /></title>
         <script type="text/javascript">
 
-            function copyXml() {
+            function copyXml(skipDocs) {
                 $('#xml').val(editor.getValue());
+                $('#skipDocs').val(skipDocs);
             }
 
             function onLoadingResult() {
@@ -153,6 +154,7 @@
                 </script>
 
                 <input id="xml" type="hidden" name="xml" value=""/>
+                <input id="skipDocs" type="hidden" name="skipDocs" value=""/>
                 <input type="hidden" name="devMode" value="${params.devMode ? 'true' : ''}"/>
                 
                 <g:if test="${params.devMode == 'true'}">
