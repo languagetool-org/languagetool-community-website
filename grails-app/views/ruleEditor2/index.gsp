@@ -17,6 +17,11 @@
         var __ruleEditorPosInfoUrl = '${resource(dir: 'ruleEditor2', file: 'posTagInformation')}';
         var __ruleEditorXml = '${ruleXml.replace("'", "&apos;")}';
     </script>
+    <script>
+        function copyXml() {
+            alert("Sorry, you need to use the expert mode to get more evaluation results.");
+        }
+    </script>
     <script src="${resource(dir:'js/angular/lib', file:'angular.min.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-sanitize.min.js')}"></script>
     <script src="${resource(dir:'js/angular/lib', file:'angular-animate.min.js')}"></script>
