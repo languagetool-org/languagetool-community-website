@@ -156,6 +156,7 @@
                 <input id="xml" type="hidden" name="xml" value=""/>
                 <input id="skipDocs" type="hidden" name="skipDocs" value=""/>
                 <input type="hidden" name="devMode" value="${params.devMode ? 'true' : ''}"/>
+                <input type="hidden" name="factor" value="${params.factor ? Integer.parseInt(params.factor) : '1'}"/>
                 
                 <g:if test="${params.devMode == 'true'}">
                     You're in developer mode.
