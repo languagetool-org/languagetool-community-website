@@ -1,7 +1,9 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <g:if test="${searcherResult}">
     <g:set var="sentencesChecked" value="${formatNumber(number:searcherResult.getCheckedSentences(), type: 'number')}"/>
-    <g:set var="docsChecked" value="${formatNumber(number:searcherResult.getDocCount(), type: 'number')}"/>
+    <g:set var="skipDocs" value="${formatNumber(number:searcherResult.getSkipHits()+1, type: 'number')}"/>
+    <g:set var="docsChecked" value="${formatNumber(number:(searcherResult.getSkipHits() + searcherResult.getCheckedSentences()), type: 'number')}"/>
+    <g:set var="maxDocs" value="${formatNumber(number:searcherResult.getLuceneMatchCount(), type: 'number')}"/>
 
     <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
         <table style="border:0">
@@ -25,7 +27,7 @@
                 <td style="vertical-align: top"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'information.png')}" /></td>
                 <td>
                     <p style="width:700px;">
-                        <g:message code="ltc.editor.corpus.intro.problem" args="${[docsChecked, params.language.encodeAsHTML()]}"/>
+                        <g:message code="ltc.editor.corpus.intro.problem2" args="${[skipDocs, docsChecked, maxDocs, params.language.encodeAsHTML()]}"/>
                         <g:if test="${searcherResult.getMatchingSentences().size() == limit}">
                             <g:message code="ltc.editor.corpus.limit" args="${[limit]}"/>
                         </g:if>
@@ -60,7 +62,7 @@
                             <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/legalcode">CC BY-SA 3.0 Unported</a>
                             &amp; <a target="_blank" href="http://tatoeba.org/">Tatoeba</a>, <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by/2.0/legalcode">CC-BY 2.0</a>
                         </li>
-                    </ul>
+                    </ol>
                 </td>
             </tr>
         </table>
@@ -73,7 +75,7 @@
                 <td style="width:40px"><img style="margin:5px" src="${resource(dir:'images', file:'accept.png')}" /></td>
                 <td>
                     <p style="width:700px;">
-                        <g:message code="ltc.editor.corpus.intro" args="${[docsChecked, params.language.encodeAsHTML()]}"/>
+                        <g:message code="ltc.editor.corpus.intro2" args="${[skipDocs, docsChecked, maxDocs, params.language.encodeAsHTML()]}"/>
                     </p>
                 </td>
             </tr>
