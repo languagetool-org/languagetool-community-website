@@ -3,7 +3,7 @@
     <g:set var="sentencesChecked" value="${formatNumber(number:searcherResult.getCheckedSentences(), type: 'number')}"/>
     <g:set var="skipDocs" value="${formatNumber(number:searcherResult.getSkipHits()+1, type: 'number')}"/>
     <g:set var="docsChecked" value="${formatNumber(number:(searcherResult.getSkipHits() + searcherResult.getCheckedSentences()), type: 'number')}"/>
-    <g:set var="maxDocs" value="${formatNumber(number:searcherResult.getLuceneMatchCount(), type: 'number')}"/>
+    <g:set var="maxDocs" value="${formatNumber(number:maxDocs, type: 'number')}"/>
 
     <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
         <table style="border:0">
