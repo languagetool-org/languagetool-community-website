@@ -149,9 +149,17 @@ class RuleEditorController extends BaseController {
             SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, skipDocs, corpusMatchLimit, timeoutMillis)
             long searchTime = System.currentTimeMillis() - startTime
             log.info("Checked XML in ${language}, timeout (${timeoutMillis}ms) triggered: ${searcherResult.resultIsTimeLimited}, time: ${searchTime}ms")
-            int maxDocs = searcherResult.getLuceneMatchCount() != 0 ? searcherResult.getLuceneMatchCount() : searcherResult.getNumDocs()
+            int docsChecked
+            int maxDocs
+            if (searcherResult.getLuceneMatchCount() != 0) {
+                docsChecked = searcherResult.getSkipHits() + searcherResult.getCheckedSentences()
+                maxDocs = searcherResult.getLuceneMatchCount()
+            } else {
+                maxDocs = searcherResult.getNumDocs()
+                docsChecked = maxDocs
+            }
             render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: corpusMatchLimit,
-                    incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches, maxDocs: maxDocs])
+                    incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches, docsChecked: docsChecked, maxDocs: maxDocs])
         } catch (SearchTimeoutException ignored) {
             long searchTime = System.currentTimeMillis() - startTime
             log.warn("Timeout checking XML in ${language}, timeout (${timeoutMillis}ms), time: ${searchTime}ms, pattern: ${patternRule}")
