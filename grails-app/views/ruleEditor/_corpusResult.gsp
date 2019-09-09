@@ -27,7 +27,7 @@
                 <td style="vertical-align: top"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'information.png')}" /></td>
                 <td>
                     <p style="width:700px;">
-                        <g:message code="ltc.editor.corpus.intro.problem2" args="${[skipDocs, docsChecked, maxDocs, params.language.encodeAsHTML()]}"/>
+                        <g:message code="ltc.editor.corpus.intro.problem2" args="${[skipDocs, docsChecked, params.language.encodeAsHTML()]}"/>
                         <g:if test="${searcherResult.getMatchingSentences().size() == limit}">
                             <g:message code="ltc.editor.corpus.limit" args="${[limit]}"/>
                         </g:if>
