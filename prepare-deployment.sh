@@ -12,7 +12,7 @@ sleep 1
 grails war
 
 scp -i ~/.ssh/lt2017 target/ltcommunity-0.1.war languagetool@community.languagetool.org:/tmp
-ssh -i ~/.ssh/lt2017 languagetool@community.languagetool.org unzip -d /home/languagetool/tomcat/webapps/ROOT/ /tmp/ltcommunity-0.1.war
+ssh -i ~/.ssh/lt2017 root@community.languagetool.org unzip -d /home/languagetool/webapps/ROOT/ /tmp/ltcommunity-0.1.war
 
 echo "Now log in to the server and call:"
 echo "sh /home/languagetool/deploy-jars.sh `date +%Y%m%d` (or with yesterday's date if there's no snapshot for today yet)"
