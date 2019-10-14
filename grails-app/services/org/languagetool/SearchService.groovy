@@ -42,6 +42,7 @@ class SearchService {
                 Searcher searcher = new Searcher(directory)
                 DirectoryReader indexReader = DirectoryReader.open(directory)
                 try {
+                    log.info("${language} index size: ${indexReader.numDocs()}")
                     searcher.setSkipHits(skipDocs)
                     searcher.setMaxHits(maxHits + skipDocs)
                     searcher.setMaxSearchTimeMillis(timeoutMillis)
