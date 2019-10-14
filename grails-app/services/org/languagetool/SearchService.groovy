@@ -39,14 +39,19 @@ class SearchService {
             SearcherResult searcherResult = null
             def directory = SimpleFSDirectory.open(indexDir.toPath())
             try {
-                Searcher searcher = new Searcher(directory)
+                boolean sentenceFieldname = grailsApplication.config.indexesWithSentenceFieldname.contains(language.getShortCode())
+                Searcher searcher = sentenceFieldname ? new Searcher(directory, "sentence") : new Searcher(directory)
                 DirectoryReader indexReader = DirectoryReader.open(directory)
                 try {
-                    log.info("${language} index size: ${indexReader.numDocs()}")
+                    log.info("${language} index size: ${indexReader.numDocs()}, use 'sentence' as fieldName: ${sentenceFieldname}")
                     searcher.setSkipHits(skipDocs)
                     searcher.setMaxHits(maxHits + skipDocs)
                     searcher.setMaxSearchTimeMillis(timeoutMillis)
-                    searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language)
+                    if (sentenceFieldname) {
+                        searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language, "sentence")
+                    } else {
+                        searcherResult = searcher.findRuleMatchesOnIndex(patternRule, language)
+                    }
                 } finally {
                     indexReader.close()
                 }
