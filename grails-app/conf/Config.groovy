@@ -58,8 +58,6 @@ suggestion.password = "fixme"
 
 // Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
 fastSearchIndex = "/home/languagetool/corpus/LANG"
-// the 'mix-corpus' indexes have a different Lucene field name:
-indexesWithSentenceFieldname = ["en"]
 fastSearchTimeoutMillis = 15000
 
 // log4j configuration
