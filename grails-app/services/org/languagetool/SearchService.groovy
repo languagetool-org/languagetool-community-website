@@ -39,7 +39,7 @@ class SearchService {
             SearcherResult searcherResult = null
             def directory = SimpleFSDirectory.open(indexDir.toPath())
             try {
-                Searcher searcher = new Searcher(directory)
+                Searcher searcher = new Searcher(directory, "fieldLowercase")
                 DirectoryReader indexReader = DirectoryReader.open(directory)
                 try {
                     log.info("${language} index size: ${indexReader.numDocs()}")
