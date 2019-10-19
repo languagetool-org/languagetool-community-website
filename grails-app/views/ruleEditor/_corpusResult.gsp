@@ -53,8 +53,15 @@
                                             pos += token.getToken().length();
                                         %>
                                     </g:each>
-                                    <span class="metaInfo">${matchingSentence.getSource()}, <g:link controller="analysis"
-                                          action="analyzeText" params="${[text: matchingSentence.sentence, lang: params.language]}" target="ltAnalysis">Analyse</g:link></span>
+                                    <span class="metaInfo">
+                                    <g:if test="${matchingSentence.getSource().indexOf('http') == 0}">
+                                        <a style="font-weight:normal;color:#777" href="${matchingSentence.getSource()}" target="_blank">link</a>,
+                                    </g:if>
+                                    <g:else>
+                                        ${matchingSentence.getSource()},
+                                    </g:else>
+                                    <g:link controller="analysis"
+                                      action="analyzeText" params="${[text: matchingSentence.sentence, lang: params.language]}" target="ltAnalysis">Analyse</g:link></span>
                                 </li>
                             </g:each>
                         </g:each>
@@ -62,7 +69,7 @@
                             <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/legalcode">CC BY-SA 3.0 Unported</a>
                             &amp; <a target="_blank" href="http://tatoeba.org/">Tatoeba</a>, <g:message code="ltc.editor.corpus.license" /> <a target="_blank" href="http://creativecommons.org/licenses/by/2.0/legalcode">CC-BY 2.0</a>
                         </li>
-                    </ol>
+                    </ul>
                 </td>
             </tr>
         </table>
