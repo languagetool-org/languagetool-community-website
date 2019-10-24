@@ -19,6 +19,7 @@
 package org.languagetool
 
 import org.apache.lucene.store.SimpleFSDirectory
+import org.languagetool.Language
 import org.languagetool.rules.RuleMatch
 import org.languagetool.rules.CorrectExample
 import org.languagetool.rules.patterns.PatternRule
@@ -27,6 +28,9 @@ import org.languagetool.rules.patterns.PatternRuleLoader
 import org.languagetool.rules.IncorrectExample
 import org.languagetool.dev.index.SearchTimeoutException
 import org.languagetool.dev.index.Searcher
+
+import java.nio.file.Files
+import java.nio.file.Paths
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -91,7 +95,9 @@ class RuleEditorController extends BaseController {
         String userXml = params.xml
         String fakeId = "_some_string_not_in_any_other_rule_1234"
         userXml = userXml.replaceFirst("<rule(.*?)id=['\"](.*?)['\"](.*?)>", "<rule\$1id='\$2${fakeId}'\$3>")  // https://github.com/languagetool-org/languagetool/issues/496
-        String xml = "<rules lang=\"" + language.getShortCode() + "\"><category id=\"fakeId\" name=\"fakeCategory\">" + userXml + "</category></rules>"
+        String xmlForEntities = getEntityDefinitions(language)
+        String xml = xmlForEntities +
+                "<rules lang=\"" + language.getShortCode() + "\"><category id=\"fakeId\" name=\"fakeCategory\">" + userXml + "</category></rules>"
         if (params.xml.trim().isEmpty()) {
             render(template: 'checkXmlProblem', model: [error: "No XML found"])
             return
@@ -104,7 +110,6 @@ class RuleEditorController extends BaseController {
             render(template: 'checkXmlProblem', model: [error: "XML validation failed: " + e.getMessage()])
             return
         }
-        xml = xml.replaceAll("&([a-zA-Z]+);", "&amp;\$1;")  // entities otherwise lead to an error
         InputStream input = new ByteArrayInputStream(xml.getBytes())
         def rules = loader.getRules(input, "<form>")
         if (rules.size() == 0) {
@@ -174,6 +179,27 @@ class RuleEditorController extends BaseController {
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
                     expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
         }
+    }
+    
+    private String getEntityDefinitions(Language lang) {
+        //String pathTemplate = "/home/dnaber/lt/git/languagetool/languagetool-language-modules/XX/src/main/resources/org/languagetool/rules/XX/grammar.xml"
+        String pathTemplate = grailsApplication.config.grammarPathTemplate
+        String filename = pathTemplate.replaceAll("XX", lang.getShortCode())
+        def lines = Files.readAllLines(Paths.get(filename))
+        boolean inDef = false
+        StringBuilder result = new StringBuilder()
+        for (String line  : lines) {
+            if (line.trim().startsWith("<!DOCTYPE")) {
+                inDef = true
+            } else if (line.trim().startsWith("]>")) {
+                result.append(line).append("\n")
+                break
+            }
+            if (inDef) {
+                result.append(line).append("\n")
+            }
+        }
+        return result.toString()
     }
 
     private List<String> checkExampleSentences(JLanguageTool langTool, PatternRule patternRule, boolean checkMarker) {

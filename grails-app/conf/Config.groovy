@@ -60,6 +60,10 @@ suggestion.password = "fixme"
 fastSearchIndex = "/home/languagetool/corpus/LANG"
 fastSearchTimeoutMillis = 15000
 
+// path to grammar.xml with 'XX' as placeholders for language code
+//grammarPathTemplate = "/home/dnaber/lt/git/languagetool/languagetool-language-modules/XX/src/main/resources/org/languagetool/rules/XX/grammar.xml"
+grammarPathTemplate = "/home/languagetool/languagetool/languagetool-language-modules/XX/src/main/resources/org/languagetool/rules/XX/grammar.xml"
+
 // log4j configuration
 log4j = {
     appenders {
