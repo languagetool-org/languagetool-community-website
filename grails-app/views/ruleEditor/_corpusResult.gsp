@@ -40,19 +40,28 @@
                                     <g:set var="pos" value="${0}"/>
                                     <g:set var="startMarked" value="${false}"/>
                                     <g:set var="endMarked" value="${false}"/>
+                                    <g:set var="spanList" value="${[]}"/>
                                     <g:each in="${matchingSentence.getAnalyzedSentence().getTokens()}" var="token">
                                         <g:if test="${pos >= match.getFromPos() && !startMarked}">
-                                            <span class='error'>
+                                            <%
+                                            spanList.add("<span class='error'>")
+                                            %>
                                             <g:set var="startMarked" value="${true}"/>
                                         </g:if>
-                                        <span title="${StringUtils.join(token.getReadings(), ", ").encodeAsHTML()}">${token.getToken().encodeAsHTML()}</span>
-                                        <g:if test="${pos >= match.getToPos() && !endMarked}"></span>
+                                        <%
+                                        spanList.add("<span title=\"${StringUtils.join(token.getReadings(), ', ').encodeAsHTML()}\">${token.getToken().encodeAsHTML()}</span>")
+                                        %>
+                                        <g:if test="${pos >= match.getToPos() && !endMarked}">
+                                            <%
+                                            spanList.add("</span>")
+                                            %>
                                             <g:set var="endMarked" value="${true}"/>
                                         </g:if>
                                         <%
                                             pos += token.getToken().length();
                                         %>
                                     </g:each>
+                                    ${StringUtils.join(spanList, '')}
                                     <span class="metaInfo">
                                     <g:if test="${matchingSentence.getSource()}">
                                         <g:if test="${matchingSentence.getSource().indexOf('http') == 0}">
