@@ -54,12 +54,14 @@
                                         %>
                                     </g:each>
                                     <span class="metaInfo">
-                                    <g:if test="${matchingSentence.getSource().indexOf('http') == 0}">
-                                        <a style="font-weight:normal;color:#777" href="${matchingSentence.getSource()}" target="_blank">link</a>,
+                                    <g:if test="${matchingSentence.getSource()}">
+                                        <g:if test="${matchingSentence.getSource().indexOf('http') == 0}">
+                                            <a style="font-weight:normal;color:#777" href="${matchingSentence.getSource()}" target="_blank">link</a>,
+                                        </g:if>
+                                        <g:else>
+                                            ${matchingSentence.getSource()},
+                                        </g:else>
                                     </g:if>
-                                    <g:else>
-                                        ${matchingSentence.getSource()},
-                                    </g:else>
                                     <g:link controller="analysis"
                                       action="analyzeText" params="${[text: matchingSentence.sentence, lang: params.language]}" target="ltAnalysis">Analyse</g:link></span>
                                 </li>
