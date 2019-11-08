@@ -47,7 +47,7 @@
                 </tr>
                 <g:each in="${suggestions}" var="suggestion" status="i">
                     <tr style="${i % 2 == 0 ? '' : 'background-color: #eee'}">
-                        <td><label><input type="checkbox" name="${suggestion.id}_use" checked="checked" /></label></td>
+                        <td><label><input type="checkbox" name="${suggestion.id}_use" /></label></td>
                         <td>${word2Count.get(suggestion.word)}</td>
                         <td>
                             <a target="_blank" href='https://www.google.de/search?q="${suggestion.word}"'>${suggestion.word.encodeAsHTML()}</a>
