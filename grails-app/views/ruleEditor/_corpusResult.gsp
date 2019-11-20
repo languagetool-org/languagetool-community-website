@@ -4,7 +4,17 @@
     <g:set var="skipDocs" value="${formatNumber(number:searcherResult.getSkipHits()+1, type: 'number')}"/>
     <g:set var="docsChecked" value="${formatNumber(number:(docsChecked), type: 'number')}"/>
     <g:set var="maxDocs" value="${formatNumber(number:maxDocs, type: 'number')}"/>
-
+    
+    <g:if test="${incorrectCorrections.size() > 0}">
+        <table style="border:0">
+            <tr>
+                <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'exclamation.png')}" /></td>
+                <td>The following sentences - which result from applying the correction - trigger a rule match themselves:<br>
+                    ${String.join("<br>", incorrectCorrections)}</td>
+            </tr>
+        </table>
+    </g:if>
+    
     <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
         <table style="border:0">
             <tr>

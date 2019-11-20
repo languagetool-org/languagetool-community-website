@@ -149,6 +149,18 @@ class RuleEditorController extends BaseController {
             }
             String incorrectExamples = getIncorrectExamples(patternRule)
             List<RuleMatch> incorrectExamplesMatches = langTool.check(incorrectExamples)
+
+            List<String> incorrectCorrections = []
+            for (incorrectExample in patternRule.getIncorrectExamples()) {
+                for (correction in incorrectExample.getCorrections()) {
+                    String corrected = incorrectExample.getExample().replaceAll("<marker>.*?</marker>", correction)
+                    List<RuleMatch> tmpMatches = langTool.check(corrected)
+                    if (tmpMatches.size() > 0) {
+                        incorrectCorrections.addAll(corrected)
+                    }
+                }
+            }
+            
             startTime = System.currentTimeMillis()
             int skipDocs = params.skipDocs ? Integer.parseInt(params.skipDocs) : 0
             SearcherResult searcherResult = searchService.checkRuleAgainstCorpus(patternRule, language, skipDocs, corpusMatchLimit, timeoutMillis)
@@ -164,7 +176,8 @@ class RuleEditorController extends BaseController {
                 docsChecked = maxDocs
             }
             render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: corpusMatchLimit,
-                    incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches, docsChecked: docsChecked, maxDocs: maxDocs])
+                    incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches,
+                    incorrectCorrections: incorrectCorrections, docsChecked: docsChecked, maxDocs: maxDocs])
         } catch (SearchTimeoutException ignored) {
             long searchTime = System.currentTimeMillis() - startTime
             log.warn("Timeout checking XML in ${language}, timeout (${timeoutMillis}ms), time: ${searchTime}ms, pattern: ${patternRule}")
