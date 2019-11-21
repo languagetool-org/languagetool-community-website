@@ -10,15 +10,10 @@
         <div><g:message code="ltc.editor.rule.problems"/>
 
             <ul>
-                <g:if test="${isOff}">
-                    <li><g:message code="ltc.editor.rule.not.enabled"/></li>
-                </g:if>
-                <g:else>
-                    <g:each in="${problems}" var="problem">
-                        <li>${problem}</li>
-                    </g:each>
-                    <li><g:message code="ltc.editor.rule.language.selection" args="${[language.getName().encodeAsHTML()]}"/></li>
-                </g:else>
+                <g:each in="${problems}" var="problem">
+                    <li>${problem}</li>
+                </g:each>
+                <li><g:message code="ltc.editor.rule.language.selection" args="${[language.getName().encodeAsHTML()]}"/></li>
             </ul>
 
         </div>

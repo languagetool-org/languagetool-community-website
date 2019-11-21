@@ -15,6 +15,22 @@
         </table>
     </g:if>
     
+    <g:if test="${isOff || isTempOff}">
+        <table style="border:0">
+            <tr>
+                <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'information.png')}" /></td>
+                <td>
+                    <g:if test="${isOff}">
+                        The rule uses default="off" but is run here anyway
+                    </g:if>
+                    <g:if test="${isTempOff}">
+                        The rule uses default="temp_off" but is run here anyway
+                    </g:if>
+                </td>
+            </tr>
+        </table>
+    </g:if>
+
     <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
         <table style="border:0">
             <tr>

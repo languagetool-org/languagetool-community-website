@@ -95,6 +95,12 @@ class RuleEditorController extends BaseController {
         String userXml = params.xml
         String fakeId = "_some_string_not_in_any_other_rule_1234"
         userXml = userXml.replaceFirst("<rule(.*?)id=['\"](.*?)['\"](.*?)>", "<rule\$1id='\$2${fakeId}'\$3>")  // https://github.com/languagetool-org/languagetool/issues/496
+        String orig = userXml
+        userXml = userXml.replaceFirst("default=['\"]temp_off['\"]", "")
+        boolean isTempOff = !orig.equals(userXml)
+        orig = userXml
+        userXml = userXml.replaceFirst("default=['\"]off['\"]", "")
+        boolean isOff = !orig.equals(userXml)
         String xmlForEntities = getEntityDefinitions(language)
         String xml = xmlForEntities +
                 "<rules lang=\"" + language.getShortCode() + "\"><category id=\"fakeId\" name=\"fakeCategory\">" + userXml + "</category></rules>"
@@ -140,21 +146,21 @@ class RuleEditorController extends BaseController {
             }
         }
         try {
-            JLanguageTool langTool = getLanguageToolWithOneRule(language, patternRule)
-            problems.addAll(checkExampleSentences(langTool, patternRule, params.checkMarker != 'false'))
+            JLanguageTool lt = getLanguageToolWithOneRule(language, patternRule)
+            problems.addAll(checkExampleSentences(lt, patternRule, params.checkMarker != 'false'))
             if (problems.size() > 0) {
                 render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                        expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
+                        expertMode: true, isOff: isOff, isTempOff: isTempOff, language: language])
                 return
             }
             String incorrectExamples = getIncorrectExamples(patternRule)
-            List<RuleMatch> incorrectExamplesMatches = langTool.check(incorrectExamples)
+            List<RuleMatch> incorrectExamplesMatches = lt.check(incorrectExamples)
 
             List<String> incorrectCorrections = []
             for (incorrectExample in patternRule.getIncorrectExamples()) {
                 for (correction in incorrectExample.getCorrections()) {
                     String corrected = incorrectExample.getExample().replaceAll("<marker>.*?</marker>", correction)
-                    List<RuleMatch> tmpMatches = langTool.check(corrected)
+                    List<RuleMatch> tmpMatches = lt.check(corrected)
                     if (tmpMatches.size() > 0) {
                         incorrectCorrections.addAll(corrected)
                     }
@@ -177,7 +183,8 @@ class RuleEditorController extends BaseController {
             }
             render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: corpusMatchLimit,
                     incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches,
-                    incorrectCorrections: incorrectCorrections, docsChecked: docsChecked, maxDocs: maxDocs])
+                    incorrectCorrections: incorrectCorrections, docsChecked: docsChecked, maxDocs: maxDocs,
+                    isOff: isOff, isTempOff: isTempOff])
         } catch (SearchTimeoutException ignored) {
             long searchTime = System.currentTimeMillis() - startTime
             log.warn("Timeout checking XML in ${language}, timeout (${timeoutMillis}ms), time: ${searchTime}ms, pattern: ${patternRule}")
@@ -185,12 +192,12 @@ class RuleEditorController extends BaseController {
                     " for patterns with some regular expressions, for example if the pattern starts with .*." +
                     " These kinds of patterns are currently not supported by this tool.")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                    expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
+                    expertMode: true, isOff: isOff, isTempOff: isTempOff, language: language])
         } catch (Exception e) {
             log.error("Error checking XML in ${language}, pattern: ${patternRule}, XML input: ${xml}", e)
             problems.add("Sorry, an error occurred trying to check your rule: ${e.getMessage()}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                    expertMode: true, isOff: patternRule.isDefaultOff(), language: language])
+                    expertMode: true, isOff: isOff, isTempOff: isTempOff, language: language])
         }
     }
     
