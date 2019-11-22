@@ -161,7 +161,7 @@ class RuleEditorController extends BaseController {
                 for (correction in incorrectExample.getCorrections()) {
                     String corrected = incorrectExample.getExample().replaceAll("<marker>.*?</marker>", correction)
                     List<RuleMatch> tmpMatches = lt.check(corrected)
-                    if (tmpMatches.size() > 0) {
+                    if (tmpMatches.size() > 0 && !correction.isEmpty()) {
                         incorrectCorrections.addAll(corrected)
                     }
                 }
