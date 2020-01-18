@@ -54,6 +54,18 @@
                     <td style="width:25%"><g:message code="ltc.rule.show.description" /></td>
                     <td>${rule.description.encodeAsHTML()}</td>
                 </tr>
+                <g:if test="${rule.isDefaultOff()}">
+                    <tr>
+                        <td></td>
+                        <td><b><g:message code="ltc.rule.show.rule.off" /></b></td>
+                    </tr>
+                </g:if>
+                <g:if test="${rule.getCategory() && rule.getCategory().isDefaultOff()}">
+                    <tr>
+                        <td></td>
+                        <td><b><g:message code="ltc.rule.show.category.off" /></b></td>
+                    </tr>
+                </g:if>
                 <g:if test="${rule instanceof PatternRule}">
                     <tr>
                         <td><g:message code="ltc.rule.show.message" /></td>
