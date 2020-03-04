@@ -239,8 +239,11 @@ class RuleEditorController extends BaseController {
         AnalysisController analysisController = new AnalysisController()
         for (incorrectExample in incorrectExamples) {
             String sentence = cleanMarkers(incorrectExample.getExample())
-            AnalyzedSentence analyzedSentence = langTool.getAnalyzedSentence(sentence)
-            List ruleMatches = langTool.checkAnalyzedSentence(JLanguageTool.ParagraphHandling.NORMAL, langTool.getAllActiveRules(), analyzedSentence)
+            List<AnalyzedSentence> analyzedSentences = langTool.analyzeText(sentence);
+            List ruleMatches = []
+            for (AnalyzedSentence sent : analyzedSentences) {
+                ruleMatches.addAll(langTool.checkAnalyzedSentence(JLanguageTool.ParagraphHandling.NORMAL, langTool.getAllActiveRules(), sent))
+            }
             if (ruleMatches.size() == 0) {
                 if (incorrectExample.getExample().isEmpty()) {
                     // we accept this (but later display a warning) because it's handy to try some patterns
@@ -250,9 +253,9 @@ class RuleEditorController extends BaseController {
                     msg += "<br/>"
                     msg += message(code: 'ltc.editor.error.not.found.analysis')
                     msg += "<br/>"
-                    List<AnalyzedSentence> analyzedSentences = analysisController.getAnalyzedSentences(sentence, langTool.getLanguage())
+                    List<AnalyzedSentence> analyzedSentences2 = analysisController.getAnalyzedSentences(sentence, langTool.getLanguage())
                     def analysisStr = g.render(template: '/analysis/analyzeTextForEmbedding', 
-                            model: [analyzedSentences: analyzedSentences, language: langTool.getLanguage(), languages: SortedLanguages.get(),
+                            model: [analyzedSentences: analyzedSentences2, language: langTool.getLanguage(), languages: SortedLanguages.get(),
                             textToCheck: sentence])
                     msg += analysisStr
                     problems.add(msg)
