@@ -30,7 +30,7 @@ class SearchService {
     def grailsApplication
 
     SearcherResult checkRuleAgainstCorpus(PatternRule patternRule, Language language, int skipDocs, int maxHits, int timeoutMillis) throws UnsupportedPatternRuleException {
-        log.info("Checking rule against ${language} corpus: ${patternRule.getPatternTokens()}, timeout: ${timeoutMillis}ms")
+        log.info("Checking rule against ${language} corpus: ${patternRule.getPatternTokens()}, timeout: ${timeoutMillis}ms, skipDocs: ${skipDocs}, maxHits: ${maxHits}")
         String indexDirTemplate = grailsApplication.config.fastSearchIndex
         File indexDir = new File(indexDirTemplate.replace("LANG", language.getShortCode()))
         if (indexDir.isDirectory()) {
@@ -53,6 +53,7 @@ class SearchService {
             } finally {
                 directory.close()
             }
+            log.info("getMatchingSentences(): ${searcherResult.getMatchingSentences().size()}")
             return searcherResult
         } else {
             throw new NoDataForLanguageException(language, indexDir)

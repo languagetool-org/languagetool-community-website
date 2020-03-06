@@ -52,6 +52,8 @@
 
             <g:form name="ruleForm" method="post" action="checkRule">
 
+                <input type="hidden" id="showMatchesOnly" name="showMatchesOnly" value=""/>
+
                 <p style="margin-top: 8px;">You're in expert mode. Don't know what to do here? <g:link controller="ruleEditor2">Try the simple mode instead.</g:link></p>
                 
                 <p>
@@ -168,12 +170,17 @@
                 <table style="border:0">
                     <tr>
                         <td style="width:10%">
-                            <g:submitToRemote name="checkXmlButton"
-                                              before="copyXml()"
-                                              onLoading="onLoadingResult()"
-                                              onComplete="onResultComplete()"
-                                              action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
-                                              value="${message(code:'ltc.editor.expert.check.xml')}"/>
+                            <g:if test="${params.devMode == 'true'}">
+                                <input id="checkXmlButton" type="submit" value="Check XML and search all docs...">
+                            </g:if>
+                            <g:else>
+                                <g:submitToRemote name="checkXmlButton"
+                                                  before="copyXml()"
+                                                  onLoading="onLoadingResult()"
+                                                  onComplete="onResultComplete()"
+                                                  action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
+                                                  value="${message(code:'ltc.editor.expert.check.xml')}"/>
+                            </g:else>
                             <img id="checkResultSpinner" style="display: none" src="${resource(dir:'images', file:'spinner.gif')}" alt="wait symbol"/>
                         </td>
                         <td><span class="metaInfo"><g:message code="ltc.editor.expert.submit.hint"/></span></td>
@@ -184,6 +191,47 @@
                 <div id="checkResult"></div>
 
             </g:form>
+
+            <script>
+                function getMatches(form, skipCount) {
+                    console.log("getMatches from " + skipCount);
+                    if (skipCount > 0) {
+                        $("#showMatchesOnly").val("1");
+                        $('#skipDocs').val(skipCount);
+                    }
+                    var limit = 10000;
+                    if (skipCount > limit) {
+                        // TODO
+                        $("#checkResult").append("Limit (" + limit + ") reached, stopping.");
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "checkXml",
+                        data: form.serialize(), // serializes the form's elements
+                        success: function (data) {
+                            $("#checkResult").append(data);
+                            onResultComplete();
+                            if (data.indexOf("<!--STOPCHECK-->") == -1) {
+                                getMatches(form, skipCount + 500);
+                            } else {
+                                console.log("Stopping search, got hint from server");
+                            }
+                        }
+                    });
+                }
+
+                $( document ).ready(function() {
+                    $("#ruleForm").submit(function(e) {
+                        console.log("submit");
+                        $("#checkResult").html("");
+                        e.preventDefault();
+                        var form = $(this);
+                        copyXml();
+                        getMatches(form, 0);
+                    });
+                });
+            </script>
 
         </div>
     </body>

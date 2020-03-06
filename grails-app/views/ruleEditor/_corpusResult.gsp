@@ -4,46 +4,52 @@
     <g:set var="skipDocs" value="${formatNumber(number:searcherResult.getSkipHits()+1, type: 'number')}"/>
     <g:set var="docsChecked" value="${formatNumber(number:(docsChecked), type: 'number')}"/>
     <g:set var="maxDocs" value="${formatNumber(number:maxDocs, type: 'number')}"/>
-    
-    <g:if test="${incorrectCorrections.size() > 0}">
-        <table style="border:0">
-            <tr>
-                <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'exclamation.png')}" /></td>
-                <td>The following sentences - which result from applying the correction - trigger a rule match themselves:<br>
-                    ${String.join("<br>", incorrectCorrections)}</td>
-            </tr>
-        </table>
-    </g:if>
-    
-    <g:if test="${isOff || isTempOff}">
-        <table style="border:0">
-            <tr>
-                <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'information.png')}" /></td>
-                <td>
-                    <g:if test="${isOff}">
-                        The rule uses default="off" but is run here anyway
-                    </g:if>
-                    <g:if test="${isTempOff}">
-                        The rule uses default="temp_off" but is run here anyway
-                    </g:if>
-                </td>
-            </tr>
-        </table>
-    </g:if>
 
-    <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
-        <table style="border:0">
-            <tr>
-                <td style="vertical-align: top;width:40px"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
-                <td style="text-align: left">
-                    <g:message code="ltc.editor.corpus.correct.example.sentence"/>
-                    <g:if test="${incorrectExamplesMatches}">
-                        <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>
-                        <g:render template="/ruleMatches" model="${[matches: incorrectExamplesMatches, textToCheck: incorrectExamples, hideRuleLink: true]}"/>
-                    </g:if>
-                </td>
-            </tr>
-        </table>
+    <g:if test="${!params.showMatchesOnly}">
+
+        <g:if test="${incorrectCorrections.size() > 0}">
+            <!-- do no modify:-->
+            <!--STOPCHECK-->
+            <table style="border:0">
+                <tr>
+                    <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'exclamation.png')}" /></td>
+                    <td>The following sentences - which result from applying the correction - trigger a rule match themselves:<br>
+                        ${String.join("<br>", incorrectCorrections)}</td>
+                </tr>
+            </table>
+        </g:if>
+
+        <g:if test="${isOff || isTempOff}">
+            <table style="border:0">
+                <tr>
+                    <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'information.png')}" /></td>
+                    <td>
+                        <g:if test="${isOff}">
+                            The rule uses default="off" but is run here anyway
+                        </g:if>
+                        <g:if test="${isTempOff}">
+                            The rule uses default="temp_off" but is run here anyway
+                        </g:if>
+                    </td>
+                </tr>
+            </table>
+        </g:if>
+
+        <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
+            <table style="border:0">
+                <tr>
+                    <td style="vertical-align: top;width:40px"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                    <td style="text-align: left">
+                        <g:message code="ltc.editor.corpus.correct.example.sentence"/>
+                        <g:if test="${incorrectExamplesMatches}">
+                            <p><g:message code="ltc.editor.corpus.incorrect.example.sentence"/></p>
+                            <g:render template="/ruleMatches" model="${[matches: incorrectExamplesMatches, textToCheck: incorrectExamples, hideRuleLink: true]}"/>
+                        </g:if>
+                    </td>
+                </tr>
+            </table>
+        </g:if>
+
     </g:if>
 
     <g:if test="${searcherResult.getMatchingSentences().size() > 0}">
@@ -114,34 +120,38 @@
     </g:if>
     <g:else>
 
-        <table style="border:0">
-            <tr>
-                <td style="width:40px"><img style="margin:5px" src="${resource(dir:'images', file:'accept.png')}" /></td>
-                <td>
-                    <p style="width:700px;">
-                        <g:message code="ltc.editor.corpus.intro2" args="${[skipDocs, docsChecked, maxDocs, params.language.encodeAsHTML()]}"/>
-                    </p>
-                </td>
-            </tr>
-        </table>
+        <g:if test="${params.showMatchesOnly}">
+            ${skipDocs}...<br>
+        </g:if>
+        <g:else>
+            <table style="border:0">
+                <tr>
+                    <td style="width:40px"><img style="margin:5px" src="${resource(dir:'images', file:'accept.png')}" /></td>
+                    <td>
+                        <p style="width:700px;">
+                            <g:message code="ltc.editor.corpus.intro2" args="${[skipDocs, docsChecked, maxDocs, params.language.encodeAsHTML()]}"/>
+                            <g:if test="${docsChecked == maxDocs}">
+                                <!-- do no modify:-->
+                                <!--STOPCHECK-->
+                            </g:if>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </g:else>
 
     </g:else>
     
-    <div style="margin-left:150px">
-        <!-- TODO: "prev" button:
-        <g:submitToRemote name="checkXmlButton2"
-                          before="copyXml(${searcherResult.maxDocChecked})"
-                          onLoading="onLoadingResult()"
-                          onComplete="onResultComplete()"
-                          action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
-                          value="Previous..."/>-->
-        <g:submitToRemote name="checkXmlButton3"
-                          before="copyXml(${searcherResult.maxDocChecked})"
-                          onLoading="onLoadingResult()"
-                          onComplete="onResultComplete()"
-                          action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
-                          value="Search more..."/>
-    </div>
+    <g:if test="${!params.showMatchesOnly && docsChecked < maxDocs}">
+        <div style="margin-left:150px">
+            <g:submitToRemote name="checkXmlButton3"
+                              before="copyXml(${searcherResult.maxDocChecked})"
+                              onLoading="onLoadingResult()"
+                              onComplete="onResultComplete()"
+                              action="checkXml" update="${[success: 'checkResult', failure: 'checkResult']}"
+                              value="Search more..."/>
+        </div>
+    </g:if>
 
 
 </g:if>
