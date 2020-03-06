@@ -171,7 +171,8 @@
                     <tr>
                         <td style="width:10%">
                             <g:if test="${params.devMode == 'true'}">
-                                <input id="checkXmlButton" type="submit" value="Check XML and search all docs...">
+                                <input id="checkXmlButton" type="submit" value="Check XML and search docs...">
+                                <input id="stopButton" type="button" value="Stop" style="background-color: orangered;color: white">
                             </g:if>
                             <g:else>
                                 <g:submitToRemote name="checkXmlButton"
@@ -193,16 +194,32 @@
             </g:form>
 
             <script>
+                var limit = 50000;
+                var stepSize = 1000;
+                var stopSearch = false;
+
+                function enableStopButton() {
+                    $("#stopButton").prop('disabled', false);
+                    $("#stopButton").css('background-color', 'orangered');
+                    showDiv('checkResultSpinner');
+                }
+
+                function disableStopButton() {
+                    $("#stopButton").prop('disabled', false);
+                    $("#stopButton").css('background-color', 'grey');
+                    hideDiv('checkResultSpinner');
+                }
+
                 function getMatches(form, skipCount) {
+                    enableStopButton();
                     console.log("getMatches from " + skipCount);
                     if (skipCount > 0) {
                         $("#showMatchesOnly").val("1");
                         $('#skipDocs').val(skipCount);
                     }
-                    var limit = 10000;
                     if (skipCount > limit) {
-                        // TODO
                         $("#checkResult").append("Limit (" + limit + ") reached, stopping.");
+                        disableStopButton();
                         return;
                     }
                     $.ajax({
@@ -212,18 +229,29 @@
                         success: function (data) {
                             $("#checkResult").append(data);
                             onResultComplete();
-                            if (data.indexOf("<!--STOPCHECK-->") == -1) {
-                                getMatches(form, skipCount + 500);
+                            if (stopSearch) {
+                                console.log("Stopping search, user clicked stop button");
+                                disableStopButton();
+                                stopSearch = false;
+                            } else if (data.indexOf("<!--STOPCHECK-->") == -1) {
+                                getMatches(form, skipCount + stepSize);
                             } else {
                                 console.log("Stopping search, got hint from server");
+                                disableStopButton();
                             }
                         }
                     });
                 }
 
                 $( document ).ready(function() {
+                    disableStopButton();
+                    $("#stopButton").click(function(e) {
+                        console.log("stop button clicked");
+                        stopSearch = true;
+                        disableStopButton();
+                    });
                     $("#ruleForm").submit(function(e) {
-                        console.log("submit");
+                        console.log("submit button clicked");
                         $("#checkResult").html("");
                         e.preventDefault();
                         var form = $(this);

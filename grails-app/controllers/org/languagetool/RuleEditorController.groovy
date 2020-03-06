@@ -39,7 +39,7 @@ class RuleEditorController extends BaseController {
 
     def searchService
 
-    int EXPERT_MODE_CORPUS_MATCH_LIMIT = 100
+    int EXPERT_MODE_CORPUS_MATCH_LIMIT = 1000
 
     def index = {
         [languages: Languages.get(), languageNames: getSortedLanguageNames()]
@@ -137,13 +137,7 @@ class RuleEditorController extends BaseController {
         int corpusMatchLimit = EXPERT_MODE_CORPUS_MATCH_LIMIT
         if (params.devMode == "true") {
             // allow developers to check more sentences
-            if (params.factor) {
-                timeoutMillis = timeoutMillis * Integer.parseInt(params.factor)
-                corpusMatchLimit = corpusMatchLimit * Integer.parseInt(params.factor)
-            } else {
-                timeoutMillis = timeoutMillis * 3
-                corpusMatchLimit = corpusMatchLimit * 3
-            }
+            timeoutMillis = timeoutMillis * 3
         }
         try {
             JLanguageTool lt = getLanguageToolWithOneRule(language, patternRule)
