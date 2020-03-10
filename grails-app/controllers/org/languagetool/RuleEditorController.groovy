@@ -31,6 +31,8 @@ import org.languagetool.dev.index.Searcher
 
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 /**
  * Editor that helps with creating the XML for simple rules.
@@ -102,6 +104,7 @@ class RuleEditorController extends BaseController {
         userXml = userXml.replaceFirst("default=['\"]off['\"]", "")
         boolean isOff = !orig.equals(userXml)
         String xmlForEntities = getEntityDefinitions(language)
+        int additionalLines = xmlForEntities.split("\n").length
         String xml = xmlForEntities +
                 "<rules lang=\"" + language.getShortCode() + "\"><category id=\"fakeId\" name=\"fakeCategory\">" + userXml + "</category></rules>"
         if (params.xml.trim().isEmpty()) {
@@ -113,7 +116,14 @@ class RuleEditorController extends BaseController {
         try {
             validator.validateStringWithXmlSchema(xml, xsd)
         } catch (Exception e) {
-            render(template: 'checkXmlProblem', model: [error: "XML validation failed: " + e.getMessage()])
+            String message = e.getMessage()
+            Pattern p = Pattern.compile(".*lineNumber: (\\d+).*")
+            Matcher matcher = p.matcher(message)
+            if (matcher.matches()) {
+                int origLine = Integer.parseInt(matcher.group(1))
+                message = message.replaceFirst("lineNumber: \\d+", "lineNumber: " + (origLine-additionalLines))
+            }
+            render(template: 'checkXmlProblem', model: [error: "XML validation failed: " + message])
             return
         }
         InputStream input = new ByteArrayInputStream(xml.getBytes())
@@ -194,7 +204,7 @@ class RuleEditorController extends BaseController {
                     expertMode: true, isOff: isOff, isTempOff: isTempOff, language: language])
         }
     }
-    
+
     private String getEntityDefinitions(Language lang) {
         //String pathTemplate = "/home/dnaber/lt/git/languagetool/languagetool-language-modules/XX/src/main/resources/org/languagetool/rules/XX/grammar.xml"
         String pathTemplate = grailsApplication.config.grammarPathTemplate
