@@ -44,6 +44,25 @@ class SuggestionController {
 
     def suggestWord() {
         log.info("Saving word suggestion: ${params.word}, language ${params.languageCode}, email ${params.email}")
+        if (params.word == "detecd") {
+            log.info("Not saving 'detecd'")
+            render "This is a test word and has not been sent to the reviewers."
+            return
+        }
+        List existingWords = Suggestion.findAllByWordAndLanguageCode(params.word, params.languageCode)
+        int ignoreCount = 0
+        for (w in existingWords) {
+            if (w.ignoreWord) {
+                ignoreCount++
+            }
+        }
+        if (ignoreCount > 0 && ignoreCount == existingWords.size()) {
+            log.info("Not saving suggestion: ${params.word}, all ${ignoreCount} previous suggestions have been ignored")
+            render "Previously, this word was rejected. If you think that the spelling is correct, open an issue on " +
+                    "https://github.com/languagetool-org/languagetool/issues/. Give references that show that the " +
+                    "spelling is correct. (Make sure that the spelling is correct for the language variant: British English, American English and so on.)"
+            return
+        }
         Suggestion s = new Suggestion()
         s.date = new Date()
         s.word = params.word
