@@ -194,7 +194,7 @@
             </g:form>
 
             <script>
-                var limit = 50000;
+                var limit = 100000;
                 var stepSize = 1000;
                 var stopSearch = false;
 
