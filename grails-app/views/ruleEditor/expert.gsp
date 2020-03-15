@@ -216,6 +216,8 @@
                     if (skipCount > 0) {
                         $("#showMatchesOnly").val("1");
                         $('#skipDocs').val(skipCount);
+                    } else {
+                        $("#showMatchesOnly").val("");
                     }
                     if (skipCount > limit) {
                         $("#checkResult").append("Limit (" + limit + ") reached, stopping.");
