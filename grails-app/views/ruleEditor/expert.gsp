@@ -67,7 +67,7 @@
                     <div id="editor">${params.xml.encodeAsHTML()}</div>
                 </g:if>
                 <g:else>
-                    <div id="editor">&lt;!-- this is an example rule: --&gt;
+                    <div id="editor" style="resize:vertical; overflow:auto;">&lt;!-- this is an example rule: --&gt;
 &lt;rule id="CONFUSION_OF_BED_BAD" name="confusion of bed/bad"&gt;
     &lt;pattern&gt;
         &lt;token&gt;bed&lt;/token&gt;
