@@ -50,9 +50,6 @@ hide.languages = ["cs", "ml", "be", "sk", "zh", "ast", "km", "en-GB", "en-US", "
 // show these languages directly in the navigation bar (not in the drop down):
 expose.languages = ["en", "fr", "de", "es", "pl", "ca", "br", "nl", "pt", "es", "eo", "ru"]
 maxPatternElements = 5
-// disable some rules for WikiCheck to avoid too many false alarms:
-disabledRulesPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules.properties"
-disabledRulesForFeedPropFile="/home/languagetool/ltcommunity/corpus/ltcommunity/disabled_rules_for_feed.properties"
 // the feed of user-suggested words is password protected:
 suggestion.password = "fixme"
 
