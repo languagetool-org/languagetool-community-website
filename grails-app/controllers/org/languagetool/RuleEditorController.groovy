@@ -103,6 +103,8 @@ class RuleEditorController extends BaseController {
         orig = userXml
         userXml = userXml.replaceFirst("default=['\"]off['\"]", "")
         boolean isOff = !orig.equals(userXml)
+        userXml = userXml.replaceFirst('tags="([^"]*)picky([^"]*)"', 'tags="$1 $2"')
+        userXml = userXml.replaceFirst("tags='([^']*)picky([^']*)'", 'tags="$1 $2"')
         String xmlForEntities = getEntityDefinitions(language)
         int additionalLines = xmlForEntities.split("\n").length
         String xml = xmlForEntities +
