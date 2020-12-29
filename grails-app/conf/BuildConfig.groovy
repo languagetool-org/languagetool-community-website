@@ -36,7 +36,7 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        runtime('org.languagetool:language-all:5.2-SNAPSHOT') {
+        runtime('org.languagetool:language-all:5.3-SNAPSHOT') {
             exclude "slf4j-nop"
         }
         runtime 'org.languagetool:languagetool-wikipedia:5.2-SNAPSHOT'
