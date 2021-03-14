@@ -19,6 +19,10 @@
             
             <p><g:message code="ltc.analysis.intro"/></p>
 
+            <g:if test="${params.lang == 'de'}">
+                <a href="../germanCompoundSplit/">Split German compounds</a>
+            </g:if>
+
             <g:render template="textForm"/>
             
         </div>
