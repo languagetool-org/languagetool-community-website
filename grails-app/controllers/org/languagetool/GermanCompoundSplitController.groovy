@@ -18,7 +18,7 @@
  */
 package org.languagetool
 
-import de.danielnaber.jwordsplitter.GermanWordSplitter
+import org.languagetool.tokenizers.de.GermanCompoundTokenizer
 
 class GermanCompoundSplitController {
     
@@ -27,13 +27,11 @@ class GermanCompoundSplitController {
     }
 
     def split() {
-        GermanWordSplitter splitter = new GermanWordSplitter(true);
-        splitter.setMinimumWordLength(3)
-        splitter.setStrictMode(true)
+        GermanCompoundTokenizer tok = new GermanCompoundTokenizer(true)
         String[] words = params.input.split("\\s")
         List<String> res = new ArrayList<>()
         for (String word : words) {
-            List<String> parts = splitter.splitWord(word)
+            List<String> parts = tok.tokenize(word)
             res.addAll(parts.join(" "))
         }
         render(view:'index', model: [splits: res, input: params.input])
