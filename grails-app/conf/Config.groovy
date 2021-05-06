@@ -53,7 +53,8 @@ maxPatternElements = 5
 // the feed of user-suggested words is password protected:
 suggestion.password = "fixme"
 
-// Lucene index directories for fast rule matching - "LANG" will be replaced with the language code:
+// Lucene index directories for fast rule matching - "LANG" will be replaced with the language code.
+// Use SentenceSourceIndexer to create these indexes (including POS tagging):
 fastSearchIndex = "/home/languagetool/corpus/LANG"
 fastSearchTimeoutMillis = 15000
 
