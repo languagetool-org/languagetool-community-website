@@ -57,7 +57,7 @@
                 <p style="margin-top: 8px;">You're in expert mode. Don't know what to do here? <g:link controller="ruleEditor2">Try the simple mode instead.</g:link></p>
                 
                 <p>
-                    <g:message code="ltc.editor.expert.intro" args="${['http://wiki.languagetool.org/development-overview']}"/>
+                    <g:message code="ltc.editor.expert.intro" args="${['https://dev.languagetool.org/development-overview']}"/>
                     <g:message code="ltc.editor.expert.intro.completion"/>
                 </p>
 

@@ -70,8 +70,8 @@
     
       <p>This page will help you to create new rules. 
       As a result, you will have your rule in XML format, which you
-      can <a href="https://languagetool.org/support/" target="_blank">send to the developers</a> for inclusion in LanguageTool.
-      Need help? <a target="_blank" href="https://languagetool.org/forum/">Ask in our forum.</a></p>
+      can <a href="https://github.com/languagetool-org/languagetool/issues" target="_blank">send to the developers</a> for inclusion in LanguageTool.
+      Need help? <a target="_blank" href="https://forum.languagetool.org">Ask in our forum.</a></p>
   </div>
 
   <p>
