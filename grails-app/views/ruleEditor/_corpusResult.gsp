@@ -19,7 +19,7 @@
             </table>
         </g:if>
 
-        <g:if test="${isOff || isTempOff}">
+        <g:if test="${isOff || isTempOff || searchMode}">
             <table style="border:0">
                 <tr>
                     <td width="40"><img style="margin:5px" src="${resource(dir:'images', file:'information.png')}" /></td>
@@ -30,12 +30,15 @@
                         <g:if test="${isTempOff}">
                             The rule uses default="temp_off" but is run here anyway
                         </g:if>
+                        <g:if test="${searchMode}">
+                            Your rule is incomplete (no message and/or example), so this result is only a search, not a check for rule validity
+                        </g:if>
                     </td>
                 </tr>
             </table>
         </g:if>
 
-        <g:if test="${(params.incorrectExample1 && params.correctExample1) || expertMode}">
+        <g:if test="${((params.incorrectExample1 && params.correctExample1) || expertMode) && !searchMode}">
             <table style="border:0">
                 <tr>
                     <td style="vertical-align: top;width:40px"><img style="margin:5px" align="left" src="${resource(dir:'images', file:'accept.png')}" /></td>

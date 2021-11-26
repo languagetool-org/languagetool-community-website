@@ -95,6 +95,15 @@ class RuleEditorController extends BaseController {
         PatternRuleLoader loader = new PatternRuleLoader()
         loader.setRelaxedMode(true)
         String userXml = params.xml
+        boolean searchMode = false
+        if (!userXml.contains("<message")) {
+            userXml = userXml.replace("</pattern>", "</pattern>\n<message>fake message</message>")  // fake valid XML
+            searchMode = true
+        }
+        if (!userXml.contains("<example")) {
+            userXml = userXml.replace("</message>", "</message>\n<example>fake example</example>")  // fake valid XML
+            searchMode = true
+        }
         String fakeId = "_some_string_not_in_any_other_rule_1234"
         userXml = userXml.replaceFirst("<rule(.*?)id=['\"](.*?)['\"](.*?)>", "<rule\$1id='\$2${fakeId}'\$3>")  // https://github.com/languagetool-org/languagetool/issues/496
         String orig = userXml
@@ -153,11 +162,13 @@ class RuleEditorController extends BaseController {
         }
         try {
             JLanguageTool lt = getLanguageToolWithOneRule(language, patternRule)
-            problems.addAll(checkExampleSentences(lt, patternRule, params.checkMarker != 'false'))
-            if (problems.size() > 0) {
-                render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                        expertMode: true, isOff: isOff, isTempOff: isTempOff, language: language])
-                return
+            if (!searchMode) {
+                problems.addAll(checkExampleSentences(lt, patternRule, params.checkMarker != 'false'))
+                if (problems.size() > 0) {
+                    render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
+                                 expertMode: true, isOff: isOff, isTempOff: isTempOff, searchMode: searchMode, language: language])
+                    return
+                }
             }
             String incorrectExamples = getIncorrectExamples(patternRule)
             List<RuleMatch> incorrectExamplesMatches = lt.check(incorrectExamples)
@@ -190,7 +201,7 @@ class RuleEditorController extends BaseController {
             render(view: '_corpusResult', model: [searcherResult: searcherResult, expertMode: true, limit: corpusMatchLimit,
                     incorrectExamples: incorrectExamples, incorrectExamplesMatches: incorrectExamplesMatches,
                     incorrectCorrections: incorrectCorrections, docsChecked: docsChecked, maxDocs: maxDocs,
-                    isOff: isOff, isTempOff: isTempOff])
+                    isOff: isOff, isTempOff: isTempOff, searchMode: searchMode])
         } catch (SearchTimeoutException ignored) {
             long searchTime = System.currentTimeMillis() - startTime
             log.warn("Timeout checking XML in ${language}, timeout (${timeoutMillis}ms), time: ${searchTime}ms, pattern: ${patternRule}")
@@ -198,12 +209,12 @@ class RuleEditorController extends BaseController {
                     " for patterns with some regular expressions, for example if the pattern starts with .*." +
                     " These kinds of patterns are currently not supported by this tool.")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                    expertMode: true, isOff: isOff, isTempOff: isTempOff, language: language])
+                    expertMode: true, isOff: isOff, isTempOff: isTempOff, searchMode: searchMode, language: language])
         } catch (Exception e) {
             log.error("Error checking XML in ${language}, pattern: ${patternRule}, XML input: ${xml}", e)
             problems.add("Sorry, an error occurred trying to check your rule: ${e.getMessage()}")
             render(template: 'checkRuleProblem', model: [problems: problems, hasRegex: hasRegex(patternRule),
-                    expertMode: true, isOff: isOff, isTempOff: isTempOff, language: language])
+                    expertMode: true, isOff: isOff, isTempOff: isTempOff, searchMode: searchMode, language: language])
         }
     }
 
