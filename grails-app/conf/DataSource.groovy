@@ -20,7 +20,7 @@ environments {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
 			url = "jdbc:mysql://localhost/ltcommunity?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin"
 		    username = "root"
-		    password = ""
+		    password = "root"
 		}
 	}
 	test {
