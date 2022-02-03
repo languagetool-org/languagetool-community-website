@@ -38,9 +38,14 @@ grails.project.dependency.resolution = {
 
         runtime('org.languagetool:language-all:5.7-SNAPSHOT') {
             exclude "slf4j-nop"
+            exclude "logback-classic"
         }
-        runtime 'org.languagetool:languagetool-wikipedia:5.7-SNAPSHOT'
-        runtime('org.languagetool:languagetool-http-client:5.7-SNAPSHOT')
+        runtime('org.languagetool:languagetool-wikipedia:5.7-SNAPSHOT') {
+            exclude "logback-classic"
+        }
+        runtime('org.languagetool:languagetool-http-client:5.7-SNAPSHOT') {
+            exclude "logback-classic"
+        }
 
         runtime 'mysql:mysql-connector-java:6.0.5'
         runtime 'org.springframework:spring-expression:4.2.0.RELEASE'
