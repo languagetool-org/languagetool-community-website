@@ -44,6 +44,7 @@ grails.project.dependency.resolution = {
             exclude "logback-classic"
         }
         runtime('org.languagetool:languagetool-http-client:5.8-SNAPSHOT') {
+            exclude "logback-classic"
             exclude "languagetool-server"
         }
 
