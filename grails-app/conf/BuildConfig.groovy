@@ -45,6 +45,7 @@ grails.project.dependency.resolution = {
         }
         runtime('org.languagetool:languagetool-http-client:5.8-SNAPSHOT') {
             exclude "logback-classic"
+            exclude "languagetool-server"
         }
 
         runtime 'mysql:mysql-connector-java:6.0.5'
