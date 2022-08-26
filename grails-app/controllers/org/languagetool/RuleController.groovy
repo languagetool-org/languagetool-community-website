@@ -124,7 +124,7 @@ class RuleController extends BaseController {
             text = text.substring(0, maxTextLen)
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
-        CheckConfiguration config = new CheckConfigurationBuilder(langCode).enabledRuleIds(params.id).enabledOnly().build()
+        CheckConfiguration config = new CheckConfigurationBuilder(langCode).enabledRuleIds(params.id).enabledOnly().level("picky").build()
         RemoteLanguageTool remoteLt = new RemoteLanguageTool(new URL(grailsApplication.config.api.server.url))
         RemoteResult result = remoteLt.check(text, config)
         render(view:'show', model: [ hideRuleLink: true, rule: selectedRule,
