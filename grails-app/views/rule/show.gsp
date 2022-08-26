@@ -87,6 +87,12 @@
                         <td><a href="${rule.url}">${rule.url.encodeAsHTML()}</a></td>
                     </tr>
                 </g:if>
+                <g:if test="${rule.tags}">
+                    <tr>
+                        <td><g:message code="ltc.rule.show.tags" /></td>
+                        <td>${rule.tags.encodeAsHTML()}</td>
+                    </tr>
+                </g:if>
 
                 <tr>
                     <td><g:message code="ltc.rule.show.incorrect.sentences" /></td>
