@@ -84,7 +84,7 @@
                 <g:if test="${rule.url}">
                     <tr>
                         <td><g:message code="ltc.rule.show.link" /></td>
-                        <td><a href="${rule.url}">${rule.url.encodeAsHTML()}</a></td>
+                        <td><a href="${rule.url}" rel="nofollow">${rule.url.encodeAsHTML()}</a></td>
                     </tr>
                 </g:if>
                 <g:if test="${rule.tags}">
