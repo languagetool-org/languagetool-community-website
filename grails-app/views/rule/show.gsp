@@ -84,7 +84,12 @@
                 <g:if test="${rule.url}">
                     <tr>
                         <td><g:message code="ltc.rule.show.link" /></td>
-                        <td><a href="${rule.url}" rel="nofollow">${rule.url.encodeAsHTML()}</a></td>
+                        <g:if test="${rule.url.toString().contains('//languagetool.') || rule.url.toString().contains('//www.languagetool.')}">
+                            <td><a href="${rule.url}">${rule.url.encodeAsHTML()}</a></td>
+                        </g:if>
+                        <g:else>
+                            <td><a href="${rule.url}" rel="nofollow">${rule.url.encodeAsHTML()}</a></td>
+                        </g:else>
                     </tr>
                 </g:if>
                 <g:if test="${rule.tags}">
