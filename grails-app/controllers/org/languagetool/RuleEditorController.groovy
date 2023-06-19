@@ -138,7 +138,7 @@ class RuleEditorController extends BaseController {
             return
         }
         InputStream input = new ByteArrayInputStream(xml.getBytes())
-        def rules = loader.getRules(input, "<form>")
+        def rules = loader.getRules(input, "<form>", language)
         if (rules.size() == 0) {
             render(template: 'checkXmlProblem', model: [error: "No rule found in XML"])
             return
