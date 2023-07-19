@@ -125,7 +125,7 @@ class RuleEditorController extends BaseController {
         XMLValidator validator = new XMLValidator()
         String xsd = JLanguageTool.getDataBroker().getRulesDir() + "/rules.xsd"
         try {
-            validator.validateStringWithXmlSchema(xml, xsd)
+            validator.validateStringWithXmlSchema(xml, xsd, null)
         } catch (Exception e) {
             String message = e.getMessage()
             Pattern p = Pattern.compile(".*lineNumber: (\\d+).*")
