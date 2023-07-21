@@ -127,7 +127,11 @@ class RuleEditorController extends BaseController {
         try {
             validator.validateStringWithXmlSchema(xml, xsd, null)
         } catch (Exception e) {
+            e.printStackTrace()
             String message = e.getMessage()
+            if (message == null) {
+                message = "null"
+            }
             Pattern p = Pattern.compile(".*lineNumber: (\\d+).*")
             Matcher matcher = p.matcher(message)
             if (matcher.matches()) {
@@ -233,6 +237,10 @@ class RuleEditorController extends BaseController {
                 break
             }
             if (inDef) {
+                // quick fix so "external" entities don't make this approach crash:
+                if (line.trim().startsWith("<!ENTITY %") || line.trim().startsWith("%")) {
+                    continue
+                }
                 result.append(line).append("\n")
             }
         }
