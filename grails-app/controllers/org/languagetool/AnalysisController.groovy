@@ -97,6 +97,7 @@ class AnalysisController extends BaseController {
             flash.message = "The text is too long, only the first $maxTextLen characters have been checked"
         }
         JLanguageTool lt = new JLanguageTool(lang)
+        GlobalConfig.setVerbose(true)
         List<AnalyzedSentence> analyzedSentences = lt.analyzeText(text)
         return analyzedSentences
     }
