@@ -36,14 +36,14 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        runtime('org.languagetool:language-all:6.4-SNAPSHOT') {
+        runtime('org.languagetool:language-all:6.5-SNAPSHOT') {
             exclude "slf4j-nop"
             exclude "logback-classic"
         }
-        runtime('org.languagetool:languagetool-wikipedia:6.4-SNAPSHOT') {
+        runtime('org.languagetool:languagetool-wikipedia:6.5-SNAPSHOT') {
             exclude "logback-classic"
         }
-        runtime('org.languagetool:languagetool-http-client:6.4-SNAPSHOT') {
+        runtime('org.languagetool:languagetool-http-client:6.5-SNAPSHOT') {
             exclude "logback-classic"
             exclude "languagetool-server"
         }
