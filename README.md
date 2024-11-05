@@ -1,4 +1,4 @@
 LanguageTool Community Website
 ==============================
 
-* Visit **[community.languagetool.org](https://community.languagetool.org)**
+This is archived now, see https://github.com/languagetool-org/languagetool-community-website2 instead
